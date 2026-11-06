@@ -60,6 +60,14 @@ describe('coins per hour', () => {
     expect(computeCoinsPerHourFromSaveRoot(root)).toBe(600)
   })
 
+  it('reads coins and time in the wrapped forms a save stores them', () => {
+    // Each alone, so a form that is dropped cannot hide behind another that is read.
+    const rateOf = (run: unknown) => computeCoinsPerHourFromSaveRoot(rootWith([run]))
+    expect(rateOf({ coinsEarned: { mantissa: 1, exponent: 6 }, realTime: 3600 })).toBe(1_000_000)
+    expect(rateOf({ coinsEarned: { __value: 1_000_000 }, realTime: { value__: 3600 } })).toBe(1_000_000)
+    expect(rateOf({ coinsEarned: '1000000', realTime: '3600' })).toBe(1_000_000)
+  })
+
   it('returns null when nothing qualifies', () => {
     expect(computeCoinsPerHourFromSaveRoot(rootWith([]))).toBeNull()
     expect(computeCoinsPerHourFromSaveRoot(rootWith([{ tier: 1 }]))).toBeNull()

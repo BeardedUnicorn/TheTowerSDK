@@ -16,9 +16,14 @@ import { DISSONANCE_TYPE_KEYS, type DissonanceTypeKey } from '../../mechanics/la
 import { coerceSaveNumber, readIndexedNumberArray, readSaveIntList } from '../access/values'
 import type { DissonanceCycleLayout } from './types'
 
-/** Echo labs unlock on reaching this wave of this tier, or on any higher tier. */
-const ECHO_LABS_UNLOCK_TIER = 4
-const ECHO_LABS_UNLOCK_WAVE = 90
+/**
+ * The milestone that grants the Dissonance Echo labs (wiki "Milestones/16 17 18").
+ *
+ * Any higher tier implies it: tier 18 itself unlocks at tier 17 wave 300. Tier 4 wave 90 is a
+ * different milestone, the one that unlocks Dissonance.
+ */
+const ECHO_LABS_UNLOCK_TIER = 17
+const ECHO_LABS_UNLOCK_WAVE = 60
 /**
  * Dissonance covers every campaign tier, so it is read from the generated tier
  * count rather than restated.
@@ -51,19 +56,12 @@ const DISSONANCE_TYPE_MAJOR_BLOCK_START = [0, 21, 42, 63] as const
 /** Whether the save has reached the point where echo labs unlock. */
 export function isEchoLabsUnlockedInSave(root: Record<string, unknown>): boolean {
   const currentTier = coerceSaveNumber(root.currentTier)
-  const highestWaveThisTier = readSaveIntList(root.highestWaveThisTier)
-
   if (currentTier != null && currentTier > ECHO_LABS_UNLOCK_TIER) return true
-  if (currentTier === ECHO_LABS_UNLOCK_TIER) {
-    const wave = Math.max(0, Math.floor(highestWaveThisTier[ECHO_LABS_UNLOCK_TIER - 1] ?? 0))
-    return wave >= ECHO_LABS_UNLOCK_WAVE
-  }
 
-  for (let tier = ECHO_LABS_UNLOCK_TIER + 1; tier <= highestWaveThisTier.length; tier += 1) {
-    if ((highestWaveThisTier[tier - 1] ?? 0) > 0) return true
-  }
+  const highestWaveThisTier = readSaveIntList(root.highestWaveThisTier)
+  if ((highestWaveThisTier[ECHO_LABS_UNLOCK_TIER - 1] ?? 0) >= ECHO_LABS_UNLOCK_WAVE) return true
 
-  return false
+  return highestWaveThisTier.slice(ECHO_LABS_UNLOCK_TIER).some(wave => wave > 0)
 }
 
 export function readDissonanceCycleWaveForTierType(
