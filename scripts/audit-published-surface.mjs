@@ -46,7 +46,9 @@ function packedFiles() {
     stdio: ['ignore', 'pipe', 'ignore'],
     shell: process.platform === 'win32',
   })
-  const [manifest] = JSON.parse(raw)
+  // npm 12 keys the manifest by package name; earlier versions wrap it in an array.
+  const parsed = JSON.parse(raw)
+  const manifest = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0]
   return manifest.files.map(entry => path.join(PACKAGE_ROOT, entry.path))
 }
 

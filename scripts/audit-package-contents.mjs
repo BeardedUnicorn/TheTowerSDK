@@ -72,10 +72,11 @@ function packedFiles() {
     maxBuffer: 32 * 1024 * 1024,
   })
   // npm prints the tarball name on stderr and the JSON on stdout, but older versions mix
-  // them; take the first array in the output rather than assuming the whole thing is JSON.
-  const start = raw.indexOf('[')
-  const parsed = JSON.parse(raw.slice(start))
-  return parsed[0].files.map(entry => entry.path.split(path.sep).join('/'))
+  // them; start at the first bracket rather than assuming the whole thing is JSON. npm 12 keys
+  // the manifest by package name, where earlier versions wrap it in an array.
+  const parsed = JSON.parse(raw.slice(raw.search(/[[{]/)))
+  const manifest = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0]
+  return manifest.files.map(entry => entry.path.split(path.sep).join('/'))
 }
 
 const files = packedFiles()
