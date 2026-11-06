@@ -517,6 +517,28 @@ async function readSaveOrExplain(savePath) {
   }
 }
 
+/**
+ * What one extractor finds, as shape rather than values; `run_extractor` returns the values.
+ *
+ * A throw is reported on that extractor's row, so one bad reader cannot hide the other results.
+ */
+function summariseExtractor(extractor, parsedRoot) {
+  let result
+  try {
+    result = sdk.save[extractor](parsedRoot)
+  }
+  catch (error) {
+    return { extractor, found: false, error: error.message }
+  }
+  if (result === null || result === undefined) return { extractor, found: false }
+  return {
+    extractor,
+    found: true,
+    ...(Array.isArray(result) ? { count: result.length } : { fields: Object.keys(result) }),
+    warnings: result.warnings?.length ?? 0,
+  }
+}
+
 /** Values are often huge tables; never return one whole by accident. */
 const preview = (value, limit = 40) => {
   const size = sampleSize(limit)
@@ -650,12 +672,13 @@ export const TOOLS = {
       const loaded = await readSaveOrExplain(savePath)
       if (loaded.error) return loaded
       const { parsedRoot, wasGzip, battleRunCount } = loaded
-      const discovered = sdk.save.discoverSaveImportTargets(parsedRoot)
       return {
         gzip: wasGzip,
         rootKeys: Object.keys(parsedRoot).length,
         battleRuns: battleRunCount,
-        targets: discovered.targets.map(t => ({ label: t.label, count: t.count, summary: t.summary })),
+        targets: Object.keys(sdk.save)
+          .filter(name => /^read[A-Z].*FromSaveRoot$/.test(name))
+          .map(name => summariseExtractor(name, parsedRoot)),
       }
     },
   },
