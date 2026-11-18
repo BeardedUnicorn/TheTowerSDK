@@ -612,7 +612,7 @@ export const TOOLS = {
       required: ['entry'],
     },
     run: ({ entry, filter }) => {
-      const mod = sdk[entry]
+      const mod = ENTRIES.includes(entry) ? sdk[entry] : undefined
       if (!mod) return { error: `no entry point "${entry}"`, entries: ENTRIES }
       let names = Object.keys(mod).sort()
       if (filter) names = names.filter(n => n.toLowerCase().includes(String(filter).toLowerCase()))
@@ -1731,7 +1731,7 @@ export const TOOLS = {
     run: ({ table }) => {
       const schemas = sdk.data.DATA_TABLE_SCHEMAS ?? {}
       if (!table) return { tables: Object.keys(schemas) }
-      const spec = schemas[table]
+      const spec = Object.hasOwn(schemas, table) ? schemas[table] : undefined
       if (!spec) return { error: `no schema for "${table}"`, tables: Object.keys(schemas) }
       return { table, kind: spec.kind, shape: JSON.parse(JSON.stringify(spec.schema.shape ?? {}, replacer)) }
     },
@@ -1905,7 +1905,7 @@ export const TOOLS = {
           links,
         }
       }
-      const link = links[chart]
+      const link = Object.hasOwn(links, chart) ? links[chart] : undefined
       if (!link) return { error: `no chart "${chart}"`, charts: Object.keys(links) }
       const titles = sdk.charts.SHARED_CHART_REGISTRY
         .filter(entry => entry.rendererKey === chart)

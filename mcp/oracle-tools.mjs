@@ -64,44 +64,10 @@ function knowledge() {
  * primaries — the exact confusion it exists to prevent.
  */
 function scoreNode(node, terms) {
-  const label = node.label.toLowerCase()
-  const id = node.id.toLowerCase()
-  const body = `${node.summary} ${(node.traps ?? []).join(' ')}`.toLowerCase()
-  const phrase = terms.join(' ')
-  const squashed = phrase.replace(/\s+/g, '')
-
-  if (id === phrase || label === phrase || id === squashed) return 1000
-
-  /* "module levels" must find `module.level`. Without this the plural misses
-   * the id entirely and the query lands on whichever node happens to mention
-   * "levels" in its prose — which was `module.subEffect`, the one thing a
-   * level calculator does not need. */
-  const singular = terms.map(term => (term.length > 3 && term.endsWith('s')
-    ? term.slice(0, -1)
-    : term))
-  const singularPhrase = singular.join(' ')
-  if (id === singularPhrase || label === singularPhrase
-    || id === singularPhrase.replace(/\s+/g, '')
-    || id === `${node.id.split('.')[0].toLowerCase()}.${singular[singular.length - 1]}`) {
-    return 900
-  }
-
-  let score = 0
-  for (const [index, term] of terms.entries()) {
-    const stem = singular[index]
-    const hitId = id.includes(term) || id.includes(stem)
-    const hitLabel = label.includes(term) || label.includes(stem)
-    if (id === term || label === term || id === stem || label === stem) score += 100
-    else if (hitId || hitLabel) score += 10
-    else if (body.includes(term) || body.includes(stem)) score += 1
-  }
-  // Matching every term beats matching one of them very well.
-  const matchedAll = terms.every((term, index) => {
-    const stem = singular[index]
-    return id.includes(term) || label.includes(term) || body.includes(term)
-      || id.includes(stem) || label.includes(stem) || body.includes(stem)
-  })
-  return matchedAll ? score + 150 : score
+  // The library's scorer, not a copy of it. This file carried its own, and it fell behind: two
+  // fixes to the library never reached it, so `oracle_traps` answered "card levels" with the
+  // traps for `module.level` while the library resolved the same words to `card.level`.
+  return knowledge().scoreNode(node, terms)
 }
 
 /**
@@ -407,7 +373,9 @@ export const TOWER_ORACLE_TOOLS = {
       const canonicalSpelling = Object.entries(CANONICAL_SPELLINGS)
         .find(([wrong]) => wrong.toLowerCase() === key)?.[1]
 
-      const known = ACRONYM_EXPANSIONS[key]
+      // Own keys only: `constructor` is not an acronym, and reading it off the prototype returned
+      // a function that the lines below then tried to map over.
+      const known = Object.hasOwn(ACRONYM_EXPANSIONS, key) ? ACRONYM_EXPANSIONS[key] : undefined
       if (known) {
         return {
           term: raw,

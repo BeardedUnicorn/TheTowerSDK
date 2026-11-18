@@ -311,6 +311,8 @@ export function buildResourceDropsCoinMultipliers(
 
   const cpkCore = (workshopCoinsKillMult * coinsKillLabMult + moduleBonus) * vaultMult
   const bhdMult = bhdBonusPct > 0 ? 1 + bhdBonusPct / 100 : 1
+  // `coinBonusEnhancement` is in `globalMult` already and is meant to appear again here: the game
+  // applies Coin Bonus to the tier bonus and to coins per kill, so on kill coins it is squared.
   const baselineKillMult = globalMult * coinBonusEnhancement * cpkCore * bhdMult
 
   const coinsWaveLabMult = computeLabCoinMultiplier(RESOURCE_DROPS_COIN_LAB_SLUGS.coinsWave, input.coinsWaveLabLevel)

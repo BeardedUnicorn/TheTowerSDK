@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+**Fixes from a repository review.** Each has a regression test except the WASM entry, whose
+suite only runs against a built module.
+
+- `thetowersdk-mcp` now starts when launched through a symlink, which is how `npx` and pnpm run
+  it. It compared the path as typed with the resolved one and exited silently.
+- MCP: `oracle_traps`, `oracle_brief` and `oracle_search` use the library's scorer instead of a
+  stale copy ("card levels" resolved to `module.level`). `list_exports`, `describe_schema`,
+  `calc_chart` and `oracle_expand` no longer answer, or throw, for prototype keys such as
+  `constructor`.
+- `sumModuleCoinCostsBetween` / `sumModuleShardCostsBetween` clamp to the cost table instead of
+  returning 0 for a target level past its end.
+- Battle run records read the full suffix ladder case-sensitively: `Q` is no longer read as `q`,
+  and `s`, `S`, `O`, `N`, `D` and `AA`-`AZ` no longer become 0.
+- Effective Paths inputs no longer report `hasAssist` / `coreHasAssist` for an empty assist slot.
+- `enemy.wave` accepts tiers up to `MAX_CAMPAIGN_TIER` instead of silently computing 19-24 as 18.
+- Formatting: `formatTrimmedNumber(100.3, 0)` is `100`, not `1`; `formatMultiplier(0)` prints
+  zero, not 1; a value that rounds to 1000 prints as `1K`; `formatRateWithNotation`
+  returns `0` for a non-numeric duration.
+- Wiki: a `-|` inside a tabber panel is kept; file names containing parentheses resolve; a bare
+  `32px` is not used as alt text.
+- `availableRarities` omits rarities whose substat value is blank; `clampLabRange` no longer
+  returns a target above the lab cap.
+- Uptime's Thunder Bot duration uses the bot ladder (5s + 0.5s per level) instead of an older
+  whole-second formula. Awaiting in-game confirmation.
+- WASM entry: `charts.list` returns usable ids and `charts.rows` accepts `args`.
+
 ## 0.12.1
 
 **Release housekeeping.** Retired obsolete workbook and artwork-index generators, corrected

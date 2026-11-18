@@ -223,12 +223,22 @@ const OPS = {
 
   // ---- charts -------------------------------------------------------------
 
+  // A chart has no `id` field: `pathId` is its unique address and `rendererKey` names its dataset.
+  // Listing `entry.id` handed back a list of titles with nothing to ask for them by.
   'charts.list': () => ({
-    charts: SHARED_CHART_REGISTRY.map(entry => ({ id: entry.id, title: entry.title })),
+    charts: SHARED_CHART_REGISTRY.map(entry => ({
+      id: entry.pathId,
+      rendererKey: entry.rendererKey,
+      title: entry.title,
+    })),
   }),
 
-  'charts.rows': ({ id, offset, limit }) => {
-    const dataset = resolveCanonicalToolDataset(id, [])
+  // `id` is what `charts.list` returned, or a renderer key. `args` selects within a dataset that
+  // covers several things -- which weapon, which module type, which bot.
+  'charts.rows': ({ id, args, offset, limit }) => {
+    const listed = SHARED_CHART_REGISTRY.find(entry => entry.pathId === id)
+    const datasetArgs = Array.isArray(args) ? args.map(String) : []
+    const dataset = resolveCanonicalToolDataset(listed ? listed.rendererKey : id, datasetArgs)
     if (!dataset) return { error: `no chart dataset named ${id}` }
     const rows = Array.isArray(dataset.rows) ? dataset.rows : []
     return { id, columns: dataset.columns ?? [], ...page(rows, { offset, limit }) }

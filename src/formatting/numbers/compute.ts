@@ -470,13 +470,21 @@ export function formatNumberForDisplay(
   }
 
   if (Math.abs(numericValue) < 1000) {
-    return formatSmallValue(
-      numericValue,
-      smallNumberStrategy,
-      smallNumberMaxFractionDigits,
-      useGrouping,
-      decimalPreference,
-    )
+    // Decide on the value as it will print. 999.9996 is below 1000 and rounds to it, and the
+    // ladder never shows a coefficient of 1000: that is 1K.
+    const printed = smallNumberStrategy === 'round'
+      ? Math.round(numericValue)
+      : roundToDisplayPrecision(numericValue, Math.min(smallNumberMaxFractionDigits, MAX_DISPLAY_DECIMALS))
+    if (Math.abs(printed) < 1000) {
+      return formatSmallValue(
+        numericValue,
+        smallNumberStrategy,
+        smallNumberMaxFractionDigits,
+        useGrouping,
+        decimalPreference,
+      )
+    }
+    return formatNotationValue(printed, notationMaxFractionDigits, decimalPreference)
   }
 
   return formatNotationValue(numericValue, notationMaxFractionDigits, decimalPreference)
@@ -600,7 +608,7 @@ export function formatGroupedNumber(
 }
 
 export function formatRateWithNotation(amount: number, hours: number): string {
-  if (!Number.isFinite(amount) || hours <= 0) return '0'
+  if (!Number.isFinite(amount) || !(hours > 0)) return '0'
   const rate = amount / hours
   if (Math.abs(rate) < 1000) return formatNumberForDisplay(rate)
 

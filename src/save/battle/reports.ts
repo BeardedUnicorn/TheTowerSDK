@@ -7,7 +7,7 @@
 import { formatBattleDurationFromSaveSeconds, readDurationSecondsFromSave } from './duration'
 import { buildBattleReportStatFields } from './report-fields'
 import { normalizeBattleHistorySaveEntry } from './history-normalize'
-import { parseDurationToHours, parseSaveDateTimeToMs } from '../../formatting'
+import { parseDurationToHours, parseNumberInput, parseSaveDateTimeToMs } from '../../formatting'
 
 import { getKilledByFromSave } from '../killed-by/read'
 
@@ -188,17 +188,13 @@ function parseDurationToSeconds(duration: string): number {
 
 function parseCompactNumber(value: unknown): number {
   if (typeof value === 'number' && Number.isFinite(value)) return value
-  const raw = String(value ?? '').trim().toLowerCase()
+  const raw = String(value ?? '').trim()
   if (!raw) return 0
-  const suffix = raw.slice(-1)
-  const multiplier = suffix === 'k' ? 1_000
-    : suffix === 'm' ? 1_000_000
-      : suffix === 'b' ? 1_000_000_000
-        : suffix === 't' ? 1_000_000_000_000
-          : suffix === 'q' ? 1_000_000_000_000_000
-            : 1
-  const numeric = multiplier === 1 ? Number(raw) : Number(raw.slice(0, -1))
-  return Number.isFinite(numeric) ? numeric * multiplier : 0
+  // The game's own ladder, read the way `formatCompact` writes it. `q` and `Q` are different
+  // magnitudes, as are `s` and `S`, so the text must not be lowercased first; and the ladder
+  // runs on through O, N, D and AA to AZ, well past the five suffixes this once knew.
+  const parsed = parseNumberInput(raw)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
 /**
