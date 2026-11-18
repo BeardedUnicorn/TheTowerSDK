@@ -20,28 +20,31 @@ import {
  * instead of agreeing with itself.
  *
  * The `+ 1` in the implementation is not an off-by-one. Cost tables index from 0, so a table whose
- * last index is 74 prices 75 levels.
+ * last index is 99 prices 100 levels.
+ *
+ * The ladder lengths are game data v29.2.0 (facts/v29.2.0/workshop-enhancement-caps.json); the
+ * oracle trap states the same figures. They were 400/300/200/100/75/60 before v28.3.
  */
 
-/** Ladder length per enhancement, as `oracle_traps('workshop')` states it. */
+/** Ladder length per enhancement, as game data v29.2.0 and `oracle_traps('workshop')` state it. */
 const ORACLE_LADDER_BY_KEY: Readonly<Record<string, number>> = {
-  WSP_DAMAGE: 400,
-  WSP_REND_ARMOR: 400,
-  WSP_CRITICAL_FACTOR: 400,
-  WSP_DAMAGE_PER_METER: 400,
-  WSP_SUPER_CRIT_MULTI: 400,
-  WSP_HEALTH: 400,
-  WSP_HEALTH_REGEN: 400,
-  WSP_DEFENSE_ABSOLUTE: 400,
-  WSP_LAND_MINE_DAMAGE: 400,
-  WSP_WALL_HEALTH: 400,
-  WSP_RECOVERY_PACKAGE: 400,
-  WSP_CASH_BONUS: 300,
-  WSP_ORB_SIZE: 200,
-  WSP_COIN_BONUS: 200,
-  WSP_CELLS_PER_KILL_BONUS: 200,
-  WSP_FREE_UPGRADES: 100,
-  WSP_ATTACK_SPEED: 75,
+  WSP_DAMAGE: 600,
+  WSP_REND_ARMOR: 600,
+  WSP_CRITICAL_FACTOR: 600,
+  WSP_DAMAGE_PER_METER: 600,
+  WSP_SUPER_CRIT_MULTI: 600,
+  WSP_HEALTH: 600,
+  WSP_HEALTH_REGEN: 600,
+  WSP_DEFENSE_ABSOLUTE: 600,
+  WSP_LAND_MINE_DAMAGE: 600,
+  WSP_WALL_HEALTH: 600,
+  WSP_RECOVERY_PACKAGE: 600,
+  WSP_CASH_BONUS: 600,
+  WSP_ORB_SIZE: 250,
+  WSP_COIN_BONUS: 300,
+  WSP_CELLS_PER_KILL_BONUS: 300,
+  WSP_FREE_UPGRADES: 150,
+  WSP_ATTACK_SPEED: 100,
   WSP_ENEMY_LEVEL_SKIP: 60,
 }
 
@@ -63,7 +66,7 @@ describe('workshop enhancement ladders', () => {
     expect(wrong).toEqual([])
   })
 
-  it('keeps the eleven-at-400 majority from swallowing the other seven', () => {
+  it('keeps the twelve-at-600 majority from swallowing the other six', () => {
     /*
      * The specific failure the oracle warns about: pricing everything on the Damage ladder. If a
      * change ever made these uniform, the test above would still be comparing against this file's
@@ -72,8 +75,8 @@ describe('workshop enhancement ladders', () => {
     const lengths = definitions.map(d => computeWorkshopEnhancementMaxLevel(d.key))
     expect(new Set(lengths).size).toBe(6)
     expect(Math.min(...lengths)).toBe(60)
-    expect(Math.max(...lengths)).toBe(400)
-    expect(lengths.filter(length => length === 400)).toHaveLength(11)
+    expect(Math.max(...lengths)).toBe(600)
+    expect(lengths.filter(length => length === 600)).toHaveLength(12)
   })
 
   it('resolves the second spelling of the cells-per-kill key', () => {

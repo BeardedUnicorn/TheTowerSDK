@@ -37,7 +37,7 @@ describe('the patch-note archive', () => {
     /*
      * `\bv?(\d+\.\d+…)` is case-sensitive, so "V26.1.2" did not match at the capital V, and with
      * no word boundary between `V` and `2` the match began mid-number and returned `1.2`. Real
-     * versions here are 0.x through 28.x.
+     * versions here are 0.x through 29.x.
      */
     const impossible = PATCH_NOTES
       .filter(note => note.version)

@@ -38,6 +38,9 @@ import type { LabResearchImportRow } from './types'
  * `lab-dissonance-index.test.ts` holds all three to each other.
  */
 export const LAB_RESEARCH_DISPLAY_NAME_OVERRIDES: Readonly<Record<number, string>> = {
+  // The Card Presets lab became "Presets" in v29, unlocking workshop, bot, module and guardian
+  // presets too (patch note 1541918021939892245).
+  40: 'Presets',
   238: 'Dissonant Echo - Utility',
   239: 'Dissonant Echo - Attack',
   240: 'Dissonant Echo - Defense',
@@ -51,6 +54,7 @@ export const LAB_RESEARCH_DISPLAY_NAME_OVERRIDES: Readonly<Record<number, string
 export const LAB_RESEARCH_LAB_BY_LEGACY_LEVEL_KEY: Readonly<Record<string, string>> = {
   'Labs Coin Discount': 'Lab Coin Discount',
   'Labs Speed': 'Lab Speed',
+  'Card Presets': 'Presets',
 }
 
 function isUsableLabName(name: string | null | undefined): boolean {

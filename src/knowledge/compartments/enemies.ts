@@ -771,8 +771,9 @@ disambiguation:
       + 'meet them, which also means most accounts cannot reach the 80% reroll-shard source.',
       'Since v28.3 they CAN be targeted by tower attacks. Guidance written before that is wrong in '
       + 'the direction of "you cannot fight them".',
-      'They consume the normal-enemy spawn allowance rather than the elite or boss one, so they '
-      + 'crowd out ordinary spawns.',
+      'They do NOT take normal-enemy slots: each fleet type has its own cap of 10, and their escorts '
+      + 'a pool of 30, since v28.3 (patch note 1521195318136275124; wiki "Enemies", read 2026-11-18). '
+      + 'A model that lets fleets crowd out ordinary spawns undercounts normal kills on fleet tiers.',
     ],
     implementedBy: ['FLEET_ENEMY_FACTS', 'FLEET_ENEMY_TYPE_FACTS', 'FLEET_SPAWN_ROWS', 'FLEET_REWARD_ROWS'],
     assertions: [
@@ -981,8 +982,8 @@ disambiguation:
     label: 'Boss',
     kind: 'entity',
     summary:
-      '×20 health, 30% speed, worth 5 coins. Spawns every 10 waves (fewer under some battle '
-      + 'conditions) and drops module shards and reroll shards.',
+      '×20 health, 40% speed, worth 5 coins. Spawns every 10 waves (fewer under some battle '
+      + 'conditions) and can drop Common and Rare modules and reroll shards (wiki "Enemies").',
     traps: [
       'Bosses are IMMUNE to Orbs, Death Ray, Shockwave and Black Hole. A damage model that applies '
       + 'those to bosses overstates boss clear rate — and these are exactly the sources a build '

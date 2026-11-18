@@ -56,7 +56,10 @@ export const BOT_V28_PRESET_LIST_KEYS = [
   'botBotPresets',
 ] as const
 
-/** In-game bot presets and per-preset save layout (4 bots x 4 stats = 16 slots). */
+/**
+ * Bot presets in a pre-v29 save, and the least any save is read as holding. A v29 save says how
+ * many it holds; see `countV28BotPresets`. Per-preset layout: 4 bots x 4 stats = 16 slots.
+ */
 export const BOT_SAVE_PRESET_COUNT = 3
 export const BOT_SAVE_STAT_STRIDE = 4
 export const BOT_SAVE_LEVEL_SLOT_COUNT = BOT_SAVE_STAT_STRIDE * 4
@@ -206,7 +209,7 @@ function readUserBotPresetList(raw: unknown): UserBotDataSaveRow[] {
 
 function resolvePresetIndex(root: Record<string, unknown>): number {
   const presetNames = readStringArray(root[BOTS_SAVE_PRESET_NAME_KEY])
-  const maxPresetIndex = Math.max(presetNames.length, BOT_SAVE_PRESET_COUNT) - 1
+  const maxPresetIndex = Math.max(presetNames.length, BOT_SAVE_PRESET_COUNT, countV28BotPresets(root)) - 1
   const current = coerceSaveNumber(root[BOTS_SAVE_CURRENT_PRESET_KEY]) ?? 0
   return Math.max(0, Math.min(maxPresetIndex, current))
 }
@@ -249,9 +252,21 @@ function buildBotRowsFromV28(root: Record<string, unknown>, presetIndex: number)
   })
 }
 
+/**
+ * How many bot presets a v28+ save holds, from its own lists.
+ *
+ * Fixed at 3 until v29 made presets a lab unlock with more from the Vault (patch note
+ * 1541918021939892245). A v29.2 export holds 5 preset names and 5 entries per bot, and a fixed 3
+ * silently dropped the last two.
+ */
+function countV28BotPresets(root: Record<string, unknown>): number {
+  const lengths = BOT_V28_PRESET_LIST_KEYS.map(key => readListItems(root[key]).length)
+  return Math.max(BOT_SAVE_PRESET_COUNT, readStringArray(root[BOTS_SAVE_PRESET_NAME_KEY]).length, ...lengths)
+}
+
 function buildV28PresetExtracts(root: Record<string, unknown>): BotPresetSaveExtract[] {
   const presetNames = readStringArray(root[BOTS_SAVE_PRESET_NAME_KEY])
-  return Array.from({ length: BOT_SAVE_PRESET_COUNT }, (_, index) => ({
+  return Array.from({ length: countV28BotPresets(root) }, (_, index) => ({
     index,
     name: presetNames[index]?.trim() || `Preset ${index + 1}`,
     bots: buildBotRowsFromV28(root, index),
@@ -452,7 +467,7 @@ export function readBotsFromSaveRoot(root: Record<string, unknown> | null): Bots
       ...snapshot,
       presets,
       labLevels,
-      synchronicity: readBotSynchronicityFromSaveRoot(root),
+      synchronicity: readBotSynchronicityFromSaveRoot(root, snapshot.bots),
       usesV28BotData: true,
       warnings,
     }
@@ -488,7 +503,7 @@ export function readBotsFromSaveRoot(root: Record<string, unknown> | null): Bots
     ...snapshot,
     presets,
     labLevels,
-    synchronicity: readBotSynchronicityFromSaveRoot(root),
+    synchronicity: readBotSynchronicityFromSaveRoot(root, snapshot.bots),
     usesV28BotData: false,
     warnings,
   }
@@ -506,9 +521,16 @@ export function countBotPlusUnlocksFromSaveExtract(extract: BotsSaveExtract): nu
  * `synchronicityBots` is by SLOT, not by bot: each entry is the bot type sitting in that slot, or
  * null for an empty one, and the game finds a bot by searching the array. The bot type is the
  * bot's catalog `index` — 0 Flame Bot through 4 Bot Bot. The active preset is `currentBotPreset`.
+ *
+ * A bot that is not unlocked is not synced, whatever its slot says. Before v29.1 the game could
+ * put locked bots into Synchronicity (patch notes 1547618571016740875, 29.0.3, and
+ * 1560299109133459548, v29.1), and a save from then can still hold them. They are reported in
+ * `lockedBots` rather than counted. `botRows` are the bot rows to check against; without them the
+ * reader reads the save's bot rows itself.
  */
 export function readBotSynchronicityFromSaveRoot(
   root: Record<string, unknown> | null | undefined,
+  botRows?: readonly BotSaveRow[],
 ): BotSynchronicitySaveExtract {
   const inSave = Boolean(root) && ['synchronicityUnlocked', 'synchronicityLevel', 'synchronicityPresets', 'synchronicityBots']
     .some(key => Object.prototype.hasOwnProperty.call(root, key))
@@ -523,14 +545,19 @@ export function readBotSynchronicityFromSaveRoot(
     if (label === null) unrecognizedSlotValues.push(value)
     return label
   })
-  const syncedBots = slots.filter((label): label is string => label !== null)
+  const rows = botRows ?? (root ? readBotsFromSaveRoot(root)?.bots ?? [] : [])
+  const unlockedLabels = new Set(rows.filter(row => row.unlocked).map(row => row.label))
+  // A save that records no unlocked bot gives nothing to check against, so nothing is filtered.
+  const isUnlocked = (label: string) => unlockedLabels.size === 0 || unlockedLabels.has(label)
+  const filledSlots = slots.filter((label): label is string => label !== null)
   return {
     inSave,
     unlocked,
     level,
     slotCount,
     slots,
-    bots: syncedBots,
+    bots: filledSlots.filter(isUnlocked),
+    lockedBots: filledSlots.filter(label => !isUnlocked(label)),
     occupiedSlots: activeSlots.slice(0, slotCount).filter(slot => slot !== null && slot !== undefined).length,
     unrecognizedSlotValues,
     stonesSpentOnBetaSynchronicity: coerceSaveNumber(root?.stonesSpentOnBetaSynchronicity) ?? 0,

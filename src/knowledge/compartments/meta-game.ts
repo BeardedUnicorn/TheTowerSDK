@@ -19,6 +19,8 @@ import { V283_HEAT_BC_INDEX } from '../../data/generated'
 import {
   TOURNAMENT_HEAT_PROFILES,
   TOURNAMENT_LEAGUES as TOURNAMENT_LEAGUE_ROWS,
+  TOURNAMENT_PROMOTION_RULES,
+  TOURNAMENT_REWARD_ROWS,
 } from '../../data/tournaments/data'
 import {
   CAMPAIGN_ELS_REDUCTION_HEAT_WAVES_PER_LEVEL,
@@ -31,6 +33,14 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 import { communityGuideSource } from '../../data/reference/community-guides'
 
 const WIKI_TOURNAMENTS = { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-08-16' } as const
+/** The page as updated for Mythic and the v29 rewards, read after v29.2. */
+const WIKI_TOURNAMENTS_V29 = { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-11-18' } as const
+const NOTE_V29_TOURNAMENTS = {
+  origin: 'game',
+  ref: 'patch note 1541918183001424042 (v29, 2026-08-25): Mythic league, reward changes, a key for Legend 16-24',
+  sourceVersion: 'v29.0.0',
+  verifiedAt: '2026-11-18',
+} as const
 const WIKI_EVENTS = { origin: 'wiki', ref: 'Events', verifiedAt: '2026-08-16' } as const
 
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
@@ -54,21 +64,37 @@ export const TOURNAMENT_LEAGUE_NAMES = [...TOURNAMENT_LEAGUE_ROWS]
   .sort((left, right) => left.order - right.order)
   .map(row => row.league)
 
-/** Leagues you cannot be demoted back into once left. */
-export const TOURNAMENT_PROTECTED_LEAGUES = ['Copper', 'Silver', 'Gold'] as const
+/**
+ * Leagues you cannot be demoted back into once left, read from the promotion rules.
+ *
+ * Copper and Silver only (patch note 1437907232128765972 made them protected). This listed Gold
+ * too, following a wiki sentence that names three leagues and then explains two — but Platinum's
+ * bottom six demote INTO Gold, so Gold is not protected.
+ */
+export const TOURNAMENT_PROTECTED_LEAGUES = TOURNAMENT_PROMOTION_RULES
+  .filter(rule => rule.protectedFromDemotionOnceLeft)
+  .map(rule => rule.league)
 
 /** Players per tournament. */
 export const TOURNAMENT_PLAYER_COUNT = 30
 
-/** Extra battle conditions rolled per league, beyond the guaranteed ones. */
-export const TOURNAMENT_RANDOM_BATTLE_CONDITIONS: Readonly<Record<string, number>> = {
-  Copper: 0, Silver: 1, Gold: 2, Platinum: 3, Champion: 4, Legend: 5,
-}
+/**
+ * Extra battle conditions rolled per league, beyond the guaranteed ones — read from the heat
+ * profiles, so Mythic (v29) is included and the table cannot drift from the catalog.
+ */
+export const TOURNAMENT_RANDOM_BATTLE_CONDITIONS: Readonly<Record<string, number>> = Object.fromEntries(
+  TOURNAMENT_HEAT_PROFILES.map(profile => [profile.league, profile.randomBattleConditionCount]),
+)
 
-/** Waves between bosses per league — an "overheat" condition that does not ramp. */
-export const TOURNAMENT_BOSS_WAVE_INTERVAL: Readonly<Record<string, number>> = {
-  Copper: 10, Silver: 9, Gold: 8, Platinum: 7, Champion: 6, Legend: 5,
-}
+/** Waves between bosses per league — an "overheat" condition that does not ramp. From the heat profiles. */
+export const TOURNAMENT_BOSS_WAVE_INTERVAL: Readonly<Record<string, number>> = Object.fromEntries(
+  TOURNAMENT_HEAT_PROFILES.map(profile => [profile.league, profile.moreBossesEveryWaves]),
+)
+
+/** Leagues whose rewards include keys, read from the reward table. */
+const KEY_AWARDING_LEAGUES = [...new Set(
+  TOURNAMENT_REWARD_ROWS.filter(row => row.keys > 0).map(row => row.league),
+)]
 
 
 export const TOURNAMENT_ENEMY_LEVEL_SKIP: Readonly<Record<string, number>>
@@ -84,8 +110,8 @@ export const META_GAME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     label: 'Tournament',
     kind: 'system',
     summary:
-      'A 30-player ranked run held every Wednesday and Saturday at 00:00 UTC, across six leagues '
-      + 'from Copper to Legend. The main source of power stones, and the only source of keys.',
+      `A 30-player ranked run held every Wednesday and Saturday at 00:00 UTC, across ${TOURNAMENT_LEAGUE_NAMES.length} leagues `
+      + 'from Copper to Mythic. The main source of power stones, and the only source of keys.',
     traps: [
       'One ticket, one run, and only the HIGHEST WAVE of that run is submitted. Total damage, '
       + 'coins and time are irrelevant to placement.',
@@ -97,45 +123,50 @@ export const META_GAME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     implementedBy: ['TOURNAMENT_LEAGUE_NAMES', 'TOURNAMENT_PROTECTED_LEAGUES'],
     assertions: [
       { subject: 'tournament', predicate: 'leagueCount', value: TOURNAMENT_LEAGUE_NAMES.length, provenance: { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-08-16' }, verification: 'verified_here' as const },
-      { subject: 'tournament', predicate: 'protectedLeagueCount', value: TOURNAMENT_PROTECTED_LEAGUES.length, provenance: { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-08-16' }, verification: 'verified_here' as const },
+      { subject: 'tournament', predicate: 'protectedLeagueCount', value: TOURNAMENT_PROTECTED_LEAGUES.length, provenance: CATALOG_TOURNAMENTS, verification: 'verified_here' as const },
       { subject: 'tournament', predicate: 'playersPerBracket', value: TOURNAMENT_PLAYER_COUNT, provenance: { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-08-16' } },
       // Per league, not per tournament. These three vary by league, so a single
       // figure for "the tournament" would be right for one league and wrong for
       // five -- and the per-league subjects let a reader ask about their own.
+      // The wiki states these for Copper..Legend; Mythic's come from the v29 heat profiles.
       ...TOURNAMENT_LEAGUE_NAMES.map(league => ({
         subject: `tournament.${league}`,
         predicate: 'randomBattleConditions',
         value: TOURNAMENT_RANDOM_BATTLE_CONDITIONS[league] ?? -1,
-        provenance: WIKI_TOURNAMENTS,
+        provenance: league === 'Mythic' ? CATALOG_TOURNAMENTS : WIKI_TOURNAMENTS,
         verification: 'verified_here' as const,
       })),
       ...TOURNAMENT_LEAGUE_NAMES.map(league => ({
         subject: `tournament.${league}`,
         predicate: 'bossWaveInterval',
         value: TOURNAMENT_BOSS_WAVE_INTERVAL[league] ?? -1,
-        provenance: WIKI_TOURNAMENTS,
+        provenance: league === 'Mythic' ? CATALOG_TOURNAMENTS : WIKI_TOURNAMENTS,
         verification: 'verified_here' as const,
       })),
       // Protection is a property of SOME leagues, not all. Stating both counts
       // means a change to either shows up as a disagreement rather than as one
       // number quietly moving.
-      { subject: 'tournament', predicate: 'unprotectedLeagueCount', value: TOURNAMENT_LEAGUE_NAMES.length - TOURNAMENT_PROTECTED_LEAGUES.length, provenance: { origin: 'wiki', ref: 'Tournaments', verifiedAt: '2026-08-16' }, verification: 'verified_here' as const },
+      { subject: 'tournament', predicate: 'unprotectedLeagueCount', value: TOURNAMENT_LEAGUE_NAMES.length - TOURNAMENT_PROTECTED_LEAGUES.length, provenance: CATALOG_TOURNAMENTS, verification: 'verified_here' as const },
     ],
-    sources: [WIKI_TOURNAMENTS, communityGuideSource('evan-legend-tournament')],
+    sources: [WIKI_TOURNAMENTS, communityGuideSource('evan-legend-tournament'), WIKI_TOURNAMENTS_V29, NOTE_V29_TOURNAMENTS, CATALOG_TOURNAMENTS],
   },
   {
     id: 'tournament.league',
     label: 'Tournament league',
     kind: 'tier',
     summary:
-      'Copper, Silver, Gold, Platinum, Champion, Legend. The top 4 promote; from Platinum down, '
-      + 'the bottom 6 demote. Copper, Silver and Gold are protected — once left, never returned to.',
+      'Copper, Silver, Gold, Platinum, Champion, Legend, Mythic. The top 4 promote; from Platinum '
+      + 'up, the bottom 6 demote. Copper and Silver are protected — once left, never returned to. '
+      + 'Mythic arrived in v29 and opens at tier 23.',
     units: 'league',
     traps: [
       'League difficulty is expressed as "tier +", meaning enemy stats scale FASTER than the '
       + 'nominal tier. Copper sits between tiers 1 and 2; Champion between 11 and 12. Equating a '
       + 'league to a plain tier understates it.',
-      'Only Legend awards keys. A key-based plan is unreachable below it.',
+      `Only ${KEY_AWARDING_LEAGUES.join(' and ')} award keys. A key-based plan is unreachable below Legend. `
+      + 'Since v29 Legend ranks 16-24 also earn one key (patch note 1541918183001424042).',
+      'The wiki says "Copper, Silver, and Gold are protected" and then describes only Copper and '
+      + 'Silver. Gold is not protected: Platinum\'s bottom six demote into it.',
       'Copper, Silver, Gold, Platinum, Champion, Legend, and Mythic all have tournament '
       + 'Enemy Level Skip Reduction (heatLevel[22]) of ZERO in v29 — a value, not an absence. '
       + '`TOURNAMENT_ENEMY_LEVEL_SKIP` must keep every league key so a lookup never returns '
@@ -155,8 +186,10 @@ export const META_GAME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       { subject: 'tournament.league.Copper', predicate: 'enemyLevelSkip', value: TOURNAMENT_ENEMY_LEVEL_SKIP.Copper, provenance: CATALOG_TOURNAMENTS },
       { subject: 'tournament.league.Legend', predicate: 'enemyLevelSkip', value: TOURNAMENT_ENEMY_LEVEL_SKIP.Legend, provenance: CATALOG_TOURNAMENTS },
       { subject: 'tournament.league.Legend', predicate: 'awardsKeys', value: true, provenance: CATALOG_TOURNAMENTS },
+      { subject: 'tournament.league.Mythic', predicate: 'awardsKeys', value: KEY_AWARDING_LEAGUES.includes('Mythic'), provenance: CATALOG_TOURNAMENTS },
+      { subject: 'tournament.league.Mythic', predicate: 'enemyLevelSkip', value: TOURNAMENT_ENEMY_LEVEL_SKIP.Mythic, provenance: CATALOG_TOURNAMENTS },
     ],
-    sources: [{ ...WIKI_TOURNAMENTS, section: 'Promoting' }, CATALOG_TOURNAMENTS],
+    sources: [{ ...WIKI_TOURNAMENTS, section: 'Promoting' }, CATALOG_TOURNAMENTS, { ...WIKI_TOURNAMENTS_V29, section: 'Description' }, NOTE_V29_TOURNAMENTS],
   },
   {
     id: 'tournament.heat',

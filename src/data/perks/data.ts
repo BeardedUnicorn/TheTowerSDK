@@ -73,6 +73,8 @@ export const STANDARD_PERKS: readonly PerkEntry[] = [
 export const STANDARD_PERK_NOTES = [
   'Bounce Shot +2 is unavailable if Bounce Shot has not been unlocked.',
   'Standard perk bonus is increased by the Standard Perk Bonus lab.',
+  // Patch note 1571908570797318216 (v29.2).
+  'Since v29.2 the Defense % perk is no longer offered once Defense % reaches 98%, its cap.',
   'When Standard Perk Bonus is maxed, Increase Max Game Speed by +1.00 becomes +1.25, making the displayed cap 6.3 while the actual cap is 6.25.',
 ] as const
 
@@ -146,7 +148,8 @@ export const PERK_LABS: readonly PerkLabDefinition[] = [
   },
   {
     name: 'Standard Perk Bonus',
-    levels: 1,
+    // 25 levels, +1% each (game research index 83; wiki "Perks").
+    levels: 25,
     unlockRequirement: 'After Unlock Perks is completed',
     behavior: 'Scales standard perks using separate additive and multiplicative formulas.',
   },

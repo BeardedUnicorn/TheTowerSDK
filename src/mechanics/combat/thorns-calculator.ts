@@ -55,8 +55,15 @@ const PC_TIER_EFFECTIVENESS = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.80, 0.70, 0.60, 0.50, 0.40, 0.30, 0.20, 0.10, 0.10, 0.10, 0.10,
 ] as const
 
-/** Fleet thorns use 15% effectiveness (85% resistance) in v28.3+. */
-const FLEET_THORNS_EFFECTIVENESS_MULT = 0.85
+/**
+ * Thorns are 15% effective against fleets (85% resistance), and take a share of the fleet's
+ * REMAINING health rather than its maximum.
+ *
+ * Patch note 1521195318136275124 (v28.3, 2026-06-29) made both changes; wiki "Fleet Enemies" agrees.
+ * This was 0.85, the resistance rather than the effectiveness, on a maximum-health basis, which
+ * priced a fleet at roughly an elite's hits when thorns alone can never finish one.
+ */
+const FLEET_THORNS_EFFECTIVENESS_MULT = 0.15
 
 function clampInteger(value: number, min: number, max: number): number {
   if (Number.isNaN(value)) return min
@@ -64,7 +71,7 @@ function clampInteger(value: number, min: number, max: number): number {
 }
 
 function normalizeTournamentTier(value: string | undefined): TournamentTier {
-  if (value === 't11' || value === 't14' || value === 't17') {
+  if (value === 't11' || value === 't14' || value === 't17' || value === 't23') {
     return value
   }
   return 'none'
@@ -81,6 +88,8 @@ const HEAT_LEAGUE_BY_TOURNAMENT_TIER = {
   t11: 'Silver',
   t14: 'Gold',
   t17: 'Legend',
+  // Mythic, the v29 league opened at tier 23 (patch note 1541918183001424042).
+  t23: 'Mythic',
 } as const satisfies Record<Exclude<TournamentTier, 'none'>, TournamentLeague>
 
 /**
@@ -151,6 +160,23 @@ function getDerivedScalars(input: ThornsCalculatorInput) {
   }
 }
 
+/**
+ * Hits for thorns to take a fleet to half its health, or null when a hit does nothing.
+ *
+ * Each hit removes `percentOfRemaining` percent of what is left, so health only ever approaches
+ * zero: thorns cannot kill a fleet on their own. Half is a point they do reach.
+ */
+function hitsToHalveFleet(percentOfRemaining: (hitNumber: number) => number): number | null {
+  let remaining = 1
+  for (let hits = 1; hits <= 100_000; hits += 1) {
+    const share = Math.min(1, Math.max(0, percentOfRemaining(hits) / 100))
+    if (share <= 0 && hits === 1) return null
+    remaining *= 1 - share
+    if (remaining <= 0.5) return hits
+  }
+  return null
+}
+
 function hitsToKill(damagePerHit: (hitNumber: number) => number): number {
   let total = 0
   let hits = 0
@@ -178,7 +204,6 @@ export function buildThornsWallChart(input: Partial<ThornsCalculatorInput>): Tho
     const fleetDamage = (hitNumber: number) => eliteDamage(hitNumber) * FLEET_THORNS_EFFECTIVENESS_MULT
 
     const hitsToKillElite = hitsToKill(eliteDamage)
-    const hitsToKillFleet = hitsToKill(fleetDamage)
     const hitsToKillElitePC = normalized.pcLevel > 0
       ? hitsToKill(hitNumber => eliteDamage(hitNumber) * (1 + derived.pcEffectiveElite))
       : hitsToKillElite
@@ -190,7 +215,8 @@ export function buildThornsWallChart(input: Partial<ThornsCalculatorInput>): Tho
     rows.push({
       wallThorns,
       hitsToKillElite,
-      hitsToKillFleet,
+      hitsToKillFleet: null,
+      hitsToHalveFleet: hitsToHalveFleet(fleetDamage),
       hitsToKillElitePC,
       hitsToKillBoss,
       hitsToKillBossPC,
@@ -213,7 +239,6 @@ export function buildThornsBaseChart(input: Partial<ThornsCalculatorInput>): Tho
     const fleetDamage = () => eliteDamage() * FLEET_THORNS_EFFECTIVENESS_MULT
 
     const hitsToKillElite = hitsToKill(() => eliteDamage())
-    const hitsToKillFleet = hitsToKill(() => fleetDamage())
     const hitsToKillElitePC = normalized.pcLevel > 0
       ? hitsToKill(() => eliteDamage() * (1 + derived.pcEffectiveElite))
       : hitsToKillElite
@@ -225,7 +250,8 @@ export function buildThornsBaseChart(input: Partial<ThornsCalculatorInput>): Tho
     rows.push({
       baseThornsVal: baseValue,
       hitsToKillElite,
-      hitsToKillFleet,
+      hitsToKillFleet: null,
+      hitsToHalveFleet: hitsToHalveFleet(() => fleetDamage()),
       hitsToKillElitePC,
       hitsToKillBoss,
       hitsToKillBossPC,

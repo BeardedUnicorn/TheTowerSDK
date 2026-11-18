@@ -87,6 +87,12 @@ export const TOWER: ThemeItem[] = [
   { name: 'Brain' },
   { name: 'Rabbit In Hat' },
   { name: 'Cake' },
+  { name: 'Meteorite' },
+  { name: 'Baby Dino' },
+  { name: 'Seahorse' },
+  { name: 'Fairy' },
+  { name: 'Automaton' },
+  { name: 'Fractal Tower' },
 ]
 
 export const BACKGROUND: ThemeItem[] = [
@@ -143,6 +149,12 @@ export const BACKGROUND: ThemeItem[] = [
   { name: 'Neuron' },
   { name: 'Magician' },
   { name: '5th Anniversary' },
+  { name: 'Meteor Shower' },
+  { name: 'Jurassic Forest' },
+  { name: 'Coral Reef' },
+  { name: 'Fairy Forest' },
+  { name: 'Steampunk' },
+  { name: 'Fractals' },
 ]
 
 export const MILESTONE: ThemeItem[] = [
@@ -167,6 +179,10 @@ export const MILESTONE: ThemeItem[] = [
   { name: 'Atomic', event: 'Tier 19', pass: 'Free' },
   { name: 'Cyber', event: 'Tier 20', pass: 'Pass 7' },
   { name: 'Eclipse', event: 'Tier 21', pass: 'Free' },
+  { name: 'Vortex', event: 'Tier 22', pass: 'Free' },
+  // Premium: one pass per three tiers, so tier 23 is the eighth. Inferred from that pattern.
+  { name: 'Stellar', event: 'Tier 23', pass: 'Pass 8' },
+  { name: 'Cosmic', event: 'Tier 24', pass: 'Free' },
 ]
 
 export const SONGS: ThemeItem[] = [
@@ -195,6 +211,8 @@ export const GUARDIAN: ThemeItem[] = [
   { name: 'Mei' },
   { name: 'Shelly' },
   { name: 'Disco' },
+  { name: 'Hermie' },
+  { name: 'Waddles' },
 ]
 
 export const MENU: ThemeItem[] = [
@@ -207,6 +225,8 @@ export const MENU: ThemeItem[] = [
   { name: 'Supernova', event: 'Guild Season 7' },
   { name: 'Claw Machine' },
   { name: 'Magician' },
+  { name: 'Coral Reef' },
+  { name: 'Fairy Forest' },
 ]
 
 export const PROFILE_BANNER: ThemeItem[] = [
@@ -220,6 +240,8 @@ export const PROFILE_BANNER: ThemeItem[] = [
   { name: 'Supernova', event: 'Guild Season 7' },
   { name: 'Claw Machine' },
   { name: 'Magician' },
+  { name: 'Coral Reef' },
+  { name: 'Fairy Forest' },
 ]
 
 export const THEMES = {

@@ -7,7 +7,8 @@ Module catalogs: levels, substats, effects, costs and pulls.
 | File | Purpose | Exports |
 |---|---|---|
 | `bonus.ts` | Module stat bonuses: | computeModuleStat, inferModuleRarityFromBonus, normalizeModuleTypeForCalc |
-| `costs.ts` | — | MODULE_COST_TABLE_LENGTH, MODULE_REROLL_COSTS_BY_LOCKED_SUBSTATS, ASSIST_MODULE_STONE_COSTS, getModuleCoinUpgradeCost (+13 more) |
+| `constants.ts` | Fixed module values the game defines and nothing computes: | MODULE_INVENTORY_CAP |
+| `costs.ts` | — | MODULE_COST_TABLE_LENGTH, MODULE_REROLL_COSTS_BY_LOCKED_SUBSTATS, ASSIST_MODULE_MULTIPLIER_STONE_COSTS, ASSIST_MODULE_SUBSTAT_STONE_COSTS (+15 more) |
 | `effect-resolver.ts` | Module effects by save index: | getModuleEffectRow, findModuleEffect, findModuleEffectRarityName |
 | `enums.data.ts` | Module enumerations: | MODULE_SUBSTATS_CLUSTER, MODULE_EFFECT_RARITY_ROWS, MODULE_TYPE_ROWS, MODULE_EFFECT_RARITY_LABELS (+1 more) |
 | `index.ts` | Modules as data: | MODULE_INFO_CATALOG |

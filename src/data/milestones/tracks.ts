@@ -61,7 +61,7 @@ function classifyMilestoneReward(reward: string, wave: number): MilestoneRewardK
 }
 
 const tier1Standard = buildTrackData(1, 'standard', [
-  buildWave(10, '25 Coins'),
+  buildWave(10, '40 Coins'),
   buildWave(20, '10 Gems'),
   buildWave(30, 'Labs'),
   buildWave(40, '150 Coins'),
@@ -76,7 +76,7 @@ const tier1Standard = buildTrackData(1, 'standard', [
   buildWave(200, '20 Gems'),
   buildWave(250, 'More Round Stats'),
   buildWave(300, '25 Gems'),
-  buildWave(400, 'Card Presets'),
+  buildWave(400, 'Presets'),
   buildWave(500, '25 Gems'),
   buildWave(750, '30 Gems'),
   buildWave(1000, '30 Gems'),
@@ -85,7 +85,7 @@ const tier1Standard = buildTrackData(1, 'standard', [
   buildWave(2000, '30 Gems'),
   buildWave(2500, 'Shuriken Skin'),
   buildWave(4500, 'Relic: Coins +2%'),
-], buildTrackTotals('1,660 Coins', '235 Gems', '5 Stones'))
+], buildTrackTotals('1,690 Coins', '235 Gems', '5 Stones'))
 
 const tier1Premium = buildTrackData(1, 'premium', [
   buildWave(10, '50 Coins'),
@@ -130,7 +130,7 @@ const tier2Standard = buildTrackData(2, 'standard', [
   buildWave(300, '30 Gems'),
   buildWave(400, 'Improve Trade-Off Perks'),
   buildWave(500, '30 Gems'),
-  buildWave(750, 'Recovery Package Chance'),
+  buildWave(750, 'Card: Recovery Package Chance'),
   buildWave(1000, 'Garlic Thorns'),
   buildWave(1250, '5 Stones'),
   buildWave(1500, '35 Gems'),
@@ -163,7 +163,7 @@ const tier2Premium = buildTrackData(2, 'premium', [
   buildWave(2000, '50 Gems'),
   buildWave(2500, 'Donut Skin'),
   buildWave(4500, '20 Stones'),
-], buildTrackTotals('3.33m Coins', '380 Gems', '35 Stones'))
+], buildTrackTotals('3.33285m Coins', '380 Gems', '35 Stones'))
 
 const tier3Standard = buildTrackData(3, 'standard', [
   buildWave(10, 'Guilds'),
@@ -203,7 +203,7 @@ const tier3Premium = buildTrackData(3, 'premium', [
   buildWave(90, '40 Gems'),
   buildWave(100, '70 Gems'),
   buildWave(150, '300k Coins'),
-  buildWave(200, '1m Coins'),
+  buildWave(200, '500k Coins'),
   buildWave(250, '1m Coins'),
   buildWave(300, '2.5m Coins'),
   buildWave(400, '5m Coins'),
@@ -215,20 +215,20 @@ const tier3Premium = buildTrackData(3, 'premium', [
   buildWave(2000, '60 Gems'),
   buildWave(2500, '15 Stones'),
   buildWave(4500, '20 Stones'),
-], buildTrackTotals('9.89m Coins', '385 Gems', '60 Stones'))
+], buildTrackTotals('9.3975m Coins', '385 Gems', '60 Stones'))
 
 const tier4Standard = buildTrackData(4, 'standard', [
   buildWave(10, '50k Coins'),
   buildWave(20, '20 Gems'),
   buildWave(30, 'Workshop Respec', 'Reroll Daily Missions'),
-  buildWave(40, '25 Gems'),
+  buildWave(40, 'Card: Cells'),
   buildWave(50, 'Auto Pick Perks'),
   buildWave(60, '30 Gems'),
   buildWave(70, 'Common Drop Chance', 'Reroll Shards', 'Daily Mission Shards'),
   buildWave(80, 'Perk Option Quantity'),
-  buildWave(90, '35 Gems'),
+  buildWave(90, 'Unlock Dissonance'),
   buildWave(100, 'Tier 5'),
-  buildWave(150, 'Target Priority', 'Black Hole Coins Bonus'),
+  buildWave(150, 'Target Priority'),
   buildWave(200, 'Golden Tower Bonus', 'Golden Tower Duration'),
   buildWave(250, '35 Gems'),
   buildWave(300, 'Energy Shield Extra Hits'),
@@ -241,7 +241,7 @@ const tier4Standard = buildTrackData(4, 'standard', [
   buildWave(2000, '60 Gems'),
   buildWave(2500, 'Smile Skin'),
   buildWave(4500, 'Relic: Damage +2%'),
-], buildTrackTotals('50k Coins', '380 Gems', '10 Stones'))
+], buildTrackTotals('50k Coins', '320 Gems', '10 Stones'))
 
 const tier4Premium = buildTrackData(4, 'premium', [
   buildWave(10, '100k Coins'),
@@ -281,7 +281,7 @@ const tier5Standard = buildTrackData(5, 'standard', [
   buildWave(80, 'Golden Bot Cooldown'),
   buildWave(90, 'Amplify Bot Cooldown'),
   buildWave(100, 'Tier 6'),
-  buildWave(150, 'Black Hole Damage'),
+  buildWave(150, 'Black Hole Damage', 'Black Hole Coin Bonus'),
   buildWave(200, 'Super Crit Chance', 'Super Crit Multiplier'),
   buildWave(250, '5 Stones'),
   buildWave(300, '35 Gems'),
@@ -293,7 +293,7 @@ const tier5Standard = buildTrackData(5, 'standard', [
   buildWave(1500, '10 Stones'),
   buildWave(2000, '70 Gems'),
   buildWave(2500, '20 Stones'),
-  buildWave(4500, 'Relic: Health +1.5%'),
+  buildWave(4500, 'Relic: Health +2%'),
 ], buildTrackTotals('650k Coins', '275 Gems', '40 Stones'))
 
 const tier5Premium = buildTrackData(5, 'premium', [
@@ -328,7 +328,7 @@ const tier6Standard = buildTrackData(6, 'standard', [
   buildWave(30, 'Land Mine Damage', 'Land Mine Decay'),
   buildWave(40, '25 Gems'),
   buildWave(50, 'Extra Orb Adjuster'),
-  buildWave(60, '1m Coins'),
+  buildWave(60, 'Bot Bot Cooldown'),
   buildWave(70, '5 Stones'),
   buildWave(80, 'Extra Extra Orbs'),
   buildWave(90, '35 Gems'),
@@ -345,8 +345,8 @@ const tier6Standard = buildTrackData(6, 'standard', [
   buildWave(1500, '10 Stones'),
   buildWave(2000, '75 Gems'),
   buildWave(2500, 'Sheep Skin'),
-  buildWave(4500, 'Relic: Defense Absolute +2%'),
-], buildTrackTotals('1.0m Coins', '390 Gems', '30 Stones'))
+  buildWave(4500, 'Relic: Defense Absolute +5%'),
+], buildTrackTotals('0 Coins', '390 Gems', '30 Stones'))
 
 const tier6Premium = buildTrackData(6, 'premium', [
   buildWave(10, '600k Coins'),
@@ -379,7 +379,7 @@ const tier7Standard = buildTrackData(7, 'standard', [
   buildWave(10, 'Light Speed Shots'),
   buildWave(20, '25 Gems'),
   buildWave(30, 'Missile Despawn Time', 'Missile Amplifier', 'Missile Explosion', 'Missile Radius'),
-  buildWave(40, 'Inner Mines Blast Radius', 'Inner Mines Rotation Speed', 'Inner Mines Stun'),
+  buildWave(40, 'Inner Mines Blast Radius', 'Inner Mines Rotation Speed', 'Inner Mines Stun', 'Inner Land Mine - Chrono Jump'),
   buildWave(50, 'Swamp Radius', 'Swamp Stun', 'Swamp Stun Chance', 'Swamp Stun Time'),
   buildWave(60, 'Chain Lightning Shock', 'Shock Chance', 'Shock Multiplier'),
   buildWave(70, '5m Coins'),
@@ -415,7 +415,7 @@ const tier7Premium = buildTrackData(7, 'premium', [
   buildWave(150, '50 Gems'),
   buildWave(200, '60 Gems'),
   buildWave(250, '10 Stones'),
-  buildWave(300, '70 Stones'),
+  buildWave(300, '70 Gems'),
   buildWave(400, '15 Stones'),
   buildWave(500, '75 Gems'),
   buildWave(750, '15 Stones'),
@@ -485,7 +485,7 @@ const tier9Standard = buildTrackData(9, 'standard', [
   buildWave(30, 'Tank Enemy Health', 'Tank Enemy Attack'),
   buildWave(40, 'Ranged Enemy Health', 'Ranged Enemy Attack'),
   buildWave(50, 'Boss Enemy Health', 'Boss Enemy Attack'),
-  buildWave(60, 'Protector Enemy Health', 'Protector Enemy Attack'),
+  buildWave(60, 'Protector Enemy Health', 'Protector Radius'),
   buildWave(70, '40 Gems'),
   buildWave(80, '70 Gems'),
   buildWave(90, '5 Stones'),
@@ -536,8 +536,8 @@ const tier10Standard = buildTrackData(10, 'standard', [
   buildWave(20, '40 Gems'),
   buildWave(30, '5 Stones'),
   buildWave(40, 'Module Shard Cost', 'Module Coin Cost', 'Rare Drop Chance', 'Substat Effect Bans'),
-  // The reference puts every tier 10 bot unlock at wave 60, not 50.
-  buildWave(60, '5 Stones', 'Flame Bot Burn Stack', 'Thunder Bot Linger Time', 'Golden Bot Duration', 'Amplify Bot Duration'),
+  buildWave(50, 'Flame Bot Burn Stack', 'Thunder Bot Linger Time', 'Golden Bot Duration', 'Amplify Bot Duration', 'Bot Bot Duration'),
+  buildWave(60, '5 Stones'),
   buildWave(70, 'Wall Thorns', 'Wall Regen'),
   buildWave(80, '60 Gems'),
   buildWave(90, '5 Stones'),
@@ -589,7 +589,7 @@ const tier11Standard = buildTrackData(11, 'standard', [
   buildWave(30, '5 Stones'),
   buildWave(40, '50 Gems'),
   buildWave(50, '5 Stones'),
-  buildWave(60, '50m Coins'),
+  buildWave(60, 'Global Presets'),
   buildWave(70, '5 Stones'),
   buildWave(80, '60 Gems'),
   buildWave(90, '5 Stones'),
@@ -607,7 +607,7 @@ const tier11Standard = buildTrackData(11, 'standard', [
   buildWave(2000, '90 Gems'),
   buildWave(2500, '25 Stones'),
   buildWave(4500, 'Relic: Defense Absolute +10%'),
-], buildTrackTotals('50m Coins', '610 Gems', '90 Stones'))
+], buildTrackTotals('0 Coins', '610 Gems', '90 Stones'))
 
 const tier11Premium = buildTrackData(11, 'premium', [
   buildWave(10, '100m Coins'),
@@ -710,7 +710,7 @@ const tier13Standard = buildTrackData(13, 'standard', [
   buildWave(1500, '150 Gems'),
   buildWave(2000, '25 Stones'),
   buildWave(2500, 'Creepy Clown Skin'),
-  buildWave(4500, 'Coins +10%'),
+  buildWave(4500, 'Relic: Coins +10%'),
 ], buildTrackTotals('300m Coins', '705 Gems', '185 Stones'))
 
 const tier13Premium = buildTrackData(13, 'premium', [
@@ -762,7 +762,7 @@ const tier14Standard = buildTrackData(14, 'standard', [
   buildWave(1500, '200 Gems'),
   buildWave(2000, '40 Stones'),
   buildWave(2500, '50 Stones'),
-  buildWave(4500, 'Tower Damage +10%'),
+  buildWave(4500, 'Relic: Damage +10%'),
 ], buildTrackTotals('1.5b Coins', '1,050 Gems', '300 Stones'))
 
 const tier14Premium = buildTrackData(14, 'premium', [
@@ -801,7 +801,7 @@ const tier15Standard = buildTrackData(15, 'standard', [
   buildWave(70, '30 Stones'),
   buildWave(80, '200 Gems'),
   buildWave(90, '30 Stones'),
-  buildWave(100, '200 Gems'),
+  buildWave(100, '300 Gems'),
   buildWave(150, '40 Stones'),
   buildWave(200, '200 Gems'),
   buildWave(250, '40 Stones'),
@@ -814,8 +814,8 @@ const tier15Standard = buildTrackData(15, 'standard', [
   buildWave(1500, '250 Gems'),
   buildWave(2000, '50 Stones'),
   buildWave(2500, 'Tech Tree Skin'),
-  buildWave(4500, 'Critical Factor +10%'),
-], buildTrackTotals('45b Coins', '1,520 Gems', '370 Stones'))
+  buildWave(4500, 'Relic: Critical Factor +10%'),
+], buildTrackTotals('45b Coins', '1,620 Gems', '370 Stones'))
 
 const tier15Premium = buildTrackData(15, 'premium', [
   buildWave(10, '30b Coins'),
@@ -848,8 +848,8 @@ const tier16Standard = buildTrackData(16, 'standard', [
   buildWave(20, '60 Gems'),
   buildWave(30, '20 Stones'),
   buildWave(40, 'Shatter Shards'),
-  // The reference puts all four tier 16 unlocks at wave 60, not split over 50.
-  buildWave(60, 'Chain Thunder', 'Lightning Amplifier - Scatters', 'Swamp Rend - Basic Enemies', 'Swamp Rend - Additional Enemies'),
+  buildWave(50, 'Swamp Rend - Basic Enemies', 'Swamp Rend - Additional Enemies'),
+  buildWave(60, 'Chain Thunder', 'Lightning Amplifier - Scatter'),
   buildWave(70, '25 Stones'),
   buildWave(80, '120 Gems'),
   buildWave(90, '25 Stones'),
@@ -866,7 +866,7 @@ const tier16Standard = buildTrackData(16, 'standard', [
   buildWave(1500, '150 Gems'),
   buildWave(2000, '25 Stones'),
   buildWave(2500, 'Cactus Skin'),
-  buildWave(4500, 'Tower Health +10%'),
+  buildWave(4500, 'Relic: Health +10%'),
 ], buildTrackTotals('30b Coins', '750 Gems', '225 Stones'))
 
 const tier16Premium = buildTrackData(16, 'premium', [
@@ -901,7 +901,7 @@ const tier17Standard = buildTrackData(17, 'standard', [
   buildWave(30, '30 Stones'),
   buildWave(40, '100 Gems'),
   buildWave(50, '30 Stones'),
-  buildWave(60, '100b Coins'),
+  buildWave(60, 'Dissonant Echo - Utility', 'Dissonant Echo - Attack', 'Dissonant Echo - Defense', 'Dissonant Echo - Ultimate Weapons'),
   buildWave(70, '30 Stones'),
   buildWave(80, '150 Gems'),
   buildWave(90, '30 Stones'),
@@ -918,8 +918,8 @@ const tier17Standard = buildTrackData(17, 'standard', [
   buildWave(1500, '220 Gems'),
   buildWave(2000, '35 Stones'),
   buildWave(2500, '80 Stones'),
-  buildWave(4500, 'Damage / Meter +10%'),
-], buildTrackTotals('160b Coins', '1,310 Gems', '390 Stones'))
+  buildWave(4500, 'Relic: Damage / Meter +10%'),
+], buildTrackTotals('60b Coins', '1,310 Gems', '390 Stones'))
 
 const tier17Premium = buildTrackData(17, 'premium', [
   buildWave(10, '150b Coins'),
@@ -970,7 +970,7 @@ const tier18Standard = buildTrackData(18, 'standard', [
   buildWave(1500, '250 Gems'),
   buildWave(2000, '50 Stones'),
   buildWave(2500, 'Rhino Skin'),
-  buildWave(4500, 'Lab Speed +10%'),
+  buildWave(4500, 'Relic: Lab Speed +10%'),
 ], buildTrackTotals('300b Coins', '1,355 Gems', '385 Stones'))
 
 const tier18Premium = buildTrackData(18, 'premium', [
@@ -1022,14 +1022,14 @@ const tier19Standard = buildTrackData(19, 'standard', [
   buildWave(1500, '200 Gems'),
   buildWave(2000, '25 Stones'),
   buildWave(2500, 'Atomic Skin'),
-  buildWave(4500, 'Tower Damage +10%'),
+  buildWave(4500, 'Relic: Damage +10%'),
 ], buildTrackTotals('300b Coins', '750 Gems', '225 Stones'))
 
 const tier19Premium = buildTrackData(19, 'premium', [
   buildWave(10, '600b Coins'),
   buildWave(20, '70 Gems'),
   buildWave(30, '30 Stones'),
-  buildWave(40, '70 Gems'),
+  buildWave(40, '90 Gems'),
   buildWave(50, '30 Stones'),
   buildWave(60, '1500b Coins'),
   buildWave(70, '30 Stones'),
@@ -1049,7 +1049,7 @@ const tier19Premium = buildTrackData(19, 'premium', [
   buildWave(2000, '35 Stones'),
   buildWave(2500, '50 Stones'),
   buildWave(4500, '60 Stones'),
-], buildTrackTotals('2.1T Coins', '1,390 Gems', '440 Stones'))
+], buildTrackTotals('2.1T Coins', '1,410 Gems', '440 Stones'))
 
 const tier20Standard = buildTrackData(20, 'standard', [
   buildWave(10, '600b Coins'),
@@ -1067,14 +1067,14 @@ const tier20Standard = buildTrackData(20, 'standard', [
   buildWave(250, '30 Stones'),
   buildWave(300, 'Tier 21'),
   buildWave(400, '30 Stones'),
-  buildWave(500, '200 Gems'),
+  buildWave(500, '220 Gems'),
   buildWave(750, '30 Stones'),
   buildWave(1000, '220 Gems'),
   buildWave(1250, '35 Stones'),
   buildWave(1500, '250 Gems'),
   buildWave(2000, '35 Stones'),
   buildWave(2500, '80 Stones'),
-  buildWave(4500, 'Ultimate damage +8%'),
+  buildWave(4500, 'Relic: Ultimate Damage +8%'),
 ], buildTrackTotals('600b Coins', '1,260 Gems', '390 Stones'))
 
 const tier20Premium = buildTrackData(20, 'premium', [
@@ -1098,7 +1098,7 @@ const tier20Premium = buildTrackData(20, 'premium', [
   buildWave(1000, '280 Gems'),
   buildWave(1250, '45 Stones'),
   buildWave(1500, '350 Gems'),
-  buildWave(2000, '45 Stones'),
+  buildWave(2000, '50 Stones'),
   buildWave(2500, 'Cyber Skin'),
   buildWave(4500, '100 Stones'),
 ], buildTrackTotals('4.5T Coins', '1,820 Gems', '505 Stones'))
@@ -1117,7 +1117,7 @@ const tier21Standard = buildTrackData(21, 'standard', [
   buildWave(150, '40 Stones'),
   buildWave(200, '220 Gems'),
   buildWave(250, '45 Stones'),
-  buildWave(300, '280 Gems'),
+  buildWave(300, 'Tier 22'),
   buildWave(400, '40 Stones'),
   buildWave(500, '300 Gems'),
   buildWave(750, '40 Stones'),
@@ -1125,9 +1125,9 @@ const tier21Standard = buildTrackData(21, 'standard', [
   buildWave(1250, '40 Stones'),
   buildWave(1500, '320 Gems'),
   buildWave(2000, '50 Stones'),
-  buildWave(2500, 'Eclipse'),
-  buildWave(4500, 'Lab Speed +10%'),
-], buildTrackTotals('1T Coins', '1,750 Gems', '385 Stones'))
+  buildWave(2500, 'Eclipse Skin'),
+  buildWave(4500, 'Relic: Lab Speed +10%'),
+], buildTrackTotals('1T Coins', '1,470 Gems', '385 Stones'))
 
 const tier21Premium = buildTrackData(21, 'premium', [
   buildWave(10, '3T Coins'),
@@ -1156,160 +1156,160 @@ const tier21Premium = buildTrackData(21, 'premium', [
 ], buildTrackTotals('8T Coins', '2,330 Gems', '740 Stones'))
 
 const tier22Standard = buildTrackData(22, 'standard', [
-  buildWave(10, '2T Coins'),
-  buildWave(20, '130 Gems'),
-  buildWave(30, '40 Stones'),
-  buildWave(40, '150 Gems'),
-  buildWave(50, '35 Stones'),
-  buildWave(60, 'Fleet Enemy Labs'),
-  buildWave(70, '35 Stones'),
-  buildWave(80, '130 Gems'),
-  buildWave(90, '40 Stones'),
-  buildWave(100, '270 Gems'),
-  buildWave(150, '45 Stones'),
-  buildWave(200, '240 Gems'),
-  buildWave(250, '50 Stones'),
+  buildWave(10, '10T Coins'),
+  buildWave(20, '70 Gems'),
+  buildWave(30, '20 Stones'),
+  buildWave(40, '70 Gems'),
+  buildWave(50, '20 Stones'),
+  buildWave(60, '90 Gems'),
+  buildWave(70, '20 Stones'),
+  buildWave(80, '90 Gems'),
+  buildWave(90, '20 Stones'),
+  buildWave(100, '120 Gems'),
+  buildWave(150, '25 Stones'),
+  buildWave(200, '120 Gems'),
+  buildWave(250, '25 Stones'),
   buildWave(300, 'Tier 23'),
-  buildWave(400, '45 Stones'),
-  buildWave(500, '320 Gems'),
-  buildWave(750, '45 Stones'),
-  buildWave(1000, '350 Gems'),
-  buildWave(1250, '50 Stones'),
-  buildWave(1500, '360 Gems'),
-  buildWave(2000, '55 Stones'),
-  buildWave(2500, 'Nebula'),
-  buildWave(4500, 'Tower Damage +10%'),
-], buildTrackTotals('2T Coins', '1,900 Gems', '420 Stones'))
+  buildWave(400, '25 Stones'),
+  buildWave(500, '120 Gems'),
+  buildWave(750, '25 Stones'),
+  buildWave(1000, '120 Gems'),
+  buildWave(1250, '30 Stones'),
+  buildWave(1500, '150 Gems'),
+  buildWave(2000, '30 Stones'),
+  buildWave(2500, 'Vortex Skin'),
+  buildWave(4500, 'Relic: Health +10%'),
+], buildTrackTotals('10T Coins', '950 Gems', '240 Stones'))
 
 const tier22Premium = buildTrackData(22, 'premium', [
-  buildWave(10, '6T Coins'),
-  buildWave(20, '130 Gems'),
-  buildWave(30, '45 Stones'),
-  buildWave(40, '150 Gems'),
-  buildWave(50, '50 Stones'),
-  buildWave(60, '10T Coins'),
-  buildWave(70, '50 Stones'),
-  buildWave(80, '130 Gems'),
-  buildWave(90, '45 Stones'),
-  buildWave(100, '270 Gems'),
-  buildWave(150, '60 Stones'),
-  buildWave(200, '270 Gems'),
-  buildWave(250, '55 Stones'),
-  buildWave(300, '420 Gems'),
-  buildWave(400, '60 Stones'),
-  buildWave(500, '320 Gems'),
-  buildWave(750, '55 Stones'),
-  buildWave(1000, '380 Gems'),
-  buildWave(1250, '55 Stones'),
-  buildWave(1500, '420 Gems'),
-  buildWave(2000, '75 Stones'),
-  buildWave(2500, '120 Stones'),
-  buildWave(4500, '140 Stones'),
-], buildTrackTotals('16T Coins', '2,520 Gems', '780 Stones'))
+  buildWave(10, '15T Coins'),
+  buildWave(20, '100 Gems'),
+  buildWave(30, '30 Stones'),
+  buildWave(40, '100 Gems'),
+  buildWave(50, '30 Stones'),
+  buildWave(60, '25T Coins'),
+  buildWave(70, '35 Stones'),
+  buildWave(80, '150 Gems'),
+  buildWave(90, '35 Stones'),
+  buildWave(100, '150 Gems'),
+  buildWave(150, '35 Stones'),
+  buildWave(200, '150 Gems'),
+  buildWave(250, '35 Stones'),
+  buildWave(300, '175 Gems'),
+  buildWave(400, '35 Stones'),
+  buildWave(500, '200 Gems'),
+  buildWave(750, '35 Stones'),
+  buildWave(1000, '200 Gems'),
+  buildWave(1250, '35 Stones'),
+  buildWave(1500, '250 Gems'),
+  buildWave(2000, '35 Stones'),
+  buildWave(2500, '50 Stones'),
+  buildWave(4500, '60 Stones'),
+], buildTrackTotals('40T Coins', '1,475 Gems', '450 Stones'))
 
 const tier23Standard = buildTrackData(23, 'standard', [
-  buildWave(10, '3T Coins'),
-  buildWave(20, '140 Gems'),
-  buildWave(30, '45 Stones'),
-  buildWave(40, '160 Gems'),
-  buildWave(50, '40 Stones'),
-  buildWave(60, '3.5T Coins'),
-  buildWave(70, '40 Stones'),
-  buildWave(80, '140 Gems'),
-  buildWave(90, '45 Stones'),
-  buildWave(100, '290 Gems'),
-  buildWave(150, '50 Stones'),
-  buildWave(200, '260 Gems'),
-  buildWave(250, '55 Stones'),
+  buildWave(10, '25T Coins'),
+  buildWave(20, '70 Gems'),
+  buildWave(30, '30 Stones'),
+  buildWave(40, 'Saboteur Enemy Health', 'Saboteur Attack Speed'),
+  buildWave(50, 'Commander Enemy Health', 'Commander Radius'),
+  buildWave(60, 'Overcharge Enemy Health', 'Overcharge Enemy Damage', 'Overcharge Exponent Reducer'),
+  buildWave(70, '30 Stones'),
+  buildWave(80, '150 Gems'),
+  buildWave(90, '30 Stones'),
+  buildWave(100, '150 Gems'),
+  buildWave(150, '30 Stones'),
+  buildWave(200, '150 Gems'),
+  buildWave(250, '30 Stones'),
   buildWave(300, 'Tier 24'),
-  buildWave(400, '50 Stones'),
-  buildWave(500, '340 Gems'),
-  buildWave(750, '50 Stones'),
-  buildWave(1000, '370 Gems'),
-  buildWave(1250, '55 Stones'),
-  buildWave(1500, '380 Gems'),
-  buildWave(2000, '60 Stones'),
-  buildWave(2500, 'Supernova'),
-  buildWave(4500, 'Ultimate Damage +8%'),
-], buildTrackTotals('3T Coins', '2,050 Gems', '455 Stones'))
+  buildWave(400, '40 Stones'),
+  buildWave(500, 'Primary Module Bonus - Cannon', 'Primary Module Bonus - Armor', 'Primary Module Bonus - Generator', 'Primary Module Bonus - Core'),
+  buildWave(750, '40 Stones'),
+  buildWave(1000, '250 Gems'),
+  buildWave(1250, '50 Stones'),
+  buildWave(1500, '350 Gems'),
+  buildWave(2000, '50 Stones'),
+  buildWave(2500, '65 Stones'),
+  buildWave(4500, 'Relic: Coins +10%'),
+], buildTrackTotals('25T Coins', '1,120 Gems', '395 Stones'))
 
 const tier23Premium = buildTrackData(23, 'premium', [
-  buildWave(10, '9T Coins'),
-  buildWave(20, '140 Gems'),
-  buildWave(30, '50 Stones'),
-  buildWave(40, '160 Gems'),
-  buildWave(50, '55 Stones'),
-  buildWave(60, '15T Coins'),
-  buildWave(70, '55 Stones'),
-  buildWave(80, '140 Gems'),
-  buildWave(90, '50 Stones'),
-  buildWave(100, '290 Gems'),
-  buildWave(150, '65 Stones'),
-  buildWave(200, '290 Gems'),
-  buildWave(250, '60 Stones'),
-  buildWave(300, '440 Gems'),
-  buildWave(400, '65 Stones'),
-  buildWave(500, '340 Gems'),
-  buildWave(750, '60 Stones'),
-  buildWave(1000, '400 Gems'),
-  buildWave(1250, '60 Stones'),
-  buildWave(1500, '440 Gems'),
-  buildWave(2000, '80 Stones'),
-  buildWave(2500, '130 Stones'),
-  buildWave(4500, '150 Stones'),
-], buildTrackTotals('24T Coins', '2,710 Gems', '820 Stones'))
+  buildWave(10, '50T Coins'),
+  buildWave(20, '100 Gems'),
+  buildWave(30, '35 Stones'),
+  buildWave(40, '100 Gems'),
+  buildWave(50, '35 Stones'),
+  buildWave(60, '100T Coins'),
+  buildWave(70, '40 Stones'),
+  buildWave(80, '150 Gems'),
+  buildWave(90, '40 Stones'),
+  buildWave(100, '200 Gems'),
+  buildWave(150, '40 Stones'),
+  buildWave(200, '200 Gems'),
+  buildWave(250, '45 Stones'),
+  buildWave(300, '200 Gems'),
+  buildWave(400, '45 Stones'),
+  buildWave(500, '300 Gems'),
+  buildWave(750, '45 Stones'),
+  buildWave(1000, '300 Gems'),
+  buildWave(1250, '50 Stones'),
+  buildWave(1500, '400 Gems'),
+  buildWave(2000, '50 Stones'),
+  buildWave(2500, 'Stellar Skin'),
+  buildWave(4500, '100 Stones'),
+], buildTrackTotals('150T Coins', '1,950 Gems', '525 Stones'))
 
 const tier24Standard = buildTrackData(24, 'standard', [
-  buildWave(10, '4T Coins'),
-  buildWave(20, '150 Gems'),
-  buildWave(30, '50 Stones'),
-  buildWave(40, '170 Gems'),
-  buildWave(50, '45 Stones'),
-  buildWave(60, '4.5T Coins'),
-  buildWave(70, '45 Stones'),
-  buildWave(80, '150 Gems'),
-  buildWave(90, '50 Stones'),
-  buildWave(100, '310 Gems'),
-  buildWave(150, '55 Stones'),
-  buildWave(200, '280 Gems'),
-  buildWave(250, '60 Stones'),
-  buildWave(300, '400 Gems'),
-  buildWave(400, '55 Stones'),
-  buildWave(500, '360 Gems'),
-  buildWave(750, '55 Stones'),
-  buildWave(1000, '390 Gems'),
-  buildWave(1250, '60 Stones'),
+  buildWave(10, '250T Coins'),
+  buildWave(20, '125 Gems'),
+  buildWave(30, '35 Stones'),
+  buildWave(40, '125 Gems'),
+  buildWave(50, '35 Stones'),
+  buildWave(60, '125 Gems'),
+  buildWave(70, '35 Stones'),
+  buildWave(80, '125 Gems'),
+  buildWave(90, '35 Stones'),
+  buildWave(100, '150 Gems'),
+  buildWave(150, '35 Stones'),
+  buildWave(200, '150 Gems'),
+  buildWave(250, '35 Stones'),
+  buildWave(300, '150 Gems'),
+  buildWave(400, '40 Stones'),
+  buildWave(500, '175 Gems'),
+  buildWave(750, '40 Stones'),
+  buildWave(1000, '250 Gems'),
+  buildWave(1250, '50 Stones'),
   buildWave(1500, '400 Gems'),
-  buildWave(2000, '65 Stones'),
-  buildWave(2500, 'Void'),
-  buildWave(4500, 'Lab Speed +10%'),
-], buildTrackTotals('4T Coins', '2,200 Gems', '490 Stones'))
+  buildWave(2000, '60 Stones'),
+  buildWave(2500, 'Cosmic Skin'),
+  buildWave(4500, 'Relic: Damage +10%'),
+], buildTrackTotals('250T Coins', '1,775 Gems', '400 Stones'))
 
 const tier24Premium = buildTrackData(24, 'premium', [
-  buildWave(10, '12T Coins'),
+  buildWave(10, '350T Coins'),
   buildWave(20, '150 Gems'),
-  buildWave(30, '55 Stones'),
-  buildWave(40, '170 Gems'),
-  buildWave(50, '60 Stones'),
-  buildWave(60, '20T Coins'),
-  buildWave(70, '60 Stones'),
-  buildWave(80, '150 Gems'),
-  buildWave(90, '55 Stones'),
-  buildWave(100, '310 Gems'),
-  buildWave(150, '70 Stones'),
-  buildWave(200, '310 Gems'),
-  buildWave(250, '65 Stones'),
-  buildWave(300, '460 Gems'),
-  buildWave(400, '70 Stones'),
-  buildWave(500, '360 Gems'),
-  buildWave(750, '65 Stones'),
-  buildWave(1000, '420 Gems'),
-  buildWave(1250, '65 Stones'),
-  buildWave(1500, '460 Gems'),
-  buildWave(2000, '85 Stones'),
-  buildWave(2500, '140 Stones'),
-  buildWave(4500, '160 Stones'),
-], buildTrackTotals('32T Coins', '2,900 Gems', '860 Stones'))
+  buildWave(30, '40 Stones'),
+  buildWave(40, '150 Gems'),
+  buildWave(50, '40 Stones'),
+  buildWave(60, '500T Coins'),
+  buildWave(70, '45 Stones'),
+  buildWave(80, '200 Gems'),
+  buildWave(90, '45 Stones'),
+  buildWave(100, '200 Gems'),
+  buildWave(150, '50 Stones'),
+  buildWave(200, '200 Gems'),
+  buildWave(250, '50 Stones'),
+  buildWave(300, '300 Gems'),
+  buildWave(400, '55 Stones'),
+  buildWave(500, '350 Gems'),
+  buildWave(750, '55 Stones'),
+  buildWave(1000, '400 Gems'),
+  buildWave(1250, '60 Stones'),
+  buildWave(1500, '500 Gems'),
+  buildWave(2000, '70 Stones'),
+  buildWave(2500, '110 Stones'),
+  buildWave(4500, '130 Stones'),
+], buildTrackTotals('850T Coins', '2,450 Gems', '750 Stones'))
 
 export const MILESTONE_TIER_DATA: readonly MilestoneTierData[] = [
   { tier: 1, standard: tier1Standard, premium: tier1Premium },

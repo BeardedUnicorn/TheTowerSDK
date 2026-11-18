@@ -1,11 +1,11 @@
 /**
  * Which milestone first makes each system available.
  *
- * `MILESTONE_KEY_UNLOCK_ROWS` holds all 141 unlock rewards, but it is a flat
+ * `MILESTONE_KEY_UNLOCK_ROWS` holds every unlock reward (161 at v29.2), but it is a flat
  * list of reward strings — good for "what does tier 12 give me", useless for
  * "when do I get modules". This is the other direction.
  *
- * ## Why only nine entries for 141 rows
+ * ## Why only ten entries for all those rows
  *
  * Most unlock rewards are individual LABS — Swamp Radius, Shock Chance, Missile
  * Despawn Time. The knowledge graph models `lab` as one system rather than as
@@ -38,6 +38,8 @@ const SYSTEM_PATTERNS: readonly (readonly [string, RegExp])[] = [
   ['tournament', /^Tournaments$/],
   ['event', /^Events$/],
   ['module', /^Modules$/],
+  // Tier 4 wave 90 (facts/v29.2.0 milestone-rewards: System 7).
+  ['dissonance', /^Unlock Dissonance$/],
   ['perk', /^Unlock Perks$/],
   ['guild', /^Guilds$/],
   ['workshopEnhancement', /^Workshop Enhancement$/],
@@ -50,7 +52,7 @@ type UnlockRow = { tier: number, wave: number, reward: string, track: string }
 /**
  * The earliest milestone that unlocks each system, ordered by tier then wave.
  *
- * Every entry is on the standard track, because all 141 unlocks are — the
+ * Every entry is on the standard track, because every unlock is — the
  * premium track pays more but gates nothing.
  */
 export const MILESTONE_SYSTEM_UNLOCK_ROWS: readonly MilestoneSystemUnlock[] = SYSTEM_PATTERNS

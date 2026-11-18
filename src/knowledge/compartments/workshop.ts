@@ -12,8 +12,8 @@
  *    at tier 12 wave 60 behind its own lab, multiplying the upgrades beneath it.
  *
  * A cost model that treats an enhancement level like an upgrade level is wrong
- * by many orders of magnitude: the Damage enhancement's 400 levels cost about
- * 15 sextillion coins in total.
+ * by many orders of magnitude: the Damage enhancement's 600 levels cost about
+ * 441 sextillion coins in total.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    WORKSHOP_UPGRADE_NAMES, WORKSHOP_DECREASING_UPGRADES, WORKSHOP_NON_MONOTONIC_UPGRADES, WORKSHOP_CATEGORIES, WORKSHOP_ENHANCEMENT_UNLOCK, WORKSHOP_ENHANCEMENT_DAMAGE_MAX_LEVEL, WORKSHOP_ENHANCEMENT_DAMAGE_MAX_MULTIPLIER, INTEREST_FORMULA (+8 more)
@@ -34,14 +34,15 @@ const GAME_RECOMPUTE = { origin: 'code', ref: 'SDK reference model; independent 
  * The eighteen enhancement ladders, measured on 2026-08-17.
  *
  * `WSP_WORKSHOP_COSTS` maps each enhancement to its own cost ladder. Counting
- * them is what showed that 400 levels is the Damage figure the wiki documents
- * rather than a universal one, and that a shorter ladder can end at a higher
- * cost than a longer one.
+ * them is what showed that the Damage ladder's length is not universal, and that
+ * a shorter ladder can end at a higher cost than a longer one. Caps re-read from
+ * game data v29.2.0 on 2026-11-18 (v28.3 raised most of them, patch note
+ * 1521195372519751772); the wiki still shows the pre-v28.3 caps.
  */
 const CATALOG_ENHANCEMENT = {
   origin: 'code',
   ref: 'thetowersdk/data WSP_WORKSHOP_COSTS, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT, ENHANCEMENT_VAULT_DISCOUNT_MAX_PCT',
-  verifiedAt: '2026-08-17',
+  verifiedAt: '2026-11-18',
 } as const
 
 /** Read from the shipped table rather than transcribed, so it cannot drift. */
@@ -127,9 +128,9 @@ export const WORKSHOP_ENHANCEMENT_UNLOCK = {
   researchCost: 5_000_000_000,
 } as const
 
-/** The Damage enhancement ladder: 400 levels of +0.01x from 1x. */
-export const WORKSHOP_ENHANCEMENT_DAMAGE_MAX_LEVEL = 400
-export const WORKSHOP_ENHANCEMENT_DAMAGE_MAX_MULTIPLIER = 5
+/** The Damage enhancement ladder: 600 levels of +0.01x from 1x (game data v29.2.0). */
+export const WORKSHOP_ENHANCEMENT_DAMAGE_MAX_LEVEL = 600
+export const WORKSHOP_ENHANCEMENT_DAMAGE_MAX_MULTIPLIER = 7
 
 /** Interest is computed on cash AFTER cash-per-wave is paid. */
 export const INTEREST_FORMULA =
@@ -276,16 +277,16 @@ const ENHANCEMENT_NODES = buildEnhancementNodes()
 /**
  * The eighteen enhancement ladders are only six distinct cost curves.
  *
- * `WSP_WORKSHOP_COST_LEVELS` maps eighteen enhancement keys onto nine table
- * objects, and those nine hold only six distinct sequences of numbers. Eleven
- * enhancements — every attack one, every defence one, and Recovery Package —
- * are not merely the same LENGTH at 400 levels. They cost the identical amount
- * at every level.
+ * `WSP_WORKSHOP_COST_LEVELS` maps eighteen enhancement keys onto six table
+ * objects holding six distinct sequences of numbers. Twelve enhancements —
+ * every attack one but Attack Speed, every defence one but Orb Size, Cash Bonus
+ * and Recovery Package — are not merely the same LENGTH at 600 levels. They
+ * cost the identical amount at every level.
  *
- * That is worth knowing in both directions. Pricing one of the eleven prices
- * all eleven, which makes a planner much cheaper. And the compartment's
- * existing "eleven run to 400" reads as a coincidence of ceilings when it is
- * actually one curve wearing eleven names.
+ * That is worth knowing in both directions. Pricing one of the twelve prices
+ * all twelve, which makes a planner much cheaper. And "twelve run to 600" reads
+ * as a coincidence of ceilings when it is actually one curve wearing twelve
+ * names.
  */
 export const ENHANCEMENT_COST_CURVE_GROUPS: readonly (readonly string[])[] = (() => {
   const byCurve = new Map<string, string[]>()
@@ -375,8 +376,8 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     kind: 'system',
     disambiguation:
       'Not a workshop upgrade. Same three categories, same menu, same word — and a cost curve '
-      + 'orders of magnitude apart: the Damage enhancement alone runs to roughly 15 sextillion '
-      + 'coins across 400 levels, where the whole Damage upgrade ladder is a rounding error '
+      + 'orders of magnitude apart: the Damage enhancement alone runs to roughly 441 sextillion '
+      + 'coins across 600 levels, where the whole Damage upgrade ladder is a rounding error '
       + 'beside it. Enhancements are a multiplicative layer OVER upgrades, gated behind a '
       + 'milestone and their own lab. If a cost estimate looks absurd, check which of the two you '
       + 'are pricing.',
@@ -386,7 +387,7 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'Enhancement lab, which itself costs 5 billion coins and about 6.7 days.',
     traps: [
       'NOT the same thing as a workshop upgrade, despite the shared name and categories. The '
-      + 'Damage enhancement alone costs roughly 15 sextillion coins to max across its 400 levels — '
+      + 'Damage enhancement alone costs roughly 441 sextillion coins to max across its 600 levels — '
       + 'confusing the two makes a cost estimate wrong by orders of magnitude.',
       'New enhancements in a category are unlocked by spending coins on OTHER enhancements of the '
       + 'same category, so availability depends on category spend rather than on total wealth.',
@@ -396,26 +397,26 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'badly understates the middle of the ladder.',
       'Enhancements appear TWICE in the coins-per-kill formula, once in the tier bonus and once '
       + 'in CPK. That double count is documented behaviour.',
-      '400 LEVELS IS NOT UNIVERSAL. Eleven of the eighteen run to 400, but Cash Bonus stops at '
-      + '300, Orb Size / Coin Bonus / Cells per Kill at 200, Free Upgrades at 100, Attack Speed '
-      + 'at 75 and Enemy Level Skip at 60. Pricing every enhancement on the Damage ladder — the '
-      + 'one the wiki documents — overstates seven of them badly.',
-      'A SHORTER LADDER IS NOT A CHEAPER ONE. Free Upgrades has 100 levels and its last one costs '
-      + '1.58e21, nearly five times Damage\'s last level at 3.31e20 across 400. Ranking '
+      '600 LEVELS IS NOT UNIVERSAL. Twelve of the eighteen run to 600 (Cash Bonus and Recovery '
+      + 'Package among them), but Coin Bonus and Cells per Kill stop at 300, Orb Size at 250, Free '
+      + 'Upgrades at 150, Attack Speed at 100 and Enemy Level Skip at 60 (game data v29.2.0). The '
+      + 'wiki still shows the pre-v28.3 caps (400 and below). Pricing every enhancement on the '
+      + 'Damage ladder overstates six of them badly.',
+      'A SHORTER LADDER IS NOT A CHEAPER ONE. Free Upgrades has 150 levels and its last one costs '
+      + '4.28e22, over seven times Damage\'s last level at 5.83e21 across 600. Ranking '
       + 'enhancements by level count gets the cost order wrong.',
       'Every enhancement starts at the same 5 billion coins for its first level, so early costs '
       + 'carry no signal about where a ladder ends. The curves diverge only later.',
-      'ELEVEN OF THE EIGHTEEN ARE THE SAME LADDER, NOT MERELY THE SAME LENGTH. Every attack '
-      + 'enhancement, every defence one and Recovery Package cost the identical amount at every '
-      + `level. There are only ${ENHANCEMENT_DISTINCT_COST_CURVES} distinct curves behind all `
-      + 'eighteen keys. Measuring one of the eleven and reporting it as that enhancement\'s own '
-      + 'curve is right but understates what was learned; treating the eleven as independent '
-      + 'ladders to be measured separately is wasted work.',
+      'TWELVE OF THE EIGHTEEN ARE THE SAME LADDER, NOT MERELY THE SAME LENGTH. Every attack '
+      + 'enhancement but Attack Speed, every defence one but Orb Size, Cash Bonus and Recovery '
+      + `Package cost the identical amount at every level. There are only ${ENHANCEMENT_DISTINCT_COST_CURVES} `
+      + 'distinct curves behind all eighteen keys. Measuring one of the twelve and reporting it as '
+      + 'that enhancement\'s own curve is right but understates what was learned; treating the '
+      + 'twelve as independent ladders to be measured separately is wasted work.',
       'THE SHARED TABLES ARE MUTABLE AND SHARED BY REFERENCE. '
       + `${ENHANCEMENT_COST_TABLE_OBJECTS} objects hold `
-      + `${ENHANCEMENT_DISTINCT_COST_CURVES} sequences, so some are duplicate copies and some keys `
-      + 'point at one object. Writing a corrected cost into WSP_DAMAGE rewrites four other '
-      + 'enhancements at once and still leaves the duplicate copies stating the old number.',
+      + `${ENHANCEMENT_DISTINCT_COST_CURVES} sequences, and keys sharing a curve point at one `
+      + 'object. Writing a corrected cost into WSP_DAMAGE rewrites eleven other enhancements at once.',
       `EVERY CURVE STEPS AT LEVEL ${ENHANCEMENT_COST_STEP_LEVEL}. The per-level ratio runs 1.07 to `
       + '1.33 through level 16, roughly doubles into 17, then falls back to 1.6-1.9 and settles. '
       + 'A multiplier fitted to the first sixteen levels understates every level after it. This is '
@@ -438,9 +439,9 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       { subject: 'workshopEnhancement', predicate: 'count', value: 18, provenance: CATALOG_ENHANCEMENT },
       { subject: 'workshopEnhancement', predicate: 'perCategoryCount', value: 6, provenance: CATALOG_ENHANCEMENT },
       { subject: 'workshopEnhancement', predicate: 'distinctLevelCapCount', value: 6, provenance: CATALOG_ENHANCEMENT },
-      { subject: 'workshopEnhancement', predicate: 'maxLevelCap', value: 400, provenance: CATALOG_ENHANCEMENT },
+      { subject: 'workshopEnhancement', predicate: 'maxLevelCap', value: 600, provenance: CATALOG_ENHANCEMENT },
       { subject: 'workshopEnhancement', predicate: 'minLevelCap', value: 60, provenance: CATALOG_ENHANCEMENT },
-      { subject: 'workshopEnhancement', predicate: 'countAt400Levels', value: 11, provenance: CATALOG_ENHANCEMENT },
+      { subject: 'workshopEnhancement', predicate: 'countAtMaxLevelCap', value: 12, provenance: CATALOG_ENHANCEMENT },
       { subject: 'workshopEnhancement', predicate: 'distinctCostCurves', value: ENHANCEMENT_DISTINCT_COST_CURVES, provenance: CATALOG_ENHANCEMENT, verification: 'verified_here' },
       { subject: 'workshopEnhancement', predicate: 'costTableObjects', value: ENHANCEMENT_COST_TABLE_OBJECTS, provenance: CATALOG_ENHANCEMENT, verification: 'verified_here' },
       { subject: 'workshopEnhancement', predicate: 'keysSharingACurve', value: ENHANCEMENT_KEYS_SHARING_A_CURVE.length, provenance: CATALOG_ENHANCEMENT, verification: 'verified_here' },

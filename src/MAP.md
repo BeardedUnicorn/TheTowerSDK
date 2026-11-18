@@ -30,7 +30,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/guild`](data/guild/MAP.md) | 3 | Guilds: levels, perks, and what each contributes. |
 | [`src/data/labs`](data/labs/MAP.md) | 12 | Lab catalogs: categories, unlocks, research and display names. |
 | [`src/data/milestones`](data/milestones/MAP.md) | 4 | Milestones and what reaching one unlocks. |
-| [`src/data/modules`](data/modules/MAP.md) | 12 | Module catalogs: levels, substats, effects, costs and pulls. |
+| [`src/data/modules`](data/modules/MAP.md) | 13 | Module catalogs: levels, substats, effects, costs and pulls. |
 | [`src/data/perks`](data/perks/MAP.md) | 3 | Perks, their tiers, and the ones that can be banned. |
 | [`src/data/player-stats`](data/player-stats/MAP.md) | 2 | Every field a save carries, by domain, and the recompute order. |
 | [`src/data/reference`](data/reference/MAP.md) | 5 | Small reference tables, and the schemas validating the public surface. |
@@ -85,24 +85,31 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/cards`](save/cards/MAP.md) | 3 | What a save says about cards. |
 | [`src/save/catalogs`](save/catalogs/MAP.md) | 11 | The index maps that turn a save’s numbers into named things. |
 | [`src/save/catalogs/vault`](save/catalogs/vault/MAP.md) | 4 | Which save slot each vault node reads, the corrections to that order, and how a mapping is chosen. |
+| [`src/save/currencies`](save/currencies/MAP.md) | 3 | The currencies a player holds, and this cycle's earning and spending. |
 | [`src/save/current-run`](save/current-run/MAP.md) | 3 | Saved current-run upgrade arrays and position, distinct from purchased workshop. |
 | [`src/save/dissonance`](save/dissonance/MAP.md) | 3 | What a save says about dissonance. |
 | [`src/save/effective-paths`](save/effective-paths/MAP.md) | 4 | Effective Paths inputs recovered from a save. |
+| [`src/save/events`](save/events/MAP.md) | 3 | The events a player took part in, with medals and relics. |
+| [`src/save/export-info`](save/export-info/MAP.md) | 3 | What an official export says about itself, and whether it is newer than this SDK knows. |
 | [`src/save/guardians`](save/guardians/MAP.md) | 3 | What a save says about guardians. |
 | [`src/save/ids`](save/ids/MAP.md) | 9 | The IDS block: the grid and every domain read out of it. |
 | [`src/save/killed-by`](save/killed-by/MAP.md) | 2 | What a save says about killed by. |
 | [`src/save/labs`](save/labs/MAP.md) | 5 | Lab progress and what remains. |
-| [`src/save/lifetime`](save/lifetime/MAP.md) | 3 | What a save says about lifetime. |
-| [`src/save/modules`](save/modules/MAP.md) | 7 | Module effects as stored, decoded and displayed. |
+| [`src/save/lifetime`](save/lifetime/MAP.md) | 4 | What a save says about lifetime. |
+| [`src/save/milestones`](save/milestones/MAP.md) | 3 | Which milestone rewards a player has claimed, tier by tier. |
+| [`src/save/modules`](save/modules/MAP.md) | 8 | Module effects as stored, decoded and displayed. |
 | [`src/save/perks`](save/perks/MAP.md) | 3 | What a save says about perks. |
+| [`src/save/presets`](save/presets/MAP.md) | 3 | Global Presets and which kind of battle each is assigned to. |
 | [`src/save/purchases`](save/purchases/MAP.md) | 3 | Permanent purchase ownership explicitly recorded in a save. |
 | [`src/save/relics`](save/relics/MAP.md) | 3 | What a save says about relics. |
 | [`src/save/runs`](save/runs/MAP.md) | 3 | The fields a run records, and how their text normalises. |
 | [`src/save/runtime-controls`](save/runtime-controls/MAP.md) | 4 | Saved gameplay selections and ordered life-saving effect identities. |
-| [`src/save/themes`](save/themes/MAP.md) | 2 | What a save says about themes. |
+| [`src/save/themes`](save/themes/MAP.md) | 3 | What a save says about themes. |
+| [`src/save/tier-records`](save/tier-records/MAP.md) | 3 | A player's records per tier: waves, runs started, best coins and cells. |
+| [`src/save/tournaments`](save/tournaments/MAP.md) | 3 | The player's tournament league and past tournaments. |
 | [`src/save/ultimate-weapons`](save/ultimate-weapons/MAP.md) | 3 | What a save says about ultimate weapons. |
 | [`src/save/vault`](save/vault/MAP.md) | 4 | What a save says about vault. |
-| [`src/save/workshop`](save/workshop/MAP.md) | 3 | What a save says about workshop. |
+| [`src/save/workshop`](save/workshop/MAP.md) | 4 | What a save says about workshop. |
 | [`src/sheets`](sheets/MAP.md) | 4 | Reading and writing Google Sheets, transport-agnostic. |
 | [`src/support`](support/MAP.md) | 2 | Utilities with no domain: framework-free, no game knowledge, not exported. |
 | [`src/wiki`](wiki/MAP.md) | 1 | Community wiki pages as Markdown. |

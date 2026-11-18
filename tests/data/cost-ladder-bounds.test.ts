@@ -71,8 +71,8 @@ describe('cost ladders are bounded by what their table prices', () => {
   it('the cap is a real ceiling, not a table that happens to be long', () => {
     // Guards the tests above from passing vacuously on an empty or trivial ladder.
     const workshop = LADDERS.find(l => l.name === 'workshop WSP_ATTACK_SPEED')!
-    expect(workshop.max).toBe(75)
-    expect(workshop.rows(0, 75).length).toBe(75)
-    expect(workshop.rows(0, 200).length).toBe(75)
+    expect(workshop.max).toBe(100)
+    expect(workshop.rows(0, 100).length).toBe(100)
+    expect(workshop.rows(0, 200).length).toBe(100)
   })
 })

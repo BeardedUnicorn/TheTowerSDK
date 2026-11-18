@@ -411,7 +411,8 @@ export const uwPlusUpgradeSections: UwPlusUpgradeSection[] = [
   },
   {
     'title': '400 Base Scaling',
-    'total': '57,150',
+    // Kill Wall + Consume + Light Range (19,050 + 19,050 + 37,050); Light Range runs to 19 since v28.3.
+    'total': '75,150',
     'upgrades': [
       {
         'icon': 'DW.png',
@@ -699,8 +700,30 @@ export const uwPlusUpgradeSections: UwPlusUpgradeSection[] = [
             'value': 'x0.15',
             'cost': '2700',
           },
+          // Levels 15-19 since v28.3 expanded Spotlight+ (patch note 1521195372519751772); values
+          // and costs as in src/data/ultimate-weapons/stones.data.ts.
           '15': {
-            'value': '19,050',
+            'value': 'x0.16',
+            'cost': '3000',
+          },
+          '16': {
+            'value': 'x0.17',
+            'cost': '3300',
+          },
+          '17': {
+            'value': 'x0.18',
+            'cost': '3600',
+          },
+          '18': {
+            'value': 'x0.19',
+            'cost': '3900',
+          },
+          '19': {
+            'value': 'x0.20',
+            'cost': '4200',
+          },
+          '20': {
+            'value': '37,050',
             'cost': 'Total',
           },
         },
@@ -711,10 +734,10 @@ export const uwPlusUpgradeSections: UwPlusUpgradeSection[] = [
 
 export const uwPlusFooterText = [
   '* The Unlock Cost increases with each UW+ upgrade owned as shown.',
-  '* Every UW+ has 10 upgrades. There are two scaling patterns for the upgrade costs, both are detailed here.',
+  '* UW+ ladders differ in length: Smite and Cover Fire stop at 11, Chrono Loop at 13, Light Range at 19 and the rest at 14 (v28.3 expanded several). There are two scaling patterns for the upgrade costs, both are detailed here.',
   '* GT+ formula: (1 + .0003 x (level + 1)) ^ kills - 1',
   'Note that Galaxy Compressor DOES reduce the cooldowns of UW+ as well.',
   '',
   'Credit: Kosmirion Epos / kosmirionepos',
-  'Data as of 05.27.2024',
+  'Data as of 05.27.2024; Light Range levels 15-19 added for v28.3.',
 ]

@@ -52,7 +52,8 @@ describe('Dissonant Echo lab indices', () => {
   })
 
   it('the display-name overrides agree', () => {
-    expect(LAB_RESEARCH_DISPLAY_NAME_OVERRIDES).toEqual(DISSONANCE_BY_INDEX)
+    // Besides the four Echo labs, index 40 is overridden: the game renamed Card Presets to Presets.
+    expect(LAB_RESEARCH_DISPLAY_NAME_OVERRIDES).toEqual({ ...DISSONANCE_BY_INDEX, 40: 'Presets' })
   })
 
   it('LAB_RESEARCH_BY_INDEX agrees', () => {

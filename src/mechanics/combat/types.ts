@@ -389,12 +389,15 @@ export interface RendArmorMultiplierInput {
  * the shape of a settings object that stores one is a fact about a form. The mechanic declares
  * it; anything storing a chosen tier borrows it from here.
  */
-export type ThornsTournamentTier = 'none' | 't11' | 't14' | 't17'
+export type ThornsTournamentTier = 'none' | 't11' | 't14' | 't17' | 't23'
 
 export interface ThornsWallChartRow {
   wallThorns: number
   hitsToKillElite: number
-  hitsToKillFleet: number
+  /** Always null: since v28.3 thorns take a share of a fleet's REMAINING health, so they never finish one. */
+  hitsToKillFleet: null
+  /** Hits for thorns to take a fleet to half its health, at 15% effectiveness; null when thorns do nothing. */
+  hitsToHalveFleet: number | null
   hitsToKillElitePC: number
   hitsToKillBoss: number
   hitsToKillBossPC: number
@@ -403,7 +406,10 @@ export interface ThornsWallChartRow {
 export interface ThornsBaseChartRow {
   baseThornsVal: number
   hitsToKillElite: number
-  hitsToKillFleet: number
+  /** Always null: since v28.3 thorns take a share of a fleet's REMAINING health, so they never finish one. */
+  hitsToKillFleet: null
+  /** Hits for thorns to take a fleet to half its health, at 15% effectiveness; null when thorns do nothing. */
+  hitsToHalveFleet: number | null
   hitsToKillElitePC: number
   hitsToKillBoss: number
   hitsToKillBossPC: number

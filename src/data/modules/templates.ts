@@ -413,6 +413,7 @@ const uniqueModules: ModuleTemplate[] = [
     minRarity: 'Epic',
     maxRarity: 'Ancestral 5',
     description: (value?: number) => `Reduces orb speed to zero; orbs fire ${value ?? 4} mini orbs at enemies instead.`,
+    // Unique-effect values per rarity: wiki "Epic Module Unique Effect" (read 2026-11-18).
     rarityBonuses: [
       { rarity: 'Epic', value: 1 },
       { rarity: 'Legendary', value: 2 },
@@ -430,6 +431,7 @@ const uniqueModules: ModuleTemplate[] = [
     maxRarity: 'Ancestral 5',
     description: (value?: number) => `On enemy death, has a ${(value ?? 0.4) * 100}% chance to apply all active coin bonuses, even outside their range.`,
     // Probability, not percentage points; descriptions convert to percent.
+    // Unique-effect values per rarity: wiki "Epic Module Unique Effect" (read 2026-11-18).
     rarityBonuses: [
       { rarity: 'Epic', value: 0.1 },
       { rarity: 'Legendary', value: 0.2 },
@@ -448,6 +450,7 @@ const uniqueModules: ModuleTemplate[] = [
     description: (value?: number) => `Doubles Smart Missile's Radius and Amplifier lab bonuses. Fires a Homing Missile every ${value ?? 2}s, targeting the enemy with highest missile stack and focusing active Smart Missiles to the new target.`,
     baseEffect: 'Doubles Smart Missile\'s Radius and Amplifier lab bonuses.',
     // Seconds between Homing Missiles, not a percentage — lower is stronger.
+    // Unique-effect values per rarity: wiki "Epic Module Unique Effect" (read 2026-11-18).
     rarityBonuses: [
       { rarity: 'Epic', value: 14 },
       { rarity: 'Legendary', value: 10 },
@@ -463,8 +466,10 @@ const uniqueModules: ModuleTemplate[] = [
     unique: true,
     minRarity: 'Epic',
     maxRarity: 'Ancestral 5',
-    // Added in v29.1; extra levels are granted by free upgrades.
+    // Extra levels are granted by free upgrades. Patch note 29.0.6 names it the last module of the
+    // Featured Banner cycle; no note gives its values.
     description: (value?: number) => `Free upgrades can grant ${value ?? 4000} extra levels to Damage, Health, and Health Regen.`,
+    // Unique-effect values per rarity: wiki "Epic Module Unique Effect" (read 2026-11-18).
     rarityBonuses: [
       { rarity: 'Epic', value: 1000 },
       { rarity: 'Legendary', value: 2000 },

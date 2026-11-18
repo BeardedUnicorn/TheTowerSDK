@@ -60,12 +60,13 @@ const TOURNAMENT_TIERS = [
   { value: 't11', label: 'Tournament T11' },
   { value: 't14', label: 'Tournament T14' },
   { value: 't17', label: 'Tournament T17' },
+  { value: 't23', label: 'Tournament T23 (Mythic)' },
 ]
 
 export const thornsCalculator: CalculatorBuilder<ThornsInput, ThornsResult> = {
   id: 'thorns.damage',
   title: 'Thorns',
-  summary: 'Hits to kill an elite, a fleet or a boss touching your wall.',
+  summary: 'Hits to kill an elite or a boss touching your wall, and to halve a fleet.',
 
   fields: [
     { key: 'baseThorns', label: 'Base Thorns %', kind: 'number', min: 0, max: 600 },
@@ -114,7 +115,7 @@ export const thornsCalculator: CalculatorBuilder<ThornsInput, ThornsResult> = {
      * field of every builder, which is how these two were found.
      */
     const tournamentTier = typeof source.tournamentTier === 'string'
-      && ['none', 't11', 't14', 't17'].includes(source.tournamentTier)
+      && ['none', 't11', 't14', 't17', 't23'].includes(source.tournamentTier)
       ? (source.tournamentTier as ThornsInput['tournamentTier'])
       : defaults.tournamentTier
 

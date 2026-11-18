@@ -1,0 +1,728 @@
+{
+  "gameVersion": "v29.2.0",
+  "note": "Tournament prizes per league and rank band, as the game defines them. The pre-v29 tables are kept by the game without rank bands, so startRank/endRank are null there.",
+  "leagues": {
+    "Copper": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 100,
+        "stones": 20,
+        "keys": 0
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 80,
+        "stones": 18,
+        "keys": 0
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 65,
+        "stones": 16,
+        "keys": 0
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 50,
+        "stones": 12,
+        "keys": 0
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 45,
+        "stones": 10,
+        "keys": 0
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 40,
+        "stones": 9,
+        "keys": 0
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 30,
+        "stones": 8,
+        "keys": 0
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 20,
+        "stones": 7,
+        "keys": 0
+      },
+      {
+        "startRank": 16,
+        "endRank": 22,
+        "gems": 15,
+        "stones": 6,
+        "keys": 0
+      },
+      {
+        "startRank": 23,
+        "endRank": 30,
+        "gems": 10,
+        "stones": 5,
+        "keys": 0
+      }
+    ],
+    "Silver": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 200,
+        "stones": 40,
+        "keys": 0
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 150,
+        "stones": 35,
+        "keys": 0
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 100,
+        "stones": 30,
+        "keys": 0
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 75,
+        "stones": 20,
+        "keys": 0
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 65,
+        "stones": 19,
+        "keys": 0
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 60,
+        "stones": 18,
+        "keys": 0
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 55,
+        "stones": 17,
+        "keys": 0
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 50,
+        "stones": 16,
+        "keys": 0
+      },
+      {
+        "startRank": 16,
+        "endRank": 22,
+        "gems": 45,
+        "stones": 14,
+        "keys": 0
+      },
+      {
+        "startRank": 23,
+        "endRank": 30,
+        "gems": 40,
+        "stones": 12,
+        "keys": 0
+      }
+    ],
+    "Gold": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 300,
+        "stones": 80,
+        "keys": 0
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 250,
+        "stones": 70,
+        "keys": 0
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 200,
+        "stones": 60,
+        "keys": 0
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 150,
+        "stones": 40,
+        "keys": 0
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 125,
+        "stones": 30,
+        "keys": 0
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 100,
+        "stones": 28,
+        "keys": 0
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 90,
+        "stones": 26,
+        "keys": 0
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 80,
+        "stones": 24,
+        "keys": 0
+      },
+      {
+        "startRank": 16,
+        "endRank": 22,
+        "gems": 70,
+        "stones": 22,
+        "keys": 0
+      },
+      {
+        "startRank": 23,
+        "endRank": 30,
+        "gems": 50,
+        "stones": 20,
+        "keys": 0
+      }
+    ],
+    "Platinum": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 425,
+        "stones": 180,
+        "keys": 0
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 400,
+        "stones": 160,
+        "keys": 0
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 375,
+        "stones": 140,
+        "keys": 0
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 275,
+        "stones": 80,
+        "keys": 0
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 260,
+        "stones": 70,
+        "keys": 0
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 245,
+        "stones": 60,
+        "keys": 0
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 230,
+        "stones": 56,
+        "keys": 0
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 215,
+        "stones": 53,
+        "keys": 0
+      },
+      {
+        "startRank": 16,
+        "endRank": 24,
+        "gems": 200,
+        "stones": 50,
+        "keys": 0
+      },
+      {
+        "startRank": 25,
+        "endRank": 30,
+        "gems": 100,
+        "stones": 20,
+        "keys": 0
+      }
+    ],
+    "Champion": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 550,
+        "stones": 300,
+        "keys": 0
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 525,
+        "stones": 280,
+        "keys": 0
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 500,
+        "stones": 260,
+        "keys": 0
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 375,
+        "stones": 180,
+        "keys": 0
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 360,
+        "stones": 170,
+        "keys": 0
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 345,
+        "stones": 160,
+        "keys": 0
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 330,
+        "stones": 150,
+        "keys": 0
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 315,
+        "stones": 125,
+        "keys": 0
+      },
+      {
+        "startRank": 16,
+        "endRank": 24,
+        "gems": 300,
+        "stones": 100,
+        "keys": 0
+      },
+      {
+        "startRank": 25,
+        "endRank": 30,
+        "gems": 175,
+        "stones": 20,
+        "keys": 0
+      }
+    ],
+    "Legend": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 675,
+        "stones": 375,
+        "keys": 25
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 650,
+        "stones": 350,
+        "keys": 20
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 625,
+        "stones": 325,
+        "keys": 15
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 475,
+        "stones": 275,
+        "keys": 10
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 460,
+        "stones": 260,
+        "keys": 8
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 445,
+        "stones": 245,
+        "keys": 6
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 430,
+        "stones": 230,
+        "keys": 4
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 415,
+        "stones": 215,
+        "keys": 2
+      },
+      {
+        "startRank": 16,
+        "endRank": 24,
+        "gems": 400,
+        "stones": 200,
+        "keys": 1
+      },
+      {
+        "startRank": 25,
+        "endRank": 30,
+        "gems": 250,
+        "stones": 100,
+        "keys": 0
+      }
+    ],
+    "Mythic": [
+      {
+        "startRank": 1,
+        "endRank": 1,
+        "gems": 900,
+        "stones": 475,
+        "keys": 50
+      },
+      {
+        "startRank": 2,
+        "endRank": 2,
+        "gems": 800,
+        "stones": 450,
+        "keys": 45
+      },
+      {
+        "startRank": 3,
+        "endRank": 4,
+        "gems": 700,
+        "stones": 425,
+        "keys": 40
+      },
+      {
+        "startRank": 5,
+        "endRank": 6,
+        "gems": 650,
+        "stones": 400,
+        "keys": 37
+      },
+      {
+        "startRank": 7,
+        "endRank": 8,
+        "gems": 600,
+        "stones": 385,
+        "keys": 34
+      },
+      {
+        "startRank": 9,
+        "endRank": 10,
+        "gems": 575,
+        "stones": 370,
+        "keys": 31
+      },
+      {
+        "startRank": 11,
+        "endRank": 12,
+        "gems": 550,
+        "stones": 355,
+        "keys": 28
+      },
+      {
+        "startRank": 13,
+        "endRank": 15,
+        "gems": 525,
+        "stones": 340,
+        "keys": 25
+      },
+      {
+        "startRank": 16,
+        "endRank": 24,
+        "gems": 500,
+        "stones": 325,
+        "keys": 20
+      },
+      {
+        "startRank": 25,
+        "endRank": 30,
+        "gems": 335,
+        "stones": 225,
+        "keys": 8
+      }
+    ]
+  },
+  "pre29": {
+    "Platinum": [
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 400,
+        "stones": 160,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 350,
+        "stones": 140,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 300,
+        "stones": 120,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 250,
+        "stones": 70,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 225,
+        "stones": 65,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 200,
+        "stones": 60,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 175,
+        "stones": 56,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 150,
+        "stones": 53,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 125,
+        "stones": 50,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 100,
+        "stones": 20,
+        "keys": 0
+      }
+    ],
+    "Champion": [
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 600,
+        "stones": 320,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 500,
+        "stones": 300,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 400,
+        "stones": 280,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 350,
+        "stones": 200,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 325,
+        "stones": 175,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 300,
+        "stones": 150,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 275,
+        "stones": 125,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 250,
+        "stones": 100,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 200,
+        "stones": 90,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 150,
+        "stones": 20,
+        "keys": 0
+      }
+    ],
+    "Legend": [
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 800,
+        "stones": 425,
+        "keys": 25
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 700,
+        "stones": 400,
+        "keys": 20
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 600,
+        "stones": 375,
+        "keys": 15
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 500,
+        "stones": 350,
+        "keys": 10
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 475,
+        "stones": 325,
+        "keys": 8
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 450,
+        "stones": 300,
+        "keys": 6
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 425,
+        "stones": 275,
+        "keys": 4
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 400,
+        "stones": 250,
+        "keys": 2
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 375,
+        "stones": 225,
+        "keys": 0
+      },
+      {
+        "startRank": null,
+        "endRank": null,
+        "gems": 200,
+        "stones": 120,
+        "keys": 0
+      }
+    ]
+  }
+}

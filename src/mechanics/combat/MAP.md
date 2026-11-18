@@ -13,7 +13,7 @@ What the tower does to enemies — damage, its multipliers, and every on-hit eff
 | `damage-reduction.ts` | Damage reduction from relative/absolute defense and multiplicative mitigation layers. | applyDamageReductionStats, DEFENSE_PERCENT_MAX, applyRelativeDefense, effectiveRelativeDefenseReductionPct (+2 more) |
 | `damage-redux-calculator.ts` | Configured damage mitigation. | applyDamageReduxLayerStack, effectiveRelativeDefenseReductionPct |
 | `damage-redux-constants.ts` | — | SMITE_DAMAGE_BY_CL_PLUS_LEVEL, CHAIN_THUNDER_ACCUMULATED_HP_SCALE, CHAIN_THUNDER_LAB_MAX_PER_LEVEL |
-| `damage-redux-layers.ts` | Damage-reduction layer formulas — run-report / combat parity. | CHRONO_FIELD_REDUCTION_LAB_BASE_PCT, CHRONO_FIELD_REDUCTION_LAB_PER_LEVEL_PCT, NMP_MAX_DAMAGE_REDUCTION_PCT, FLAME_BOT_BASE_REDUCTION_PCT (+18 more) |
+| `damage-redux-layers.ts` | Damage-reduction layer formulas — run-report / combat parity. | CHRONO_FIELD_REDUCTION_LAB_BASE_PCT, CHRONO_FIELD_REDUCTION_LAB_PER_LEVEL_PCT, NMP_MAX_DAMAGE_REDUCTION_PCT, FLAME_BOT_BASE_REDUCTION_PCT (+19 more) |
 | `damage-redux-wave-stats.ts` | — | getDamageReduxBasicWaveStats |
 | `damage.ts` | — | abilityDamage |
 | `distances.ts` | Enemy↔tower distance cache. | computeEnemyDistances, isEnemyInNormalFireRange, isEnemyInMultishotRange, blackHoleRangeLineDistance |

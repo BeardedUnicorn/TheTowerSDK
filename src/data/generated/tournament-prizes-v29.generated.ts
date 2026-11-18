@@ -1,5 +1,7 @@
 /**
- * GENERATED from game data for version v29.0.0 — tournament prize table
+ * GENERATED from game data for version v29.0.0 — tournament prize table. Platinum and Champion
+ * stones are as v29.2.0 has them: v29.0.1 corrected those two tables (patch note
+ * 1542638399708594186), and facts/v29.2.0/tournament-prizes.json holds every league as the game does.
  * (InitTournamentPrizes: gems / stones / keys by rank band).
  *
  * Keys: omitted entries are **0** (zero-fill).
@@ -7,7 +9,7 @@
  */
 
 export const TOURNAMENT_PRIZES_V29_PROVENANCE =
-  'Observed in game (v29.0.0 tournament prizes)'
+  'Observed in game (v29.0.0 tournament prizes; Platinum and Champion stones as corrected in v29.0.1, read from v29.2.0)'
 
 export interface TournamentPrizeEntryV29 {
   startRank: number | null
@@ -67,11 +69,11 @@ export const GOLD_TOURNAMENT_PRIZES_V29: readonly TournamentPrizeEntryV29[] = [
 ] as const
 
 export const PLATINUM_TOURNAMENT_PRIZES_V29: readonly TournamentPrizeEntryV29[] = [
-  row(1, 1, 425, 160, 0),
-  row(2, 2, 400, 140, 0),
-  row(3, 4, 375, 120, 0),
-  row(5, 6, 275, 70, 0),
-  row(7, 8, 260, 65, 0),
+  row(1, 1, 425, 180, 0),
+  row(2, 2, 400, 160, 0),
+  row(3, 4, 375, 140, 0),
+  row(5, 6, 275, 80, 0),
+  row(7, 8, 260, 70, 0),
   row(9, 10, 245, 60, 0),
   row(11, 12, 230, 56, 0),
   row(13, 15, 215, 53, 0),
@@ -80,15 +82,15 @@ export const PLATINUM_TOURNAMENT_PRIZES_V29: readonly TournamentPrizeEntryV29[] 
 ] as const
 
 export const CHAMPION_TOURNAMENT_PRIZES_V29: readonly TournamentPrizeEntryV29[] = [
-  row(1, 1, 550, 320, 0),
-  row(2, 2, 525, 300, 0),
-  row(3, 4, 500, 280, 0),
-  row(5, 6, 375, 200, 0),
-  row(7, 8, 360, 175, 0),
-  row(9, 10, 345, 150, 0),
-  row(11, 12, 330, 125, 0),
-  row(13, 15, 315, 100, 0),
-  row(16, 24, 300, 90, 0),
+  row(1, 1, 550, 300, 0),
+  row(2, 2, 525, 280, 0),
+  row(3, 4, 500, 260, 0),
+  row(5, 6, 375, 180, 0),
+  row(7, 8, 360, 170, 0),
+  row(9, 10, 345, 160, 0),
+  row(11, 12, 330, 150, 0),
+  row(13, 15, 315, 125, 0),
+  row(16, 24, 300, 100, 0),
   row(25, 30, 175, 20, 0),
 ] as const
 

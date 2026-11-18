@@ -48,7 +48,8 @@ export const LIFETIME_SAVE_FIELD_ROWS: readonly LifetimeSaveFieldRow[] = [
   { targetKey: 'stonesEarned', saveKey: 'totalStonesEarned', label: 'Stones Earned' },
   { targetKey: 'keysEarned', saveKey: 'totalKeysEarned', label: 'Keys Earned' },
   { targetKey: 'cellsEarned', saveKey: LIFETIME_SAVE_CELLS_EARNED_KEY, renamedFrom: [LIFETIME_SAVE_CELLS_EARNED_FIELD_BEFORE_V2], label: 'Cells Earned', optional: true },
-  { targetKey: 'rerollShardsEarned', saveKey: 'moduleRerollCurrencyLifetime', label: 'Dice Earned', optional: true },
+  // `_v2` since the reroll balance outgrew 32 bits (patch note 1571908572156272841, v29.2).
+  { targetKey: 'rerollShardsEarned', saveKey: 'moduleRerollCurrencyLifetime_v2', renamedFrom: ['moduleRerollCurrencyLifetime'], label: 'Dice Earned', optional: true },
   { targetKey: 'damageDealt', saveKey: 'totalDamageDealt', label: 'Damage Dealt' },
   { targetKey: 'enemiesDestroyed', saveKey: 'totalEnemiesDestroyed', label: 'Enemies Destroyed' },
   { targetKey: 'wavesCompleted', saveKey: 'totalWavesCompleted', label: 'Waves Completed' },

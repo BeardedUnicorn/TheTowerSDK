@@ -6,9 +6,9 @@ The vault tree and how it is walked.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `index.ts` | The vault tech trees as data: | — |
+| `index.ts` | The PRE-v29 vault tech trees as data: | — |
 | `tree-traversal.ts` | — | POWER_VAULT_TIER_UNLOCK_NODE_IDS, buildVaultTreeChildrenMap, buildVaultTreeBfsOrder, buildVaultTreeBfsSlotIndexById (+1 more) |
-| `tree.ts` | The Power and Harmony vault trees: | harmonyTreeNodes, powerTreeNodes, DEFAULT_HARMONY_VAULT_NODES, DEFAULT_POWER_VAULT_NODES (+4 more) |
+| `tree.ts` | The Power and Harmony vault trees as they were BEFORE v29: | harmonyTreeNodes, powerTreeNodes, DEFAULT_HARMONY_VAULT_NODES, DEFAULT_POWER_VAULT_NODES (+4 more) |
 | `types.ts` | The types `data/vault/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | VaultTreeChildSort, VaultTreeNode, VaultTreeKey, VaultTreeDefinition |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

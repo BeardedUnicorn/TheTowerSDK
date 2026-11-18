@@ -100,7 +100,7 @@ const cardTemplates: CardTemplate[] = [
     masteryName: 'Elite Farming',
     masteryDescription: 'Adds a chance for Elites to drop Reroll Dice',
     masteryType: 'percent',
-    masteryValues: [0.4, 0.8, 1.2, 1.6, 2, 2.24, 2.8, 3.2, 3.6, 4],
+    masteryValues: [0.4, 0.8, 1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6, 4],
   },
   {
     id: 'coins',
@@ -133,7 +133,7 @@ const cardTemplates: CardTemplate[] = [
     rarity: 'common',
     levelType: 'percent',
     levelValues: [5, 6, 7, 8, 9, 10, 11],
-    masteryName: 'Slow Attack',
+    masteryName: 'Super Critical Chance',
     masteryDescription: 'Adds an additional bonus to increase Crit Chance, Super Crit Chance and Super Crit Factor',
     masteryType: 'percent',
     masteryValues: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -268,7 +268,7 @@ const cardTemplates: CardTemplate[] = [
     masteryName: 'Care Package',
     masteryDescription: 'Gives packages a chance to also deliver a common module',
     masteryType: 'percent',
-    masteryValues: [0.4, 0.8, 1.2, 1.4, 1.8, 2.4, 2.8, 3.2, 3.6, 4],
+    masteryValues: [0.4, 0.8, 1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6, 4],
   },
   {
     /*

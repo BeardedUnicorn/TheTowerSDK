@@ -12,7 +12,7 @@ The index maps that turn a save’s numbers into named things.
 | `indexes.data.ts` | — | WORKSHOP_IMPORT_CATALOG, WORKSHOP_ENHANCEMENT_IMPORT_CATALOG, ULTIMATE_WEAPON_IMPORT_CATALOG, BOT_IMPORT_CATALOG (+6 more) |
 | `perks.ts` | — | PERK_STANDARD_INDICES, PERK_UW_INDICES, PERK_TRADE_OFF_INDICES, PERK_CATALOG_SIZE (+14 more) |
 | `relic-template-match.ts` | — | buildRelicTierSuffixKey, normalizeRelicMatchKey, buildRelicTemplateIdLookup, findRelicTemplateIdFromSaveIndex |
-| `relics.ts` | Relics by save index: | findRelicCatalogRow, findRelicLabel, listRelicCatalogRows, isRelicCatalogPopulated (+1 more) |
+| `relics.ts` | Relics by save index: | findRelicCatalogRow, countRelicCatalogSlots, findRelicLabel, listRelicCatalogRows (+2 more) |
 | `themes.ts` | Themes by save index: | listThemeCatalogRows, listThemeCatalogRowsByCategory, findThemeCatalogLabel, isThemeCatalogPopulated (+1 more) |
 | `types.ts` | The types `save/catalogs/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | BotCatalogRow, ActiveGuardianChipRow, GuardianChipCatalogRow, GuardianSkinCatalogRow (+11 more) |
 | `ultimate-weapons.ts` | — | findUltimateWeaponCatalogRow, findUltimateWeaponCatalogName, listUltimateWeaponCatalogRows, UW_CATALOG_SLOT_COUNT |

@@ -70,7 +70,10 @@ export const IRREVERSIBLE_UPGRADES = [
 
 /** Upgrades that can be undone, and how. Objective. */
 export const REVERSIBLE_UPGRADES: Readonly<Record<string, string>> = {
-  'Bot medal upgrades': 'respec (once per event; unlimited with the Bot Presets vault node)',
+  // v29 moved Bot Presets into the Vault's Harmony > Bots category as the step after three respec
+  // discounts; it still lifts the limit (wiki "The Vault", 2026-11-18). 29.0.2 made the game
+  // actually enforce the limit (patch note 1545083801062088766).
+  'Bot medal upgrades': 'respec (once per event; unlimited with the Vault\'s Bot Presets upgrade)',
   'Workshop coin upgrades': 'Workshop Respec',
   'Chrono Field Range lab': 'the one lab the wiki states can be turned off',
 }
@@ -401,7 +404,9 @@ export const FOOTGUN_KNOWLEDGE_EDGES: readonly KnowledgeEdge[] =[
     to: 'upgradePermanence',
     note:
       'Bot Presets removes the respec limit and Bot Cooldown Sliders allow finer syncing — the '
-      + 'Vault is what makes some otherwise-permanent choices recoverable.',
+      + 'Vault is what makes some otherwise-permanent choices recoverable. Since v29 both sit in '
+      + 'the Harmony Bots category, unlocked for keys; the presets themselves come from the Presets '
+      + 'lab (patch note 1541918021939892245).',
     sources: [WIKI_FOOTGUNS],
   }
 ]

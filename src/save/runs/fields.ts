@@ -90,6 +90,8 @@ export const RUN_OPTIONAL_STRING_FIELDS = [
   'username',
   'note',
   'gameTime',
+  // Attack, Defense, Utility or Ultimate Weapon; absent for a run without dissonance.
+  'dissonance',
   'coinsPerHour',
   'cellsPerHour',
   'rerollShardsPerHour',

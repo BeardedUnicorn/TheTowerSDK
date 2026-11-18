@@ -7,6 +7,7 @@
     "But the build printed the same 'CONTRADICTION(S) -- review before shipping' line for these three on every single build, which is how a warning stops being read. A NEW contradiction -- the one that matters -- looked exactly like these.",
     "",
     "So this file is the floor: anything here is known and prints quietly; anything NOT here is new and fails the emit. It is a floor to work down, not permission to add more. A contradiction is only added after somebody has established which side is right and recorded the primary reference.",
+    "Provenance below is stated as it actually stands (reviewed 2026-11-18): each resolvedTo value is what the SDK's reference model carries, and the claim it rests on is recorded in the graph as origin 'code', 'independent validation not recorded'. These entries used to say 'Observed in game, v28.3.0', which the claims themselves do not support. An entry marked needsInGameConfirmation has a patch note or wiki statement pointing the other way.",
     ""
   ],
   "contradictions": [
@@ -14,28 +15,33 @@
       "subject": "module.subEffect.slot8",
       "predicate": "opensAtLevel",
       "resolvedTo": 241,
-      "origin": "game",
-      "ref": "Observed in game, v28.3.0",
+      "origin": "code",
+      "ref": "SDK reference model, carried from the v28.3.0 build; no in-game observation is recorded",
       "supersedes": "community guide value of 242",
-      "reviewedAt": "2026-08-18"
+      "reviewedAt": "2026-11-18",
+      "supportedBy": "patch note 1437909386852040805 (2025-03-03): new module substats unlock at levels 201 and 241",
+      "needsInGameConfirmation": false
     },
     {
       "subject": "perk.perkWaveRequirement",
       "predicate": "appliedAs",
       "resolvedTo": "multiply",
-      "origin": "game",
-      "ref": "Observed in game, v28.3.0",
+      "origin": "code",
+      "ref": "SDK reference model, carried from the v28.3.0 build; no in-game observation is recorded",
       "supersedes": "wiki value of 'add' -- a factor rather than a step, so anything modelling perk timing from the wiki is wrong by a multiple",
-      "reviewedAt": "2026-08-18"
+      "reviewedAt": "2026-11-18",
+      "needsInGameConfirmation": true
     },
     {
       "subject": "thorns",
       "predicate": "protectorPenaltyPercent",
       "resolvedTo": 30,
-      "origin": "game",
-      "ref": "Observed in game, v28.3.0",
+      "origin": "code",
+      "ref": "SDK reference model, carried from the v28.3.0 build; no in-game observation is recorded",
       "supersedes": "wiki value of 60",
-      "reviewedAt": "2026-08-18"
+      "reviewedAt": "2026-11-18",
+      "needsInGameConfirmation": true,
+      "note": "Patch note 1437902559258873937 (0.19.10, 2023-05-24) raised the Protector aura from 50% to 60% damage reduction, which supports the wiki's 60 if the aura governs thorns. Kept at 30 until a thorns hit on a protected enemy is measured in game."
     }
   ]
 }

@@ -58,3 +58,19 @@ describe('public bot synchronicity contract', () => {
     })
   })
 })
+
+describe('synchronicity and locked bots', () => {
+  /*
+   * Before v29.1 the game could put a locked bot into Synchronicity (patch notes
+   * 1547618571016740875 and 1560299109133459548). Such a bot is reported, not counted as synced.
+   */
+  it('does not count a locked bot as synced', () => {
+    const result = readBotSynchronicityFromSaveRoot({
+      synchronicityUnlocked: true, synchronicityLevel: 1,
+      synchronicityBots: [0, 2],
+      botsUnlocked: [true, false, false, false, false],
+    })
+    expect(result.bots).toEqual(['Flame Bot'])
+    expect(result.lockedBots).toEqual(['Golden Bot'])
+  })
+})

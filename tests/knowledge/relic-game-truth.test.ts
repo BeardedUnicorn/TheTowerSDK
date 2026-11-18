@@ -33,8 +33,10 @@ const CATALOG_WITH_TEMPLATES = CATALOG.filter(row => templateFor(row))
 
 describe('the catalog against the game enum', () => {
   it('has one template per catalog row, matched by name', () => {
-    // RELIC_TEMPLATES mirrors RELIC_IMPORT_CATALOG including v29 indices 305–320.
-    expect(RELIC_TEMPLATES).toHaveLength(321)
+    // RELIC_TEMPLATES mirrors RELIC_IMPORT_CATALOG: indices 0-324, 326-329 and 334-335, the relics
+    // released by v29.2.0 (facts/v29.2.0/relics.json). 325 and 330-333 exist in the game but were
+    // not out yet; 336-349 are later.
+    expect(RELIC_TEMPLATES).toHaveLength(331)
     expect(CATALOG.length).toBeGreaterThanOrEqual(RELIC_TEMPLATES.length)
     expect(CATALOG_WITH_TEMPLATES).toHaveLength(RELIC_TEMPLATES.length)
     for (const row of CATALOG_WITH_TEMPLATES) expect(Boolean(templateFor(row)), row.name).toBe(true)

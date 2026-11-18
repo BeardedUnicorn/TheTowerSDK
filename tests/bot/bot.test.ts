@@ -52,7 +52,8 @@ describe('a builder becomes a command without per-calculator code', () => {
     const reply = calculatorCommand(workshop).run({
       args: { costKey: 'WSP_ATTACK_SPEED', currentLevel: 0, targetLevel: 500 },
     }) as { notes?: readonly string[] }
-    expect(reply.notes?.join(' ')).toMatch(/priced to level 75/)
+    // Attack Speed caps at 100 in game data v29.2.0.
+    expect(reply.notes?.join(' ')).toMatch(/priced to level 100/)
   })
 
   it('ignores arguments the command never declared', () => {

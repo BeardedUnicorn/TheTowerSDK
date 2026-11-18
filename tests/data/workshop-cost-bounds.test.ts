@@ -15,7 +15,8 @@ describe('workshop cost curves are bounded by what they price', () => {
     const lengths = new Set(KEYS.map(key => workshopCostMaxLevel(curveFor(key))))
     expect(lengths.size).toBeGreaterThan(1)
     // The two short ones this was found through.
-    expect(workshopCostMaxLevel(curveFor('WSP_ATTACK_SPEED'))).toBe(75)
+    // Attack Speed caps at 100 in game data v29.2.0.
+    expect(workshopCostMaxLevel(curveFor('WSP_ATTACK_SPEED'))).toBe(100)
     expect(workshopCostMaxLevel(curveFor('WSP_ENEMY_LEVEL_SKIP'))).toBe(60)
   })
 
@@ -40,14 +41,14 @@ describe('workshop cost curves are bounded by what they price', () => {
 
   it('stops at the last priced level instead of running to the requested one', () => {
     const curve = curveFor('WSP_ATTACK_SPEED')
-    const rows = buildWorkshopLevelCostRows(curve, 0, 100, 0)
-    expect(rows.at(-1)?.level).toBe(75)
+    const rows = buildWorkshopLevelCostRows(curve, 0, 150, 0)
+    expect(rows.at(-1)?.level).toBe(100)
   })
 
   it('keeps the total identical, because the dropped rows were the free ones', () => {
     // The clamp must not change any answer that was already right.
     const curve = curveFor('WSP_ATTACK_SPEED')
-    const toMax = computeWorkshopCostTotal(curve, 0, 75, 0)
+    const toMax = computeWorkshopCostTotal(curve, 0, 100, 0)
     const past = computeWorkshopCostTotal(curve, 0, 400, 0)
     expect(past).toBe(toMax)
     expect(toMax).toBeGreaterThan(0)
@@ -61,10 +62,10 @@ describe('workshop cost curves are bounded by what they price', () => {
     const started = Date.now()
     const rows = buildWorkshopLevelCostRows(curveFor('WSP_DAMAGE'), 0, Number.MAX_SAFE_INTEGER, 0)
     expect(Date.now() - started).toBeLessThan(1000)
-    expect(rows.length).toBeLessThanOrEqual(400)
+    expect(rows.length).toBeLessThanOrEqual(600)
   })
 
   it('a start past the end buys nothing rather than a run of free levels', () => {
-    expect(buildWorkshopLevelCostRows(curveFor('WSP_ATTACK_SPEED'), 90, 120, 0)).toEqual([])
+    expect(buildWorkshopLevelCostRows(curveFor('WSP_ATTACK_SPEED'), 110, 140, 0)).toEqual([])
   })
 })

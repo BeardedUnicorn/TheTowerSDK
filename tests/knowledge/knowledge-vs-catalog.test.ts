@@ -386,7 +386,9 @@ describe('the oracle agrees with the catalogs', () => {
     // being true and the milestone disambiguation is wrong.
     const premiumUnlocks = MILESTONE_KEY_UNLOCK_ROWS.filter(row => row.track !== 'standard')
     expect(premiumUnlocks, 'premium track should gate nothing').toEqual([])
-    expect(MILESTONE_KEY_UNLOCK_ROWS.length).toBe(141)
+    // 161 since the v29.2 milestone table: Cells card, Dissonance, Bot Bot Cooldown, Global Presets,
+    // the Echo, fleet and Primary Module Bonus lab groups and the split T10/T16 groups.
+    expect(MILESTONE_KEY_UNLOCK_ROWS.length).toBe(161)
   })
 
   it('keeps the four lab counts distinct, and the one-shot labs visible', () => {
@@ -418,10 +420,10 @@ describe('the oracle agrees with the catalogs', () => {
     expect(ungated.length).toBeLessThan(named.length / 2)
   })
 
-  it('does not let 400 enhancement levels stand as a universal cap', () => {
+  it('does not let 600 enhancement levels stand as a universal cap', () => {
     /*
-     * The wiki documents the Damage enhancement, which has 400 levels, and that
-     * figure is easy to copy onto all eighteen. Seven of them are shorter, and
+     * The Damage enhancement has 600 levels (game data v29.2.0; the wiki still says the
+     * pre-v28.3 400), and that figure is easy to copy onto all eighteen. Six are shorter, and
      * one of the shortest is the most expensive per level — so ranking by level
      * count gets the cost order wrong too.
      */
@@ -432,7 +434,7 @@ describe('the oracle agrees with the catalogs', () => {
 
     const caps = new Set(ladders.map(l => l.levels))
     expect(caps.size, 'enhancements do not all share one level cap').toBeGreaterThan(1)
-    expect([...caps].sort((a, b) => b - a)).toEqual([400, 300, 200, 100, 75, 60])
+    expect([...caps].sort((a, b) => b - a)).toEqual([600, 300, 250, 150, 100, 60])
 
     // Every ladder opens at the same price, so an early cost predicts nothing.
     const firsts = new Set(ladders.map(l => l.ladder['0']))

@@ -9,6 +9,6 @@ How you get at a save — typed reads and where the file lives.
 | `index.ts` | How you get at a save, rather than what is in one. | — |
 | `json.ts` | Reads the game's JSON tool export into the same field shape as a decoded binary save. | looksLikeToolExportJson, readToolExportJson |
 | `path.ts` | — | TOWER_ANDROID_PACKAGE, TOWER_PLAYER_INFO_FILENAME, TOWER_TOOL_EXPORT_FILENAME, TOWER_SAVE_FILENAMES (+6 more) |
-| `values.ts` | Framework-agnostic helpers for reading numeric/boolean fields from parsed save roots. | coerceSaveNumber, readSaveEnumValue, toNumberArray, readSaveListItems (+4 more) |
+| `values.ts` | Framework-agnostic helpers for reading numeric/boolean fields from parsed save roots. | coerceSaveNumber, readSaveEnumValue, toNumberArray, readSaveListItems (+5 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

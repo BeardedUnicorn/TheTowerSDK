@@ -68,3 +68,18 @@ describe('waveInfoSpawnChances', () => {
     expect(high.Ranged).toBe(low.Ranged)
   })
 })
+
+describe('Ranged on tier 1', () => {
+  // v29.2 (patch note 1571908549376872459): Ranged spawn chance is 0% on Tier 1 from waves 1-20.
+  it('does not spawn on tier 1 waves 1-20, and the share goes to Basic', () => {
+    const early = waveInfoSpawnChances(1, 20)
+    const later = waveInfoSpawnChances(1, 21)
+    expect(early.Ranged).toBe(0)
+    expect(later.Ranged).toBeGreaterThan(0)
+    expect(early.Basic).toBe(later.Basic + later.Ranged)
+  })
+
+  it('leaves tier 2 alone', () => {
+    expect(waveInfoSpawnChances(2, 1).Ranged).toBeGreaterThan(0)
+  })
+})

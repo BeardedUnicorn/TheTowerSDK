@@ -1,9 +1,15 @@
 /**
  * The dissonance waves a save records, per track and tier.
  *
- * A save holds them two ways: the per-track boost lists the in-game dissonance screen reads, and a
- * legacy per-cycle table packed four types to a tier. Both are read here as the game stores them;
- * turning them into anything a calculator holds is the caller's business.
+ * A save holds them two ways: the per-track boost lists the in-game dissonance screen reads, and
+ * `highestWavePerTierThisCycle`, the best wave per tier this cycle. Both are indexed by tier number
+ * (slot 0 is empty). Both are read here as the game stores them; turning them into anything a
+ * calculator holds is the caller's business.
+ *
+ * The cycle table was long read as four dissonance types packed per tier. A v29.2 export settles
+ * it: the list has 40 slots, one per tier, and slot 7 equals the tier-7 best in
+ * `highestWaveThisTier`. Four types for 24 tiers would need 96 slots. The packed layouts are kept
+ * only for a list long enough to hold them.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    DISSONANCE_BOOST_SAVE_FIELD_BY_TYPE, DISSONANCE_CYCLE_SAVE_TYPE_BY_SLOT, isEchoLabsUnlockedInSave, readDissonanceCycleWaveForTierType, detectDissonanceCycleLayout, readDissonanceCycleWavesFromSaveRoot, readDissonanceBoostWavesByType, readDissonanceBoostWaveForTierType (+1 more)
@@ -13,7 +19,7 @@
  */
 import { MAX_CAMPAIGN_TIER } from '../../data/tiers/campaign'
 import { DISSONANCE_TYPE_KEYS, type DissonanceTypeKey } from '../../mechanics/labs/constants'
-import { coerceSaveNumber, readIndexedNumberArray, readSaveIntList } from '../access/values'
+import { coerceSaveNumber, readIndexedNumberArray, readSaveIntList, readSaveTierIndexedValues } from '../access/values'
 import type { DissonanceCycleLayout } from './types'
 
 /**
@@ -41,7 +47,7 @@ export const DISSONANCE_BOOST_SAVE_FIELD_BY_TYPE: Record<DissonanceTypeKey, stri
   utility: 'dissonanceCoinBoost',
   uw: 'dissonanceUltDamageBoost',
 }
-/** Legacy event-cycle field; not the in-game dissonance wave table. */
+/** Types per tier in the packed layouts, which a save only uses if its list can hold them. */
 const DISSONANCE_CYCLE_TYPES_PER_TIER = 4
 /** Save slot order of the legacy cycle table (sword → shield → star → triangle). */
 export const DISSONANCE_CYCLE_SAVE_TYPE_BY_SLOT: readonly DissonanceTypeKey[] = [
@@ -50,31 +56,43 @@ export const DISSONANCE_CYCLE_SAVE_TYPE_BY_SLOT: readonly DissonanceTypeKey[] = 
   'utility',
   'uw',
 ]
-/** Type-major blocks: all attack tiers, then defense, utility, UW (21 slots each). */
-const DISSONANCE_TYPE_MAJOR_BLOCK_START = [0, 21, 42, 63] as const
+/**
+ * Type-major blocks: all attack tiers, then defense, utility, UW, one block per type.
+ *
+ * Derived from the tier count. It was `[0, 21, 42, 63]`, which went stale with tiers 22-24 and
+ * read tiers 22-24 of one type out of the next type's block.
+ */
+const DISSONANCE_TYPE_MAJOR_BLOCK_START: readonly number[] = Array.from(
+  { length: DISSONANCE_CYCLE_TYPES_PER_TIER },
+  (_, type) => type * DISSONANCE_TIER_COUNT,
+)
 
 /** Whether the save has reached the point where echo labs unlock. */
 export function isEchoLabsUnlockedInSave(root: Record<string, unknown>): boolean {
   const currentTier = coerceSaveNumber(root.currentTier)
   if (currentTier != null && currentTier > ECHO_LABS_UNLOCK_TIER) return true
 
-  const highestWaveThisTier = readSaveIntList(root.highestWaveThisTier)
-  if ((highestWaveThisTier[ECHO_LABS_UNLOCK_TIER - 1] ?? 0) >= ECHO_LABS_UNLOCK_WAVE) return true
+  // Indexed by tier number: slot 17 is tier 17.
+  const bestByTier = readSaveTierIndexedValues(root.highestWaveThisTier)
+  if ((bestByTier[ECHO_LABS_UNLOCK_TIER] ?? 0) >= ECHO_LABS_UNLOCK_WAVE) return true
 
-  return highestWaveThisTier.slice(ECHO_LABS_UNLOCK_TIER).some(wave => wave > 0)
+  return Object.keys(bestByTier).some(tier => Number(tier) > ECHO_LABS_UNLOCK_TIER)
 }
 
 export function readDissonanceCycleWaveForTierType(
   cycleWaves: number[],
   tier: number,
   typeIndex: number,
-  layout: DissonanceCycleLayout = 'tier-major',
+  layout: DissonanceCycleLayout = 'per-tier',
 ): number {
   const safeTier = Math.max(1, Math.min(DISSONANCE_TIER_COUNT, Math.floor(tier)))
   const safeTypeIndex = Math.max(0, Math.min(DISSONANCE_CYCLE_TYPES_PER_TIER - 1, Math.floor(typeIndex)))
-  const index = layout === 'type-major'
-    ? DISSONANCE_TYPE_MAJOR_BLOCK_START[safeTypeIndex] + (safeTier - 1)
-    : (safeTier - 1) * DISSONANCE_CYCLE_TYPES_PER_TIER + safeTypeIndex
+  // One wave per tier: the type does not change which slot holds it.
+  const index = layout === 'per-tier'
+    ? safeTier
+    : layout === 'type-major'
+      ? DISSONANCE_TYPE_MAJOR_BLOCK_START[safeTypeIndex] + (safeTier - 1)
+      : (safeTier - 1) * DISSONANCE_CYCLE_TYPES_PER_TIER + safeTypeIndex
   if (index < 0 || index >= cycleWaves.length) return 0
   const wave = cycleWaves[index]
   return Number.isFinite(wave) ? Math.max(0, Math.floor(wave)) : 0
@@ -89,18 +107,12 @@ function countNonZeroBlock(cycleWaves: number[], start: number, end: number): nu
 }
 
 export function detectDissonanceCycleLayout(cycleWaves: number[]): DissonanceCycleLayout {
-  const attackBlockCount = countNonZeroBlock(cycleWaves, 0, 21)
-  const defenseBlockCount = countNonZeroBlock(cycleWaves, 21, 42)
-  const utilityBlockCount = countNonZeroBlock(cycleWaves, 42, 63)
-  const uwBlockCount = countNonZeroBlock(cycleWaves, 63, 84)
+  // A list too short to hold four types for every tier cannot be packed by type.
+  if (cycleWaves.length < DISSONANCE_TIER_COUNT * DISSONANCE_CYCLE_TYPES_PER_TIER) return 'per-tier'
 
-  const hasPopulatedTypeBlocks = defenseBlockCount > 0
-    && utilityBlockCount > 0
-    && uwBlockCount > 0
-    && attackBlockCount > 0
-
-  if (hasPopulatedTypeBlocks) {
-    const blockCounts = [attackBlockCount, defenseBlockCount, utilityBlockCount, uwBlockCount]
+  const blockCounts = DISSONANCE_TYPE_MAJOR_BLOCK_START.map(start =>
+    countNonZeroBlock(cycleWaves, start, start + DISSONANCE_TIER_COUNT))
+  if (blockCounts.every(count => count > 0)) {
     const minBlock = Math.min(...blockCounts)
     const maxBlock = Math.max(...blockCounts)
     if (maxBlock - minBlock <= 2) return 'type-major'
@@ -112,12 +124,12 @@ export function detectDissonanceCycleLayout(cycleWaves: number[]): DissonanceCyc
 export function readDissonanceCycleWavesFromSaveRoot(
   root: Record<string, unknown>,
 ): { cycleWaves: number[], layout: DissonanceCycleLayout } {
+  const raw = readSaveIntList(root.highestWavePerTierThisCycle)
   const cycleWaves = readIndexedNumberArray(
     root.highestWavePerTierThisCycle,
-    DISSONANCE_TIER_COUNT * DISSONANCE_CYCLE_TYPES_PER_TIER,
+    Math.max(raw.length, DISSONANCE_TIER_COUNT + 1),
   )
-  const layout: DissonanceCycleLayout = 'tier-major'
-  return { cycleWaves, layout }
+  return { cycleWaves, layout: detectDissonanceCycleLayout(raw) }
 }
 
 export function readDissonanceBoostWavesByType(

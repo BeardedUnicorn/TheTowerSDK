@@ -56,7 +56,8 @@ export function readPerkChoicesFromSaveRoot(
   const firstPerkRaw = readSavePerkIndex(root.firstPerkIndex)
   const firstTradeOffRaw = readSavePerkIndex(root.firstTradeOffPerkIndex)
   return {
-    bannedIndices: sortedUniquePerkIndices(toNumberArray(root.bannedPerksIndex)),
+    // -1 marks an empty ban slot (a v29.2 export: [49, 45, -1, -1, ...]), not a perk.
+    bannedIndices: sortedUniquePerkIndices(toNumberArray(root.bannedPerksIndex).filter(index => index >= 0)),
     firstPerkIndex: firstPerkRaw == null || firstPerkRaw < 0 ? null : firstPerkRaw,
     firstTradeOffPerkIndex: firstTradeOffRaw == null || firstTradeOffRaw < 0 ? null : firstTradeOffRaw,
     autoPickPerk: readSaveBoolean(root.autoPickPerk),

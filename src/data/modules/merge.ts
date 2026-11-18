@@ -49,8 +49,8 @@ export const MODULE_MERGE_RECIPES: readonly ModuleMergeRecipe[] = [
   { baseRarity: 'Legendary', basePlus: false, fodderCount: 1, fodderRarity: 'Epic', fodderPlus: true, matchMode: 'template', uniqueOnly: false, resultRarity: 'Legendary', resultPlus: true, addsStar: false },
   { baseRarity: 'Legendary', basePlus: true, fodderCount: 1, fodderRarity: 'Legendary', fodderPlus: true, matchMode: 'type', uniqueOnly: true, resultRarity: 'Mythic', resultPlus: false, addsStar: false },
   { baseRarity: 'Mythic', basePlus: false, fodderCount: 1, fodderRarity: 'Legendary', fodderPlus: true, matchMode: 'type', uniqueOnly: true, resultRarity: 'Mythic', resultPlus: true, addsStar: false },
-  
-  // different module here. bemerged's rule table was transcribed as `type`.
+  // Mythic+ to Ancestral takes two Epic+ of the SAME module (wiki "Modules/Merging": "2 Epic+
+  // (same)"), so `template`; an earlier transcription had `type` here.
   { baseRarity: 'Mythic', basePlus: true, fodderCount: 2, fodderRarity: 'Epic', fodderPlus: true, matchMode: 'template', uniqueOnly: true, resultRarity: 'Ancestral', resultPlus: false, addsStar: false },
   { baseRarity: 'Ancestral', basePlus: false, fodderCount: 1, fodderRarity: 'Epic', fodderPlus: true, matchMode: 'template', uniqueOnly: true, resultRarity: 'Ancestral', resultPlus: false, addsStar: true },
 ] as const

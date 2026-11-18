@@ -11,31 +11,31 @@
   },
   "fields": {
     "botPresetName": {
-      "description": "List of preset name strings — one per preset slot (4 slots total, only indices 0-2 are used). The app reorders rather than renames: a preset whose stored name is exactly 'Farming' is moved to slot 0 and one named 'Tourney' to slot 1; the rest keep their stored order, and a slot with an empty/missing name falls back to 'Preset N'.",
+      "description": "List of preset name strings — one per preset slot. Pre-v29 saves hold 3 used slots; a v29.2 export holds 5 (Presets lab plus Vault). The app reorders rather than renames: a preset whose stored name is exactly 'Farming' is moved to slot 0 and one named 'Tourney' to slot 1; the rest keep their stored order, and a slot with an empty/missing name falls back to 'Preset N'.",
       "ordering": "shared.resolvePresetOrder(botPresetName, ['Farming', 'Tourney']) → { order, indices }. All the per-bot preset lists below are indexed with indices[slot], not with slot."
     },
     "flameBotPresets": {
-      "description": "List of 4 preset slot objects for Flame Bot. Only indices 0-2 are used. Each object follows the presetStructure schema.",
+      "description": "List of preset slot objects for Flame Bot, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the presetStructure schema.",
       "indexing": "preset index p → flameBotPresets[p]"
     },
     "thunderBotPresets": {
-      "description": "List of 4 preset slot objects for Thunder Bot. Only indices 0-2 are used. Each object follows the presetStructure schema.",
+      "description": "List of preset slot objects for Thunder Bot, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the presetStructure schema.",
       "indexing": "preset index p → thunderBotPresets[p]"
     },
     "goldenBotPresets": {
-      "description": "List of 4 preset slot objects for Golden Bot. Only indices 0-2 are used. Each object follows the presetStructure schema.",
+      "description": "List of preset slot objects for Golden Bot, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the presetStructure schema.",
       "indexing": "preset index p → goldenBotPresets[p]"
     },
     "amplifyBotPresets": {
-      "description": "List of 4 preset slot objects for Amplify Bot. Only indices 0-2 are used. Each object follows the presetStructure schema.",
+      "description": "List of preset slot objects for Amplify Bot, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the presetStructure schema.",
       "indexing": "preset index p → amplifyBotPresets[p]"
     },
     "botBotPresets": {
-      "description": "List of 4 preset slot objects for Bot Bot. Only indices 0-2 are used. Each object follows the presetStructure schema.",
+      "description": "List of preset slot objects for Bot Bot, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the presetStructure schema.",
       "indexing": "preset index p → botBotPresets[p]"
     },
     "synchronicityPresets": {
-      "description": "List of 4 preset slot objects for Synchronicity. Only indices 0-2 are used. Each object follows the synchronicityPresets schema.",
+      "description": "List of preset slot objects for Synchronicity, one per preset: 3 used in a pre-v29 save, 5 in a v29.2 export. Each object follows the synchronicityPresets schema.",
       "indexing": "preset index p → synchronicityPresets[p]"
     }
   },

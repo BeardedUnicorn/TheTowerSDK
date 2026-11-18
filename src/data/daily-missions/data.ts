@@ -12,7 +12,13 @@ import type { DailyMissionLabLevel, DailyMissionTierReward, DailyMissionWeeklyRe
  * describing how missions are handed out lives in `thetowersdk/knowledge`.
  */
 
-/** Per-mission coins and shards, by the highest tier the player has unlocked. */
+/**
+ * Per-mission coins and shards, by the highest tier the player has unlocked.
+ *
+ * Wiki "Daily Missions" (Rewards), re-read 2026-11-18: tiers 10-13 pay 35/40/45/50 shards and
+ * tiers 22-24 pay 10/50/100 Bil coins. Those rows had been 34/38/42/48 and an extrapolated
+ * 3.25/5/7.5 Bil.
+ */
 export const DAILY_MISSION_TIER_REWARDS: readonly DailyMissionTierReward[] = [
   { tier: 1, coins: '25', shards: 'N/A' },
   { tier: 2, coins: '100', shards: '3' },
@@ -23,10 +29,10 @@ export const DAILY_MISSION_TIER_REWARDS: readonly DailyMissionTierReward[] = [
   { tier: 7, coins: '250,000', shards: '20' },
   { tier: 8, coins: '500,000', shards: '25' },
   { tier: 9, coins: '1.00 Mil', shards: '30' },
-  { tier: 10, coins: '3.00 Mil', shards: '34' },
-  { tier: 11, coins: '5.00 Mil', shards: '38' },
-  { tier: 12, coins: '8.00 Mil', shards: '42' },
-  { tier: 13, coins: '15.00 Mil', shards: '48' },
+  { tier: 10, coins: '3.00 Mil', shards: '35' },
+  { tier: 11, coins: '5.00 Mil', shards: '40' },
+  { tier: 12, coins: '8.00 Mil', shards: '45' },
+  { tier: 13, coins: '15.00 Mil', shards: '50' },
   { tier: 14, coins: '30.00 Mil', shards: '55' },
   { tier: 15, coins: '75.00 Mil', shards: '60' },
   { tier: 16, coins: '150.00 Mil', shards: '65' },
@@ -35,9 +41,9 @@ export const DAILY_MISSION_TIER_REWARDS: readonly DailyMissionTierReward[] = [
   { tier: 19, coins: '750 Mil', shards: '80' },
   { tier: 20, coins: '1.25 Bil', shards: '85' },
   { tier: 21, coins: '2.00 Bil', shards: '90' },
-  { tier: 22, coins: '3.25 Bil', shards: '95' },
-  { tier: 23, coins: '5.00 Bil', shards: '100' },
-  { tier: 24, coins: '7.50 Bil', shards: '105' },
+  { tier: 22, coins: '10.00 Bil', shards: '95' },
+  { tier: 23, coins: '50.00 Bil', shards: '100' },
+  { tier: 24, coins: '100.00 Bil', shards: '105' },
 ] as const
 
 /** Weekly reward tiers, keyed by how many missions were completed that week. */

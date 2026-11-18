@@ -151,12 +151,16 @@ function protectorSpawnChance(tier: number, wave: number): number {
   return Math.min(64, Math.max(0, chance))
 }
 
+/** Tier 1 spawns no Ranged enemies up to this wave (v29.2, patch note 1571908549376872459). */
+const TIER_1_NO_RANGED_THROUGH_WAVE = 20
+
 /** Spawn chance weights — basic fills remainder after fast/tank/ranged/protector. */
 export function waveInfoSpawnChances(tier: number, wave: number): WaveInfoSpawnChances {
   const weight = tierSpawnWeight(tier)
   const fast = Math.min(64, Math.round(3.294 * weight))
   const tank = Math.min(64, Math.round(3.019 * weight))
-  const ranged = Math.min(64, Math.round(2.881 * weight))
+  const noRanged = clampCampaignTier(tier) === 1 && Math.floor(wave) <= TIER_1_NO_RANGED_THROUGH_WAVE
+  const ranged = noRanged ? 0 : Math.min(64, Math.round(2.881 * weight))
   const protector = protectorSpawnChance(tier, wave)
   const basic = Math.max(0, 100 - fast - tank - ranged - protector)
   return { Basic: basic, Fast: fast, Tank: tank, Ranged: ranged, Protector: protector }

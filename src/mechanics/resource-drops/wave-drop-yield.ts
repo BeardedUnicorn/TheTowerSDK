@@ -81,17 +81,19 @@ export function computeWaveDropYield(
   let fleetCount = 0
   if (isFleetWave) {
     fleetCount = fleetSpawnSchedule(tier)?.fleetsPerSpawn ?? 0
-    const fleetReward = getFleetRewardRow(tier)
+    const fleetReward = getFleetRewardRow(tier, w)
     if (fleetReward && fleetCount > 0) {
       rerollShards +=
         fleetCount * FLEET_REROLL_SHARD_PROC * fleetReward.rerollShards * wsMult
-      moduleShards = expectedFleetModuleShardsEv(
+      // Added to, not assigned: a wave that is both a boss and a fleet wave keeps the boss's
+      // shatter shards.
+      moduleShards += expectedFleetModuleShardsEv(
         fleetCount,
         fleetReward.moduleShardsPerType,
         wsMult,
         'allTypes',
       )
-      moduleShardsOneType = expectedFleetModuleShardsEv(
+      moduleShardsOneType += expectedFleetModuleShardsEv(
         fleetCount,
         fleetReward.moduleShardsPerType,
         wsMult,

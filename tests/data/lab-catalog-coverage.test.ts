@@ -50,7 +50,7 @@ function hasLevelTable(slug: string): boolean {
  *   Package Chance Mastery"; both now have aliases.
  * - Genuinely missing, now acquired. The three enemy Health labs share the
  *   Attack cost/time table exactly, and wave_skip_mastery shares the card
- *   mastery table (its effect value is still unknown -- see labs-catalog).
+ *   mastery table.
  *
  * The six that remain are absent from the Effective Paths reference too.
  * Resolving their names alone cannot supply the missing cost and time tables.

@@ -173,17 +173,13 @@ describe('lab tables against the Effective Paths reference', () => {
    * Both remainders have to be empty for a join to mean anything. This asserts
    * the other direction.
    *
-   * The allowlist is for levels the sheet LISTS but has not PRICED. Its author
-   * uses round sentinels for those — swamp rend L10 is 1e16 coins at exactly
-   * 1000:00:00 and L11 is 1e18 at 2000:00:00, where the curve (x1.5 cost,
-   * x1.12 duration, exact for L1-L9) predicts 3.84e12 and 5.77e12. Importing
-   * those would ship invented costs, so the levels stay out of the catalog and
-   * stay named here instead of vanishing.
+   * The allowlist is for levels the sheet LISTS but has not PRICED. It is empty: Swamp Rend L10-11
+   * (1e16 at 1000:00:00, 1e18 at 2000:00:00) were once held out as sentinels because the L1-L9 curve
+   * predicts about 4e12, but wiki "Lab/Swamp Rend - Additional Enemies" states the same prices for the
+   * v28.3 Commander and Overcharge levels, so they are real and in the catalog.
    */
   it('has every level the reference has, or explains the gap', () => {
-    const UNPRICED_IN_REFERENCE: Record<string, number[]> = {
-      'Swamp Rend - Additional Enemies': [10, 11],
-    }
+    const UNPRICED_IN_REFERENCE: Record<string, number[]> = {}
 
     const gaps: string[] = []
     let compared = 0

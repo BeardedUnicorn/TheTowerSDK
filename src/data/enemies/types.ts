@@ -14,7 +14,6 @@
 export interface FleetRewardRow {
   tier: number
   rerollShards: number
-  moduleShardsPerType: number
 }
 
 export interface FleetSpawnRow {

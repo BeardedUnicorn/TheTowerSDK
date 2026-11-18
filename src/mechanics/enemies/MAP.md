@@ -7,7 +7,7 @@ Enemy stats, types, resistances, elite spawns and drops.
 | File | Purpose | Exports |
 |---|---|---|
 | `constants.ts` | The research labs that scale an enemy's own stats. | BOSS_REROLL_SHARD_PROC_CHANCE_V29, ENEMY_STAT_RESEARCH_LAB_SLUGS |
-| `drops-game-data.ts` | Module drop, shatter, and reroll constants from tower mechanics tables. | MODULE_DROP_LAB_MULT, COMMON_MODULE_DROP_BASE, RARE_MODULE_DROP_BASE, BOSS_REROLL_SHARDS_PROC (+17 more) |
+| `drops-game-data.ts` | Module drop, shatter, and reroll constants from tower mechanics tables. | MODULE_DROP_LAB_MULT, COMMON_MODULE_DROP_BASE, RARE_MODULE_DROP_BASE, BOSS_REROLL_SHARDS_PROC (+18 more) |
 | `drops-shared.ts` | Leaf module for symbols shared across the enemy-drops modules (`drops-simulation`, `drops-wave-context`) and by anyone assembling an `EnemyDropsSimulationInput`. | clampCardGameLevel, clampCardMasteryLevel, computeBossWaveIntervalFromTier, computeTierNumber (+1 more) |
 | `drops-simulation.ts` | Enemy drops: | computeBossWaveInterval, BOSS_WAVE_INTERVAL_BY_TIER, computeEnemyDropsNormalizedRoiPct, fetchUpgradeAtLevel (+15 more) |
 | `drops-wave-context.ts` | Wave-level drop context — card levels, skip EV, boss counts. | WAVE_SKIP_SKIPPED_WAVE_MULT, waveSkipExpectedSkipsPerProc, averageEliteCellsPerKill, avgEliteKillsPerWaveFromMastery (+3 more) |

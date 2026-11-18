@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { isEchoLabsUnlockedInSave } from '../../src/save/dissonance/waves'
 
-/** `highestWaveThisTier` with the given bests, keyed by 1-based tier. */
+/** `highestWaveThisTier` with the given bests. The save indexes it by tier: slot 0 is empty. */
 const reached = (bests: Record<number, number>, currentTier = 1) => ({
   currentTier,
-  highestWaveThisTier: Array.from({ length: 24 }, (_, index) => bests[index + 1] ?? 0),
+  highestWaveThisTier: Array.from({ length: 25 }, (_, tier) => bests[tier] ?? 0),
 })
 
 /*
@@ -32,9 +32,9 @@ describe('isEchoLabsUnlockedInSave', () => {
   })
 
   it('reads a serialised list by _size', () => {
-    const waves = Array.from({ length: 24 }, (_, index) => (index === 16 ? 60 : 0))
-    expect(isEchoLabsUnlockedInSave({ highestWaveThisTier: { _items: waves, _size: 24 } })).toBe(true)
-    expect(isEchoLabsUnlockedInSave({ highestWaveThisTier: { _items: waves, _size: 16 } })).toBe(false)
+    const waves = Array.from({ length: 25 }, (_, tier) => (tier === 17 ? 60 : 0))
+    expect(isEchoLabsUnlockedInSave({ highestWaveThisTier: { _items: waves, _size: 25 } })).toBe(true)
+    expect(isEchoLabsUnlockedInSave({ highestWaveThisTier: { _items: waves, _size: 17 } })).toBe(false)
   })
 
   it('is false for a save with no progress data', () => {

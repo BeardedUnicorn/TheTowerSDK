@@ -18,7 +18,7 @@
  * same condition `Skip Reduction - Subtract`. So:
  *
  * - `getTierBattleConditionLevel(24, 'Skip Reduction - Subtract')` returns **0**,
- *   though the condition is at level 55 there.
+ *   though the condition is at level 85 there.
  * - `Skip Reduction - Subtract` reads as "defined but never used at any tier",
  *   which is how it looks in a coverage sweep and is not true.
  * - `battle-condition-config.ts` had to bolt `| 'ELS Reduction'` onto a type

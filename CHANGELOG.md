@@ -2,6 +2,79 @@
 
 ## Unreleased
 
+**Checked against game v29.2.0 (build 1286).** Data was re-read from the game's own tables
+(`facts/v29.2.0/`), the wiki and the developers' patch notes through v29.2; a v29.2 official
+export was read end to end.
+
+Save readers (each pinned by a test shaped like a v29.2 export):
+
+- **Misreads fixed.**
+  - Module shard and reroll balances read the `_v2` keys v29.2 writes. Lifetime dice does the same.
+  - All five workshop presets are read, and card presets, from their flat lists.
+  - The tier-indexed lists (`highestWaveThisTier`, `highestWavePerTierThisCycle`) read slot 7 as
+    tier 7. Highest tier and Echo-lab unlock were one tier high.
+  - The per-cycle wave table is one wave per tier, not four dissonance types.
+  - Lab time remaining uses the game's own finish date. The estimate uses the Labs Speed
+    research, not the gem speed-up multiplier, which made it about 2x long.
+  - Locked, empty assist slots are not equipped modules. Banned perks drop `-1`.
+  - Bot and guardian presets come from the save's own lists, five at v29.2.
+  - Battle reports read `totalVampires` and `healthFromDeathWaveThisRound`, show `gameTime` as a
+    duration and health amounts compactly, add `dissonance`, never pass Death Wave hits off as
+    kills, and no longer invent a `bountyCoins` of 0.
+  - Relics resolve by their own index, so a gap in the catalog no longer shifts later names.
+- **New readers.**
+  - `readExportInfoFromSaveRoot`: build, data version, and every top-level field the SDK does not
+    know, as a warning.
+  - `readCurrenciesFromSaveRoot`, `readTournamentsFromSaveRoot`, `readEventsFromSaveRoot`,
+    `readMilestonesFromSaveRoot`, `readGlobalPresetsFromSaveRoot`, `readTierRecordsFromSaveRoot`,
+    `readModuleEconomyFromSaveRoot`, `readLifetimeBreakdownFromSaveRoot`,
+    `readWorkshopUnlocksFromSaveRoot`, `readThemesFromSaveRoot`.
+  - The guardian reader adds chip slot count, guild-gated `activeInBattle` and presets. The labs
+    reader adds the completion log.
+
+Game data:
+
+- Relics 321-324, 326-329, 334 and 335 added. Six rarities, eleven premium/standard labels and
+  four medal costs corrected. Relic totals are summed from the game's table.
+- Tournament prizes: Platinum and Champion stones as v29.0.1 corrected them.
+- Milestones: every cell of tiers 1-24 matches the game. Tiers 22-24 were almost entirely wrong;
+  T23 W500 is the Primary Module Bonus labs.
+- Workshop enhancements run to the game's caps: twelve at 600, Coin Bonus and Cells / Kill at 300,
+  Orb Size 250, Free Upgrades 150, Attack Speed 100, Enemy Level Skips 60. The cost tables are
+  read from the full ladders.
+- Labs:
+  - Card Presets is now Presets.
+  - Swamp Rend - Additional Enemies has levels 10-11.
+  - Lab unlocks match the game: Effect Bans, bot labs, Bot Bot Cooldown and Swamp Rend placements
+    corrected; fleet labs and Global Presets added.
+  - Card mastery values corrected; Standard Perk Bonus has 25 levels; the battle-condition
+    reduction labs described as the opposite of what they do.
+- Currency: ad gems are 6 a claim (60 a day), the daily gem is 20, the stone confirmation prompt
+  is at 100, keys come from Legend 1-24 and Mythic, and the bits arithmetic is fixed.
+- Enemies:
+  - Shatter shards for Rare and Rare+ were swapped.
+  - Boss reroll shards T2-T10 corrected.
+  - Fleets pay at every tier and module shards by spawn wave.
+  - A boss-and-fleet wave keeps both shard drops.
+  - T22-24 battle conditions match the game.
+  - Tier 1 has no Ranged before wave 21 (v29.2).
+- Guardian ladders: Ally, Attack and Fetch were cut short.
+- UWs, modules and themes:
+  - UW and UW+ max levels; Smite caps at 100 hits per enemy.
+  - Assist Multiplier stones run to 100%; module inventory cap 350.
+  - Milestone skins T22-24, plus the theme items the bonus lists lacked.
+  - Daily-mission rewards T10-13 and T22-24.
+- Thorns against fleets are 15% of remaining health. A fleet's hits-to-kill is null (thorns
+  never finish one) and `hitsToHalveFleet` is added. Mythic is a tournament option.
+
+Knowledge:
+
+- The version timeline has v29.0, v29.1 and v29.2 windows, so a claim read before the current
+  build is flagged.
+- Vault, footguns, survival, modules, meta-game, economy, labs, patch-notes, guardian and
+  workshop claims are updated from v28 to v29.x with citations.
+- `known-contradictions.json` states its provenance honestly.
+
 **Fixes from a repository review.** Each has a regression test except the WASM entry, whose
 suite only runs against a built module.
 

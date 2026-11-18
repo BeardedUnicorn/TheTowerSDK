@@ -17,15 +17,16 @@ describe('enhancement cost curves', () => {
     expect(ENHANCEMENT_COST_CURVE_GROUPS.flat()).toHaveLength(KEYS.length)
   })
 
-  it('has fewer distinct curves than tables, and fewer tables than keys', () => {
-    expect(ENHANCEMENT_DISTINCT_COST_CURVES).toBeLessThan(ENHANCEMENT_COST_TABLE_OBJECTS)
+  it('has one table per distinct curve, and fewer tables than keys', () => {
+    // Identical curves share one table object since the tables are built from the full ladders.
+    expect(ENHANCEMENT_DISTINCT_COST_CURVES).toBe(ENHANCEMENT_COST_TABLE_OBJECTS)
     expect(ENHANCEMENT_COST_TABLE_OBJECTS).toBeLessThan(KEYS.length)
     expect(ENHANCEMENT_DISTINCT_COST_CURVES).toBe(ENHANCEMENT_COST_CURVE_GROUPS.length)
   })
 
-  it('makes the eleven-strong group identical at every level, not merely equal in length', () => {
+  it('makes the twelve-strong group identical at every level, not merely equal in length', () => {
     const biggest = ENHANCEMENT_COST_CURVE_GROUPS[0]!
-    expect(biggest).toHaveLength(11)
+    expect(biggest).toHaveLength(12)
     const reference = curve(biggest[0]!)
     for (const key of biggest.slice(1)) {
       const other = curve(key)

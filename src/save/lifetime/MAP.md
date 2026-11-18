@@ -6,8 +6,9 @@ What a save says about lifetime.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `breakdown.ts` | Lifetime totals the in-game Lifetime panel does not list: | LIFETIME_BREAKDOWN_SAVE_KEY_BY_STAT, readLifetimeBreakdownFromSaveRoot |
 | `index.ts` | Lifetime totals — the running counts a save carries across every run. | — |
 | `read.ts` | — | LIFETIME_STARTED_AT_KEY, LIFETIME_SAVE_ORB_KILLS_KEY, LIFETIME_SAVE_ORB_KILLS_FIELD_BEFORE_V29, LIFETIME_SAVE_CELLS_EARNED_KEY (+4 more) |
-| `types.ts` | The types `save/lifetime/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | LifetimeImportEntryFields, LifetimeSaveFieldRow, LifetimeSaveExtract |
+| `types.ts` | The types `save/lifetime/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | LifetimeImportEntryFields, LifetimeSaveFieldRow, LifetimeSaveExtract, LifetimeBreakdownSaveExtract |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

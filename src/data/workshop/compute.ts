@@ -59,17 +59,14 @@ export function getWorkshopEnhancementDataKey(enhancementKey: string): string {
  * How many levels an enhancement has.
  *
  * The `+ 1` is not an off-by-one: cost tables are indexed from 0, so a table whose last index is
- * 74 prices 75 levels. `oracle_traps('workshop')` is emphatic that this number is not uniform —
- * eleven of the eighteen run to 400, but Cash Bonus stops at 300, Orb Size, Coin Bonus and Cells
- * per Kill at 200, Free Upgrades at 100, Attack Speed at 75 and Enemy Level Skip at 60. Pricing
- * every enhancement on the Damage ladder overstates seven of them badly.
- * `enhancement-ladders.test.ts` pins all eighteen against the oracle's figures.
+ * 99 prices 100 levels. The number is not uniform. Game data v29.2.0 caps twelve enhancements at
+ * 600, Coin Bonus and Cells / Kill at 300, Orb Size at 250, Free Upgrades at 150, Attack Speed at
+ * 100 and Enemy Level Skips at 60 (`workshop-enhancement-caps.test.ts`). Pricing every
+ * enhancement on one ladder overstates or understates most of them.
  *
- * The 200 for an unknown key is inherited and is a guess — 200 is the right answer for three of
- * the eighteen and wrong for the other fifteen. It is preserved rather than corrected because
- * callers price upgrades against it, but a caller passing a key this package does not know gets a
- * plausible number rather than an error, which is the shape of defect this repository keeps
- * finding. Worth revisiting deliberately.
+ * The 200 for an unknown key is inherited and is a guess. It is preserved rather than corrected
+ * because callers price upgrades against it, but a caller passing a key this package does not know
+ * gets a plausible number rather than an error. Worth revisiting deliberately.
  */
 export function computeWorkshopEnhancementMaxLevel(enhancementKey: string): number {
   const costMax = getWorkshopMaxLevelByKey(getWorkshopEnhancementDataKey(enhancementKey))

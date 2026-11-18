@@ -32,11 +32,11 @@ export const CURRENCY_DEFINITIONS = [
   { name: 'Cash', summary: 'Run-only currency used for temporary upgrades during a run.', persistence: 'run-only' },
   { name: 'Coins', summary: 'Core progression currency used for Workshop, Labs, and permanent enhancement unlocks.', persistence: 'account' },
   { name: 'Gems', summary: 'Core premium currency used for cards, slots, rushing, modules, and extra tournament entries.', persistence: 'account' },
-  { name: 'Power Stones', summary: 'Premium progression currency used to buy and upgrade Ultimate Weapons.', persistence: 'account' },
+  { name: 'Power Stones', summary: 'Premium progression currency for Ultimate Weapons, Card Masteries, Assist Module slots, Bots+ and Synchronicity.', persistence: 'account' },
   { name: 'Medals', summary: 'Event currency used for Event Shop purchases and saved between events.', persistence: 'account' },
   { name: 'Elite Cells', summary: 'Elite-enemy currency used to buy lab boosts.', persistence: 'account' },
-  { name: 'Keys', summary: 'Legend-tournament currency used for Vault tech-tree upgrades.', persistence: 'account' },
-  { name: 'Bits', summary: 'Guild-shop currency used for guardian chip upgrades.', persistence: 'account' },
+  { name: 'Keys', summary: 'Legend and Mythic tournament currency spent in the Vault (Harmony, Power and Enemy).', persistence: 'account' },
+  { name: 'Bits', summary: 'Guild currency for unlocking the Guardian, buying chip slots and upgrading chips.', persistence: 'account' },
   { name: 'Tokens', summary: 'Guild-shop currency earned from weekly challenge and guild reward systems.', persistence: 'account' },
   { name: 'Module Currency', summary: 'Module Shards level modules, and Reroll Dice reroll module substats.', persistence: 'account' },
 ] as const satisfies readonly CurrencyDefinition[]
@@ -88,7 +88,7 @@ export const CURRENCY_FLOW_ROWS = [
   buildCurrencyFlowRow('Medals', [
     'Event Missions',
     'Weekly Rewards from Daily Missions',
-    'Guardian Fetch module',
+    'Guardian Fetch',
   ], [
     'Event Shop currencies',
     'Themes',
@@ -102,14 +102,18 @@ export const CURRENCY_FLOW_ROWS = [
     'Lab boosts',
   ]),
   buildCurrencyFlowRow('Keys', [
-    'Legend Tournament placement from rank 1 through 15',
+    // v29 (patch note 1541918183001424042): Legend ranks 16-24 pay a key, and Mythic pays keys.
+    'Legend Tournament placement from rank 1 through 24',
+    'Mythic Tournament placement at every rank',
   ], [
-    'Vault tech trees',
+    'Vault upgrades and category unlocks (Harmony, Power, Enemy)',
   ]),
   buildCurrencyFlowRow('Bits', [
     'Guild Reward Chests',
-    'Guild Shop seasonal currency purchases',
+    'Guild Shop purchases with Tokens',
   ], [
+    'Guardian unlock',
+    'Guardian chip slots',
     'Guardian chip upgrades',
   ]),
   buildCurrencyFlowRow('Tokens', [
@@ -171,8 +175,12 @@ export const COIN_BONUS_ENHANCEMENT_FACTS = [
 
 export const GEM_ACQUISITION_FACTS = [
   'Floating gems spawn around the tower, up to ten per run, at two gems per pickup.',
-  'Floating gems spawn about once every 400 to 500 waves and no more than once every 15 minutes.',
-  'Ad gems appear about every 10 minutes and grant five gems per claim.',
+  // Wiki "Currency/Gems", read 2026-11-18.
+  'The first floating gem can appear from wave 10 once 11 minutes have passed; after that one needs at least 30 minutes and 400 waves since the last.',
+  // Game constants in v29.2.0: 6 gems per ad claim (5 before v29), 60 claims a day; patch note 1541918349519233064.
+  'Ad gems grant six gems per claim, up to 60 claims a day (360 gems).',
+  // Game constant in v29.2.0 (20, was 15 before v29); patch note 1541918349519233064.
+  'The free daily gem claim in the store grants 20 gems.',
   'Gems also come from store claims, tournaments, medal and guild exchange paths, daily missions, weekly reward systems, and real-money purchases.',
 ] as const
 
@@ -182,8 +190,9 @@ export const GEM_SPENDING_FACTS = [
 ] as const
 
 export const POWER_STONE_FACTS = [
-  'Power Stones buy and upgrade Ultimate Weapons.',
-  'Purchases of 500 Power Stones or more show a confirmation prompt.',
+  'Power Stones buy and upgrade Ultimate Weapons, and also pay for Card Masteries, Assist Module slots and their upgrades, Bots+ and Synchronicity.',
+  // Game constant in v29.2.0 (STONE_SPEND_WARNING_AMOUNT); lowered from 500 in v27.3 (patch note 1451266909847945227).
+  'Spending 100 Power Stones or more shows a confirmation prompt.',
   'Main sources listed are Tournaments, Event medal exchanges, weekly rewards, Milestones, and store offers.',
 ] as const
 
@@ -208,9 +217,10 @@ export const ELITE_CELL_TIER_ROWS = [
   { tier: 19, minimumCells: 15, maximumCells: 19, averageCells: 17, averageIncreaseFromPriorPercent: 13.3 },
   { tier: 20, minimumCells: 15, maximumCells: 20, averageCells: 17.5, averageIncreaseFromPriorPercent: 2.94 },
   { tier: 21, minimumCells: 15, maximumCells: 21, averageCells: 18, averageIncreaseFromPriorPercent: 2.86 },
-  { tier: 22, minimumCells: 16, maximumCells: 22, averageCells: 19, averageIncreaseFromPriorPercent: 5.56 },
-  { tier: 23, minimumCells: 16, maximumCells: 23, averageCells: 19.5, averageIncreaseFromPriorPercent: 2.63 },
-  { tier: 24, minimumCells: 16, maximumCells: 24, averageCells: 20, averageIncreaseFromPriorPercent: 2.56 },
+  // Wiki "Currency/Elite Cells", read 2026-11-18; the earlier T22-24 rows had no stated source.
+  { tier: 22, minimumCells: 15, maximumCells: 22, averageCells: 18.5, averageIncreaseFromPriorPercent: 2.78 },
+  { tier: 23, minimumCells: 15, maximumCells: 23, averageCells: 19, averageIncreaseFromPriorPercent: 2.7 },
+  { tier: 24, minimumCells: 15, maximumCells: 24, averageCells: 19.5, averageIncreaseFromPriorPercent: 2.63 },
 ] as const satisfies readonly EliteCellTierRow[]
 
 export const ELITE_CELL_IMPROVEMENT_FACTS = [
@@ -219,14 +229,16 @@ export const ELITE_CELL_IMPROVEMENT_FACTS = [
 ] as const
 
 export const KEY_FACTS = [
-  'Keys are earned from placing 1st through 15th in Legend Tournament.',
-  'They are used for unique Tower upgrades in the Vault tech trees.',
+  // v29 (patch note 1541918183001424042); wiki "Currency/Keys", read 2026-11-18.
+  'Keys are earned from placing 1st through 24th in a Legend Tournament and at every rank in a Mythic Tournament.',
+  'They are spent in the Vault, on upgrades and on unlocking its categories (Harmony, Power and Enemy).',
 ] as const
 
+// Wiki "Currency/Bits", read 2026-11-18.
 export const BIT_FACTS = [
-  'Bits are bought from the Guild Shop using Guild Tokens and are used for guardian chip upgrades.',
-  'The source lists Guild Chests at 10, 25, 50, and 100 bits for 185 bits per week.',
-  'It also lists Guild Shop bit purchases at 25, 50, and 75 for 150 bits per month, with a stated combined monthly total of 890 bits.',
+  'Bits come from Guild Weekly Reward Chests and from Guild Store purchases with Tokens, and pay for the Guardian unlock (200), its 2nd and 3rd chip slots (200 and 300) and chip upgrades.',
+  'Guild Chests pay 10, 25, 50 and 100 bits, 185 bits a week at most (about 1,480 per eight-week Guild Season).',
+  'The Guild Store sells 25 bits three times a season for 25, 50 and 75 Tokens: 75 bits for 150 Tokens.',
 ] as const
 
 export const TOKEN_FACTS = [

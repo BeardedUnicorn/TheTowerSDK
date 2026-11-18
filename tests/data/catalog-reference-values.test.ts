@@ -3,6 +3,8 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { CARD_TEMPLATES } from '../../src/data'
 import { MILESTONE_TIER_DATA } from '../../src/data/milestones/tracks'
+import { parseNumberInput } from '../../src/formatting'
+import { RELIC_IMPORT_CATALOG, THEME_CATALOG } from '../../src/save/catalogs/indexes.data'
 
 /**
  * Catalog values must match the versioned reference fixtures under explicit unit conversions.
@@ -13,7 +15,7 @@ import { MILESTONE_TIER_DATA } from '../../src/data/milestones/tracks'
  *
  *   - Wave Accelerator level 5 said 48% where the game shows 46%, breaking the card's own
  *     +4 progression (30 / 34 / 38 / 42 / 46 / 50 / 54)
- *   - Milestone tier 1 wave 10 said 10 Coins where the game shows 25
+ *   - Milestone tier 1 wave 10 said 10 Coins where the game shows 25 (40 since v29.2)
  *
  * WHAT THE STORED TABLE IS NOT. `cardBenefit` is the value the game keeps, and for most
  * cards it is also the value the game SHOWS. For some it is not, and the card screen is the
@@ -33,9 +35,11 @@ import { MILESTONE_TIER_DATA } from '../../src/data/milestones/tracks'
  */
 
 const FACTS = path.resolve(__dirname, '../../facts/v29.0.0')
+/** Milestones are checked against the newest build: v29.1 and v29.2 changed two cells. */
+const FACTS_V29_2 = path.resolve(__dirname, '../../facts/v29.2.0')
 
-function readFact<T>(name: string): T {
-  return JSON.parse(readFileSync(path.join(FACTS, name), 'utf8')) as T
+function readFact<T>(name: string, dir = FACTS): T {
+  return JSON.parse(readFileSync(path.join(dir, name), 'utf8')) as T
 }
 
 interface CardBenefitFact {
@@ -43,11 +47,14 @@ interface CardBenefitFact {
   cards: { cardId: string; levelValues: number[] }[]
 }
 
+interface MilestoneFactRow { slot: number; type: string | null; value: number | null }
+
 interface MilestoneFact {
   gameVersion: string
   tiers: {
     tier: number
-    free: { slot: number; type: string | null; value: number | null }[]
+    free: MilestoneFactRow[]
+    premium: MilestoneFactRow[]
   }[]
 }
 
@@ -130,41 +137,90 @@ describe('card level values match the reference fixture', () => {
   )
 })
 
+/** The wave each milestone slot pays at, as the game indexes slots within a tier. */
+const MILESTONE_SLOT_WAVES = [
+  10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 2500, 4500,
+]
+const CURRENCIES = new Set(['Coins', 'Gems', 'Stones'])
+
+/** `10T Coins` as `{ unit: 'Coins', amount: 1e13 }`; null for anything that is not a currency. */
+function readCurrencyLabel(label: string): { unit: string; amount: number } | null {
+  const match = label.match(/^([\d.,]+[a-zA-Z]{0,2})\s+(Coins|Gems|Stones)$/)
+  return match ? { unit: match[2], amount: parseNumberInput(match[1]) } : null
+}
+
+const sameAmount = (a: number, b: number) => Math.abs(a - b) <= Math.max(1e-6, Math.abs(b) * 1e-9)
+
 describe('milestone rewards match the game', () => {
-  const fact = readFact<MilestoneFact>('milestone-rewards.json')
+  const fact = readFact<MilestoneFact>('milestone-rewards.json', FACTS_V29_2)
+  const towerSkins = new Map((THEME_CATALOG as readonly { category: string; catalogIndex: number; label: string }[])
+    .filter(row => row.category === 'tower')
+    .map(row => [row.catalogIndex, row.label]))
+  const relics = new Map((RELIC_IMPORT_CATALOG as readonly { index: number; benefit: number }[])
+    .map(row => [row.index, row.benefit]))
 
   it('has the same number of tiers as the game', () => {
     expect(MILESTONE_TIER_DATA.length).toBe(fact.tiers.length)
   })
 
-  it('tier 1 rewards read in the game order, with the game amounts', () => {
-    const tier1 = fact.tiers.find(t => t.tier === 1)!
-    const amounts = tier1.free
-      .filter(r => (r.type === 'Coins' || r.type === 'Gems') && r.value !== null)
-      .slice(0, 5)
-      .map(r => `${r.value} ${r.type}`)
-    const labels = MILESTONE_TIER_DATA[0].standard.waveRewards.flatMap(w => w.rewards)
-    // Each amount the game states must appear in the tier's reward labels. `10 Coins` sat
-    // here where the game says 25, and nothing else in the tier disagreed.
-    for (const amount of amounts) {
-      const [value, kind] = amount.split(' ')
-      const wanted = Number(value)
-      const found = labels.some(label => {
-        const m = label.match(/^([\d.]+)(k?)\s+(\w+)/)
-        if (!m || m[3] !== kind) return false
-        return Number(m[1]) * (m[2] === 'k' ? 1000 : 1) === wanted
+  /*
+   * Every cell of every tier, both tracks. Only tier 1 used to be checked, and tiers 22-24 were
+   * wrong in almost every cell (T22 W10 said 2T Coins where the game pays 10T) without failing.
+   */
+  for (const tier of fact.tiers) {
+    for (const [factTrack, track] of [['free', 'standard'], ['premium', 'premium']] as const) {
+      it(`tier ${tier.tier} ${track} pays what the game pays, wave by wave`, () => {
+        const data = MILESTONE_TIER_DATA.find(entry => entry.tier === tier.tier)![track]
+        expect(data.waveRewards.map(w => w.wave)).toEqual(MILESTONE_SLOT_WAVES)
+        for (const reward of tier[factTrack]) {
+          const wave = MILESTONE_SLOT_WAVES[reward.slot]
+          const labels = data.waveRewards.find(w => w.wave === wave)!.rewards
+          const where = `tier ${tier.tier} ${track} wave ${wave}: ${JSON.stringify(labels)}`
+          const currency = labels.map(readCurrencyLabel)
+          if (reward.type && CURRENCIES.has(reward.type)) {
+            expect(labels, where).toHaveLength(1)
+            expect(currency[0]?.unit, where).toBe(reward.type)
+            expect(sameAmount(currency[0]!.amount, reward.value!), `${where} — the game pays ${reward.value}`).toBe(true)
+            continue
+          }
+          // Everything else is an unlock, a skin or a relic, never a currency amount.
+          expect(currency.every(entry => entry === null), `${where} — the game gives ${reward.type}`).toBe(true)
+          if (reward.type === 'Tier') expect(labels, where).toContain(`Tier ${reward.value}`)
+          if (reward.type === 'TowerSkin') expect(labels, where).toEqual([`${towerSkins.get(reward.value!)} Skin`])
+          if (reward.type === 'Relic') {
+            const percent = Math.round(relics.get(reward.value!)! * 1000) / 10
+            expect(labels[0], where).toMatch(new RegExp(`^Relic: .+ \\+${String(percent).replace('.', '\\.')}%$`))
+          }
+        }
       })
-      expect(found, `no ${amount} reward in milestone tier 1: ${labels.join(', ')}`).toBe(true)
+
+      it(`tier ${tier.tier} ${track} totals add up from its own rewards`, () => {
+        const data = MILESTONE_TIER_DATA.find(entry => entry.tier === tier.tier)![track]
+        const sums: Record<string, number> = { Coins: 0, Gems: 0, Stones: 0 }
+        for (const label of data.waveRewards.flatMap(w => w.rewards)) {
+          const currency = readCurrencyLabel(label)
+          if (currency) sums[currency.unit] += currency.amount
+        }
+        expect(sameAmount(data.totals.coinsValue, sums.Coins), `coins ${data.totals.coinsText}`).toBe(true)
+        expect(data.totals.gemsValue).toBe(sums.Gems)
+        expect(data.totals.stonesValue).toBe(sums.Stones)
+      })
     }
-  })
+  }
 })
 
 describe('the shipped fixtures contain catalog data', () => {
   // Keep test-harness state out of the catalog fixtures consumed by the SDK.
-  it.each(['card-benefits.json', 'milestone-rewards.json', 'daily-mission-goals.json'])(
+  it.each([
+    path.join(FACTS, 'card-benefits.json'),
+    path.join(FACTS, 'milestone-rewards.json'),
+    path.join(FACTS, 'daily-mission-goals.json'),
+    path.join(FACTS_V29_2, 'milestone-rewards.json'),
+  ])(
     '%s contains no test-harness state',
-    name => {
-      const text = readFileSync(path.join(FACTS, name), 'utf8')
+    file => {
+      const name = path.basename(file)
+      const text = readFileSync(file, 'utf8')
       for (const word of ['seededGrid', 'sentinel', 'resumes', 'emulated', 'seed_length', 'faked']) {
         expect(text, `${name} mentions ${word}`).not.toContain(word)
       }

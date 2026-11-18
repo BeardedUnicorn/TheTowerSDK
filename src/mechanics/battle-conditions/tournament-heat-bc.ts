@@ -30,7 +30,9 @@ export const HEAT_BC_INDEX_ELS_REDUCTION = V283_HEAT_BC_INDEX.elsReduction
  * - Wiki BC list: Skip Reduction - Subtract appears in **Tiers** only; tournament
  *   overheat table lists Skip Reduction - **Multiply**, not Subtract.
  * - Prior SDK 10/20/30/50 were invented: Gold Create(10) is cond 27 (Skip Decay);
- *   Legend Create(50) is cond 29 (Health Decay overheat). Do not restore.
+ *   Legend Create(50) is cond 29 (Damage Decay overheat; 30 is Health Decay, per
+ *   V283_HEAT_BC_INDEX). Do not restore. Damage and Health Decay left Legends and Mythic in
+ *   v29.0.2 (patch note 1545083799958720622).
  */
 export const GUARANTEED_ELS_REDUCTION_MAX: Readonly<Record<TournamentHeatLeague, number>> = {
   Copper: 0,

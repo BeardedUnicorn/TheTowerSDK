@@ -61,32 +61,17 @@ describe('both joins of the relic totals are stated and both are true', () => {
       .toBe(percentRows.length)
   })
 
-  it('has stats whose template sum is BELOW the published total', () => {
-    // This assertion is inverted from what it used to say, and the inversion is
-    // the finding. It previously held that our templates always summed at or
-    // above the published figure — i.e. the wiki lagged us. After re-reading the
-    // wiki table on 2026-08-20 that is no longer true: Attack Speed publishes
-    // 19% against 18% of templates, and seven other stats are short too.
-    //
-    // OUR VALUES ARE NOT THE CAUSE, and that half is now settled rather than
-    // assumed. `resolve-relic-totals.mjs` sums RELIC_IMPORT_CATALOG — the game's
-    // own relic list — per stat and reproduces these template sums on 25 of 25
-    // stats, so nothing here is mis-valued or mis-typed. The list is complete
-    // too: 305 templates against a Relic enum whose maximum is 304.
-    //
-    // What remains open is why the community's figure exceeds the game's on
-    // these eight. It is either a relic released after the v28.3.0 dump was
-    // taken, or an over-count, and telling those apart needs a newer dump.
-    //
-    // This test pins the direction, so a silent flip back to "templates always
-    // at or above published" fails loudly — that flip is exactly what happened
-    // here unnoticed, in the other direction, when the wiki was re-read.
+  it('agrees with the template sum on every stat', () => {
+    // The open question this used to pin (wiki totals ABOVE the template sums on eight stats) is
+    // settled: they were relics released after the v28.3.0 dump. The totals are now summed from
+    // the game's v29.2.0 relic table over every released relic (facts/v29.2.0/relics.json), so a
+    // stat that disagrees with its templates means a template or a total is wrong.
     const sums = sumByBonusType()
-    const below = percentRows.filter(row => {
+    const disagreeing = percentRows.filter(row => {
       const sum = sums.get(ALIASES[row.stat] ?? row.stat)
-      return sum !== undefined && sum < Number(String(row.total).replace(/[^\d.-]/g, ''))
-    })
-    expect(below.length, 'expected at least one stat short of the published total').toBeGreaterThan(0)
+      return sum === undefined || Math.abs(sum - Number(String(row.total).replace(/[^\d.-]/g, ''))) > 1e-6
+    }).map(row => row.stat)
+    expect(disagreeing).toEqual([])
   })
 })
 

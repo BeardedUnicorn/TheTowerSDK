@@ -7,6 +7,7 @@ What a save says about themes.
 | File | Purpose | Exports |
 |---|---|---|
 | `index.ts` | Which cosmetic themes have been collected. | — |
-| `read.ts` | — | readCollectedThemeNamesFromSaveRoot |
+| `read.ts` | — | readThemesFromSaveRoot, readCollectedThemeNamesFromSaveRoot |
+| `types.ts` | The types `save/themes/` exports, in one place. | ThemeItemSaveRow, ThemesSaveExtract |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

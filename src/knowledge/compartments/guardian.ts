@@ -90,7 +90,7 @@ export const GUARDIAN_AMBIGUOUS_CHIP_LABELS: readonly string[] = [...chipsByLabe
 /** The only safe key to resolve a chip by: `chipType` is unique, `label` is not. */
 export const GUARDIAN_CHIP_LOOKUP_KEY = 'chipType' as const
 
-/** Bits to unlock the Guardian, and to open each further chip slot. */
+/** Bits to unlock the Guardian and each further chip slot (wiki, 2026-11-18; see guardian.slot traps). */
 export const GUARDIAN_UNLOCK_BIT_COST = 200
 export const GUARDIAN_SLOT_BIT_COST: Readonly<Record<number, number>> = { 2: 200, 3: 300 }
 
@@ -158,7 +158,7 @@ export const GUARDIAN_CHIP_TOTAL_COST: Readonly<Record<string, number>> = Object
   ]),
 )
 
-/** The chip whose tracks are cheapest to max, by a wide margin. */
+/** The chip whose tracks are cheapest to max. Every chip costs within about 10% of the others. */
 export const GUARDIAN_CHEAPEST_CHIP_TO_MAX = Object.entries(GUARDIAN_CHIP_TOTAL_COST)
   .reduce((best, entry) => (entry[1] < best[1] ? entry : best))[0]
 
@@ -273,6 +273,9 @@ disambiguation:
     traps: [
       'Guild-exclusive. A player without a guild cannot obtain it at any price, so it must never '
       + 'appear in a plan without first checking guild membership.',
+      'Owning it is not enough either: since v29.1 the chips stop working while the player is not '
+      + 'in a guild (patch note 1560299109133459548). It only appears in a run in a guild with at '
+      + 'least one chip equipped, so a player who leaves a guild keeps it but loses its effects.',
       'Bits are its currency, and bits come from guilds. This is not the same ladder as medals, '
       + 'stones or gems.',
     ],
@@ -285,7 +288,11 @@ disambiguation:
       // that neither route grants and nothing says how it is obtained.
       { subject: 'guardian', predicate: 'chipSourcesCoverReleasedChips', value: GUARDIAN_BASE_CHIPS.length + GUARDIAN_SHOP_CHIPS.length === GUARDIAN_RELEASED_CHIPS.length, provenance: SHEET_GUARDIANS, verification: 'verified_here' as const },
     ],
-    sources: [WIKI_GUARDIAN],
+    sources: [
+      WIKI_GUARDIAN,
+      { origin: 'wiki', ref: 'Guardian', section: 'Description', verifiedAt: '2026-11-18' },
+      { origin: 'game', ref: 'patch note 1560299109133459548 (v29.1): Guardian Chips no longer active outside a guild', sourceVersion: 'v29.1.0', verifiedAt: '2026-11-18' },
+    ],
   },
   {
     id: 'guardian.chip',
@@ -298,7 +305,7 @@ disambiguation:
       'Only two chips are free. The other four are separate token purchases, and Summon and Scout '
       + 'were season-gated (Season 5 and Season 7) — an account may simply never have had access.',
       'Chips are limited by slots, and only the 2nd and 3rd slot costs are documented. The 4th is '
-      + 'listed as TBD on the wiki — do not invent a number for it.',
+      + 'listed as currently unavailable on the wiki — do not invent a number for it.',
     ],
     implementedBy: ['GUARDIAN_UPGRADE_TRACKS', 'GUARDIAN_CHIP_TOTAL_COST'],
     assertions: [
@@ -319,10 +326,16 @@ disambiguation:
     kind: 'entity',
     summary:
       'How many chips the Guardian can hold at once. One comes with the unlock; the second costs '
-      + '200 bits and the third 300. A fourth exists but its cost is not documented.',
+      + '200 bits and the third 300. The wiki lists a fourth as currently unavailable.',
     units: 'count',
     traps: [
       'Owning a chip is not equipping it. Slots, not the chip collection, decide what is active.',
+      'The save field `guardianSlotsUnlocked` counts BOUGHT slots, so a save holding 2 owns three '
+      + 'slots (the free one plus two bought).',
+      'Patch note 1471551891073798235 (27.4.3) fixed "the second chip" cost showing 200 instead of '
+      + '300. Read as the second bought slot (slot 3) it agrees with these costs; read as slot 2 it '
+      + 'does not. The wiki, re-read 2026-11-18, still lists slot 2 at 200 — confirm in game before '
+      + 'changing either.',
     ],
     implementedBy: ['GUARDIAN_SLOT_BIT_COST'],
     assertions: [
@@ -345,7 +358,10 @@ disambiguation:
       // a chip and being able to equip it are different questions.
       { subject: 'guardian.slot', predicate: 'boughtSeparatelyFromChips', value: true, provenance: { origin: 'wiki', ref: 'Guardian', verifiedAt: '2026-08-16' } },
     ],
-    sources: [{ ...WIKI_GUARDIAN, section: 'Unlocking/Upgrading' }, GAME_GUARDIAN_CONSTANTS],
+    sources: [
+      { ...WIKI_GUARDIAN, section: 'Unlocking/Upgrading' }, GAME_GUARDIAN_CONSTANTS,
+      { origin: 'wiki', ref: 'Currency/Bits', section: 'Uses', verifiedAt: '2026-11-18' },
+    ],
   },
   {
     id: 'guardian.upgradeTrack',
@@ -375,9 +391,10 @@ disambiguation:
       + '`recoveryAmount` by `recoveryCost` — the headline stat of the two starter chips, in both '
       + 'cases. Deriving the key by convention silently costs them at zero.',
       'Level 1 costs nothing on every track. Levels and purchases differ by one.',
-      `Chips are NOT comparably priced. ${GUARDIAN_CHEAPEST_CHIP_TO_MAX} maxes for `
-      + `${GUARDIAN_CHIP_TOTAL_COST[GUARDIAN_CHEAPEST_CHIP_TO_MAX]}, roughly half of every other `
-      + 'chip. A plan that treats chip investment as uniform gets the ordering wrong.',
+      `Chips cost about the same to max: ${GUARDIAN_CHEAPEST_CHIP_TO_MAX} is cheapest at `
+      + `${GUARDIAN_CHIP_TOTAL_COST[GUARDIAN_CHEAPEST_CHIP_TO_MAX]} bits and none is more than about 10% `
+      + 'dearer (wiki "Currency/Bits": 13,000 to 14,500). An older reading had one chip at half '
+      + 'the others; that was the Ally ladders cut short at 25, 50 and 90 levels, not a real gap.',
     ],
     implementedBy: [
       'GUARDIAN_UPGRADE_TRACKS',

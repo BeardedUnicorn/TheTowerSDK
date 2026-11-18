@@ -1,0 +1,7 @@
+{
+  "gameVersion": "v29.2.0",
+  "note": "Maximum level of each Workshop Enhancement, per category in the game's own order.",
+  "attack": { "Damage": 600, "Rend Armor": 600, "Critical Factor": 600, "Damage/Meter": 600, "Super Crit Mult": 600, "Attack Speed": 100 },
+  "defense": { "Health": 600, "Health Regen": 600, "Defense Absolute": 600, "Land Mine Damage": 600, "Wall Health": 600, "Orb Size": 250 },
+  "utility": { "Cash Bonus": 600, "Coin Bonus": 300, "Cells / Kill Bonus": 300, "Free Upgrades": 150, "Recovery Package": 600, "Enemy Level Skips": 60 }
+}

@@ -20,14 +20,19 @@ const SAVE_FIXTURE = path.resolve(
 )
 const HAS_SAVE = existsSync(SAVE_FIXTURE)
 
-describe.skipIf(!HAS_SAVE)('the tier a player has actually reached', () => {
+/*
+ * `highestWaveThisTier` is indexed BY TIER NUMBER: slot 0 is always 0 (there is no tier 0) and
+ * slot 7 is tier 7. A v29.2 export confirms it, its slot 7 equals the best tier-7 battle in its
+ * own Battle History. These arrays are written that way: a leading 0, then tier 1.
+ */
+describe('the tier a player has actually reached', () => {
   it('takes the last tier with a wave, not the tier they are sitting on', () => {
     // The distinction that matters: `currentTier` is where they are, and it is
     // routinely lower than the furthest they have cleared. Ranking against the
     // lower one understates every path.
     const settings = readEffectivePathsSettingsFromSaveRoot({
       currentTier: 3,
-      highestWaveThisTier: [100, 200, 300, 0, 450, 0],
+      highestWaveThisTier: [0, 100, 200, 300, 0, 450, 0],
     })
     expect(settings.highestTier).toBe(5)
     expect(settings.highestWave).toBe(450)
@@ -35,7 +40,7 @@ describe.skipIf(!HAS_SAVE)('the tier a player has actually reached', () => {
 
   it('ignores the trailing zeros the save pads the array with', () => {
     const settings = readEffectivePathsSettingsFromSaveRoot({
-      highestWaveThisTier: [100, 0, 0, 0, 0, 0, 0, 0],
+      highestWaveThisTier: [0, 100, 0, 0, 0, 0, 0, 0],
     })
     expect(settings.highestTier).toBe(1)
   })
@@ -50,7 +55,7 @@ describe.skipIf(!HAS_SAVE)('the tier a player has actually reached', () => {
   })
 })
 
-describe.skipIf(!HAS_SAVE)('game speed', () => {
+describe('game speed', () => {
   it('comes from the remembered speed', () => {
     expect(readEffectivePathsSettingsFromSaveRoot({ gameSpeedMemory: 5 }).gameSpeed).toBe(5)
   })
@@ -87,12 +92,24 @@ describe.skipIf(!HAS_SAVE)('the per-tier curve', () => {
     expect(Math.max(...tiers)).toBe(settings.highestTier)
   })
 
+})
+
+describe('the per-tier curve from a synthetic save', () => {
   it('leaves an untouched tier absent rather than recording a best of zero', () => {
     const settings = readEffectivePathsSettingsFromSaveRoot({
-      highestWaveThisTier: [120, 0, 45],
+      highestWaveThisTier: [0, 120, 0, 45],
     })
     expect(settings.wavesByTier).toEqual({ 1: 120, 3: 45 })
-    // Tiers are 1-based; a 0-based key here would misprice every tier.
     expect(settings.wavesByTier[0]).toBeUndefined()
+  })
+
+  it('reads slot 7 as tier 7, not tier 8', () => {
+    const waves = Array.from({ length: 40 }, () => 0)
+    waves[7] = 2510
+    waves[13] = 62
+    const settings = readEffectivePathsSettingsFromSaveRoot({ highestWaveThisTier: waves })
+    expect(settings.wavesByTier).toEqual({ 7: 2510, 13: 62 })
+    expect(settings.highestTier).toBe(13)
+    expect(settings.highestWave).toBe(62)
   })
 })

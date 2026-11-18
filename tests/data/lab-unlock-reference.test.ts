@@ -30,7 +30,10 @@ const reference = JSON.parse(
  * Explosion" for "Missiles Explosion". Fold the plural and that one suffix so
  * the comparison is about tiers and waves rather than spelling.
  */
-const matchKey = (value: string): string => String(value)
+/** The sheet still uses names the game has since changed. */
+const SHEET_NAME_RENAMES: Record<string, string> = { 'Card Presets': 'Presets' }
+
+const matchKey = (value: string): string => String(SHEET_NAME_RENAMES[value] ?? value)
   .toLowerCase()
   .replace(/[^a-z0-9]+/g, '')
   .replace(/multiplier$/, 'multi')
@@ -57,9 +60,25 @@ for (const row of MILESTONE_KEY_UNLOCK_ROWS) {
  * - Land Mine Decay was tier 4 premium; tier 6 wave 30 already held Land Mine
  *   Damage, and the reference lists both together.
  * - Wall Rebuild was tier 7 wave 10; tier 8 wave 10 already held Wall Health.
- * - The four tier 10 bot unlocks and the two tier 16 Swamp Rend unlocks sat at
- *   wave 50, where the reference puts every unlock in those groups at wave 60.
+ *
+ * The tier 10 bot labs and the tier 16 Swamp Rend labs were later moved to wave 60 to match the
+ * sheet, and that was wrong: the game's own milestone table puts them at wave 50. See
+ * `GAME_OVERRULES_SHEET` below.
  */
+
+/**
+ * Where the game's own milestone table (facts/v29.2.0/milestone-rewards.json) contradicts the
+ * sheet. The game wins; the wiki ("Milestones/10 11 12", "16 17 18", "4 5 6") agrees with it.
+ * Each entry must keep disagreeing: one that starts agreeing means the sheet was fixed and the
+ * exception should go.
+ */
+const GAME_OVERRULES_SHEET: Record<string, string> = {
+  'Bot Bot - Cooldown': 'T6 W60 (game: tier 6 slot 5, Research 228)',
+  'Bot Bot - Duration': 'T10 W50 (game: tier 10 slot 4, ResearchGroup 24)',
+  'Flame Bot - Burn Stack': 'T10 W50 (game: tier 10 slot 4, ResearchGroup 24)',
+  'Thunder Bot - Linger Time': 'T10 W50 (game: tier 10 slot 4, ResearchGroup 24)',
+  'Swamp Rend - Additional Enemies': 'T16 W50 (game: tier 16 slot 4, ResearchGroup 25)',
+}
 
 describe('lab unlocks against the Effective Paths reference', () => {
   it('agrees on tier and wave for every lab it shares', () => {
@@ -69,7 +88,14 @@ describe('lab unlocks against the Effective Paths reference', () => {
     for (const entry of reference.unlocks) {
       const ours = oursByReward.get(matchKey(entry.name))
       if (!ours) continue
-      if (ours.some(row => row.tier === entry.tier && row.wave === entry.wave)) {
+      const agrees = ours.some(row => row.tier === entry.tier && row.wave === entry.wave)
+      if (entry.name in GAME_OVERRULES_SHEET) {
+        expect(agrees, `${entry.name} now matches the sheet: drop it from GAME_OVERRULES_SHEET`).toBe(false)
+        const [tier, wave] = GAME_OVERRULES_SHEET[entry.name].match(/T(\d+) W(\d+)/)!.slice(1).map(Number)
+        expect(ours.some(row => row.tier === tier && row.wave === wave), `${entry.name} moved off the game's placement`).toBe(true)
+        continue
+      }
+      if (agrees) {
         matched += 1
         continue
       }
@@ -78,7 +104,8 @@ describe('lab unlocks against the Effective Paths reference', () => {
     }
 
     expect(disagreements.sort()).toEqual([])
-    expect(matched).toBeGreaterThanOrEqual(94)
+    // 97 after the v29.2 milestone corrections added the Dissonant Echo and Bot Bot rows.
+    expect(matched).toBeGreaterThanOrEqual(97)
   })
 
   it('records how much of the reference our milestone rows cover', () => {

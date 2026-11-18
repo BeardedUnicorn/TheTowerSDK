@@ -1,5 +1,6 @@
 /**
- * The vault tech trees as data: every node, its cost, and how each tree is walked.
+ * The PRE-v29 vault tech trees as data: every node, its cost, and how each tree is walked. The
+ * current (v29) vault is `VAULT_V29_*` in the generated data; see `tree.ts`.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    —

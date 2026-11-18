@@ -34,25 +34,50 @@
 import type { GameVersionWindow } from './types'
 
 /**
- * Known builds, oldest first.
+ * Known builds, oldest first, one window per minor version.
  *
- * Deliberately sparse. Only v28.3.0 is listed because it is the only build this
- * repo holds a dump for, and inventing earlier windows from patch-note dates I
- * have not checked would put unverified precision under every old claim — the
- * exact failure this file exists to prevent.
+ * Each window opens on the day the developers' own patch-notes channel says the build was out,
+ * and closes the day before the next one. Hotfixes inside a minor version (29.1.1 .. 29.1.4) stay
+ * in their minor's window: they fix bugs rather than rebalance, and a window per hotfix would
+ * claim a precision the notes do not give.
  *
- * The consequence is visible rather than hidden: any claim read outside a known
- * window comes back `null` and is reported as unstampable, instead of being
- * quietly assigned to whichever build looked plausible.
+ * Dates before v28.3.0 are left out on purpose. Inventing earlier windows from notes nobody
+ * checked would put unverified precision under every old claim, so a claim read before
+ * 2026-06-30 still comes back `null` and is reported as unstampable.
  */
 export const GAME_VERSION_TIMELINE: readonly GameVersionWindow[] = [
   {
     version: 'v28.3.0',
     from: '2026-06-30',
+    until: '2026-08-26',
+    basis:
+      'The v28.3.0 build was captured 2026-06-30. v29 was announced 2026-08-25 to release after '
+      + 'that week\'s tournament (patch note 1541918021939892245).',
+  },
+  {
+    version: 'v29.0.0',
+    from: '2026-08-27',
+    until: '2026-10-14',
+    basis:
+      'v29.0.1 shipped 2026-08-27 (patch note 1542638399708594186), so v29 was live by then. Covers the '
+      + '29.0.1 .. 29.0.6 hotfixes; facts/v29.0.0 was read from this build.',
+  },
+  {
+    version: 'v29.1.0',
+    from: '2026-10-15',
+    until: '2026-11-15',
+    basis:
+      'v29.1 rolled out 2026-10-15 (patch note 1560299053789749419). Covers hotfixes 29.1.1 '
+      + '(1560678214764994651), 29.1.2 (1561019100359032976), 29.1.3 (1562512032803201145) and '
+      + '29.1.4 (1566858291710136333).',
+  },
+  {
+    version: 'v29.2.0',
+    from: '2026-11-16',
     until: null,
     basis:
-      'The v28.3.0 build was captured 2026-06-30 and is still the newest '
-      + 'dump in the repo, so this build has been live across every wiki read recorded here.',
+      'v29.2 rolled out 2026-11-16 (patch note 1571908549376872459); build 1286 confirmed in an '
+      + 'official export written 2026-11-18.',
   },
 ]
 

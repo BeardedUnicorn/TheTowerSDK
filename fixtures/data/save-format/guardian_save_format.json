@@ -22,7 +22,7 @@
     }
   },
   "presets": {
-    "description": "Guardians have no preset system in the save file. The app emits a single preset named 'Farming' holding every chip's levels and equipped state."
+    "description": "v29 added guardian presets: guardianPresets holds one object per preset {unlocked, chipSlot[3], presetName, chipLevel[30], slotsUnlocked, skinIndex} and currentGuardianPreset selects one (5 in a v29.2 export). Presets lab level 5 unlocks 2; the Vault's Guardian Presets adds 3 (wiki \"Guardian\"). guardianSlotsUnlocked counts BOUGHT chip slots: owned slots = 1 + guardianSlotsUnlocked."
   },
   "chipOrder": {
     "0": "Bounty",

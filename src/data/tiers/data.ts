@@ -121,7 +121,7 @@ export const TIER_DATA = [
     buildBattleCondition('Plasma Cannon Resistance', 50),
     buildBattleCondition('Protector\'s Ultimate', 35),
     buildBattleCondition('Tank\'s Ultimate', 20),
-    buildBattleCondition('More Bosses', 3),
+    buildBattleCondition('More Bosses', 4),
     buildBattleCondition('ELS Reduction', 20),
   ]),
   buildTierData(18, 33, 17, 300, [
@@ -191,20 +191,24 @@ export const TIER_DATA = [
     buildBattleCondition('Basic\'s Ultimate', 20),
     buildBattleCondition('Mass Enforcement', 1),
   ]),
+  // Tiers 22-24: wiki "Tiers" § Tier Battle Conditions, and the game's own per-tier levels
+  // (game data v28.3.0, V283_CAMPAIGN_HEAT_LEVELS_BY_TIER) hold the same set. Whether the
+  // 35/50/65 entry is Basic's Ultimate (as here) or Mass Enforcement (as the wiki says) is not
+  // settled; see tier-battle-conditions-vs-game.test.ts.
   buildTierData(22, 72, 21, 300, [
     buildBattleCondition('Orb Resistance', 95),
     buildBattleCondition('Death Ray Resistance', 95),
     buildBattleCondition('Thorns Resistance', 95),
     buildBattleCondition('Knockback Resistance', 95),
-    buildBattleCondition('Armored Enemies', 75),
-    buildBattleCondition('Plasma Cannon Resistance', 90),
+    buildBattleCondition('Armored Enemies', 80),
+    buildBattleCondition('Plasma Cannon Resistance', 95),
     buildBattleCondition('Protector\'s Ultimate', 95),
-    buildBattleCondition('Tank\'s Ultimate', 80),
+    buildBattleCondition('Tank\'s Ultimate', 95),
     buildBattleCondition('Scatter\'s Ultimate', 80),
     buildBattleCondition('Ray\'s Ultimate', 80),
     buildBattleCondition('Vampire\'s Ultimate', 80),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 45),
+    buildBattleCondition('ELS Reduction', 75),
     buildBattleCondition('Fast\'s Ultimate', 65),
     buildBattleCondition('Boss\'s Ultimate', 50, 'Boss Ultimate Lvl 50'),
     buildBattleCondition('Basic\'s Ultimate', 35),
@@ -216,15 +220,15 @@ export const TIER_DATA = [
     buildBattleCondition('Death Ray Resistance', 95),
     buildBattleCondition('Thorns Resistance', 95),
     buildBattleCondition('Knockback Resistance', 95),
-    buildBattleCondition('Armored Enemies', 80),
-    buildBattleCondition('Plasma Cannon Resistance', 90),
+    buildBattleCondition('Armored Enemies', 90),
+    buildBattleCondition('Plasma Cannon Resistance', 95),
     buildBattleCondition('Protector\'s Ultimate', 95),
-    buildBattleCondition('Tank\'s Ultimate', 80),
-    buildBattleCondition('Scatter\'s Ultimate', 80),
-    buildBattleCondition('Ray\'s Ultimate', 80),
-    buildBattleCondition('Vampire\'s Ultimate', 80),
+    buildBattleCondition('Tank\'s Ultimate', 95),
+    buildBattleCondition('Scatter\'s Ultimate', 95),
+    buildBattleCondition('Ray\'s Ultimate', 95),
+    buildBattleCondition('Vampire\'s Ultimate', 95),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 50),
+    buildBattleCondition('ELS Reduction', 80),
     buildBattleCondition('Fast\'s Ultimate', 80),
     buildBattleCondition('Boss\'s Ultimate', 65, 'Boss Ultimate Lvl 65'),
     buildBattleCondition('Basic\'s Ultimate', 50),
@@ -237,17 +241,17 @@ export const TIER_DATA = [
     buildBattleCondition('Death Ray Resistance', 95),
     buildBattleCondition('Thorns Resistance', 95),
     buildBattleCondition('Knockback Resistance', 95),
-    buildBattleCondition('Armored Enemies', 85),
-    buildBattleCondition('Plasma Cannon Resistance', 90),
+    buildBattleCondition('Armored Enemies', 95),
+    buildBattleCondition('Plasma Cannon Resistance', 95),
     buildBattleCondition('Protector\'s Ultimate', 95),
-    buildBattleCondition('Tank\'s Ultimate', 80),
-    buildBattleCondition('Scatter\'s Ultimate', 80),
-    buildBattleCondition('Ray\'s Ultimate', 80),
-    buildBattleCondition('Vampire\'s Ultimate', 80),
+    buildBattleCondition('Tank\'s Ultimate', 95),
+    buildBattleCondition('Scatter\'s Ultimate', 95),
+    buildBattleCondition('Ray\'s Ultimate', 95),
+    buildBattleCondition('Vampire\'s Ultimate', 95),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 55),
-    buildBattleCondition('Fast\'s Ultimate', 80),
-    buildBattleCondition('Boss\'s Ultimate', 65, 'Boss Ultimate Lvl 65'),
+    buildBattleCondition('ELS Reduction', 85),
+    buildBattleCondition('Fast\'s Ultimate', 95),
+    buildBattleCondition('Boss\'s Ultimate', 80, 'Boss Ultimate Lvl 80'),
     buildBattleCondition('Basic\'s Ultimate', 65),
     buildBattleCondition('Mass Enforcement', 1),
     buildBattleCondition('Saboteur\'s Ultimate', 50),
@@ -289,7 +293,7 @@ export function getTierData(tier: number): TierData | undefined {
  * Both sides are canonicalised, so `ELS Reduction` (the name `TIER_DATA` uses)
  * and `Skip Reduction - Subtract` (the name it is *defined* under) resolve to
  * the same condition. Before that, looking it up by its defined name returned 0
- * at every tier while the condition sat at level 55 — see
+ * at every tier while the condition sat at level 85 at tier 24 — see
  * `battle-condition-names.ts`.
  */
 export function getTierBattleConditionLevel(tier: number, name: string): number {

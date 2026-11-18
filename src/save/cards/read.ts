@@ -7,7 +7,7 @@
 import { CARD_MAX_COPIES, CARD_TEMPLATES } from '../../data/cards/data'
 import { CARD_IMPORT_CATALOG } from '../../data/player-stats/fields.data'
 import { CARDS_ASSET_TABLE } from '../../data/assets/data'
-import { coerceSaveNumber } from '../access/values'
+import { coerceSaveNumber, readSaveListItems } from '../access/values'
 import type { CardPresetSlotRow, CardSaveRow, CardsSaveExtract } from './types'
 
 export const CARDS_SAVE_LEVEL_KEY = 'cardLevel'
@@ -161,6 +161,48 @@ export function getCardSaveRowCopies(card: Pick<CardSaveRow, 'level' | 'count'>)
   }
 }
 
+/**
+ * Rows of a card preset list: nested lists as given, or a flat list split into equal segments,
+ * one per preset name.
+ *
+ * The game stores preset slots FLAT (`cards_save_format.json`: preset `p`, slot `s` at
+ * `p * slotsPerPreset + s`). A v29.2 export has 140 entries for 5 presets, 28 slots each, and
+ * reading it as a list of lists dropped every preset.
+ */
+function splitCardPresetList(raw: unknown, presetCount: number): unknown[][] {
+  const items = readSaveListItems(raw)
+  if (items.length === 0) return []
+  if (Array.isArray(items[0])) return items.map((row: unknown) => (Array.isArray(row) ? row : []))
+  if (presetCount <= 0 || items.length % presetCount !== 0) return []
+  const slotsPerPreset = items.length / presetCount
+  return Array.from({ length: presetCount }, (_, preset) => (
+    items.slice(preset * slotsPerPreset, (preset + 1) * slotsPerPreset)))
+}
+
+function readCardPresetSlots(
+  root: Record<string, unknown>,
+  cards: CardSaveRow[],
+  warnings: string[],
+): CardPresetSlotRow[] {
+  const presetCount = readStringArray(root[CARDS_SAVE_PRESET_NAME_KEY]).length
+  const cardRows = splitCardPresetList(root[CARDS_SAVE_SLOT_PRESET_INT_KEY], presetCount)
+  const assignedRows = splitCardPresetList(root[CARDS_SAVE_SLOT_PRESET_ASSIGNED_KEY], presetCount)
+  const flatLength = readSaveListItems(root[CARDS_SAVE_SLOT_PRESET_INT_KEY]).length
+  if (flatLength > 0 && cardRows.length === 0) {
+    warnings.push(`${CARDS_SAVE_SLOT_PRESET_INT_KEY} has ${flatLength} entries, which do not split across ${presetCount} presets.`)
+  }
+
+  const slots: CardPresetSlotRow[] = []
+  cardRows.forEach((row, presetIndex) => {
+    const assignedRow = assignedRows[presetIndex] ?? []
+    row.forEach((value, slotIndex) => {
+      const cardIndex = assignedRow[slotIndex] === true ? coerceSaveNumber(value) : null
+      slots.push({ presetIndex, slotIndex, cardIndex, card: cardIndex === null ? null : cards[cardIndex] ?? null })
+    })
+  })
+  return slots
+}
+
 export function readCardsFromSaveRoot(root: Record<string, unknown> | null): CardsSaveExtract | null {
   if (!root) return null
 
@@ -182,28 +224,7 @@ export function readCardsFromSaveRoot(root: Record<string, unknown> | null): Car
   }
 
   const equippedCards = cards.filter(card => card.active && isTrackedCardSaveRow(card))
-  const presetSlots: CardPresetSlotRow[] = []
-  const presetMatrix = root[CARDS_SAVE_SLOT_PRESET_INT_KEY]
-  const assignedMatrix = root[CARDS_SAVE_SLOT_PRESET_ASSIGNED_KEY] as unknown[] | undefined
-  if (Array.isArray(presetMatrix)) {
-    for (let presetIndex = 0; presetIndex < presetMatrix.length; presetIndex += 1) {
-      const row = presetMatrix[presetIndex]
-      if (!Array.isArray(row)) continue
-      const assignedRow = Array.isArray(assignedMatrix?.[presetIndex])
-        ? assignedMatrix[presetIndex] as unknown[]
-        : []
-      for (let slotIndex = 0; slotIndex < row.length; slotIndex += 1) {
-        const assigned = assignedRow[slotIndex] === true
-        const cardIndex = assigned ? coerceSaveNumber(row[slotIndex]) : null
-        presetSlots.push({
-          presetIndex,
-          slotIndex,
-          cardIndex,
-          card: cardIndex === null ? null : cards[cardIndex] ?? null,
-        })
-      }
-    }
-  }
+  const presetSlots = readCardPresetSlots(root, cards, warnings)
 
   return {
     slotsUnlocked: coerceSaveNumber(root[CARDS_SAVE_SLOTS_UNLOCKED_KEY]),

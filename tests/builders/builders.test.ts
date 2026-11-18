@@ -157,11 +157,13 @@ describe('thorns', () => {
     expect(result.atWallThorns).toEqual(result.byWallThorns.find(row => row.wallThorns === 7))
   })
 
-  it('takes more hits to kill a boss than an elite, and fleets sit between', () => {
-    // Boss thorn damage is halved and fleets take 85% of elite damage, so the ordering is fixed.
+  it('takes more hits to kill a boss than an elite, and never claims thorns kill a fleet', () => {
+    // Boss thorn damage is halved. Fleets take 15% thorns on REMAINING health (v28.3), so thorns
+    // only ever approach zero on a fleet: the row says how many hits halve one instead.
     const { atWallThorns } = thornsCalculator.compute({ baseThorns: 100, wallThorns: 10, tier: 1 })
     expect(atWallThorns.hitsToKillBoss).toBeGreaterThan(atWallThorns.hitsToKillElite)
-    expect(atWallThorns.hitsToKillFleet).toBeGreaterThanOrEqual(atWallThorns.hitsToKillElite)
+    expect(atWallThorns.hitsToKillFleet).toBeNull()
+    expect(atWallThorns.hitsToHalveFleet).toBeGreaterThan(atWallThorns.hitsToKillElite)
   })
 
   it('loses effectiveness at higher tiers, which is the whole reason the tier is an input', () => {
@@ -407,6 +409,16 @@ describe('assist module stones', () => {
     const capped = assistModuleStonesCalculator.compute({ targetLevel: 99_999 })
     expect(capped.notes.join(' ')).toMatch(/caps at level/)
     expect(capped.totalStones).toBeGreaterThan(0)
+  })
+
+  it('prices the Multiplier track to level 99 (100%), and says the Substat track stops at 69', () => {
+    // Wiki "Modules" § Assist Modules: the Multiplier track totals 16,038 stones to 100%.
+    const full = assistModuleStonesCalculator.compute({ currentLevel: 0, targetLevel: 99 })
+    expect(full.maxLevel).toBe(99)
+    expect(full.totalStones).toBe(16_038)
+    expect(full.levels).toHaveLength(99)
+    expect(full.notes.join(' ')).not.toMatch(/caps at level/)
+    expect(full.notes.join(' ')).toMatch(/Substat track stops at level 69/)
   })
 })
 

@@ -96,3 +96,23 @@ describe('damage-redux-layers', () => {
       .toBeLessThan(0.05)
   })
 })
+
+describe('Smite caps at 100 hits per enemy', () => {
+  /*
+   * v29.2 patch note 1571908570797318216: "CL+ (Smite) now appropriately caps at 100". Wiki
+   * "Chain Lightning/Ultimate Weapon Plus": activates up to 100 times per enemy.
+   */
+  it('counts no more than 100 hits of damage', async () => {
+    const { computeChainLightningPlusHitDamage, SMITE_MAX_HITS_PER_ENEMY } = await import('../../src/mechanics/combat/damage-redux-layers')
+    expect(SMITE_MAX_HITS_PER_ENEMY).toBe(100)
+    expect(computeChainLightningPlusHitDamage(11, 1000, 150)).toBeCloseTo(computeChainLightningPlusHitDamage(11, 1000, 100))
+    expect(computeChainLightningPlusHitDamage(11, 1000, 100)).toBeCloseTo(0.006 * 1000 * 100)
+  })
+
+  it('feeds Chain Thunder no more than 100 hits either', async () => {
+    const { computeChainThunderReductionFraction } = await import('../../src/mechanics/combat/damage-redux-layers')
+    const base = { ctLevel: 30, enemyHealthMax: 1e9, basicWaveHp: 1e6, clPlusLevel: 11 }
+    expect(computeChainThunderReductionFraction({ ...base, avgClPlusHits: 500 }))
+      .toBe(computeChainThunderReductionFraction({ ...base, avgClPlusHits: 100 }))
+  })
+})

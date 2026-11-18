@@ -57,6 +57,7 @@ describe('v29 tournament prize reference values', () => {
     const legend1 = TOURNAMENT_REWARD_ROWS.find(r => r.league === 'Legend' && r.rank === '1')
     expect(legend1).toMatchObject({ gems: 675, stones: 375, keys: 25 })
     const plat1 = TOURNAMENT_REWARD_ROWS.find(r => r.league === 'Platinum' && r.rank === '1')
-    expect(plat1).toMatchObject({ gems: 425, stones: 160 })
+    // 180 since v29.0.1 corrected Platinum stones (patch note 1542638399708594186).
+    expect(plat1).toMatchObject({ gems: 425, stones: 180 })
   })
 })

@@ -64,12 +64,15 @@ describe('guardian upgrade tracks', () => {
     }
   })
 
-  it('makes the cheapest chip cheap by a wide margin, not by a rounding error', () => {
+  it('prices every chip to max within the range the wiki gives', () => {
+    // Wiki "Currency/Bits": maxing a chip takes about 13,000 to 14,500 bits. A chip far below that
+    // is a ladder cut short, which is how Ally once looked half price.
     const cheapest = GUARDIAN_CHIP_TOTAL_COST[GUARDIAN_CHEAPEST_CHIP_TO_MAX]!
-    const others = Object.entries(GUARDIAN_CHIP_TOTAL_COST)
-      .filter(([chip]) => chip !== GUARDIAN_CHEAPEST_CHIP_TO_MAX)
-      .map(([, cost]) => cost)
-    expect(Math.min(...others) / cheapest).toBeGreaterThan(1.8)
+    for (const [chip, cost] of Object.entries(GUARDIAN_CHIP_TOTAL_COST)) {
+      expect(cost, chip).toBeGreaterThanOrEqual(13_000)
+      expect(cost, chip).toBeLessThanOrEqual(14_500)
+      expect(cost / cheapest, chip).toBeLessThan(1.15)
+    }
   })
 
   it('totals each chip from its own tracks and nothing else', () => {

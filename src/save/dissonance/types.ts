@@ -11,4 +11,8 @@
 
 // from waves.ts
 
-export type DissonanceCycleLayout = 'tier-major' | 'type-major'
+/**
+ * How `highestWavePerTierThisCycle` is laid out. Saves use `per-tier` (slot = tier number); the
+ * packed layouts are only read when the list is long enough to hold four types for every tier.
+ */
+export type DissonanceCycleLayout = 'per-tier' | 'tier-major' | 'type-major'

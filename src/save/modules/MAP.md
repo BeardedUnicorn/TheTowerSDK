@@ -8,10 +8,11 @@ Module effects as stored, decoded and displayed.
 |---|---|---|
 | `decode.ts` | Decode module effects and the separate assist-slot unique-rarity ladder. | decodeSingleEffectId, decodeModuleSubstats, decodeModuleSaveEffect, findModuleEffectForSlot (+5 more) |
 | `display.ts` | — | formatModuleSaveEffectDisplayValue |
+| `economy.ts` | Module economy beyond what is equipped: | readModuleEconomyFromSaveRoot |
 | `ids.ts` | — | listModuleSaveEffectIds, inferSubstatRarityFromDisplayedValue, MODULE_SAVE_SUBSTAT_SLOT_COUNT, decodeSingleModuleSaveSubstat (+26 more) |
 | `index.ts` | Modules read from a save: | — |
-| `read.ts` | Read module ownership and slot state, preserving unknown assist unique upgrades. | MODULE_SAVE_CANNON_SHARDS_KEY, MODULE_SAVE_ARMOR_SHARDS_KEY, MODULE_SAVE_GENERATOR_SHARDS_KEY, MODULE_SAVE_CORE_SHARDS_KEY (+17 more) |
+| `read.ts` | Read module ownership and slot state, preserving unknown assist unique upgrades. | MODULE_SAVE_CANNON_SHARDS_KEY, MODULE_SAVE_ARMOR_SHARDS_KEY, MODULE_SAVE_GENERATOR_SHARDS_KEY, MODULE_SAVE_CORE_SHARDS_KEY (+18 more) |
 | `registry.ts` | Module effect ids as a save stores them: | MODULE_SAVE_EFFECT_ID_LABELS, findModuleSaveEffectLabel, getModuleSaveEffectTier, findModuleSaveEffectCategory (+1 more) |
-| `types.ts` | The types `save/modules/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | DecodedSubstat, DecodedModuleSaveEffect, ModuleEquippedSubstat, DecodedModuleSaveSubstat (+13 more) |
+| `types.ts` | The types `save/modules/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | DecodedSubstat, DecodedModuleSaveEffect, ModuleEquippedSubstat, DecodedModuleSaveSubstat (+16 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

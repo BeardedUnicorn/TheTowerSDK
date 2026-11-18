@@ -1,6 +1,12 @@
 /**
- * The Power and Harmony vault trees: every node with its cost and position, and the rows a tree
- * renders as.
+ * The Power and Harmony vault trees as they were BEFORE v29: every node with its cost and position,
+ * and the rows a tree renders as.
+ *
+ * v29 replaced these trees (patch note 1541918025244999721, 2026-08-25): Harmony, Power and a new
+ * Enemy tab, organised by category, with no prerequisite order and new key costs. The current
+ * vault is `VAULT_V29_HARMONY`, `VAULT_V29_POWER` and `VAULT_V29_ENEMY` in `thetowersdk/data`.
+ * These trees remain because saves written before v29 store the old node layout, and the
+ * Effective Paths port prices vault keys the way its sheet does.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    harmonyTreeNodes, powerTreeNodes, DEFAULT_HARMONY_VAULT_NODES, DEFAULT_POWER_VAULT_NODES, buildVaultTreeRows, VAULT_TREE_DEFINITIONS, POWER_VAULT_TREE, HARMONY_VAULT_TREE

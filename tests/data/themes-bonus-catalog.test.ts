@@ -6,6 +6,7 @@ import {
   THEMES,
 } from '../../src/data/themes/bonus-catalog'
 import { THEME_CATEGORY_DEFINITIONS } from '../../src/data/themes/catalog'
+import { THEME_CATALOG } from '../../src/save/catalogs/indexes.data'
 
 /**
  * The catalog used to carry a `bonus` string on every item — 169 literals
@@ -13,18 +14,38 @@ import { THEME_CATEGORY_DEFINITIONS } from '../../src/data/themes/catalog'
  * said, so removing them cannot have moved a published value.
  */
 
-/** Counts as they stood when the per-item literals were removed. */
+/**
+ * Counts per category. Raised from 54/53/21/3/19/9/10 when the lists caught up with the save's
+ * theme catalog (tiers 22-24 skins, and the items added since).
+ */
 const EXPECTED_COUNTS: Record<string, number> = {
-  TOWER: 54,
-  BACKGROUND: 53,
-  MILESTONE: 21,
+  TOWER: 60,
+  BACKGROUND: 59,
+  MILESTONE: 24,
   SONGS: 3,
-  GUARDIAN: 19,
-  MENU: 9,
-  PROFILE_BANNER: 10,
+  GUARDIAN: 21,
+  MENU: 11,
+  PROFILE_BANNER: 12,
 }
 
 describe('theme bonus catalog', () => {
+  it('lists every theme the save catalog names, so no owned item goes unpriced', () => {
+    // The lists lagged the save catalog by 21 items, including the tier 22-24 milestone skins.
+    const fold = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/banner$/, '')
+    const lists: Record<string, readonly { name: string }[]> = {
+      tower: [...THEMES.TOWER, ...THEMES.MILESTONE],
+      background: THEMES.BACKGROUND,
+      menu: THEMES.MENU,
+      profileBanner: THEMES.PROFILE_BANNER,
+      guardian: THEMES.GUARDIAN,
+      song: THEMES.SONGS,
+    }
+    for (const row of THEME_CATALOG as readonly { category: string; label: string }[]) {
+      const names = new Set((lists[row.category] ?? []).map(item => fold(item.name)))
+      expect(names.has(fold(row.label)), `${row.category} "${row.label}" is not in the bonus catalog`).toBe(true)
+    }
+  })
+
   it('still lists every theme it did before', () => {
     for (const [category, count] of Object.entries(EXPECTED_COUNTS)) {
       expect(THEMES[category as keyof typeof THEMES], category).toHaveLength(count)

@@ -48,8 +48,10 @@ export interface BotSynchronicitySaveExtract {
   slotCount: number
   /** The active preset's slots, in order: the bot in each, or `null` for an empty slot. */
   slots: (string | null)[]
-  /** The bots in the active preset's slots, in slot order. */
+  /** The unlocked bots in the active preset's slots, in slot order. */
   bots: string[]
+  /** Bots in a slot that are not unlocked: a pre-v29.1 game bug, reported rather than counted. */
+  lockedBots: string[]
   /** Slots in the active preset with a bot in them. */
   occupiedSlots: number
   /** Slot values that name no known bot, reported rather than dropped. */

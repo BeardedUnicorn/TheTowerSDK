@@ -28,8 +28,15 @@ describe('daily mission tier rewards', () => {
   })
 
   it('names the rows that go beyond the wiki table', () => {
-    expect(DAILY_MISSION_TIERS_BEYOND_WIKI).toEqual([22, 23, 24])
-    expect(DAILY_MISSION_TIERS_ON_WIKI).toBeLessThan(DAILY_MISSION_TIER_COUNT)
+    // The wiki listed tiers 1-21 until it caught up; re-read 2026-11-18 it lists all 24.
+    expect(DAILY_MISSION_TIERS_BEYOND_WIKI).toEqual([])
+    expect(DAILY_MISSION_TIERS_ON_WIKI).toBe(DAILY_MISSION_TIER_COUNT)
+  })
+
+  it('pays the wiki\'s coins and shards at the rows that had been wrong', () => {
+    const row = (tier: number) => DAILY_MISSION_TIER_REWARDS.find(entry => entry.tier === tier)!
+    expect([10, 11, 12, 13].map(tier => row(tier).shards)).toEqual(['35', '40', '45', '50'])
+    expect([22, 23, 24].map(tier => row(tier).coins)).toEqual(['10.00 Bil', '50.00 Bil', '100.00 Bil'])
   })
 
   it('has exactly one tier whose shard cell is not a number', () => {

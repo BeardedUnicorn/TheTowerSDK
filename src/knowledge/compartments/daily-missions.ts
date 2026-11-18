@@ -45,16 +45,13 @@ const GAME_DAILY_GOALS = { origin: 'code', ref: 'SDK reference model; independen
 export const DAILY_MISSION_TIER_COUNT = DAILY_MISSION_TIER_REWARDS.length
 
 /**
- * The wiki's table stops three tiers short of ours.
+ * How many tier rows the wiki's reward table lists.
  *
- * It lists tiers 1 to 21; the catalog carries 22, 23 and 24 as well, which is
- * what the current tier cap needs. So the catalog is AHEAD of the wiki here,
- * not in conflict with it — but those three rows have no wiki backing and
- * nothing else in the repo corroborates them either. Recorded so that a later
- * disagreement is read as the wiki catching up rather than as our data being
- * wrong.
+ * It listed tiers 1 to 21 until the wiki caught up; re-read 2026-11-18 it lists all 24. The
+ * catalog's tiers 22-24 had been extrapolated in the meantime (3.25 / 5 / 7.5 Bil coins where
+ * the wiki now says 10 / 50 / 100 Bil), which is the cost of carrying rows nothing backs.
  */
-export const DAILY_MISSION_TIERS_ON_WIKI = 21
+export const DAILY_MISSION_TIERS_ON_WIKI = 24
 
 export const DAILY_MISSION_TIERS_BEYOND_WIKI = DAILY_MISSION_TIER_REWARDS
   .filter(row => row.tier > DAILY_MISSION_TIERS_ON_WIKI)
@@ -134,9 +131,11 @@ export const DAILY_MISSION_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       `THE COIN COLUMN IS DISPLAY TEXT IN ${DAILY_MISSION_COIN_STRING_FORMATS} SHAPES — 25, `
       + '10,000, 1.00 Mil and 500 Mil. `Number()` returns NaN for three of the four. It is a label, '
       + 'not a quantity, and treating it as one silently zeroes most of the table.',
-      `The catalog carries tiers ${DAILY_MISSION_TIERS_BEYOND_WIKI.join(', ')} that the wiki table `
-      + 'does not. Those rows are unattributed — the wiki is behind rather than in conflict, but '
-      + 'nothing corroborates them.',
+      DAILY_MISSION_TIERS_BEYOND_WIKI.length
+        ? `The catalog carries tiers ${DAILY_MISSION_TIERS_BEYOND_WIKI.join(', ')} that the wiki table `
+          + 'does not. Those rows are unattributed — nothing corroborates them.'
+        : 'Rows the wiki does not list are unattributed. Tiers 22-24 were extrapolated while the '
+          + 'wiki stopped at 21, and were wrong by up to 13x once it caught up (T24: 7.5 Bil vs 100 Bil).',
     ],
     implementedBy: [
       'DAILY_MISSION_TIER_REWARDS',
@@ -176,7 +175,7 @@ export const DAILY_MISSION_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
         provenance: {
   origin: 'wiki',
   ref: 'Daily Missions',
-  verifiedAt: '2026-08-18',
+  verifiedAt: '2026-11-18',
 },
         verification: 'verified_here',
       },

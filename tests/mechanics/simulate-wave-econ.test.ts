@@ -86,7 +86,10 @@ describe('simulate-wave-econ', () => {
   })
 
   it('fleet module shards one-type is quarter of all-types total', () => {
-    const rows = simulateWaveEconRows(baseCoinInput({ tier: 20, targetWave: 5000 }), { maxRows: 5000 })
+    // Shattering off: every tier-20 fleet wave is also a boss wave, and a boss's shatter shards are
+    // now added to the wave's module shards rather than overwritten, so they would skew the ratio.
+    const input = baseCoinInput({ tier: 20, targetWave: 5000, shatterCommonModules: false, shatterRareModules: false })
+    const rows = simulateWaveEconRows(input, { maxRows: 5000 })
     const fleet = rows.find(r => r.isFleetWave && r.moduleShards > 0)
     expect(fleet).toBeDefined()
     expect(fleet!.moduleShardsOneType).toBeCloseTo(fleet!.moduleShards / 4, 4)

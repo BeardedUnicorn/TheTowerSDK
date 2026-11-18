@@ -73,7 +73,33 @@ describe('buildBattleReportStatFields', () => {
     })
 
     expect(mapped.attackChipDamage).toBe('0')
-    expect(mapped.bountyCoins).toBe('0')
+    // No bounty key at all is not evidence of zero bounty coins: v29.2 exports never write one.
+    expect(mapped.bountyCoins).toBeUndefined()
+  })
+
+  it('reads the keys a v29.2 export writes', () => {
+    const mapped = buildBattleReportStatFields({
+      totalVampires: 48,
+      healthFromDeathWaveThisRound: 4205127299.32,
+      lifesteal: 128332732125.28,
+      gameTime: 44583.7,
+      dissonanceType: 3,
+    })
+    expect(mapped.vampires).toBe('48')
+    expect(mapped.hpFromDeathWave).toBe('4.21B')
+    expect(mapped.lifesteal).toBe('128.33B')
+    expect(mapped.gameTime).toBe('12h23m4s')
+    expect(mapped.dissonance).toBe('Utility')
+  })
+
+  it('omits dissonance for a run without one', () => {
+    expect(buildBattleReportStatFields({ dissonanceType: 0 }).dissonance).toBeUndefined()
+  })
+
+  it('never reports Death Wave hits as kills', () => {
+    expect(buildBattleReportStatFields({ enemiesHitByDeathWaveThisRound: 900 }).killsWithDeathWave)
+      .toBeUndefined()
+    expect(buildBattleReportStatFields({ destroyedByDeathWave: 12 }).killsWithDeathWave).toBe('12')
   })
 
   it('resolves land mine hit alias', () => {

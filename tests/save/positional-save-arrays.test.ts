@@ -11,7 +11,8 @@ import { coerceSaveArray, normalizePresetLevelMatrix, toNumberArrayPreserveLengt
  */
 describe('an unreadable entry in a positional save array', () => {
   it('does not move later waves onto a lower tier', () => {
-    const settings = readEffectivePathsSettingsFromSaveRoot({ highestWaveThisTier: [100, null, 300] })
+    // Indexed by tier: slot 0 is empty, slot 2 unreadable.
+    const settings = readEffectivePathsSettingsFromSaveRoot({ highestWaveThisTier: [0, 100, null, 300] })
     expect(settings.highestTier).toBe(3)
     expect(settings.highestWave).toBe(300)
     expect(settings.wavesByTier).toEqual({ 1: 100, 3: 300 })

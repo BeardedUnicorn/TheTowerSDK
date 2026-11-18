@@ -61,10 +61,12 @@ const CATALOG_LABS = {
 } as const
 
 /**
- * The order in which death-prevention effects are consulted.
+ * The DEFAULT order in which death-prevention effects are consulted.
  *
  * Strictly ordered: each fires only if nothing earlier did. Demon Mode and Nuke
- * participate only with their Smart Automation vault nodes.
+ * participate only with their Smart Automation vault nodes. Since v29 the Vault's Life Saving
+ * Ordering upgrade lets a player choose this order (patch note 1541918181889671178; wiki
+ * "The Vault", Harmony > Cards), so it is the order of an account without that upgrade.
  */
 export const DEATH_PREVENTION_PRIORITY = [
   'Death Defy',
@@ -89,9 +91,16 @@ export const SURVIVAL_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     label: 'Death prevention chain',
     kind: 'rule',
     summary:
-      'A fixed priority order for surviving a lethal hit: Death Defy, then Energy Shield, then '
-      + 'Second Wind, then Demon Mode and Nuke where their Smart Automation vault nodes are owned.',
+      'A priority order for surviving a lethal hit: by default Death Defy, then Energy Shield, then '
+      + 'Second Wind, then Demon Mode and Nuke where their Smart Automation vault nodes are owned. '
+      + 'Since v29 the Vault\'s Life Saving Ordering upgrade lets the player reorder it.',
     traps: [
+      'The order is a DEFAULT since v29. An account with Life Saving Ordering (Vault Harmony, Cards '
+      + 'category) may consume its saves in another order (patch note 1541918181889671178).',
+      'In TOURNAMENTS since v29.1, Demon Mode, Second Wind and Viking Funeral stop after a limit of '
+      + 'waves or time, Energy Shield and the Wall need at least two waves to charge, and Viking '
+      + 'Mastery triggers on every death save (patch note 1560299053789749419). Campaign runs are '
+      + 'unaffected.',
       'ORDERED, NOT INDEPENDENT. Each fires only if nothing above it did, so they compete for the '
       + 'same hit. Multiplying their individual survival chances together overstates survivability.',
       'Energy Shield triggers on ANY damage, not only lethal damage — so it can be spent on a '
@@ -102,7 +111,8 @@ export const SURVIVAL_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'not destroy in-flight projectiles.',
       'Only the first two links come from the workshop. Second Wind is a card, and the last two '
       + 'are vault nodes — so the chain\'s length is a property of the ACCOUNT, not of the build. '
-      + 'It is three links for most players and five only in Legend league.',
+      + 'It is three links for most players and five only for Legend or Mythic players with the '
+      + 'Vault automations.',
     ],
     claimType: 'objective',
     verification: 'verified_here',
@@ -120,6 +130,8 @@ export const SURVIVAL_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     ],
     sources: [
       { ...WIKI_DEATH_DEFY, section: 'Activation Priority' }, CATALOG_SURVIVAL, WIKI_PACKAGES,
+      { origin: 'wiki', ref: 'The Vault', section: 'Cards', verifiedAt: '2026-11-18' },
+      { origin: 'game', ref: 'patch notes 1541918181889671178 (v29) and 1560299053789749419 (v29.1)', sourceVersion: 'v29.1.0', verifiedAt: '2026-11-18' },
     ],
   },
   {

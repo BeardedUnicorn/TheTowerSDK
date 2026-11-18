@@ -73,6 +73,21 @@ const WIKI_BALANCE = { origin: 'wiki', ref: 'Enemy Balance', verifiedAt: '2026-0
 const WIKI_WAVE_SKIP = { origin: 'wiki', ref: 'Wave Skip', verifiedAt: '2026-08-16' } as const
 const WIKI_GEMS = { origin: 'wiki', ref: 'Currency/Gems', verifiedAt: '2026-08-16' } as const
 const WIKI_KEYS = { origin: 'wiki', ref: 'Currency/Keys', verifiedAt: '2026-08-16' } as const
+/** Both currency pages as rewritten for v29 (ad gem 6, daily 20, Mythic keys), read after v29.2. */
+const WIKI_GEMS_V29 = { origin: 'wiki', ref: 'Currency/Gems', verifiedAt: '2026-11-18' } as const
+const WIKI_KEYS_V29 = { origin: 'wiki', ref: 'Currency/Keys', verifiedAt: '2026-11-18' } as const
+const NOTE_V29_GEMS = {
+  origin: 'game',
+  ref: 'patch note 1541918349519233064 (v29): daily gem 15 → 20, ad gem 5 → 6, 60 ad-gem claims a day',
+  sourceVersion: 'v29.0.0',
+  verifiedAt: '2026-11-18',
+} as const
+const NOTE_V29_KEYS = {
+  origin: 'game',
+  ref: 'patch note 1541918183001424042 (v29): Mythic league, 1 key added for Legend ranks 16-24',
+  sourceVersion: 'v29.0.0',
+  verifiedAt: '2026-11-18',
+} as const
 
 /** The coins-per-kill formula, verbatim. */
 export const COINS_PER_KILL_FORMULA =
@@ -553,37 +568,48 @@ units: 'multiplier'},
       'The premium currency. Buys cards, card slots, lab slots, modules and tournament tickets, '
       + 'and rushes lab research.',
     traps: [
-      'Floating gems are capped at 10 per RUN, spawn roughly every 400–500 waves and never more '
-      + 'than once every 15 minutes, at 2 gems each. Gem income is bounded by real time, not by '
-      + 'run performance.',
+      'Two different free gems, easy to conflate. A FLOATING gem block pays 2 gems, at most 10 per '
+      + 'RUN, the first from wave 10 and later ones at least 30 minutes and 400 waves after the last '
+      + 'tap. An AD gem pays 6 since v29 (it was 5), comes roughly every 10 minutes of play, and is '
+      + 'capped at 60 claims a day (patch note 1541918349519233064). The daily store gem is 20 '
+      + 'since v29 (it was 15).',
+      'Gem income is bounded by real time and daily caps, not by run performance.',
       'Gems compete across five unrelated sinks. A plan spending gems on one must say what it is '
       + 'not spending them on.',
     ],
     assertions: [
-      { subject: 'currency.gem', predicate: 'freeGemsPerAdvert', value: 2, provenance: { origin: 'wiki', ref: 'Currency/Gems', verifiedAt: '2026-08-16' } },
-      { subject: 'currency.gem', predicate: 'advertCooldownMinutes', value: 15, provenance: { origin: 'wiki', ref: 'Currency/Gems', verifiedAt: '2026-08-16' } },
+      { subject: 'currency.gem', predicate: 'gemsPerFloatingBlock', value: 2, provenance: WIKI_GEMS_V29 },
+      { subject: 'currency.gem', predicate: 'floatingBlocksPerRunMax', value: 10, provenance: WIKI_GEMS_V29 },
+      { subject: 'currency.gem', predicate: 'floatingBlockMinMinutesApart', value: 30, provenance: WIKI_GEMS_V29 },
+      { subject: 'currency.gem', predicate: 'gemsPerAdGemClaim', value: 6, provenance: NOTE_V29_GEMS },
+      { subject: 'currency.gem', predicate: 'adGemClaimsPerDayMax', value: 60, provenance: NOTE_V29_GEMS },
+      { subject: 'currency.gem', predicate: 'dailyFreeGems', value: 20, provenance: NOTE_V29_GEMS },
       // Bounded by real time rather than by play, which is why no build or tier
       // raises it and why a plan that "farms gems" is planning to wait.
       { subject: 'currency.gem', predicate: 'incomeBoundedByRealTime', value: true, provenance: { origin: 'wiki', ref: 'Currency/Gems', verifiedAt: '2026-08-16' } },
     ],
-    sources: [{ ...WIKI_GEMS, section: 'Acquiring Gems' }],
+    sources: [{ ...WIKI_GEMS, section: 'Acquiring Gems' }, { ...WIKI_GEMS_V29, section: 'Acquiring Gems' }, NOTE_V29_GEMS],
   },
   {
     id: 'currency.key',
     label: 'Keys',
     kind: 'currency',
     summary:
-      'Earned only by placing 1st–15th in a LEGEND tournament. Spent exclusively on Tech Trees in '
-      + 'the Vault.',
+      'Earned only from LEGEND and MYTHIC tournaments: Legend pays ranks 1–24 (25 down to 1 key), '
+      + 'Mythic every rank (50 down to 8). Spent exclusively on the Vault.',
     traps: [
-      'Legend league and a top-15 placement, or no keys at all. Every key-gated upgrade — '
-      + 'including card slots 23–28 — is unreachable for most accounts.',
+      'Legend or Mythic league, or no keys at all. Every key-gated upgrade — including card slots '
+      + '23–28 — is unreachable for most accounts.',
+      'Before v29 only Legend ranks 1–15 paid keys. v29 added a key for Legend ranks 16–24 and the '
+      + 'Mythic league (patch note 1541918183001424042), so a top-15 rule undercounts.',
     ],
     assertions: [
+      { subject: 'currency.key', predicate: 'lowestKeyPayingLegendRank', value: 24, provenance: NOTE_V29_KEYS },
+      { subject: 'currency.key', predicate: 'leaguesThatPayKeys', value: 'Legend, Mythic', provenance: WIKI_KEYS_V29 },
       { subject: 'currency.key', predicate: 'spentOnTheVault', value: true, provenance: { origin: 'wiki', ref: 'Currency/Keys', verifiedAt: '2026-08-16' } },
       { subject: 'currency.key', predicate: 'earnedFromTournaments', value: true, provenance: { origin: 'wiki', ref: 'Currency/Keys', verifiedAt: '2026-08-16' } },
     ],
-    sources: [WIKI_KEYS],
+    sources: [WIKI_KEYS, WIKI_KEYS_V29, NOTE_V29_KEYS],
   },
   {
     id: 'currency',
@@ -606,7 +632,7 @@ units: 'multiplier'},
       + 'undercounts, and treating shards and reroll dice as one pool lets a planner spend the '
       + 'wrong one.',
       'Each currency has one or two real sources and they do not substitute — keys come only from '
-      + 'a top-15 Legend placement, bits and tokens only from guilds, elite cells only from elite '
+      + 'Legend or Mythic tournament placement, bits and tokens only from guilds, elite cells only from elite '
       + 'enemies. A plan that needs a currency the account cannot earn is not a slow plan, it is '
       + 'an impossible one.',
       'Persistence is not the same as spendability. Medals persist between events but are only '
@@ -876,8 +902,8 @@ note: "Dissonance boost and echo rewards contribute to the account-wide coin mul
     from: 'tournament.league',
     kind: 'gates',
     to: 'currency.key',
-    note: 'Keys come only from a top-15 placement in Legend league.',
-    sources: [WIKI_KEYS],
+    note: 'Keys come only from Legend (ranks 1-24 since v29) and Mythic tournament placement.',
+    sources: [WIKI_KEYS_V29, NOTE_V29_KEYS],
   },
 {
     from: 'currency.key',

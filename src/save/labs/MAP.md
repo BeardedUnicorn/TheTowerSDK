@@ -8,8 +8,8 @@ Lab progress and what remains.
 |---|---|---|
 | `favorites.ts` | — | FAVORITE_LABS_SAVE_FIELD, readFavoriteLabSlugsFromSaveRoot, saveHasFavoriteLabs |
 | `index.ts` | Labs read from a save: | — |
-| `read.ts` | Lab research read from a save: | LABS_SAVE_UNLOCKED_KEY, LABS_SAVE_RESEARCH_LEVEL_KEY, LABS_SAVE_RESEARCH_PERCENT_KEY, LABS_SAVE_LAB_LEVEL_KEY (+11 more) |
+| `read.ts` | Lab research read from a save: | LABS_SAVE_UNLOCKED_KEY, LABS_SAVE_RESEARCH_LEVEL_KEY, LABS_SAVE_RESEARCH_PERCENT_KEY, LABS_SAVE_LAB_LEVEL_KEY (+12 more) |
 | `remaining.ts` | How long a lab level takes, and how long is left on one in progress. | getStaticLabWorkingLevelDurationHours, estimateLabLevelRemainingSeconds |
-| `types.ts` | The types `save/labs/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | LabResearchSaveRow, LabQueueSaveRow, LabsSaveExtract |
+| `types.ts` | The types `save/labs/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | LabResearchSaveRow, LabCompletionSaveRow, LabQueueSaveRow, LabsSaveExtract |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)
