@@ -15,7 +15,7 @@ import {
   listGuardianSkinCatalogRows,
 } from '../catalogs/guardians'
 
-import { coerceSaveNumber, readSaveBoolean, readSaveEnumValue, toNumberArray } from '../access/values'
+import { coerceSaveNumber, readSaveBoolean, readSaveEnumValue, readSaveListItems } from '../access/values'
 import type { GuardianChipSaveRow, GuardianEquippedChipRow, GuardianSkinSaveRow, GuardiansSaveExtract } from './types'
 
 export const GUARDIANS_SAVE_UNLOCKED_KEY = 'guardianUnlocked'
@@ -109,7 +109,12 @@ export function readGuardiansFromSaveRoot(root: Record<string, unknown> | null):
   const chipUnlocked = Array.isArray(root[GUARDIANS_SAVE_CHIP_UNLOCKED_KEY])
     ? (root[GUARDIANS_SAVE_CHIP_UNLOCKED_KEY] as unknown[]).map(readSaveBoolean)
     : []
-  const chipLevels = toNumberArray(root[GUARDIANS_SAVE_CHIP_LEVEL_KEY])
+  // Chunked into chip slots by position, so an unreadable entry stays in its slot.
+  const readChipLevels = readSaveListItems(root[GUARDIANS_SAVE_CHIP_LEVEL_KEY]).map(item => coerceSaveNumber(item))
+  if (readChipLevels.includes(null)) {
+    warnings.push(`${GUARDIANS_SAVE_CHIP_LEVEL_KEY} has unreadable entries; those stats read as level 0.`)
+  }
+  const chipLevels = readChipLevels.map(level => level ?? 0)
   const skinUnlocked = Array.isArray(root[GUARDIANS_SAVE_SKIN_UNLOCKED_KEY])
     ? (root[GUARDIANS_SAVE_SKIN_UNLOCKED_KEY] as unknown[]).map(readSaveBoolean)
     : []

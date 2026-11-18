@@ -199,6 +199,27 @@ describeServer('mcp server', () => {
     expect(invented.note).toContain('do not invent')
   })
 
+  /*
+   * Uses a committed fixture because the real-save case below skips on a fresh clone, and that skip
+   * is how a call to a function that never existed shipped through 0.14.1.
+   */
+  it('summarises what each extractor finds in an export', async () => {
+    const fixture = path.join(HERE, '..', 'fixtures', 'save', 'labs-keys.sample.json')
+    const decoded = await call('decode_save', { path: fixture })
+
+    expect(decoded.error).toBeUndefined()
+    expect(decoded.rootKeys).toBeGreaterThan(0)
+    expect(decoded.battleRuns).toBe(0)
+
+    const labs = decoded.targets.find(
+      (target: { extractor: string }) => target.extractor === 'readLabsFromSaveRoot',
+    )
+    expect(labs.found).toBe(true)
+    expect(labs.fields).toContain('researches')
+    expect(labs.warnings).toEqual(expect.any(Number))
+    expect(decoded.targets.filter((target: { error?: string }) => target.error)).toEqual([])
+  })
+
   it.runIf(hasSave)('decodes a save and runs an extractor against it', async () => {
     const decoded = await call('decode_save', { path: savePath })
     expect(decoded.rootKeys).toBeGreaterThan(100)

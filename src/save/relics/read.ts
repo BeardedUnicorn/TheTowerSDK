@@ -12,8 +12,8 @@ import {
   findRelicTemplateIdFromSaveIndex,
 } from '../catalogs/relic-template-match'
 
-import { coerceSaveArray, toNumberArrayPreserveLength } from '../workshop/read'
-import { readSaveBoolean, readSaveEnumValue } from '../access/values'
+import { coerceSaveArray } from '../workshop/read'
+import { readSaveBoolean, readSaveEnumValue, readSaveListItems, toNumberArray } from '../access/values'
 import type { RelicSaveRow, RelicsSaveExtract } from './types'
 export const RELICS_SAVE_PROFILE_KEY = 'profileRelics'
 export const RELICS_SAVE_UNLOCKED_KEY = 'relicsUnlocked'
@@ -86,7 +86,9 @@ export function readRelicsFromSaveRoot(root: Record<string, unknown> | null): Re
     warnings.push('Relic catalog is not imported from game data yet.')
   }
 
-  const profileRelicIndices = toNumberArrayPreserveLength(root[RELICS_SAVE_PROFILE_KEY])
+  // A list of relic indices, not slots, so an unreadable entry is dropped. Reading it as 0 would
+  // claim relic 0.
+  const profileRelicIndices = toNumberArray(readSaveListItems(root[RELICS_SAVE_PROFILE_KEY]))
     .filter(index => index >= 0)
   const unlockedFlags = readRelicUnlockedFlags(root[RELICS_SAVE_UNLOCKED_KEY], catalogLength)
   const unlockedSet = buildUnlockedSet(profileRelicIndices, unlockedFlags)

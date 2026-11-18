@@ -9,7 +9,7 @@ import { findUwWeaponByName } from '../../data/ultimate-weapons/stats'
 import { type UwWeaponValue } from '../../data/ultimate-weapons/types'
 import { uwStoneChartData } from '../../data/ultimate-weapons/stones.data'
 import { listUltimateWeaponCatalogRows, UW_CATALOG_SLOT_COUNT } from '../catalogs/ultimate-weapons'
-import { coerceSaveNumber, toNumberArray } from '../access/values'
+import { coerceSaveNumber, readSaveListItems } from '../access/values'
 import type { UltimateWeaponData, UltimateWeaponSaveStatRow, UltimateWeaponSaveRow, UltimateWeaponsSaveExtract, UltimateWeaponsSaveSlot } from './types'
 
 /** How many UW slots the save's catalog holds, beside the reader that walks them. */
@@ -120,8 +120,13 @@ export function readUltimateWeaponsFromSaveRoot(parsedRoot: unknown): UltimateWe
   const active = readBooleanArray(root[UW_SAVE_WEAPON_ON_KEY])
   const plusUnlocked = readBooleanArray(root[UW_SAVE_PLUS_UNLOCKED_KEY])
   const plusOn = readBooleanArray(root[UW_SAVE_PLUS_ON_KEY])
-  const plusLevels = toNumberArray(root[UW_SAVE_PLUS_LEVEL_KEY])
-  const rawWeaponLevels = toNumberArray(root[UW_SAVE_WEAPON_LEVEL_KEY])
+  // Indexed by weapon slot, so an unreadable entry stays in its slot.
+  const plusLevels = readSaveListItems(root[UW_SAVE_PLUS_LEVEL_KEY]).map(item => coerceSaveNumber(item))
+  const weaponLevelEntries = readSaveListItems(root[UW_SAVE_WEAPON_LEVEL_KEY]).map(item => coerceSaveNumber(item))
+  const rawWeaponLevels = weaponLevelEntries.filter((level): level is number => level !== null)
+  if (plusLevels.includes(null)) {
+    warnings.push(`${UW_SAVE_PLUS_LEVEL_KEY} has unreadable entries; those plus levels are unknown.`)
+  }
 
   const parallelLengths = new Set(
     [unlocked.length, active.length, plusUnlocked.length, plusOn.length, plusLevels.length].filter(len => len > 0),
@@ -140,11 +145,16 @@ export function readUltimateWeaponsFromSaveRoot(parsedRoot: unknown): UltimateWe
     warnings.push('Ultimate weapon slot catalog is not imported from game data yet.')
   }
 
-  const baseStatChunkingPlausible =
-    slotCount > 0 && rawWeaponLevels.length === slotCount * UW_SAVE_BASE_STAT_LEVELS_PER_SLOT
-  if (rawWeaponLevels.length > 0 && !baseStatChunkingPlausible) {
+  const weaponLevelsFitSlots =
+    slotCount > 0 && weaponLevelEntries.length === slotCount * UW_SAVE_BASE_STAT_LEVELS_PER_SLOT
+  // Chunking is by position, so one unreadable entry leaves the rest with no reliable slot.
+  const baseStatChunkingPlausible = weaponLevelsFitSlots && !weaponLevelEntries.includes(null)
+  if (weaponLevelsFitSlots && !baseStatChunkingPlausible) {
+    warnings.push(`${UW_SAVE_WEAPON_LEVEL_KEY} has unreadable entries. Stat level import is unavailable.`)
+  }
+  if (weaponLevelEntries.length > 0 && !weaponLevelsFitSlots) {
     warnings.push(
-      `${UW_SAVE_WEAPON_LEVEL_KEY} has ${rawWeaponLevels.length} values; expected ${slotCount * UW_SAVE_BASE_STAT_LEVELS_PER_SLOT} for ${slotCount} slots × ${UW_SAVE_BASE_STAT_LEVELS_PER_SLOT} base stats. Stat level import is unavailable.`,
+      `${UW_SAVE_WEAPON_LEVEL_KEY} has ${weaponLevelEntries.length} values; expected ${slotCount * UW_SAVE_BASE_STAT_LEVELS_PER_SLOT} for ${slotCount} slots × ${UW_SAVE_BASE_STAT_LEVELS_PER_SLOT} base stats. Stat level import is unavailable.`,
     )
   }
 

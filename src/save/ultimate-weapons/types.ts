@@ -50,7 +50,7 @@ export interface UltimateWeaponsSaveExtract {
   slots: UltimateWeaponsSaveSlot[]
   rawWeaponLevels: number[]
   warnings: string[]
-  /** True when flat level array length matches slots × base stats per slot. */
+  /** True when the flat level array is fully readable and its length matches slots × base stats per slot. */
   baseStatChunkingPlausible: boolean
 }
 

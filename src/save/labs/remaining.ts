@@ -20,8 +20,8 @@ export function getStaticLabWorkingLevelDurationHours(
   if (!lab?.levels?.length) return null
 
   const workingLevel = Math.max(1, Math.floor(Number(completedLevel) || 0) + 1)
+  // No entry for the next level means the lab is maxed, so there is nothing left to time.
   const levelData = lab.levels.find(entry => entry.level === workingLevel)
-    ?? lab.levels.find(entry => entry.level === completedLevel)
   if (!levelData) return null
 
   const baseHours = parseDurationToHours(levelData.duration)

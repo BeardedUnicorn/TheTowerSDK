@@ -10,7 +10,7 @@ import {
 } from '../../data/player-stats/fields.data'
 import { POWER_VAULT_SINGLE_PURCHASE_NODE_IDS } from '../catalogs/vault/slot-overrides'
 import { POWER_VAULT_TIER_UNLOCK_NODE_IDS } from '../../data/vault/tree-traversal'
-import { coerceSaveNumber, readSaveBoolean, toNumberArray } from '../access/values'
+import { coerceSaveNumber, readSaveBoolean, readSaveListItems } from '../access/values'
 import { readVaultV29ProgressFromSaveRoot, vaultV29RowKey } from './v29-progress'
 import { type VaultV29ProgressExtract } from './types'
 import type { VaultNodeSaveRow, VaultSaveExtract } from './types'
@@ -57,8 +57,8 @@ export function normalizeVaultPowerNodeLevelFromSave(input: {
 }
 
 function buildPowerRows(
-  levels: number[],
-  maxLevels: number[],
+  levels: Array<number | null>,
+  maxLevels: Array<number | null>,
   unlocked: boolean[],
   tier2Unlock: boolean,
   tier3Unlock: boolean,
@@ -110,8 +110,12 @@ export function readVaultFromSaveRoot(root: Record<string, unknown> | null): Vau
   if (!root) return null
 
   const warnings: string[] = []
-  const powerLevels = toNumberArray(root[VAULT_SAVE_POWER_LEVEL_KEY])
-  const powerMaxLevels = toNumberArray(root[VAULT_SAVE_POWER_MAX_LEVEL_KEY])
+  // Indexed by node, so an unreadable entry stays in its slot.
+  const powerLevels = readSaveListItems(root[VAULT_SAVE_POWER_LEVEL_KEY]).map(item => coerceSaveNumber(item))
+  const powerMaxLevels = readSaveListItems(root[VAULT_SAVE_POWER_MAX_LEVEL_KEY]).map(item => coerceSaveNumber(item))
+  if (powerLevels.includes(null)) {
+    warnings.push(`${VAULT_SAVE_POWER_LEVEL_KEY} has unreadable entries; those nodes read as level 0.`)
+  }
   const powerUnlocked = Array.isArray(root[VAULT_SAVE_POWER_UNLOCKED_KEY])
     ? (root[VAULT_SAVE_POWER_UNLOCKED_KEY] as unknown[]).map(readSaveBoolean)
     : []

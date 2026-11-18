@@ -12,6 +12,7 @@ import {
   coerceSaveNumber,
   readSaveBoolean,
   readSaveEnumValue,
+  readSaveListItems,
   toNumberArray,
 } from '../access/values'
 import { listWorkshopCatalogRows } from '../catalogs'
@@ -71,12 +72,7 @@ function enhancementStatOrder(): Record<WorkshopCategory, string[]> {
 }
 
 export function coerceSaveArray(raw: unknown): unknown[] {
-  if (Array.isArray(raw)) return raw
-  if (raw && typeof raw === 'object') {
-    const record = raw as Record<string, unknown>
-    if (Array.isArray(record._items)) return record._items
-  }
-  return []
+  return readSaveListItems(raw)
 }
 
 export function toNumberArrayPreserveLength(raw: unknown, length?: number): number[] {
@@ -150,10 +146,10 @@ export function normalizePresetLevelMatrix(raw: unknown): number[][] {
   if (!Array.isArray(raw) || raw.length === 0) return []
 
   if (Array.isArray(raw[0])) {
-    return raw.map(row => toNumberArray(row))
+    return raw.map(row => toNumberArrayPreserveLength(row))
   }
 
-  return [toNumberArray(raw)]
+  return [toNumberArrayPreserveLength(raw)]
 }
 
 export function mapLevelArrayToRecord(keys: readonly string[], values: unknown[]): Record<string, number> {
