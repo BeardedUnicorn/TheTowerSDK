@@ -67,7 +67,9 @@ function expandTemplateAndTransclusionSyntax(text: string, context: FandomWikite
   return result
 }
 
-const TABBER_PANEL_DELIMITER = /\|-\||-\|/
+// Grouped, because it is spliced into larger patterns: bare, the alternation swallowed the
+// anchor in front of it and `-|` matched anywhere in a panel's text.
+const TABBER_PANEL_DELIMITER = /(?:\|-\||-\|)/
 
 function stripTabberPanelPrefix(value: string): string {
   return value.trim().replace(new RegExp(`^\\s*${TABBER_PANEL_DELIMITER.source}`), '')

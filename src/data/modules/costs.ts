@@ -166,8 +166,11 @@ export function sumModuleCostsBetweenWithRounding(
   discountPercent: number,
   roundingMode: ModuleCostRoundingMode = 'round',
 ): number {
-  const from = Math.max(1, Math.floor(Number(fromLevel) || 1))
-  const to = Math.max(1, Math.floor(Number(toLevel) || 1))
+  // The table prices levels 2 to `costs.length + 1`. A level past the end is clamped to the cap:
+  // reading the prefix sums beyond it found nothing and priced the whole range at 0.
+  const maxLevel = costs.length + 1
+  const from = Math.min(maxLevel, Math.max(1, Math.floor(Number(fromLevel) || 1)))
+  const to = Math.min(maxLevel, Math.max(1, Math.floor(Number(toLevel) || 1)))
   if (to <= from) return 0
 
   const discounted = buildDiscountedModuleCosts(costs, discountPercent, roundingMode)

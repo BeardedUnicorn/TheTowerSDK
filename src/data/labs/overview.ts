@@ -286,7 +286,9 @@ export function clampLabRange(
   const maxLevel = getLabMaxLevel(lab)
   const minLevel = 0
   const start = Math.max(minLevel, Math.min(maxLevel, Math.floor(Number(startLevel) || 0)))
-  const target = Math.max(start + 1, Math.min(maxLevel, Math.floor(Number(targetLevel) || maxLevel)))
+  // Capped last: a lab already at its cap has nowhere to go, and `start + 1` must not invent
+  // a level above it.
+  const target = Math.min(maxLevel, Math.max(start + 1, Math.floor(Number(targetLevel) || maxLevel)))
   return { startLevel: start, targetLevel: target }
 }
 

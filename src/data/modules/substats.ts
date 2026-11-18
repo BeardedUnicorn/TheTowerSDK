@@ -25,7 +25,7 @@ const substat = (
 ): ModuleSubstatCanonicalDefinition => ({
   label,
   valuesByRarity,
-  availableRarities: MODULE_SUBSTAT_BASE_RARITIES.filter(rarity => valuesByRarity[rarity] !== undefined),
+  availableRarities: MODULE_SUBSTAT_BASE_RARITIES.filter(rarity => Boolean(valuesByRarity[rarity])),
 })
 
 export const MODULE_SUBSTAT_CANONICAL_DATA: Record<ModuleSubstatCanonicalCategory, ModuleSubstatCanonicalCategoryData> = {

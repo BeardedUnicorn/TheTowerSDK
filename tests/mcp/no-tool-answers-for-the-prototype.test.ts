@@ -70,6 +70,10 @@ const refusedByError = (result: Record<string, unknown>) => Boolean(result.error
 const refusedByResolver = (result: Record<string, unknown>) =>
   result.found === false || result.matchedExactly === false
 
+/** `oracle_expand` answers from a closed set: a term outside it has no expansions. */
+const refusedByNoExpansion = (result: Record<string, unknown>) =>
+  Array.isArray(result.expansions) && result.expansions.length === 0
+
 const NAME_TAKING = [
   { tool: 'get_export', field: 'name', extra: {}, refused: refusedByError, maxBody: 500 },
   { tool: 'run_extractor', field: 'extractor', extra: { path: REAL_SAVE }, refused: refusedByError, maxBody: 500 },
@@ -77,6 +81,17 @@ const NAME_TAKING = [
   { tool: 'calc_describe', field: 'id', extra: {}, refused: refusedByError, maxBody: 1_000 },
   { tool: 'oracle_get', field: 'id', extra: {}, refused: refusedByResolver, maxBody: 20_000 },
   { tool: 'oracle_traps', field: 'id', extra: {}, refused: refusedByResolver, maxBody: 20_000 },
+
+  /*
+   * Four that this sweep claimed to cover and did not. Three of them threw: `describe_schema`
+   * read `.shape` off the `Object` function's missing schema, `calc_chart` mapped over a link
+   * that was not one, and `oracle_expand` mapped over a function. `list_exports` answered --
+   * `constructor` was reported as an entry point with no exports.
+   */
+  { tool: 'list_exports', field: 'entry', extra: {}, refused: refusedByError, maxBody: 500 },
+  { tool: 'describe_schema', field: 'table', extra: {}, refused: refusedByError, maxBody: 5_000 },
+  { tool: 'calc_chart', field: 'chart', extra: {}, refused: refusedByError, maxBody: 5_000 },
+  { tool: 'oracle_expand', field: 'term', extra: {}, refused: refusedByNoExpansion, maxBody: 20_000 },
 
   /*
    * The epaths tab lookups. These reach the Sheets API for a real tab, but a prototype key must be

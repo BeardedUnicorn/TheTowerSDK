@@ -169,8 +169,13 @@ export function buildEffectiveEconomyInputsFromSave(parsedRoot: unknown): Effect
   const moduleRarities = new Map<string, string>()
   const moduleSlotsFilled = new Set<string>()
   for (const equipped of (modules as { equipped?: unknown[] } | null)?.equipped ?? []) {
-    const row = equipped as { role?: string, category?: string, level?: unknown, rarityLabel?: string }
+    const row = equipped as {
+      role?: string, category?: string, level?: unknown, rarityLabel?: string, infoIndex?: number | null
+    }
     if (!row.role || !row.category) continue
+    // The reader reports every assist slot the save has, including one with nothing in it. A slot
+    // is only filled when it names a module.
+    if (row.infoIndex == null || row.infoIndex <= 0) continue
     const slot = `${row.role}:${matchKey(row.category)}`
     moduleSlotsFilled.add(slot)
     const level = numberOrNull(row.level)

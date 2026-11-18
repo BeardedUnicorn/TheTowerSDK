@@ -56,7 +56,9 @@ export function formatCoin(n: number): string {
 const MULTIPLY_SIGN = String.fromCharCode(0x00d7)
 
 export function formatMultiplier(m: number, fractionDigits = 3, suffix: string = MULTIPLY_SIGN): string {
-  return (Number(m) || 1).toLocaleString('en-US', {
+  // Only an unreadable multiplier falls back to 1. Zero is a real multiplier and prints as zero.
+  const multiplier = Number(m)
+  return (Number.isFinite(multiplier) ? multiplier : 1).toLocaleString('en-US', {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   }) + suffix
@@ -107,5 +109,9 @@ export function formatTrimmedNumber(value: number, maxDecimals = 3, invalidFallb
   if (Math.abs(value - Math.round(value)) < 0.0001) {
     return Math.round(value).toString()
   }
-  return value.toFixed(maxDecimals).replace(/\.?0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1')
+  // Trailing zeros are only insignificant after a decimal point: with `maxDecimals` 0 there is
+  // none, and stripping them turned 100 into 1.
+  const fixed = value.toFixed(maxDecimals)
+  const trimmed = fixed.includes('.') ? fixed.replace(/\.?0+$/, '') : fixed
+  return trimmed === '-0' ? '0' : trimmed
 }

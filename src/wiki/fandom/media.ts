@@ -34,7 +34,10 @@ export function isFandomWikiImageUrl(value: unknown): boolean {
 /** Redirect URL — blocked (403) as hotlinked `<img src>`; use CDN URLs from {@link fetchFandomImageUrlMap}. */
 export function buildFandomFileRedirectUrl(fileName: string): string {
   const trimmed = fileName.trim()
-  return `https://${FANDOM_WIKI_HOST}/wiki/Special:Redirect/file/${encodeURIComponent(trimmed)}`
+  // `encodeURIComponent` leaves parentheses alone, and a `)` in the URL ends the markdown link it
+  // sits in: `Death Wave (UW).png` was read back as `Death Wave (UW`.
+  const encoded = encodeURIComponent(trimmed).replace(/\(/g, '%28').replace(/\)/g, '%29')
+  return `https://${FANDOM_WIKI_HOST}/wiki/Special:Redirect/file/${encoded}`
 }
 
 function normalizeFileReference(value: string): string {
@@ -52,7 +55,7 @@ function normalizeFandomImageAlt(rawAlt: string, fileName: string): string {
 
   const parts = alt.split('|').map(part => part.trim()).filter(Boolean)
   const candidate = parts[parts.length - 1] ?? alt
-  if (candidate && candidate.toLowerCase() !== 'thumb' && !/^\d+x\d+px$/i.test(candidate)) {
+  if (candidate && candidate.toLowerCase() !== 'thumb' && !/^(?:\d+|\d*x\d+)px$/i.test(candidate)) {
     return candidate
   }
 
