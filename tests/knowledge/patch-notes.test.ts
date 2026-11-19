@@ -86,6 +86,19 @@ describe('the patch-note archive', () => {
     expect(PATCH_NOTES_SOURCE.notes).toBe(PATCH_NOTES.length)
   })
 
+  it('reaches v29.2.1, with the v29.2 preview and release kept as separate posts', () => {
+    expect(patchNotesForVersion('29.1.1').map(note => note.id)).toEqual(['1560678214764994651'])
+    expect(patchNotesForVersion('29.1.2').map(note => note.id)).toEqual(['1561019100359032976'])
+    expect(patchNotesForVersion('29.1.3').map(note => note.id)).toEqual(['1562512032803201145'])
+    expect(patchNotesForVersion('29.1.4').map(note => note.id)).toEqual(['1566858291710136333'])
+    expect(patchNotesForVersion('29.2').map(note => [note.id, note.postedAt.slice(0, 10)])).toEqual([
+      ['1570892731163615483', '2026-11-13'],
+      ['1571908549376872459', '2026-11-16'],
+    ])
+    expect(patchNotesForVersion('29.2.1').map(note => note.id)).toEqual(['1572999340027420755'])
+    expect(PATCH_NOTES_SOURCE.latest >= '2026-11-19T15:37:47.577000+00:00').toBe(true)
+  })
+
   it('answers when something was introduced, from the developers own words', () => {
     const shockwave = whenIntroduced('shockwave')
     expect(shockwave?.postedAt.slice(0, 10)).toBe('2021-07-15')

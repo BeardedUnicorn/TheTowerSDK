@@ -24,7 +24,7 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 const ARCHIVE = {
   origin: 'code',
   ref: 'thetowersdk/knowledge PATCH_NOTES, ingested from the official announcement channel',
-  verifiedAt: '2026-08-25',
+  verifiedAt: '2026-11-19',
 } as const
 
 const COVERAGE = `${PATCH_NOTES_SOURCE.notes} notes, ${PATCH_NOTES_SOURCE.earliest.slice(0, 10)} to ${PATCH_NOTES_SOURCE.latest.slice(0, 10)}`
@@ -33,11 +33,11 @@ const COVERAGE = `${PATCH_NOTES_SOURCE.notes} notes, ${PATCH_NOTES_SOURCE.earlie
 const LATEST_ARCHIVED_VERSION = [...PATCH_NOTES].reverse().find(note => note.version)?.version ?? 'unknown'
 
 /**
- * Notes the developers posted after the archive was last ingested, read from the channel on
- * 2026-11-18 and 2026-11-19: 29.1.1 (1560678214764994651), 29.1.2 (1561019100359032976), 29.1.3
- * (1562512032803201145), 29.1.4 (1566858291710136333), 29.2 (1571908549376872459) and 29.2.1
- * (1572999340027420755). The trap naming them drops out on its own once an ingest reaches the
- * newest of them.
+ * The newest note known to exist in the channel when this file was last touched. On 2026-11-19 the
+ * archive was brought level with it: 29.1.1 (1560678214764994651), 29.1.2 (1561019100359032976),
+ * 29.1.3 (1562512032803201145), 29.1.4 (1566858291710136333), the 29.2 preview and release
+ * (1571908549376872459) and 29.2.1 (1572999340027420755) are all in. Move this date forward when a
+ * newer note is seen before it is ingested, and the trap below names the archive as behind again.
  */
 const NEWEST_KNOWN_NOTE_POSTED = '2026-11-19'
 const ARCHIVE_IS_BEHIND = PATCH_NOTES_SOURCE.latest.slice(0, 10) < NEWEST_KNOWN_NOTE_POSTED

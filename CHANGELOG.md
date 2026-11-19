@@ -10,6 +10,9 @@ timeline and the list of notes missing from the patch-note archive include 29.2.
 
 Patch notes:
 
+- The archive now runs to v29.2.1 (2026-11-19): 13 posts added, 259 in all. New are 29.1.1,
+  29.1.2, 29.1.3, 29.1.4, the 29.2 preview (2026-11-13), 29.2 (2026-11-16) and 29.2.1. The
+  existing 246 were compared with the channel and are unchanged.
 - `npm run patch-notes:ingest` reads the bot token from `DISCORD_TOKEN` (the shell, or a
   gitignored `.env` at the package root) instead of from sibling bot projects. The `--bot` flag
   is gone. README has a "Patch notes: Discord token" section; `.env.example` is new.

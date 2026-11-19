@@ -1109,7 +1109,7 @@ patchNotesBetween('2024-01-01', '2024-12-31')
 recentPatchNotes(5)                   // what changed lately
 
 PATCH_NOTES_SOURCE
-// { notes: 232, withVersion: 177, earliest: '2021-07-15…', latest: '2026-08-25…', … }
+// { notes: 259, withVersion: 191, earliest: '2021-07-15…', latest: '2026-11-19…', … }
 ```
 
 Every note carries the message id it came from, so a claim is traceable to the post rather than
@@ -1123,7 +1123,7 @@ to this package.
 **A note mentioning a mechanic is not evidence the mechanic changed.** `searchPatchNotes` is a
 text search over announcements: it finds leads, and the note still has to be read.
 
-**`version` is `null` on 55 of the 232 notes**, because those notes state no version. It is not
+**`version` is `null` on 68 of the 259 notes**, because those notes state no version. It is not
 inferred from the notes around it — a wrong version attached to a real change reads as fact.
 
 ### Keeping it current
