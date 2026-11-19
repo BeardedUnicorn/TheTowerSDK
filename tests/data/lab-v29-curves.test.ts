@@ -48,11 +48,12 @@ describe('v29 lab curves (242–252)', () => {
     })
   })
 
-  it('preserves the v29 Global Presets one-shot separately from v29.1 Card Presets', () => {
+  it('keeps the v29 Global Presets one-shot separate from v29.1 Card Presets', () => {
+    // Game data v29.2.1: Global Presets is 1e14 coins and 960 h, not a copy of Presets L1.
     const l1 = level1('global_presets')
     const preset = level1('card_presets')
-    expect(l1.cost).toBe(preset.cost)
-    expect(l1.duration).toBe('13:53:00')
+    expect(l1.cost).toBe(1e14)
+    expect(l1.duration).toBe('960:00:00')
     expect(preset.duration).toBe('13:53:20')
     expect(bySlug.global_presets?.levels?.length).toBe(1)
   })

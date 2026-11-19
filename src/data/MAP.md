@@ -6,6 +6,6 @@ The game tables — costs, levels, effects, catalogs.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `index.ts` | Game data — every table the game uses, as typed arrays and records. | DAILY_MISSION_GOALS, DAILY_MISSION_GOALS_BY_INDEX, DailyMissionGoal, VAULT_V29_ENEMY (+25 more) |
+| `index.ts` | Game data — every table the game uses, as typed arrays and records. | DAILY_MISSION_GOALS, DAILY_MISSION_GOALS_BY_INDEX, DailyMissionGoal, VAULT_V29_ENEMY (+27 more) |
 
 [← src](../MAP.md) · [← the package](../../MAP.md)

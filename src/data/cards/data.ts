@@ -256,7 +256,7 @@ const cardTemplates: CardTemplate[] = [
     masteryName: 'Flashbang',
     masteryDescription: 'Causes enemies stunned by a Land Mine to have a chance to miss their attacks',
     masteryType: 'percent',
-    masteryValues: [2.7, 5.4, 8.1, 10.8, 13.5, 16.2, 18.9, 21.6, 24.3, 27],
+    masteryValues: [2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25],
   },
   {
     id: 'rpc',

@@ -8,6 +8,80 @@ rewards, workshop enhancement caps, constants, enums and save fields are identic
 no data changed. `readExportInfoFromSaveRoot` now treats build 1294 as checked; the version
 timeline and the list of notes missing from the patch-note archive include 29.2.1.
 
+**Read from the v29.2.1 game data.** New facts files: `facts/v29.2.1/vault-upgrades.json` (every
+vault upgrade and group) and `facts/v29.2.1/theme-names.json` (every theme slot by save index).
+Tests pin the SDK to both.
+
+Vault:
+
+- **`VAULT_V29_VERIFIED` is now `true`.**
+  - All 116 rows already had the game's key costs.
+  - Each row now also carries `levelValues` (the total benefit at each level), `unit`, the game's
+    own label in `gameName`, and `requirements` (the card, card mastery, ultimate weapon or
+    league it needs).
+  - Enemy categories carry their league requirement too: league id 6, Mythic.
+  - New exported types: `VaultV29Unit` and `VaultV29Requirement`.
+- **Elite Balance Toggle (VaultID 1320) added to Harmony ▸ Cards.** It costs 20 keys and needs
+  the Enemy Balance mastery. It is the "Elite Mastery Balance" of v29.1.4. Saves that own it now
+  decode it, where it used to be an unknown id.
+- **Where the game data and the wiki disagree:**
+  - Max Recovery runs 20/40/60/80/100%, with the 60% step that v29.2 restored.
+  - The Protector special is Radius, not Mass.
+  - The Basic Coin Bonus is a plain +0.01 per level, not a percent.
+- **No row names or save keys changed.** Where the game words a row differently (for example
+  "Attack Range" for the Ranged special), the game's label is in `gameName`.
+- **Left out on purpose.** Bastion Automation (1300) and Smart Bastion Automation (1310) are in
+  the game data, but both need the Bastion card, which is not released. Power tree tiers 2 and 3
+  (6221, 6222) are ids with no upgrade defined.
+
+Themes (save catalog):
+
+- **New rows in `THEME_CATALOG`:**
+  - index 0 "Default" for tower, background, menu and profile banner;
+  - towers 85 Baby Dragon and 86 Morning Star;
+  - backgrounds 60 Dragon Treasure and 61 Tower's Workshop;
+  - menu 12 and profile banner 13, Dragon Treasure;
+  - guardian skins 21-24: Dewdrop, Pal, Yorick, Mercy (also in `GUARDIAN_SKIN_IMPORT_CATALOG`);
+  - songs 0-5.
+- **Song rows 6 and 7 named the wrong tracks.** A song's index is its `trackAvailable` slot, and
+  the game puts the event songs on tracks 4, 5 and 8.
+  - "Krisu - Oceans Sings" moves from 6 to 4. It keeps that name, and its label is the game's
+    "Krisu - The Ocean Sings".
+  - "Krisu - Hiding in Himalaya" moves from 7 to 5.
+  - 6 is now "Krisu - The Ethereal and I" and 7 is "Krisu - Embrace Oblivion".
+  - A save with track 6 or 7 unlocked now reports these names.
+- **The bonus catalog lists the new slots too**, by name, at each category's existing rate.
+  - Index 0 (Default) is left out: the game counts owned themes from slot 1.
+  - The songs' coin rate stays flagged as unresolved.
+  - Whether the newest slots can be obtained yet is not settled.
+
+Labs and card masteries (`facts/v29.2.1/labs.json`, with no coin or time modifier applied):
+
+- **Fleet labs 246-248 corrected.** Overcharge Exponent Reducer, Commander Radius and Saboteur
+  Attack Speed cost exactly 1.5x more each level, from 1e21 coins, and take 400 h longer each
+  level. The old ladder was an enemy-lab curve scaled up and rounded to two digits (2.3e21 where
+  the game has 2.25e21).
+- **Global Presets (252) corrected.** It is one level at 1e14 coins and 960 h. The catalog had
+  copied Card Presets level 1 (350,000 coins, 13:53:00).
+- **Now pinned to the game.** Card Presets levels 1-5 and Primary Module Bonus 253-256 were
+  already right; tests now hold them to the game data.
+- **Land Mine Stun mastery is 2.5% to 25%, in 2.5% steps.** It was 2.7% to 27%. Fixed in
+  `CARD_TEMPLATES`, `LAB_CATALOG`, the mastery chart table and both reference tables.
+- **Every card mastery ladder is now tested against the game's base and increase.** The other 30
+  already matched. Ultimate Crit's thirds of a percent are shown to one decimal.
+
+Campaign tier battle conditions (`facts/v29.2.1/tier-battle-conditions.json`):
+
+- **Tiers 14-24 now match the game, condition by condition.**
+- **The tier 21-24 entry the SDK called Basic's Ultimate is Mass Enforcement**, at 25/35/50/65.
+  The SDK had 20 on tier 21.
+- **There is no Mass Enforcement at level 1.** That 1 was the More Fleets overheat entry.
+- **ELS Reduction on tiers 19-21 is 40, 55 and 70.** It was 30, 35 and 40. The counter-lab maths
+  in `src/mechanics/labs/bc-counter-labs.ts` reads these levels.
+- **Every tier also has two Tier Overheat entries**, Skip Decay 100 and More Fleets 1. They start
+  at wave 15000 on tier 1, 250 waves earlier per tier, down to wave 10000 from tier 21. They are in
+  the facts file and not in `TIER_DATA`, which lists what is active from the first wave.
+
 Patch notes:
 
 - The archive now runs to v29.2.1 (2026-11-19): 13 posts added, 259 in all. New are 29.1.1,

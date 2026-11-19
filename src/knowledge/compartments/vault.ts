@@ -50,6 +50,13 @@ const CATALOG_VAULT_V29 = {
   ref: 'thetowersdk/data VAULT_V29_HARMONY, VAULT_V29_POWER, VAULT_V29_ENEMY',
   verifiedAt: '2026-11-18',
 } as const
+/** The game's own vault upgrades and groups, as facts/v29.2.1/vault-upgrades.json holds them. */
+const GAME_VAULT_V29_2_1 = {
+  origin: 'game',
+  ref: 'game data v29.2.1 (build 1294), facts/v29.2.1/vault-upgrades.json',
+  sourceVersion: 'v29.2.1',
+  verifiedAt: '2026-11-19',
+} as const
 
 /** Keys to open every category of a v29 tab, from the shipped v29 reference. */
 function categoryUnlockKeys(tree: { readonly categories: readonly { readonly unlockCost: number | null }[] }): number {
@@ -188,13 +195,24 @@ export const VAULT_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + `${VAULT_V29_ENEMY.categories.length} (Simple open from the start; Advanced, Elites, Fleets bought). `
       + 'Inside an unlocked category upgrades are bought in any order.',
     traps: [
-      'The v29 reference tables are not verified in game (`VAULT_V29_VERIFIED` is false); they were '
-      + 'cross-checked against a community site, not read from the game.',
-      'v29.1.4 added Elite Mastery Balance to Harmony (patch note 1566858291710136333), a toggle '
-      + 'that disables the Elite Balance mastery on the Enemy Balance card. The v29.0.0 reference '
-      + 'tables predate it.',
+      'The v29 tables match game data v29.2.1 row for row (`VAULT_V29_VERIFIED` is true): key cost '
+      + 'and value per level, unit, dependency and requirements. Where the wiki disagrees, the game '
+      + 'data wins: Max Recovery is 20/40/60/80/100% (the wiki still lists 20/40/80/100/120), and the '
+      + 'Protector special is Radius (the wiki says Mass).',
+      'Elite Balance Toggle (VaultID 1320, the "Elite Mastery Balance" of v29.1.4, patch note '
+      + '1566858291710136333) is in Harmony ▸ Cards: one level, 20 keys, and it needs the Enemy '
+      + 'Balance mastery. It adds a toggle that switches the Elite Balance mastery off. The wiki\'s '
+      + 'Cards list does not have it yet.',
       'v29.2 fixed the Vault Max Recovery upgrade skipping its 60% step (patch note '
       + '1571908572156272841). Max Recovery read from a pre-v29.2 build may be one step low.',
+      'Every Enemy category, Simple included, asks for league id 6 (Mythic) as the highest league '
+      + 'reached, in game data v29.2.1, although the Vault itself shows from Legend. Not yet '
+      + 'confirmed in game.',
+      'Bastion Automation (1300) and Smart Bastion Automation (1310) are in the game data, at 10 and '
+      + '25 keys, but both need the Bastion card, which is not released. Power tree tiers 2 and 3 '
+      + '(VaultID 6221, 6222) are ids with no upgrade defined for them.',
+      'Enemy-tree values are totals per level in the unit the game shows. Most are percent (1 means '
+      + '-1%), but the Basic Coin Bonus is a plain +0.01 per level, to 0.30.',
       'Harmony presets now ADD to presets the Presets lab opens: the Bots, Workshop and Guardians '
       + 'Presets steps each add 3. They no longer grant presets on their own.',
     ],
@@ -208,7 +226,7 @@ export const VAULT_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       { subject: 'vault.v29.enemy', predicate: 'categoryUnlockKeysTotal', value: categoryUnlockKeys(VAULT_V29_ENEMY), provenance: CATALOG_VAULT_V29 },
       { subject: 'vault.v29', predicate: 'upgradesBoughtInTreeOrder', value: false, provenance: WIKI_VAULT_V29 },
     ],
-    sources: [WIKI_VAULT_V29, NOTE_V29_VAULT_REWORK, CATALOG_VAULT_V29],
+    sources: [WIKI_VAULT_V29, NOTE_V29_VAULT_REWORK, CATALOG_VAULT_V29, GAME_VAULT_V29_2_1],
   },
   {
     id: 'vault.powerTree',

@@ -32,7 +32,9 @@ export {
   VAULT_V29_VERIFIED,
   type VaultV29Category,
   type VaultV29EnemyUpgrade,
+  type VaultV29Requirement,
   type VaultV29Status,
   type VaultV29Tree,
+  type VaultV29Unit,
   type VaultV29Upgrade,
 } from './vault-v29.generated'

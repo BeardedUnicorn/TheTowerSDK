@@ -22,11 +22,11 @@ import { harmonyTreeNodes, powerTreeNodes } from '../../src/data/vault/tree'
  */
 describe('the v29 vault reference tables', () => {
   it('records its source and cross-check', () => {
-    expect(VAULT_V29_PROVENANCE).toContain('v29.0.0')
-    expect(VAULT_V29_PROVENANCE).toMatch(/spot-checks remain pending/i)
+    expect(VAULT_V29_PROVENANCE).toContain('v29.2.1')
+    expect(VAULT_V29_PROVENANCE).toContain('facts/v29.2.1/vault-upgrades.json')
     expect(VAULT_V29_PROVENANCE).toMatch(/mytower/i)
-    // The flag records that owner verification is still pending; it gates nothing.
-    expect(VAULT_V29_VERIFIED).toBe(false)
+    // Every row is pinned to game data by vault-v29-facts.test.ts; the flag gates nothing.
+    expect(VAULT_V29_VERIFIED).toBe(true)
   })
 
   it('carries every tree and category the rework describes', () => {
@@ -42,17 +42,17 @@ describe('the v29 vault reference tables', () => {
   })
 
   it('has the expected node counts for the v29 release', () => {
-    // Harmony has 33 released upgrades over 7 groups and Power has 47 over 4.
-    // The two excluded Bastion nodes are checked separately below.
-    expect(VAULT_V29_HARMONY.upgrades.length).toBe(33)
+    // Harmony has 34 released upgrades over 7 groups and Power has 47 over 4. Cards gained Elite
+    // Balance Toggle (1320) in v29.1.4. The two excluded Bastion nodes are checked separately below.
+    expect(VAULT_V29_HARMONY.upgrades.length).toBe(34)
     expect(VAULT_V29_POWER.upgrades.length).toBe(47)
     const cards = VAULT_V29_HARMONY.upgrades.filter(u => u.category === 'Cards')
-    expect(cards.length).toBe(10)
+    expect(cards.length).toBe(11)
   })
 
-  it('omits the Bastion nodes pulled from the release', () => {
-    // Bastion Automation (1300) and Smart Bastion Automation (1310) are not
-    // released buyable vault upgrades.
+  it('omits the Bastion nodes, which need a card that is not released', () => {
+    // Bastion Automation (1300) and Smart Bastion Automation (1310) are in game data v29.2.1, but
+    // both need the Bastion card, which CARDS does not list. vault-v29-facts.test.ts checks that.
     const ids = new Set([...VAULT_V29_HARMONY.upgrades, ...VAULT_V29_POWER.upgrades].map(u => u.vaultId))
     expect(ids.has(1300)).toBe(false)
     expect(ids.has(1310)).toBe(false)

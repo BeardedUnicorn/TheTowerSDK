@@ -1204,6 +1204,42 @@ export const GUARDIAN_SKIN_IMPORT_CATALOG = [
       'selected': 'guardianSkinIndex',
     },
   },
+  {
+    'index': 21,
+    'name': 'Dewdrop',
+    'label': 'Dewdrop',
+    'saveFields': {
+      'unlocked': 'guardianSkinUnlocked',
+      'selected': 'guardianSkinIndex',
+    },
+  },
+  {
+    'index': 22,
+    'name': 'Pal',
+    'label': 'Pal',
+    'saveFields': {
+      'unlocked': 'guardianSkinUnlocked',
+      'selected': 'guardianSkinIndex',
+    },
+  },
+  {
+    'index': 23,
+    'name': 'Yorick',
+    'label': 'Yorick',
+    'saveFields': {
+      'unlocked': 'guardianSkinUnlocked',
+      'selected': 'guardianSkinIndex',
+    },
+  },
+  {
+    'index': 24,
+    'name': 'Mercy',
+    'label': 'Mercy',
+    'saveFields': {
+      'unlocked': 'guardianSkinUnlocked',
+      'selected': 'guardianSkinIndex',
+    },
+  },
 ] as const
 
 /**
@@ -5852,6 +5888,12 @@ export const RELIC_IMPORT_CATALOG = [
 export const THEME_CATALOG = [
   {
     'category': 'tower',
+    'catalogIndex': 0,
+    'name': 'Default',
+    'label': 'Default',
+  },
+  {
+    'category': 'tower',
     'catalogIndex': 1,
     'name': 'Star',
     'label': 'Star',
@@ -6355,6 +6397,24 @@ export const THEME_CATALOG = [
     'label': 'Fractal Tower',
   },
   {
+    'category': 'tower',
+    'catalogIndex': 85,
+    'name': 'Baby Dragon',
+    'label': 'Baby Dragon',
+  },
+  {
+    'category': 'tower',
+    'catalogIndex': 86,
+    'name': 'Morning Star',
+    'label': 'Morning Star',
+  },
+  {
+    'category': 'background',
+    'catalogIndex': 0,
+    'name': 'Default',
+    'label': 'Default',
+  },
+  {
     'category': 'background',
     'catalogIndex': 1,
     'name': 'Interstellar',
@@ -6709,6 +6769,24 @@ export const THEME_CATALOG = [
     'label': 'Fractals',
   },
   {
+    'category': 'background',
+    'catalogIndex': 60,
+    'name': 'Dragon Treasure',
+    'label': 'Dragon Treasure',
+  },
+  {
+    'category': 'background',
+    'catalogIndex': 61,
+    'name': "Tower's Workshop",
+    'label': "Tower's Workshop",
+  },
+  {
+    'category': 'menu',
+    'catalogIndex': 0,
+    'name': 'Default',
+    'label': 'Default',
+  },
+  {
     'category': 'menu',
     'catalogIndex': 1,
     'name': 'Dark Being',
@@ -6773,6 +6851,18 @@ export const THEME_CATALOG = [
     'catalogIndex': 11,
     'name': 'Fairy Forest',
     'label': 'Fairy Forest',
+  },
+  {
+    'category': 'menu',
+    'catalogIndex': 12,
+    'name': 'Dragon Treasure',
+    'label': 'Dragon Treasure',
+  },
+  {
+    'category': 'profileBanner',
+    'catalogIndex': 0,
+    'name': 'Default',
+    'label': 'Default',
   },
   {
     'category': 'profileBanner',
@@ -6845,6 +6935,12 @@ export const THEME_CATALOG = [
     'catalogIndex': 12,
     'name': 'Fairy Forest',
     'label': 'Fairy Forest',
+  },
+  {
+    'category': 'profileBanner',
+    'catalogIndex': 13,
+    'name': 'Dragon Treasure',
+    'label': 'Dragon Treasure',
   },
   {
     'category': 'guardian',
@@ -6973,16 +7069,76 @@ export const THEME_CATALOG = [
     'label': 'Waddles',
   },
   {
+    'category': 'guardian',
+    'catalogIndex': 21,
+    'name': 'Dewdrop',
+    'label': 'Dewdrop',
+  },
+  {
+    'category': 'guardian',
+    'catalogIndex': 22,
+    'name': 'Pal',
+    'label': 'Pal',
+  },
+  {
+    'category': 'guardian',
+    'catalogIndex': 23,
+    'name': 'Yorick',
+    'label': 'Yorick',
+  },
+  {
+    'category': 'guardian',
+    'catalogIndex': 24,
+    'name': 'Mercy',
+    'label': 'Mercy',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 0,
+    'name': 'Faodail - Wren',
+    'label': 'Faodail - Wren',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 1,
+    'name': 'Krisu - Aska',
+    'label': 'Krisu - Aska',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 2,
+    'name': 'Krisu - Morning Dew',
+    'label': 'Krisu - Morning Dew',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 3,
+    'name': 'Krisu - My Dying Star',
+    'label': 'Krisu - My Dying Star',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 4,
+    'name': 'Krisu - Oceans Sings',
+    'label': 'Krisu - The Ocean Sings',
+  },
+  {
+    'category': 'song',
+    'catalogIndex': 5,
+    'name': 'Krisu - Hiding in Himalaya',
+    'label': 'Krisu - Hiding in Himalaya',
+  },
+  {
     'category': 'song',
     'catalogIndex': 6,
-    'name': 'Krisu - Oceans Sings',
-    'label': 'Krisu - Oceans Sings',
+    'name': 'Krisu - The Ethereal and I',
+    'label': 'Krisu - The Ethereal and I',
   },
   {
     'category': 'song',
     'catalogIndex': 7,
-    'name': 'Krisu - Hiding in Himalaya',
-    'label': 'Krisu - Hiding in Himalaya',
+    'name': 'Krisu - Embrace Oblivion',
+    'label': 'Krisu - Embrace Oblivion',
   },
   {
     'category': 'song',

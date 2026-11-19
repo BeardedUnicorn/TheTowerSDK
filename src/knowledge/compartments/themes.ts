@@ -39,6 +39,14 @@ const CATALOG_THEME_FORMULA = {
   verifiedAt: '2026-08-18',
 } as const
 
+/** The game's own theme slots, as facts/v29.2.1/theme-names.json holds them. */
+const GAME_THEME_SLOTS_V29_2_1 = {
+  origin: 'game',
+  ref: 'game data v29.2.1 (build 1294), facts/v29.2.1/theme-names.json',
+  sourceVersion: 'v29.2.1',
+  verifiedAt: '2026-11-19',
+} as const
+
 const WIKI_MILESTONE_THEMES = {
   origin: 'wiki',
   ref: 'Themes/Milestones',
@@ -196,6 +204,13 @@ export const THEME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'prices it at the wrong rate.',
       'The flat list from `listThemeBonusCatalogEntries()` is one row per (name, group), so its '
       + 'length is not a count of distinct themes.',
+      'SONG INDEX IS THE MUSIC TILE. Song i in a save is trackAvailable[i], and game data v29.2.1 '
+      + 'puts the three event songs on tracks 4 (The Ocean Sings), 5 (Hiding in Himalaya) and 8 '
+      + '(Forest Bathing); 6 is The Ethereal and I and 7 Embrace Oblivion. Older tables that put '
+      + 'Oceans Sings on 6 and Himalaya on 7 name the wrong tracks.',
+      'Index 0 of tower, background, menu and profile banner is the Default theme every account '
+      + 'owns. The game counts owned themes from slot 1, so the default pays no coin bonus: the save '
+      + 'catalog names it and the bonus catalog leaves it out.',
     ],
     implementedBy: [
       'THEME_GROUP_SIZE',
@@ -237,7 +252,7 @@ export const THEME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
         verification: 'verified_here',
       },
     ],
-    sources: [CATALOG_THEME_BONUS, CATALOG_THEME_FORMULA, WIKI_MILESTONE_THEMES],
+    sources: [CATALOG_THEME_BONUS, CATALOG_THEME_FORMULA, WIKI_MILESTONE_THEMES, GAME_THEME_SLOTS_V29_2_1],
   },
   {
     id: 'theme.unpricedGroups',

@@ -5740,16 +5740,16 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
     description: "Causes enemies stunned by a Land Mine to have a chance to miss their attacks",
     unit: "percent",
     value: {
-      "0": 2.7,
-      "1": 5.4,
-      "2": 8.1,
-      "3": 10.8,
-      "4": 13.5,
-      "5": 16.2,
-      "6": 18.9,
-      "7": 21.6,
-      "8": 24.3,
-      "9": 27,
+      "0": 2.5,
+      "1": 5,
+      "2": 7.5,
+      "3": 10,
+      "4": 12.5,
+      "5": 15,
+      "6": 17.5,
+      "7": 20,
+      "8": 22.5,
+      "9": 25,
     },
     levels: [
       { level: 0, duration: "0s", cost: 0 },
@@ -6391,7 +6391,7 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
     category: "Enemies",
     base: 40,
     value: -0.5,
-    // Enemy-research curve scaled to a 1e21 coin / 1440000s starting point.
+    // Each level costs 1.5x the one before and takes 400 h longer (game data v29.2.1).
     levels: [
           {
                 "level": 1,
@@ -6406,142 +6406,142 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
           {
                 "level": 3,
                 "duration": "50d 0h 0m",
-                "cost": 2.3e+21
+                "cost": 2.25e+21
           },
           {
                 "level": 4,
                 "duration": "66d 16h 0m",
-                "cost": 3.4e+21
+                "cost": 3.375e+21
           },
           {
                 "level": 5,
                 "duration": "83d 8h 0m",
-                "cost": 5.1e+21
+                "cost": 5.0625e+21
           },
           {
                 "level": 6,
                 "duration": "100d 0h 0m",
-                "cost": 7.6e+21
+                "cost": 7.59375e+21
           },
           {
                 "level": 7,
                 "duration": "116d 16h 0m",
-                "cost": 1.14e+22
+                "cost": 1.1390625e+22
           },
           {
                 "level": 8,
                 "duration": "133d 8h 0m",
-                "cost": 1.71e+22
+                "cost": 1.70859375e+22
           },
           {
                 "level": 9,
                 "duration": "150d 0h 0m",
-                "cost": 2.56e+22
+                "cost": 2.562890625e+22
           },
           {
                 "level": 10,
                 "duration": "166d 16h 0m",
-                "cost": 3.84e+22
+                "cost": 3.8443359375e+22
           },
           {
                 "level": 11,
                 "duration": "183d 8h 0m",
-                "cost": 5.77e+22
+                "cost": 5.76650390625e+22
           },
           {
                 "level": 12,
                 "duration": "200d 0h 0m",
-                "cost": 8.65e+22
+                "cost": 8.649755859375e+22
           },
           {
                 "level": 13,
                 "duration": "216d 16h 0m",
-                "cost": 1.297e+23
+                "cost": 1.29746337890625e+23
           },
           {
                 "level": 14,
                 "duration": "233d 8h 0m",
-                "cost": 1.946e+23
+                "cost": 1.946195068359375e+23
           },
           {
                 "level": 15,
                 "duration": "250d 0h 0m",
-                "cost": 2.919e+23
+                "cost": 2.9192926025390626e+23
           },
           {
                 "level": 16,
                 "duration": "266d 16h 0m",
-                "cost": 4.379e+23
+                "cost": 4.3789389038085936e+23
           },
           {
                 "level": 17,
                 "duration": "283d 8h 0m",
-                "cost": 6.568e+23
+                "cost": 6.568408203125e+23
           },
           {
                 "level": 18,
                 "duration": "300d 0h 0m",
-                "cost": 9.853e+23
+                "cost": 9.8526123046875e+23
           },
           {
                 "level": 19,
                 "duration": "316d 16h 0m",
-                "cost": 1.4779e+24
+                "cost": 1.477891845703125e+24
           },
           {
                 "level": 20,
                 "duration": "333d 8h 0m",
-                "cost": 2.2168e+24
+                "cost": 2.216837890625e+24
           },
           {
                 "level": 21,
                 "duration": "350d 0h 0m",
-                "cost": 3.3253e+24
+                "cost": 3.3252568359375e+24
           },
           {
                 "level": 22,
                 "duration": "366d 16h 0m",
-                "cost": 4.9879e+24
+                "cost": 4.98788525390625e+24
           },
           {
                 "level": 23,
                 "duration": "383d 8h 0m",
-                "cost": 7.4818e+24
+                "cost": 7.48182763671875e+24
           },
           {
                 "level": 24,
                 "duration": "400d 0h 0m",
-                "cost": 1.12227e+25
+                "cost": 1.12227412109375e+25
           },
           {
                 "level": 25,
                 "duration": "416d 16h 0m",
-                "cost": 1.6834100000000001e+25
+                "cost": 1.6834111328125e+25
           },
           {
                 "level": 26,
                 "duration": "433d 8h 0m",
-                "cost": 2.52512e+25
+                "cost": 2.525116796875e+25
           },
           {
                 "level": 27,
                 "duration": "450d 0h 0m",
-                "cost": 3.78768e+25
+                "cost": 3.787675390625e+25
           },
           {
                 "level": 28,
                 "duration": "466d 16h 0m",
-                "cost": 5.68151e+25
+                "cost": 5.681512890625e+25
           },
           {
                 "level": 29,
                 "duration": "483d 8h 0m",
-                "cost": 8.52227e+25
+                "cost": 8.52226953125e+25
           },
           {
                 "level": 30,
                 "duration": "500d 0h 0m",
-                "cost": 1.2783399999999999e+26
+                "cost": 1.278340390625e+26
           }
     ],
   },
@@ -6552,7 +6552,7 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
     category: "Enemies",
     base: 0,
     value: 1,
-    // Enemy-research curve scaled to a 1e21 coin / 1440000s starting point.
+    // Each level costs 1.5x the one before and takes 400 h longer (game data v29.2.1).
     levels: [
           {
                 "level": 1,
@@ -6567,142 +6567,142 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
           {
                 "level": 3,
                 "duration": "50d 0h 0m",
-                "cost": 2.3e+21
+                "cost": 2.25e+21
           },
           {
                 "level": 4,
                 "duration": "66d 16h 0m",
-                "cost": 3.4e+21
+                "cost": 3.375e+21
           },
           {
                 "level": 5,
                 "duration": "83d 8h 0m",
-                "cost": 5.1e+21
+                "cost": 5.0625e+21
           },
           {
                 "level": 6,
                 "duration": "100d 0h 0m",
-                "cost": 7.6e+21
+                "cost": 7.59375e+21
           },
           {
                 "level": 7,
                 "duration": "116d 16h 0m",
-                "cost": 1.14e+22
+                "cost": 1.1390625e+22
           },
           {
                 "level": 8,
                 "duration": "133d 8h 0m",
-                "cost": 1.71e+22
+                "cost": 1.70859375e+22
           },
           {
                 "level": 9,
                 "duration": "150d 0h 0m",
-                "cost": 2.56e+22
+                "cost": 2.562890625e+22
           },
           {
                 "level": 10,
                 "duration": "166d 16h 0m",
-                "cost": 3.84e+22
+                "cost": 3.8443359375e+22
           },
           {
                 "level": 11,
                 "duration": "183d 8h 0m",
-                "cost": 5.77e+22
+                "cost": 5.76650390625e+22
           },
           {
                 "level": 12,
                 "duration": "200d 0h 0m",
-                "cost": 8.65e+22
+                "cost": 8.649755859375e+22
           },
           {
                 "level": 13,
                 "duration": "216d 16h 0m",
-                "cost": 1.297e+23
+                "cost": 1.29746337890625e+23
           },
           {
                 "level": 14,
                 "duration": "233d 8h 0m",
-                "cost": 1.946e+23
+                "cost": 1.946195068359375e+23
           },
           {
                 "level": 15,
                 "duration": "250d 0h 0m",
-                "cost": 2.919e+23
+                "cost": 2.9192926025390626e+23
           },
           {
                 "level": 16,
                 "duration": "266d 16h 0m",
-                "cost": 4.379e+23
+                "cost": 4.3789389038085936e+23
           },
           {
                 "level": 17,
                 "duration": "283d 8h 0m",
-                "cost": 6.568e+23
+                "cost": 6.568408203125e+23
           },
           {
                 "level": 18,
                 "duration": "300d 0h 0m",
-                "cost": 9.853e+23
+                "cost": 9.8526123046875e+23
           },
           {
                 "level": 19,
                 "duration": "316d 16h 0m",
-                "cost": 1.4779e+24
+                "cost": 1.477891845703125e+24
           },
           {
                 "level": 20,
                 "duration": "333d 8h 0m",
-                "cost": 2.2168e+24
+                "cost": 2.216837890625e+24
           },
           {
                 "level": 21,
                 "duration": "350d 0h 0m",
-                "cost": 3.3253e+24
+                "cost": 3.3252568359375e+24
           },
           {
                 "level": 22,
                 "duration": "366d 16h 0m",
-                "cost": 4.9879e+24
+                "cost": 4.98788525390625e+24
           },
           {
                 "level": 23,
                 "duration": "383d 8h 0m",
-                "cost": 7.4818e+24
+                "cost": 7.48182763671875e+24
           },
           {
                 "level": 24,
                 "duration": "400d 0h 0m",
-                "cost": 1.12227e+25
+                "cost": 1.12227412109375e+25
           },
           {
                 "level": 25,
                 "duration": "416d 16h 0m",
-                "cost": 1.6834100000000001e+25
+                "cost": 1.6834111328125e+25
           },
           {
                 "level": 26,
                 "duration": "433d 8h 0m",
-                "cost": 2.52512e+25
+                "cost": 2.525116796875e+25
           },
           {
                 "level": 27,
                 "duration": "450d 0h 0m",
-                "cost": 3.78768e+25
+                "cost": 3.787675390625e+25
           },
           {
                 "level": 28,
                 "duration": "466d 16h 0m",
-                "cost": 5.68151e+25
+                "cost": 5.681512890625e+25
           },
           {
                 "level": 29,
                 "duration": "483d 8h 0m",
-                "cost": 8.52227e+25
+                "cost": 8.52226953125e+25
           },
           {
                 "level": 30,
                 "duration": "500d 0h 0m",
-                "cost": 1.2783399999999999e+26
+                "cost": 1.278340390625e+26
           }
     ],
   },
@@ -6713,7 +6713,7 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
     category: "Enemies",
     base: 0,
     value: 2,
-    // Enemy-research curve scaled to a 1e21 coin / 1440000s starting point.
+    // Each level costs 1.5x the one before and takes 400 h longer (game data v29.2.1).
     levels: [
           {
                 "level": 1,
@@ -6728,142 +6728,142 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
           {
                 "level": 3,
                 "duration": "50d 0h 0m",
-                "cost": 2.3e+21
+                "cost": 2.25e+21
           },
           {
                 "level": 4,
                 "duration": "66d 16h 0m",
-                "cost": 3.4e+21
+                "cost": 3.375e+21
           },
           {
                 "level": 5,
                 "duration": "83d 8h 0m",
-                "cost": 5.1e+21
+                "cost": 5.0625e+21
           },
           {
                 "level": 6,
                 "duration": "100d 0h 0m",
-                "cost": 7.6e+21
+                "cost": 7.59375e+21
           },
           {
                 "level": 7,
                 "duration": "116d 16h 0m",
-                "cost": 1.14e+22
+                "cost": 1.1390625e+22
           },
           {
                 "level": 8,
                 "duration": "133d 8h 0m",
-                "cost": 1.71e+22
+                "cost": 1.70859375e+22
           },
           {
                 "level": 9,
                 "duration": "150d 0h 0m",
-                "cost": 2.56e+22
+                "cost": 2.562890625e+22
           },
           {
                 "level": 10,
                 "duration": "166d 16h 0m",
-                "cost": 3.84e+22
+                "cost": 3.8443359375e+22
           },
           {
                 "level": 11,
                 "duration": "183d 8h 0m",
-                "cost": 5.77e+22
+                "cost": 5.76650390625e+22
           },
           {
                 "level": 12,
                 "duration": "200d 0h 0m",
-                "cost": 8.65e+22
+                "cost": 8.649755859375e+22
           },
           {
                 "level": 13,
                 "duration": "216d 16h 0m",
-                "cost": 1.297e+23
+                "cost": 1.29746337890625e+23
           },
           {
                 "level": 14,
                 "duration": "233d 8h 0m",
-                "cost": 1.946e+23
+                "cost": 1.946195068359375e+23
           },
           {
                 "level": 15,
                 "duration": "250d 0h 0m",
-                "cost": 2.919e+23
+                "cost": 2.9192926025390626e+23
           },
           {
                 "level": 16,
                 "duration": "266d 16h 0m",
-                "cost": 4.379e+23
+                "cost": 4.3789389038085936e+23
           },
           {
                 "level": 17,
                 "duration": "283d 8h 0m",
-                "cost": 6.568e+23
+                "cost": 6.568408203125e+23
           },
           {
                 "level": 18,
                 "duration": "300d 0h 0m",
-                "cost": 9.853e+23
+                "cost": 9.8526123046875e+23
           },
           {
                 "level": 19,
                 "duration": "316d 16h 0m",
-                "cost": 1.4779e+24
+                "cost": 1.477891845703125e+24
           },
           {
                 "level": 20,
                 "duration": "333d 8h 0m",
-                "cost": 2.2168e+24
+                "cost": 2.216837890625e+24
           },
           {
                 "level": 21,
                 "duration": "350d 0h 0m",
-                "cost": 3.3253e+24
+                "cost": 3.3252568359375e+24
           },
           {
                 "level": 22,
                 "duration": "366d 16h 0m",
-                "cost": 4.9879e+24
+                "cost": 4.98788525390625e+24
           },
           {
                 "level": 23,
                 "duration": "383d 8h 0m",
-                "cost": 7.4818e+24
+                "cost": 7.48182763671875e+24
           },
           {
                 "level": 24,
                 "duration": "400d 0h 0m",
-                "cost": 1.12227e+25
+                "cost": 1.12227412109375e+25
           },
           {
                 "level": 25,
                 "duration": "416d 16h 0m",
-                "cost": 1.6834100000000001e+25
+                "cost": 1.6834111328125e+25
           },
           {
                 "level": 26,
                 "duration": "433d 8h 0m",
-                "cost": 2.52512e+25
+                "cost": 2.525116796875e+25
           },
           {
                 "level": 27,
                 "duration": "450d 0h 0m",
-                "cost": 3.78768e+25
+                "cost": 3.787675390625e+25
           },
           {
                 "level": 28,
                 "duration": "466d 16h 0m",
-                "cost": 5.68151e+25
+                "cost": 5.681512890625e+25
           },
           {
                 "level": 29,
                 "duration": "483d 8h 0m",
-                "cost": 8.52227e+25
+                "cost": 8.52226953125e+25
           },
           {
                 "level": 30,
                 "duration": "500d 0h 0m",
-                "cost": 1.2783399999999999e+26
+                "cost": 1.278340390625e+26
           }
     ],
   },
@@ -6879,8 +6879,8 @@ export const LAB_CATALOG: readonly LabCatalogRecord[] = [
     levels: [
           {
                 "level": 1,
-                "duration": "13:53:00",
-                "cost": 350000
+                "duration": "960:00:00",
+                "cost": 100000000000000
           }
     ],
   },

@@ -16,16 +16,17 @@ import { THEME_CATALOG } from '../../src/save/catalogs/indexes.data'
 
 /**
  * Counts per category. Raised from 54/53/21/3/19/9/10 when the lists caught up with the save's
- * theme catalog (tiers 22-24 skins, and the items added since).
+ * theme catalog (tiers 22-24 skins, and the items added since), and again to every slot game data
+ * v29.2.1 defines.
  */
 const EXPECTED_COUNTS: Record<string, number> = {
-  TOWER: 60,
-  BACKGROUND: 59,
+  TOWER: 62,
+  BACKGROUND: 61,
   MILESTONE: 24,
-  SONGS: 3,
-  GUARDIAN: 21,
-  MENU: 11,
-  PROFILE_BANNER: 12,
+  SONGS: 9,
+  GUARDIAN: 25,
+  MENU: 12,
+  PROFILE_BANNER: 13,
 }
 
 describe('theme bonus catalog', () => {
@@ -40,9 +41,13 @@ describe('theme bonus catalog', () => {
       guardian: THEMES.GUARDIAN,
       song: THEMES.SONGS,
     }
-    for (const row of THEME_CATALOG as readonly { category: string; label: string }[]) {
+    for (const row of THEME_CATALOG as readonly { category: string; catalogIndex: number; name: string; label: string }[]) {
+      // Slot 0 of tower, background, menu and banner is the Default theme. The game counts owned
+      // themes from slot 1 (game data v29.2.1), so the default pays no bonus and is not listed.
+      if (row.catalogIndex === 0 && row.label === 'Default') continue
       const names = new Set((lists[row.category] ?? []).map(item => fold(item.name)))
-      expect(names.has(fold(row.label)), `${row.category} "${row.label}" is not in the bonus catalog`).toBe(true)
+      const listed = names.has(fold(row.label)) || names.has(fold(row.name))
+      expect(listed, `${row.category} "${row.label}" is not in the bonus catalog`).toBe(true)
     }
   })
 

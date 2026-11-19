@@ -53,8 +53,8 @@ const THEME_SELECTED_SAVE_KEYS: Partial<Record<ThemeCatalogCategory, string>> = 
  *
  * `readCollectedThemeNamesFromSaveRoot` answers a narrower question, the set of names, and so
  * folds "Glitch" the tower and "Glitch" the background into one and drops an index the catalog
- * has no row for. This keeps both: a v29.2 export unlocks guardian skins 21-22 and songs 0-5 that
- * the catalog does not name, and those come back with a null name and a warning.
+ * has no row for. This keeps both: the catalog names every slot game data v29.2.1 defines, and an
+ * index past those comes back with a null name and a warning.
  */
 export function readThemesFromSaveRoot(root: Record<string, unknown> | null): ThemesSaveExtract | null {
   if (!root) return null

@@ -1,4 +1,4 @@
-/** Primary-module lab levels for game 29.1.0 with neutral cost/time modifiers. */
+/** Primary-module lab levels with neutral cost/time modifiers, as game data v29.2.1 has them. */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    PRIMARY_MODULE_BONUS_LABS
  * depends    src/data/labs/types

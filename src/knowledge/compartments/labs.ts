@@ -189,6 +189,8 @@ export const LAB_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       'The game\'s own localisation contains a typo — lab 55 is stored as "Chrono Field '
       + 'Reduction %8". Our catalog corrects it to "Chrono Field Reduction %". Do NOT "fix" ours '
       + 'to match the game string.',
+      'Game data v29.2.1 (facts/v29.2.1/labs.json): fleet labs 246-248 start at 1e21 coins and 400 h, then cost 1.5x more and '
+      + 'take 400 h longer each level; Global Presets is one level at 1e14 coins and 960 h; Land Mine Stun mastery is 2.5% to 25%.',
       'Labs 238-241 share ONE localisation template, "Dissonant Echo - {0}". Our catalog expands '
       + 'it to Utility / Attack / Defense / Ultimate Weapons. Comparing raw terms will look like '
       + 'four mismatches and is not.',
@@ -264,7 +266,7 @@ export const LAB_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     // OWNER_LABS is listed because this node's assertions cite it. It does not
     // make the node primary — `user` is not a primary origin — but a node that
     // rests partly on the account owner should say so.
-    sources: [WIKI_LABS, GAME_LABS, OWNER_LABS],
+    sources: [WIKI_LABS, GAME_LABS, OWNER_LABS, { origin: 'game', ref: 'game data v29.2.1, facts/v29.2.1/labs.json', sourceVersion: 'v29.2.1', verifiedAt: '2026-11-19' }],
   },
   {
     id: 'lab.indexLayout',

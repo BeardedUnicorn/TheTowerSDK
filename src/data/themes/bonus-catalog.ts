@@ -93,6 +93,8 @@ export const TOWER: ThemeItem[] = [
   { name: 'Fairy' },
   { name: 'Automaton' },
   { name: 'Fractal Tower' },
+  { name: 'Baby Dragon' },
+  { name: 'Morning Star' },
 ]
 
 export const BACKGROUND: ThemeItem[] = [
@@ -155,6 +157,8 @@ export const BACKGROUND: ThemeItem[] = [
   { name: 'Fairy Forest' },
   { name: 'Steampunk' },
   { name: 'Fractals' },
+  { name: 'Dragon Treasure' },
+  { name: "Tower's Workshop" },
 ]
 
 export const MILESTONE: ThemeItem[] = [
@@ -189,6 +193,12 @@ export const SONGS: ThemeItem[] = [
   { name: 'Krisu - Oceans Sings', event: 'Event Store' },
   { name: 'Krisu - Hiding in Himalaya', event: 'Event Store' },
   { name: 'Krisu - Forest Bathing', event: 'Event Store' },
+  { name: 'Faodail - Wren' },
+  { name: 'Krisu - Aska' },
+  { name: 'Krisu - Morning Dew' },
+  { name: 'Krisu - My Dying Star' },
+  { name: 'Krisu - The Ethereal and I' },
+  { name: 'Krisu - Embrace Oblivion' },
 ]
 
 export const GUARDIAN: ThemeItem[] = [
@@ -213,6 +223,10 @@ export const GUARDIAN: ThemeItem[] = [
   { name: 'Disco' },
   { name: 'Hermie' },
   { name: 'Waddles' },
+  { name: 'Dewdrop' },
+  { name: 'Pal' },
+  { name: 'Yorick' },
+  { name: 'Mercy' },
 ]
 
 export const MENU: ThemeItem[] = [
@@ -227,6 +241,7 @@ export const MENU: ThemeItem[] = [
   { name: 'Magician' },
   { name: 'Coral Reef' },
   { name: 'Fairy Forest' },
+  { name: 'Dragon Treasure' },
 ]
 
 export const PROFILE_BANNER: ThemeItem[] = [
@@ -242,6 +257,7 @@ export const PROFILE_BANNER: ThemeItem[] = [
   { name: 'Magician' },
   { name: 'Coral Reef' },
   { name: 'Fairy Forest' },
+  { name: 'Dragon Treasure' },
 ]
 
 export const THEMES = {

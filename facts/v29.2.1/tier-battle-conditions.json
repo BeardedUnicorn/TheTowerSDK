@@ -1,0 +1,248 @@
+{
+  "gameVersion": "v29.2.1",
+  "note": "Battle conditions every campaign tier applies, from game data v29.2.1 (build 1294), in the game's order. condition is the game's condition number and name its English name (conditions lists every number the game names). level is the condition's level on that tier. overheat marks a Tier Overheat entry; fromWave is the wave it starts at (1 means from the start of the run). The game's Skip Reduction - Subtract is the SDK's ELS Reduction.",
+  "conditions": { "0": "Orb Resistance", "1": "Death Ray Resistance", "2": "Thorns Resistance", "3": "Knockback Resistance", "4": "Enemy Speed", "5": "Armored Enemies", "6": "Enemy Attack Speed", "7": "More Enemies", "8": "Plasma Cannon Resistance", "9": "One Enemy Type", "10": "Wave Jumps", "11": "More Bosses", "12": "Energy Shields Down", "13": "Death Defy Down", "14": "Protector's Ultimate", "15": "Tank's Ultimate", "16": "Elite's Ultimate", "17": "Ultimate Weapon Durations", "18": "Boss's Ultimate", "19": "Basic's Ultimate", "20": "Fast's Ultimate", "21": "Ranged Ultimate", "22": "Skip Reduction - Subtract", "23": "Ray's Ultimate", "24": "Scatter's Ultimate", "25": "Vampire's Ultimate", "26": "Mass Enforcement", "27": "Skip Decay", "28": "Skip Reduction - Multiply", "29": "Damage Decay", "30": "Health Decay", "31": "More Fleets", "32": "More Elites", "33": "Saboteur's Ultimate", "34": "Commander's Ultimate", "35": "Overcharge's Ultimate" },
+  "tiers": {
+    "1": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 15000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 15000 }
+    ],
+    "2": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 14750 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 14750 }
+    ],
+    "3": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 14500 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 14500 }
+    ],
+    "4": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 14250 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 14250 }
+    ],
+    "5": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 14000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 14000 }
+    ],
+    "6": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 13750 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 13750 }
+    ],
+    "7": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 13500 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 13500 }
+    ],
+    "8": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 13250 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 13250 }
+    ],
+    "9": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 13000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 13000 }
+    ],
+    "10": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 12750 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 12750 }
+    ],
+    "11": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 12500 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 12500 }
+    ],
+    "12": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 12250 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 12250 }
+    ],
+    "13": [
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 12000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 12000 }
+    ],
+    "14": [
+      { "condition": 0, "name": "Orb Resistance", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 5, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 1, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 11750 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 11750 }
+    ],
+    "15": [
+      { "condition": 0, "name": "Orb Resistance", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 30, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 40, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 10, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 30, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 10, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 2, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 11500 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 11500 }
+    ],
+    "16": [
+      { "condition": 0, "name": "Orb Resistance", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 40, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 40, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 15, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 3, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 11250 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 11250 }
+    ],
+    "17": [
+      { "condition": 0, "name": "Orb Resistance", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 30, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 4, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 11000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 11000 }
+    ],
+    "18": [
+      { "condition": 0, "name": "Orb Resistance", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 40, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 25, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10750 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10750 }
+    ],
+    "19": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 40, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10500 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10500 }
+    ],
+    "20": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 60, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 55, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 18, "name": "Boss's Ultimate", "level": 20, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10250 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10250 }
+    ],
+    "21": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 70, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 18, "name": "Boss's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 26, "name": "Mass Enforcement", "level": 25, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10000 }
+    ],
+    "22": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 75, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 18, "name": "Boss's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 26, "name": "Mass Enforcement", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10000 },
+      { "condition": 33, "name": "Saboteur's Ultimate", "level": 20, "overheat": false, "fromWave": 1 }
+    ],
+    "23": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 90, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 18, "name": "Boss's Ultimate", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 26, "name": "Mass Enforcement", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10000 },
+      { "condition": 33, "name": "Saboteur's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 34, "name": "Commander's Ultimate", "level": 20, "overheat": false, "fromWave": 1 }
+    ],
+    "24": [
+      { "condition": 0, "name": "Orb Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 1, "name": "Death Ray Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 2, "name": "Thorns Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 3, "name": "Knockback Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 5, "name": "Armored Enemies", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 8, "name": "Plasma Cannon Resistance", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 22, "name": "Skip Reduction - Subtract", "level": 85, "overheat": false, "fromWave": 1 },
+      { "condition": 14, "name": "Protector's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 15, "name": "Tank's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 23, "name": "Ray's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 24, "name": "Scatter's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 25, "name": "Vampire's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 20, "name": "Fast's Ultimate", "level": 95, "overheat": false, "fromWave": 1 },
+      { "condition": 18, "name": "Boss's Ultimate", "level": 80, "overheat": false, "fromWave": 1 },
+      { "condition": 26, "name": "Mass Enforcement", "level": 65, "overheat": false, "fromWave": 1 },
+      { "condition": 11, "name": "More Bosses", "level": 5, "overheat": true, "fromWave": 1 },
+      { "condition": 27, "name": "Skip Decay", "level": 100, "overheat": true, "fromWave": 10000 },
+      { "condition": 31, "name": "More Fleets", "level": 1, "overheat": true, "fromWave": 10000 },
+      { "condition": 33, "name": "Saboteur's Ultimate", "level": 50, "overheat": false, "fromWave": 1 },
+      { "condition": 34, "name": "Commander's Ultimate", "level": 35, "overheat": false, "fromWave": 1 },
+      { "condition": 35, "name": "Overcharge's Ultimate", "level": 20, "overheat": false, "fromWave": 1 }
+    ]
+  }
+}

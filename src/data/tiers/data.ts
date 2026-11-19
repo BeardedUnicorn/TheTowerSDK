@@ -152,7 +152,7 @@ export const TIER_DATA = [
     buildBattleCondition('Ray\'s Ultimate', 35),
     buildBattleCondition('Vampire\'s Ultimate', 35),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 30),
+    buildBattleCondition('ELS Reduction', 40),
     buildBattleCondition('Fast\'s Ultimate', 20),
   ]),
   buildTierData(20, 48, 19, 300, [
@@ -168,7 +168,7 @@ export const TIER_DATA = [
     buildBattleCondition('Ray\'s Ultimate', 50),
     buildBattleCondition('Vampire\'s Ultimate', 50),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 35),
+    buildBattleCondition('ELS Reduction', 55),
     buildBattleCondition('Fast\'s Ultimate', 35),
     buildBattleCondition('Boss\'s Ultimate', 20, 'Boss Ultimate Lvl 20'),
   ]),
@@ -185,16 +185,14 @@ export const TIER_DATA = [
     buildBattleCondition('Ray\'s Ultimate', 65),
     buildBattleCondition('Vampire\'s Ultimate', 65),
     buildBattleCondition('More Bosses', 5),
-    buildBattleCondition('ELS Reduction', 40),
+    buildBattleCondition('ELS Reduction', 70),
     buildBattleCondition('Fast\'s Ultimate', 50),
     buildBattleCondition('Boss\'s Ultimate', 35, 'Boss Ultimate Lvl 35'),
-    buildBattleCondition('Basic\'s Ultimate', 20),
-    buildBattleCondition('Mass Enforcement', 1),
+    buildBattleCondition('Mass Enforcement', 25),
   ]),
-  // Tiers 22-24: wiki "Tiers" § Tier Battle Conditions, and the game's own per-tier levels
-  // (game data v28.3.0, V283_CAMPAIGN_HEAT_LEVELS_BY_TIER) hold the same set. Whether the
-  // 35/50/65 entry is Basic's Ultimate (as here) or Mass Enforcement (as the wiki says) is not
-  // settled; see tier-battle-conditions-vs-game.test.ts.
+  // Tiers 14-24 match game data v29.2.1 (facts/v29.2.1/tier-battle-conditions.json), checked by
+  // tier-battle-conditions-vs-game.test.ts. Only conditions active from the first wave are listed;
+  // every tier also has two Tier Overheat entries (Skip Decay, More Fleets) from wave 10000-15000.
   buildTierData(22, 72, 21, 300, [
     buildBattleCondition('Orb Resistance', 95),
     buildBattleCondition('Death Ray Resistance', 95),
@@ -211,8 +209,7 @@ export const TIER_DATA = [
     buildBattleCondition('ELS Reduction', 75),
     buildBattleCondition('Fast\'s Ultimate', 65),
     buildBattleCondition('Boss\'s Ultimate', 50, 'Boss Ultimate Lvl 50'),
-    buildBattleCondition('Basic\'s Ultimate', 35),
-    buildBattleCondition('Mass Enforcement', 1),
+    buildBattleCondition('Mass Enforcement', 35),
     buildBattleCondition('Saboteur\'s Ultimate', 20),
   ]),
   buildTierData(23, 86, 22, 300, [
@@ -231,8 +228,7 @@ export const TIER_DATA = [
     buildBattleCondition('ELS Reduction', 80),
     buildBattleCondition('Fast\'s Ultimate', 80),
     buildBattleCondition('Boss\'s Ultimate', 65, 'Boss Ultimate Lvl 65'),
-    buildBattleCondition('Basic\'s Ultimate', 50),
-    buildBattleCondition('Mass Enforcement', 1),
+    buildBattleCondition('Mass Enforcement', 50),
     buildBattleCondition('Saboteur\'s Ultimate', 35),
     buildBattleCondition('Commander\'s Ultimate', 20),
   ]),
@@ -252,8 +248,7 @@ export const TIER_DATA = [
     buildBattleCondition('ELS Reduction', 85),
     buildBattleCondition('Fast\'s Ultimate', 95),
     buildBattleCondition('Boss\'s Ultimate', 80, 'Boss Ultimate Lvl 80'),
-    buildBattleCondition('Basic\'s Ultimate', 65),
-    buildBattleCondition('Mass Enforcement', 1),
+    buildBattleCondition('Mass Enforcement', 65),
     buildBattleCondition('Saboteur\'s Ultimate', 50),
     buildBattleCondition('Commander\'s Ultimate', 35),
     buildBattleCondition('Overcharge\'s Ultimate', 20),
