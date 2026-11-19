@@ -34,11 +34,12 @@ const LATEST_ARCHIVED_VERSION = [...PATCH_NOTES].reverse().find(note => note.ver
 
 /**
  * Notes the developers posted after the archive was last ingested, read from the channel on
- * 2026-11-18: 29.1.1 (1560678214764994651), 29.1.2 (1561019100359032976), 29.1.3
- * (1562512032803201145), 29.1.4 (1566858291710136333) and 29.2 (1571908549376872459). The trap
- * naming them drops out on its own once an ingest reaches the newest of them.
+ * 2026-11-18 and 2026-11-19: 29.1.1 (1560678214764994651), 29.1.2 (1561019100359032976), 29.1.3
+ * (1562512032803201145), 29.1.4 (1566858291710136333), 29.2 (1571908549376872459) and 29.2.1
+ * (1572999340027420755). The trap naming them drops out on its own once an ingest reaches the
+ * newest of them.
  */
-const NEWEST_KNOWN_NOTE_POSTED = '2026-11-16'
+const NEWEST_KNOWN_NOTE_POSTED = '2026-11-19'
 const ARCHIVE_IS_BEHIND = PATCH_NOTES_SOURCE.latest.slice(0, 10) < NEWEST_KNOWN_NOTE_POSTED
 
 export const PATCH_NOTE_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
@@ -68,7 +69,7 @@ export const PATCH_NOTE_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'it, because a wrong version attached to a real change reads as fact.',
       ...(ARCHIVE_IS_BEHIND
         ? [`The archive ends ${PATCH_NOTES_SOURCE.latest.slice(0, 10)}, but the channel has more: 29.1.1, 29.1.2, 29.1.3, `
-          + `29.1.4 and 29.2 (posted up to ${NEWEST_KNOWN_NOTE_POSTED}) are not in it. Re-run \`npm run patch-notes:ingest\` `
+          + `29.1.4, 29.2 and 29.2.1 (posted up to ${NEWEST_KNOWN_NOTE_POSTED}) are not in it. Re-run \`npm run patch-notes:ingest\` `
           + 'where a bot token is available, then `npm run patch-notes:build`. Until then a null from '
           + '`whenIntroduced` for anything recent means "not ingested", not "never announced".']
         : []),

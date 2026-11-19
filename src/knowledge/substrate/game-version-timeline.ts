@@ -77,7 +77,8 @@ export const GAME_VERSION_TIMELINE: readonly GameVersionWindow[] = [
     until: null,
     basis:
       'v29.2 rolled out 2026-11-16 (patch note 1571908549376872459); build 1286 confirmed in an '
-      + 'official export written 2026-11-18.',
+      + 'official export written 2026-11-18. Covers hotfix 29.2.1 (1572999340027420755, build 1294, '
+      + '2026-11-19), which fixed ads and a tutorial soft-lock and changed no game data.',
   },
 ]
 

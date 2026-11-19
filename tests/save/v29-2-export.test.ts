@@ -108,6 +108,11 @@ const root = readToolExportJson(new TextEncoder().encode(JSON.stringify(EXPORT))
 describe('a v29.2 official export', () => {
   it('names its build and is one this SDK was checked against', () => {
     expect(readExportInfoFromSaveRoot(root)).toMatchObject({ versionNumber: 1286, dataVersion: 35, checked: true, warnings: [] })
+    // v29.2.1 (build 1294) is checked too; a build past it is flagged even at the same data version.
+    expect(readExportInfoFromSaveRoot({ ...root, versionNumber: 1294 })!.checked).toBe(true)
+    const newerBuild = readExportInfoFromSaveRoot({ ...root, versionNumber: 1295 })!
+    expect(newerBuild.checked).toBe(false)
+    expect(newerBuild.warnings.join(' ')).toMatch(/1295 is newer than 1294 \(v29\.2\.1\)/)
     const newer = readExportInfoFromSaveRoot({ ...root, dataVersion: 36 })!
     expect(newer.checked).toBe(false)
     expect(newer.warnings.join(' ')).toMatch(/renamed fields/)

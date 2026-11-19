@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+**Checked against game v29.2.1 (build 1294).** v29.2.1 (patch note 1572999340027420755) fixed
+ads for European users and a Workshop tutorial soft-lock. Its relics, tournament prizes, milestone
+rewards, workshop enhancement caps, constants, enums and save fields are identical to v29.2.0, so
+no data changed. `readExportInfoFromSaveRoot` now treats build 1294 as checked; the version
+timeline and the list of notes missing from the patch-note archive include 29.2.1.
+
 Patch notes:
 
 - `npm run patch-notes:ingest` reads the bot token from `DISCORD_TOKEN` (the shell, or a

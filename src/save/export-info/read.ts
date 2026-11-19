@@ -24,12 +24,17 @@ const KNOWN_SAVE_FIELDS: ReadonlySet<string> = new Set(
 /** Keys the decoder renames, which the catalog lists under the binary save's name. */
 const DECODER_RENAMED_KEYS: ReadonlySet<string> = new Set(['inventory'])
 
-/** The newest official export this SDK has been checked against, field by field. */
+/**
+ * The newest official export this SDK has been checked against, field by field.
+ *
+ * v29.2.1 (build 1294, patch note 1572999340027420755) changed no save field, constant or game
+ * table the SDK reads; the v29.2.0 facts hold for it unchanged.
+ */
 export const NEWEST_CHECKED_EXPORT = {
   exportVersion: 1,
-  versionNumber: 1286,
+  versionNumber: 1294,
   dataVersion: 35,
-  gameVersion: 'v29.2.0',
+  gameVersion: 'v29.2.1',
 } as const
 
 const EXPORT_INFO_KEYS = ['exportVersion', 'exportedAt', 'versionNumber', 'dataVersion'] as const
