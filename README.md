@@ -1129,7 +1129,7 @@ inferred from the notes around it — a wrong version attached to a real change 
 ### Keeping it current
 
 ```bash
-npm run patch-notes:ingest   # read-only, resumable; needs a bot in the server
+npm run patch-notes:ingest   # read-only, resumable; needs DISCORD_TOKEN (see below)
 npm run patch-notes:build    # regenerate the shipped dataset
 ```
 
@@ -1141,6 +1141,71 @@ the game has ever used.
 
 `thetowersdk/knowledge` also carries a `patch-notes` compartment describing those traps, so an
 agent asking *when did this change* meets the dating rule before it reaches a date.
+
+### Patch notes: Discord token
+
+The ingest reads one channel of the official server,
+[`#patch-notes`](https://discord.com/channels/850137217828388904/1437789871396880585), over
+Discord's HTTP API. Discord is the only source, so the ingest needs a **bot token** in the
+`DISCORD_TOKEN` environment variable. It must be a bot's token: the script sends it as
+`Authorization: Bot …` and does not work with, or automate, a personal account.
+
+**Getting a token.** The steps follow Discord's
+[Getting Started guide](https://docs.discord.com/developers/quick-start/getting-started):
+
+1. In the [Developer Portal](https://discord.com/developers/applications), create an app. A new
+   app comes with a bot user; its settings are on the app's **Bot** page.
+2. On the **Bot** page, under **Token**, click **Reset Token** and copy the token. Discord will
+   not show it again; the only way to recover a lost token is to reset it, which invalidates the
+   old one.
+3. On the same page, under **Privileged Gateway Intents**, enable the Message Content intent.
+   Without it Discord returns every message with empty `content`, `embeds` and `attachments`,
+   over the HTTP API as well as the Gateway, and the ingest stops with "the archive looks wrong".
+   Apps with fewer than 10,000 users can enable it themselves; larger or verified apps need
+   Discord's approval
+   ([Gateway: privileged intents](https://docs.discord.com/developers/events/gateway#privileged-intents)).
+4. The bot must be a member of the official server, with **View Channel** and **Read Message
+   History** on the patch-notes channel. Discord requires `VIEW_CHANNEL` to read a channel's
+   messages and returns none without `READ_MESSAGE_HISTORY`
+   ([Get Channel Messages](https://docs.discord.com/developers/resources/message#get-channel-messages)).
+
+Step 4 is the one you cannot do alone. A bot is added to a server by a member who holds
+**Manage Server** (`MANAGE_GUILD`) there, so only the official server's admins can add one. In
+practice this means using the token of a bot that is *already* a member of that server and can
+read the channel. A freshly created bot gets `403` from the ingest until it is.
+
+**Configuring it here.** Copy the committed template and fill in the one variable:
+
+```bash
+cp .env.example .env
+```
+
+```bash
+# .env — at the package root, gitignored
+DISCORD_TOKEN=your-bot-token
+```
+
+The ingest script reads `.env` itself; nothing else needs to load it. A variable exported in the
+shell also works and takes precedence over the file:
+
+```bash
+DISCORD_TOKEN=your-bot-token npm run patch-notes:ingest
+```
+
+**Then run:**
+
+```bash
+npm run patch-notes:ingest   # fetches the channel into data/patch-notes/raw-messages.json (gitignored)
+npm run patch-notes:build    # regenerates src/knowledge/generated/patch-notes.generated.ts
+```
+
+The build derives the dataset purely from the raw archive, so let the ingest finish first. On a
+machine with no archive the first ingest fetches the whole channel; a build from a half-fetched
+archive would drop notes.
+
+**Never commit or share the token.** It is a password: anyone holding it controls the bot.
+`.env` is in `.gitignore` and only the value-free `.env.example` is committed. The script never
+prints, logs or stores the token. If it leaks, reset it on the **Bot** page straight away.
 
 ---
 

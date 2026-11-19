@@ -18,8 +18,10 @@
  * READ ONLY. It fetches message history and writes JSON. It never posts, edits, reacts, or joins
  * anything, and it touches exactly one channel.
  *
- * The bot token is read from the bot's own `.env` at runtime and is never printed, logged, or
- * written to the archive; it stays in the file it already lives in.
+ * The bot token comes from the `DISCORD_TOKEN` environment variable: exported in the shell, or
+ * set in a gitignored `.env` at the package root, which this script reads itself (the shell
+ * wins when both are set). It is never printed, logged, or written to the archive. README.md,
+ * "Patch notes: Discord token", says how to get one.
  *
  * The raw archive is gitignored. It is a working artifact carrying message and author ids, and
  * what ships is the DERIVED dataset built from it by `build-patch-notes.mjs` — the same split as
@@ -31,7 +33,7 @@
  * messages, so the archive is written after every page and a re-run continues from the oldest
  * message already stored. Stopping halfway costs nothing.
  *
- *   node scripts/ingest-patch-notes.mjs [--bot=modbot|trackerbot|toolsbot] [--limit=N] [--fresh]
+ *   node scripts/ingest-patch-notes.mjs [--limit=N] [--fresh]
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -39,59 +41,49 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-/* packages/sdk -> packages -> the-tower-run-tracker -> TrackerWebsite -> Projects. */
-const PROJECTS = path.resolve(PACKAGE_ROOT, '..', '..', '..', '..')
 
 /** The official server's patch-notes channel. */
 const CHANNEL_ID = '1437789871396880585'
 const OUT_DIR = path.join(PACKAGE_ROOT, 'data', 'patch-notes')
 const OUT_FILE = path.join(OUT_DIR, 'raw-messages.json')
 
-/** Bots that are in the official server, in the order they are tried. */
-const BOTS = {
-  modbot: 'TowerModBot/The-Tower-Discord-Mod-Bot/.env.prod.private',
-  trackerbot: 'TrackerBot/The-Tower-Run-Tracker-Discord-Bot/.env.prod',
-  toolsbot: 'TowerToolsBot/The-Tower-Tools-Discord-Bot/.env.prod',
-}
+/** The one variable this script reads. A bot token, never a personal account's. */
+const TOKEN_VARIABLE = 'DISCORD_TOKEN'
+const ENV_FILE = path.join(PACKAGE_ROOT, '.env')
 
 const args = process.argv.slice(2)
 const arg = (name, fallback) =>
   args.find(a => a.startsWith(`--${name}=`))?.split('=')[1] ?? fallback
-const wanted = arg('bot', null)
 const limit = Number(arg('limit', '0')) || Infinity
 const fresh = args.includes('--fresh')
 
 /**
- * Read a Discord token from a dotenv file.
+ * The token from the environment, falling back to the package's own `.env`.
  *
- * Returned, never displayed. The caller puts it in a header and nothing else.
+ * Returned, never displayed. The caller puts it in a header and nothing else. Only the one
+ * variable is read from the file, and nothing is copied into `process.env`.
  */
-function tokenFrom(relative) {
-  const file = path.join(PROJECTS, relative)
-  if (!existsSync(file)) return null
-  for (const line of readFileSync(file, 'utf8').split(/\r?\n/)) {
-    const match = /^\s*[A-Z_]*DISCORD[A-Z_]*TOKEN\s*=\s*(.+?)\s*$/.exec(line)
+function readToken() {
+  const fromShell = process.env[TOKEN_VARIABLE]?.trim()
+  if (fromShell) return fromShell
+  if (!existsSync(ENV_FILE)) return null
+  for (const line of readFileSync(ENV_FILE, 'utf8').split(/\r?\n/)) {
+    const match = /^\s*(?:export\s+)?DISCORD_TOKEN\s*=\s*(.*?)\s*$/.exec(line)
     if (!match) continue
-    const value = match[1].replace(/^["']|["']$/g, '')
-    if (value && !value.startsWith('your-') && value.length > 20) return value
+    const value = match[1].replace(/^(["'])(.*)\1$/, '$2').trim()
+    if (value) return value
   }
   return null
 }
 
-const chosen = wanted ? [[wanted, BOTS[wanted]]] : Object.entries(BOTS)
-let token = null
-let botName = null
-for (const [name, relative] of chosen) {
-  if (!relative) continue
-  const candidate = tokenFrom(relative)
-  if (candidate) {
-    token = candidate
-    botName = name
-    break
-  }
-}
+const token = readToken()
 if (!token) {
-  console.error('No usable bot token found. Checked:', Object.keys(BOTS).join(', '))
+  console.error(
+    `No Discord bot token: ${TOKEN_VARIABLE} is not set.\n\n`
+    + `Set it in the shell, or copy .env.example to .env at the package root and fill in\n`
+    + `${TOKEN_VARIABLE}. The bot must already be a member of the official server and able to read\n`
+    + 'the patch-notes channel. See "Patch notes: Discord token" in README.md.',
+  )
   process.exit(1)
 }
 
@@ -101,6 +93,15 @@ const headers = { Authorization: `Bot ${token}`, 'User-Agent': 'thetowersdk-patc
 async function discord(url) {
   for (let attempt = 0; attempt < 6; attempt += 1) {
     const response = await fetch(url, { headers })
+    if (response.status === 401) {
+      throw new Error(`401 Unauthorized: Discord rejected the token in ${TOKEN_VARIABLE}. It must be a bot token.`)
+    }
+    if (response.status === 403 || response.status === 404) {
+      throw new Error(
+        `${response.status} for ${url}: the bot cannot see the patch-notes channel. It must be a `
+        + 'member of the official server with View Channel and Read Message History there.',
+      )
+    }
     if (response.status === 429) {
       const retry = Number(response.headers.get('retry-after') ?? '1')
       console.log(`  rate limited, waiting ${retry}s`)
@@ -114,7 +115,7 @@ async function discord(url) {
 }
 
 const channel = await discord(`https://discord.com/api/v10/channels/${CHANNEL_ID}`)
-console.log(`Reading #${channel.name} as ${botName} (read-only)`)
+console.log(`Reading #${channel.name} with the token from ${TOKEN_VARIABLE} (read-only)`)
 
 mkdirSync(OUT_DIR, { recursive: true })
 let stored = []
@@ -213,7 +214,6 @@ while (added < limit) {
   stored.sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1))
   writeFileSync(OUT_FILE, JSON.stringify({
     channel: { id: CHANNEL_ID, name: channel.name, guildId: channel.guild_id },
-    fetchedBy: botName,
     messages: stored,
   }, null, 1))
 

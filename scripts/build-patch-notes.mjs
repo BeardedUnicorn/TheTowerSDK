@@ -41,8 +41,8 @@ const check = process.argv.includes('--check')
 if (!existsSync(SOURCE)) {
   if (check) {
     console.log(
-      'Patch-notes check skipped — no raw archive. Run `npm run patch-notes:ingest` where a bot '
-      + 'token is available; the committed dataset is used as-is.',
+      'Patch-notes check skipped — no raw archive. Run `npm run patch-notes:ingest` with '
+      + 'DISCORD_TOKEN set; the committed dataset is used as-is.',
     )
     process.exit(0)
   }

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+Patch notes:
+
+- `npm run patch-notes:ingest` reads the bot token from `DISCORD_TOKEN` (the shell, or a
+  gitignored `.env` at the package root) instead of from sibling bot projects. The `--bot` flag
+  is gone. README has a "Patch notes: Discord token" section; `.env.example` is new.
+
 MCP server:
 
 - **New tools.**
