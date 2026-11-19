@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+MCP server:
+
+- **New tools.**
+  - `find_rows`: filter a table by field or text, pick columns, and page through it.
+  - `patch_notes`: search the patch notes, find the first mention of a term, or read a version or
+    date range.
+  - `battle_history`: every run in a save, paged, with coins per hour and an average.
+  - `chart_rows`: the published rows behind a chart.
+  - `form_calc`: list, describe and run the form calculators.
+- **Existing tools can do more.**
+  - `plan_effective_path` takes `savePath` for the economy family and plans from the account's
+    levels and coins per hour. It reports the inputs the save could not supply.
+  - `calc_run` takes `savePath` for calculators that read a save, and awaits async calculators.
+  - `wiki_page` takes `offset`, so a page longer than 12,000 characters can be read to the end.
+  - `list_exports` takes `offset` and says when it stopped at 300 names.
+- **What clients receive changed.**
+  - Descriptions are sent whole. They were cut to 180 characters; `TOWER_MCP_COMPACT=1` restores that.
+  - A failed call sets `isError`. An answer carrying `error`, or `ok: false`, was sent as a success.
+  - Arguments are checked against the tool's schema before it runs. A missing or mistyped
+    argument is named.
+  - The instructions name only tools the server advertises and documents that exist.
+  - Tools carry `readOnlyHint` and `openWorldHint` annotations. `ping` is answered. The server
+    replies in the protocol revision the client asked for (`2024-11-05` to `2025-06-18`).
+  - Results are compact JSON. A `NaN` or `Infinity` in a result is named in a second text block.
+- **Fixes.**
+  - `begin_mechanic_task` no longer spawns the graph CLI when the development monorepo is absent.
+    It returns the oracle's brief for the mechanic instead.
+  - Notes and the ledger are written under the directory the server was started in. The fallback
+    was three levels above `mcp/`, which under pnpm is inside `node_modules`.
+  - Newlines in a note or ledger entry no longer start a second Markdown heading. A note with no
+    fact or no source is refused. The ledger is rewritten by rename.
+  - `describe_schema` returns a readable shape. It returned zod's internals twice over.
+  - `plan_effective_path` refuses `family: "constructor"`, caps `steps` at 200 and ignores a
+    `__proto__` key in `levels`.
+  - `run_extractor` reports an extractor that throws, and suggests the nearest name.
+  - `sdk_sandbox_run` no longer reads Node's `fs` as an entry point, and explains a wrong save path.
+  - `oracle_search` caps `limit` at 50. `oracle_brief` reports `matchedExactly`. `oracle_footguns`
+    resolves a plain name before looking up its traps.
+  - `wiki_search` honours `TOWER_WIKI_OFFLINE`.
+  - A monorepo script that hangs is stopped after two minutes.
+
 **Checked against game v29.2.0 (build 1286).** Data was re-read from the game's own tables
 (`facts/v29.2.0/`), the wiki and the developers' patch notes through v29.2; a v29.2 official
 export was read end to end.

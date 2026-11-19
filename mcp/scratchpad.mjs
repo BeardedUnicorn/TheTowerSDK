@@ -54,9 +54,10 @@ function preview(value, limit = PREVIEW_LIMIT) {
   return { type: typeof value, value }
 }
 
+import { readFileSync } from 'node:fs'
 import { nearestNames } from './nearest-names.mjs'
 
-function createScratchpadRun({ loadSdk }) {
+function createScratchpadRun({ loadSdk, readSave }) {
   /*
    * Per call, not per process.
    *
@@ -75,6 +76,13 @@ function createScratchpadRun({ loadSdk }) {
       const data = loadSdk('data')
 
       return {
+        /*
+         * Named for what they are. These are the form calculators, a different set from the
+         * registry `calc_list` reads, and calling both "calculators" sent ids from one to the other.
+         */
+        calculatorsNote:
+          'These ids are the form calculators (also the form_calc tool). The calc_list / calc_run '
+          + 'tools read a separate registry with different handles.',
         calculators: builders.CALCULATOR_BUILDERS.map(entry => entry.id),
         chartDatasets: charts.SHARED_CHART_REGISTRY.length,
         formulas: Object.values(mechanics).filter(value => typeof value === 'function').length,
@@ -152,7 +160,6 @@ function createScratchpadRun({ loadSdk }) {
 
     async decode({ savePath }) {
       if (!savePath) throw new Error('decode mode needs a `savePath`.')
-      const { readFileSync } = loadSdk('fs')
       const node = loadSdk('node')
       const save = loadSdk('save')
 
@@ -162,22 +169,29 @@ function createScratchpadRun({ loadSdk }) {
        * Handing the wrapper straight to an extractor is not an error -- it reads no fields and
        * reports zero runs, which looks exactly like an empty account. The first version of this
        * mode called a `loadPlayerInfoSaveRoot` that does not exist, which at least said so.
+       *
+       * `readSave` is the server's own reader, so a wrong path is explained here the same way
+       * `decode_save` explains it rather than surfacing as a raw `ENOENT`.
        */
-      const { parsedRoot, wasGzip, battleRunCount } = await node.decodePlayerInfoSaveBytesAsync(
-        readFileSync(savePath),
-      )
+      let decoded
+      if (readSave) {
+        decoded = await readSave(savePath)
+        if (decoded.error) throw new Error(decoded.error)
+      }
+      else {
+        decoded = await node.decodePlayerInfoSaveBytesAsync(readFileSync(savePath))
+      }
+      const { parsedRoot, wasGzip, battleRunCount } = decoded
 
-      const runs = save.listImportableBattleRuns(parsedRoot)
-      const rows = Array.isArray(runs) ? runs : (runs?.runs ?? [])
+      const rows = save.listImportableBattleRuns(parsedRoot)
 
       return {
         savePath,
         gzip: wasGzip,
         battleRunCount,
         runsRead: rows.length,
-        /* Extractors report what they could not read rather than throwing; that is the useful half. */
-        warnings: runs?.warnings ?? [],
         sample: rows.slice(0, 2),
+        ...(rows.length > 2 ? { hint: 'battle_history returns every run, paged, with coins per hour.' } : {}),
       }
     },
   }
@@ -202,9 +216,9 @@ function createScratchpadRun({ loadSdk }) {
 }
 
 /** Keep notes isolated while an asynchronous export reader runs. */
-export function createScratchpad({ loadSdk }) {
+export function createScratchpad({ loadSdk, readSave }) {
   return {
-    modes: createScratchpadRun({ loadSdk }).modes,
-    run(input = {}) { return createScratchpadRun({ loadSdk }).run(input) },
+    modes: createScratchpadRun({ loadSdk, readSave }).modes,
+    run(input = {}) { return createScratchpadRun({ loadSdk, readSave }).run(input) },
   }
 }

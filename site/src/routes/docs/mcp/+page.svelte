@@ -7,7 +7,7 @@
 <h1 class="text-3xl font-semibold">MCP &amp; AI</h1>
 <p class="mt-3 text-muted">
 	The package ships an MCP server, so there is nothing extra to install. Register it and your
-	editor's assistant gains thirty-seven tools: it can run the shipped calculators and get real
+	editor's assistant gains forty-two tools: it can run the shipped calculators and get real
 	numbers back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and
 	validate what it produced — rather than writing game maths from memory and hoping.
 </p>
@@ -38,7 +38,7 @@
 	them, the server is registered.
 </p>
 
-<h2 class="mt-10 text-xl font-semibold">Thirty-Seven Tools</h2>
+<h2 class="mt-10 text-xl font-semibold">Forty-Two Tools</h2>
 <p class="mt-3 text-muted">
 	Enough that an assistant can compute, run and check its work rather than only look things up. The
 	groups below are what it gets.
@@ -71,6 +71,14 @@
 		<code>calc_graph</code> — which calculators call which, and which produce values others read. Answers
 		"what feeds this number?" without opening the source
 	</li>
+	<li>
+		<code>form_calc</code> — the form calculators behind this site's pages: list them, read one's fields
+		and defaults, and run it. The answer echoes the input after the calculator normalised it
+	</li>
+	<li>
+		<code>chart_rows</code> — the published rows behind a chart, paged, so a value can be checked against
+		what players see
+	</li>
 </ul>
 
 <h3 class="mt-8 text-lg font-medium">A Sandbox To Work In</h3>
@@ -88,10 +96,20 @@
 		dumped
 	</li>
 	<li>
+		<code>find_rows</code> — the rows you want from one table: filter by field, search, pick columns, page
+	</li>
+	<li>
 		<code>describe_schema</code> — a table's declared shape, not one guessed from a sample row
 	</li>
 	<li>
 		<code>decode_save</code> / <code>run_extractor</code> — what is in a <code>tool_export.json</code>
+	</li>
+	<li>
+		<code>battle_history</code> — every run in a save's history, with coins per hour and an average
+	</li>
+	<li>
+		<code>patch_notes</code> — the developers' patch notes: search them, or find when something was first
+		mentioned
 	</li>
 	<li><code>define_term</code> — what an acronym means, and whether it is ambiguous</li>
 	<li><code>plan_effective_path</code> — a path, with the candidates it excluded and why</li>
@@ -105,6 +123,10 @@
 <p class="mt-2 text-muted">
 	The part that makes the rest trustworthy: the assistant can trace and validate its own output
 	rather than declare itself finished.
+</p>
+<p class="mt-2 text-sm text-muted">
+	The tools in this group and the next run scripts from the repository the package is developed in. An
+	installed server leaves them out of its tool list rather than advertising tools that cannot run.
 </p>
 <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-muted">
 	<li>

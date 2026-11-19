@@ -94,6 +94,17 @@ const NAME_TAKING = [
   { tool: 'oracle_expand', field: 'term', extra: {}, refused: refusedByNoExpansion, maxBody: 20_000 },
 
   /*
+   * And one that was never on the list. `plan_effective_path` looked its family up in a plain
+   * object, so `constructor` found the `Object` function, called it, and threw on the plan that
+   * was not one. The tools added since take a name each and are held to the same rule.
+   */
+  { tool: 'plan_effective_path', field: 'family', extra: { variant: 'time' }, refused: refusedByError, maxBody: 500 },
+  { tool: 'find_rows', field: 'name', extra: {}, refused: refusedByError, maxBody: 500 },
+  { tool: 'chart_rows', field: 'chart', extra: {}, refused: refusedByError, maxBody: 2_000 },
+  { tool: 'form_calc', field: 'id', extra: {}, refused: refusedByError, maxBody: 2_000 },
+  { tool: 'oracle_brief', field: 'mechanic', extra: {}, refused: refusedByResolver, maxBody: 20_000 },
+
+  /*
    * The epaths tab lookups. These reach the Sheets API for a real tab, but a prototype key must be
    * refused BEFORE that — which is the point. `TAB_UI['constructor']` is the `Object` function, and
    * `preset ? … : null` took the truthy branch, so the `knownTabs` error never ran and the tool

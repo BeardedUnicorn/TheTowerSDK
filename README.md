@@ -944,11 +944,16 @@ Or by config file:
 | Tool | Ask it for |
 |---|---|
 | `list_exports` · `get_export` | What exists, and one table previewed rather than dumped |
+| `find_rows` | The rows you want from one table — filtered, searched, paged |
 | `describe_schema` | A table's declared shape, not one guessed from a sample row |
 | `decode_save` · `run_extractor` | What is in a `tool_export.json`, and one reader's output |
+| `battle_history` | Every run in a save's history, with coins per hour and an average |
 | `define_term` | What an acronym means, and whether it is ambiguous |
-| `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, chart it, see what feeds it |
-| `plan_effective_path` | An Effective Path, with the candidates it left out and why |
+| `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, see which chart it draws and what feeds it |
+| `chart_rows` | The published rows behind a chart |
+| `form_calc` | The site's form calculators — fields, defaults, and a run |
+| `patch_notes` | The developers' patch notes: search them, or find when something first appeared |
+| `plan_effective_path` | An Effective Path, with the candidates it left out and why — from zero, or from a save for the economy family |
 | `wiki_search` · `wiki_page` | How a mechanic actually behaves, from the community wiki |
 | `sdk_sandbox_run` | A scratchpad over what the package ships — list, read an export, run a calculator, format, decode |
 | `begin_mechanic_task` · `record_mechanic_note` · `record_work_status` · `compliance_contract` | A mechanics compliance session, with notes and a ledger written to `docs/mechanics-map/` |

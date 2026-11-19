@@ -34,20 +34,25 @@ Claude Code: `claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/
 |---|---|
 | `list_exports` | What an entry point exports, filterable. Start here rather than guessing a name. |
 | `get_export` | One export, previewed — length plus a sample, so a 300-row table doesn't flood the context. |
+| `find_rows` | The rows you want from one table: filter by field, search, pick columns, and page. |
 | `define_term` | What a game term, acronym or set of module initials means, and whether it is ambiguous. |
 | `describe_schema` | The declared shape of a data table, rather than one inferred from a sample row. |
 | `decode_save` | Read an official `tool_export.json` and summarise its game data. |
 | `run_extractor` | Run one `read*FromSaveRoot` against a save, with its warnings. |
+| `battle_history` | Every run in a save's history, paged, with coins per hour and an average. |
 | `calc_list` · `calc_describe` · `calc_run` | Find a calculator, read its inputs, and run it. |
-| `calc_chart` · `calc_graph` | A calculator's output as chart rows, and which calculators feed it. |
-| `plan_effective_path` | Plan an Effective Paths route, with the candidates it left out and why. |
+| `calc_chart` · `calc_graph` | Which calculators produce a chart's numbers, and which calculators feed which. |
+| `chart_rows` | The published rows behind a chart, paged. |
+| `form_calc` | The site's form calculators: list them, read one's fields and defaults, run it. |
+| `plan_effective_path` | Plan an Effective Paths route, with the candidates it left out and why. The economy family can start from a save. |
+| `patch_notes` | Search the developers' patch notes, or find when something was first mentioned. |
 | `wiki_search` | Find the community wiki's real page titles for a mechanic. |
-| `wiki_page` | Read a wiki page as Markdown, whole or one section. |
+| `wiki_page` | Read a wiki page as Markdown, whole or one section; `offset` continues a long page. |
 | `sdk_sandbox_run` | A scratchpad over what the package ships: list, read an export, run a calculator, format, decode. |
 | `begin_mechanic_task` | Start a mechanics session — compliance token, map hits, wiki titles to fetch. |
 | `record_mechanic_note` | Append verified relationships to `docs/mechanics-map/MAP.md`. |
 | `record_work_status` | Append a ledger entry (`awaiting_user` until a person approves — never `done`). |
-| `compliance_contract` | The compliance instructions in full. |
+| `compliance_contract` | The compliance instructions in full, and where the map and ledger are written. |
 | `oracle_*` | The Tower Oracle — see the package README. |
 
 The graph, trust and debug tools (`sdk_graph_*`, `trust_*`, `sdk_debug_*`, `mcp_contract` and a few
@@ -55,9 +60,21 @@ others) run scripts from the repository this package is developed in. An install
 them out of `tools/list` rather than advertising tools that cannot run.
 
 `initialize` returns `instructions` with the compliance pipeline so clients inject it into context.
+The text is built from the tools the server is advertising, so it never names one that is not there.
+
+A call that fails sets `isError`, including a wrong name or a missing file, and its text is still
+JSON with the reason and any suggestions. Arguments are checked against each tool's schema before
+it runs. Every tool carries MCP annotations (`readOnlyHint`, `openWorldHint`).
+
+`tools/list` sends descriptions in full. Set `TOWER_MCP_COMPACT=1` to cut them to 180 characters for
+a client with a small catalog.
 
 `decode_save` and `run_extractor` are read-only on the save file. Map/ledger tools **append** to
-`docs/mechanics-map/` (override with `TOWER_MECHANICS_MAP_DIR`).
+`docs/mechanics-map/` under the directory the server was started in (override with
+`TOWER_MECHANICS_MAP_DIR`).
+
+`calc_run` and `plan_effective_path` take a `savePath` too: a calculator that reads a save gets the
+decoded save, and an economy path is planned from the account's real levels.
 
 ## Compliance pipeline
 
@@ -89,7 +106,7 @@ network — so an agent with no connection still has the game knowledge:
 TOWER_WIKI_DIR=/path/to/wiki-pages node ./node_modules/thetowersdk/mcp/server.mjs
 ```
 
-Every response reports `source: "local" | "cache" | "fandom"`, so a local page that may be stale is
+Every response reports `source: "local" | "cache" | "fandom" | "gamevault"`, so a local page that may be stale is
 distinguishable from a fresh fetch.
 
 A title that is not on disk still reaches the network by default, which on a machine with no

@@ -152,7 +152,7 @@ export const features = [
 	},
 	{
 		title: 'Assistant Tooling',
-		body: 'An MCP server with thirty-seven tools your editor can register: run the shipped calculators for real numbers, work in an instrumented sandbox, decode a save, and trace the result. Plus a game-knowledge oracle and a spreadsheet oracle.',
+		body: 'An MCP server with forty-two tools your editor can register: run the shipped calculators for real numbers, work in an instrumented sandbox, decode a save, and trace the result. Plus a game-knowledge oracle and a spreadsheet oracle.',
 		docs: '/docs/mcp/'
 	},
 	{

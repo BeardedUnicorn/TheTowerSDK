@@ -105,7 +105,7 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
     category: 'sandbox',
     module: 'sdk',
     guarantees: ['structured', 'doctorNeverInventFormulas'],
-    notes: 'Modes: check|kernel|doctor-dry|save-graph|planner|decode|vm (light Tower VM)',
+    notes: 'Modes: list|export|calc|format|decode everywhere; check|kernel|doctor-dry|save-graph|planner|vm (light Tower VM) in the monorepo',
   },
   {
     name: 'sdk_docs_generate',
@@ -185,6 +185,8 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
   { name: 'run_extractor', category: 'save', module: 'sdk', guarantees: ['structured'] },
   { name: 'list_exports', category: 'save', module: 'sdk', guarantees: ['deterministic', 'structured', 'noHallucinatedExports'] },
   { name: 'get_export', category: 'save', module: 'sdk', guarantees: ['deterministic', 'structured', 'noHallucinatedExports'] },
+  { name: 'find_rows', category: 'save', module: 'sdk', guarantees: ['deterministic', 'structured', 'noHallucinatedExports'] },
+  { name: 'battle_history', category: 'save', module: 'sdk', guarantees: ['structured'] },
 
   // wiki
   // calculators -- the canonical formulas, callable by handle. Deterministic
@@ -195,9 +197,13 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
   { name: 'calc_run', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
   { name: 'calc_graph', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured', 'noProseSoT'] },
   { name: 'calc_chart', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured', 'noProseSoT'] },
+  { name: 'chart_rows', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
+  { name: 'form_calc', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
 
   { name: 'wiki_search', category: 'wiki', module: 'sdk', guarantees: ['structured'] },
   { name: 'wiki_page', category: 'wiki', module: 'sdk', guarantees: ['structured'] },
+  // Patch notes ship with the package, so unlike the wiki this one is deterministic.
+  { name: 'patch_notes', category: 'wiki', module: 'sdk', guarantees: ['deterministic', 'structured'] },
 
   // sheet (epaths)
   { name: 'sheet_info', category: 'sheet', module: 'epaths', guarantees: ['structured'] },

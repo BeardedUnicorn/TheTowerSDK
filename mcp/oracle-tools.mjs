@@ -45,7 +45,7 @@ function loadKnowledge() {
     const entry = path.join(base, 'knowledge', 'index.js')
     if (fs.existsSync(entry)) return require(entry)
   }
-  throw new Error('thetowersdk build not found — run `pnpm build` in packages/sdk first')
+  throw new Error('thetowersdk build not found — run `npm run build` first')
 }
 
 let cached = null
@@ -122,6 +122,27 @@ function missSuggestions(query) {
     .filter(hit => hit.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, 5)
+}
+
+/**
+ * The traps for the mechanic `oracle_footguns` was filtered to.
+ *
+ * It passed the caller's words straight to `trapsFor`, which takes an entity id. A plain name --
+ * "bot cooldown" -- matched nothing and came back as an empty list, which on a tool about
+ * irreversible upgrades reads as "nothing to worry about here".
+ */
+function footgunsFor(mechanic, trapsFor) {
+  if (!mechanic) return {}
+  const direct = knowledge().knowledgeFor(mechanic)
+  const resolved = direct ? mechanic : (missSuggestions(mechanic)[0]?.id ?? null)
+  if (!resolved) {
+    return {
+      mechanic,
+      trapsForMechanic: [],
+      mechanicNote: 'No documented entity matches that. Undocumented is not the same as safe.',
+    }
+  }
+  return { mechanic, resolvedTo: resolved, matchedExactly: Boolean(direct), trapsForMechanic: trapsFor(resolved) }
 }
 
 export const TOWER_ORACLE_TOOLS = {
@@ -213,7 +234,7 @@ export const TOWER_ORACLE_TOOLS = {
       type: 'object',
       properties: {
         query: { type: 'string', description: 'Words to search for.' },
-        limit: { type: 'number', description: 'Max results (default 10).' },
+        limit: { type: 'number', description: 'Max results (default 10, at most 50).' },
       },
       required: ['query'],
     },
@@ -224,7 +245,8 @@ export const TOWER_ORACLE_TOOLS = {
         .map(node => ({ node, score: scoreNode(node, terms) }))
         .filter(hit => hit.score > 0)
         .sort((a, b) => b.score - a.score)
-        .slice(0, Number(limit) > 0 ? Number(limit) : 10)
+        /* Capped: any positive number passed straight to `slice`, so `limit: 1e9` returned the graph. */
+        .slice(0, Number(limit) > 0 ? Math.min(Math.trunc(Number(limit)), 50) || 10 : 10)
         .map(hit => ({
           id: hit.node.id,
           label: hit.node.label,
@@ -518,6 +540,11 @@ export const TOWER_ORACLE_TOOLS = {
         found: true,
         query: mechanic,
         resolvedTo: rootId,
+        /*
+         * Whether the brief is for what was asked, or for the nearest thing to it. `oracle_traps`
+         * already said; this did not, so a brief about a neighbouring mechanic read as the answer.
+         */
+        matchedExactly: Boolean(direct),
         entity: asBrief(root),
         alsoNeeded: neighbours,
         relationships: relationsOf(rootId).map(e => `${e.from} --${e.kind}--> ${e.to}: ${e.note}`),
@@ -582,7 +609,7 @@ export const TOWER_ORACLE_TOOLS = {
           'communityOpinion is Category:Guides sentiment — what players think is ADVISABLE. It is '
           + 'not a mechanic, it ages with patches, and it must never be hard-coded as a ranking, '
           + 'default or constant.',
-        ...(mechanic ? { mechanic, trapsForMechanic: trapsFor(mechanic) } : {}),
+        ...footgunsFor(mechanic, trapsFor),
       }
     },
   },
@@ -706,6 +733,6 @@ export const TOWER_ORACLE_INSTRUCTIONS = [
   '  oracle_coverage — what is documented and what is NOT yet',
   '',
   'Every claim cites a source and a verification date. A missing entry means unverified,',
-  'never safe-to-assume. When you verify something new, add it to packages/sdk/src/knowledge',
-  'so the next agent gets it for free — that is the whole point.',
+  'never safe-to-assume. When you verify something new, add it to src/knowledge (packages/sdk/src/knowledge',
+  'in the development monorepo) so the next agent gets it for free — that is the whole point.',
 ].join('\n')

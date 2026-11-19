@@ -212,7 +212,7 @@ bonus may be metres or seconds where a neighbouring one is a percentage, and the
 in the game's description text.
 
 **Offline use.** Set `TOWER_WIKI_DIR` to a directory of `slug.md` pages; both tools read it before
-the network. Every response reports `source: "local" | "cache" | "fandom"`, so a stale local page is
+the network. Every response reports `source: "local" | "cache" | "fandom" | "gamevault"`, so a stale local page is
 distinguishable from a fresh fetch.
 
 **Living map.** Set `TOWER_MECHANICS_MAP_DIR` to override where `record_mechanic_note` writes
