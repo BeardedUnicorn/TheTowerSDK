@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { CANONICAL_LAB_SLUG_BY_ALIAS } from '../../src/data/labs/categories'
 import { LAB_CATALOG } from '../../src/data/labs/catalog.data'
+import { findLabResearchRecord } from '../../src/data/labs/research'
 
 /**
  * Checks our lab cost and duration tables against an independent authority.
@@ -16,7 +17,39 @@ import { LAB_CATALOG } from '../../src/data/labs/catalog.data'
  *
  * The reference is not the source. Nothing here is generated from it. When it
  * disagrees with us the answer is to look, not to copy.
+ *
+ * Game data v29.2.1 (facts/v29.2.1/lab-ladders.json) is the stronger source, and on 28 labs it
+ * disagrees with the sheet, where our table used to agree with the sheet. Those levels now follow
+ * the game, and the wiki agrees with the game on the ones checked: Super Tower Bonus L7, Cash Bonus
+ * L1-L4, Lab Speed and Labs Coin Discount without their own bonus, Death Wave Cell Bonus.
+ * A disagreement with the sheet passes only where the game disagrees with the sheet as well and
+ * our table matches the game; the labs where that happens are pinned below.
  */
+interface GameLab { index: number, levels: Array<{ level: number, cost: number, seconds: number }> }
+const game: { labs: GameLab[] } = JSON.parse(
+  readFileSync(join(__dirname, '..', '..', 'facts', 'v29.2.1', 'lab-ladders.json'), 'utf8'),
+)
+const gameByIndex = new Map(game.labs.map(lab => [lab.index, lab]))
+function gameLevel(slug: string, level: number) {
+  const index = findLabResearchRecord(slug)?.index
+  return index === undefined ? undefined : gameByIndex.get(index)?.levels.find(row => row.level === level)
+}
+
+/** Where the sheet lags game data v29.2.1, by what the sheet has wrong. */
+const SHEET_BEHIND_THE_GAME = {
+  cost: [
+    'Battle Condition Reduction', 'Cash / Wave', 'Cash Bonus', 'Coins / Kill Bonus', 'Coins / Wave',
+    'Commander Enemy Health', 'Daily Mission Shards', 'Damage / Meter', 'Double Death Ray',
+    'Inner Land Mine - Chrono Jump', 'Labs Coin Discount', 'Overcharge Enemy Damage',
+    'Overcharge Enemy Health', 'Protector Health', 'Protector Radius', 'Recovery Package Max',
+    'Reroll Shards', 'Saboteur Enemy Health', 'Super Crit Chance', 'Super Tower Bonus',
+  ],
+  duration: [
+    'Cash / Wave', 'Cash Bonus', 'Coins / Kill Bonus', 'Coins / Wave', 'Damage / Meter',
+    'Death Wave Armor Stripping', 'Death Wave Cells Bonus', 'Death Wave Coin Bonus', 'Labs Speed',
+    'Missiles Explosion', 'Module Coin Cost', 'Module Shard Cost', 'Waves Required',
+  ],
+}
 
 interface ReferenceLevel {
   level: number
@@ -115,6 +148,7 @@ function agrees(ours: number, theirs: number): boolean {
 describe('lab tables against the Effective Paths reference', () => {
   it('agrees on every cost the reference also has', () => {
     const mismatches: string[] = []
+    const behind = new Set<string>()
     let compared = 0
     for (const lab of ourLabs) {
       const ref = referenceFor(lab)
@@ -124,18 +158,21 @@ describe('lab tables against the Effective Paths reference', () => {
         const theirs = refByLevel.get(level.level)
         if (!theirs || theirs.cost === null || !Number.isFinite(level.cost)) continue
         compared += 1
-        if (!agrees(level.cost, theirs.cost)) {
-          mismatches.push(`${lab.name} L${level.level}: ours=${level.cost} reference=${theirs.cost}`)
-        }
+        if (agrees(level.cost, theirs.cost)) continue
+        const actual = gameLevel(lab.slug, level.level)?.cost
+        if (actual !== undefined && agrees(level.cost, actual) && !agrees(theirs.cost, actual)) behind.add(lab.name)
+        else mismatches.push(`${lab.name} L${level.level}: ours=${level.cost} reference=${theirs.cost}`)
       }
     }
     expect(mismatches).toEqual([])
+    expect([...behind].sort()).toEqual(SHEET_BEHIND_THE_GAME.cost)
     // A comparison that silently skips everything passes just as loudly.
     expect(compared).toBeGreaterThanOrEqual(5000)
   })
 
   it('agrees on every duration the reference also has', () => {
     const mismatches: string[] = []
+    const behind = new Set<string>()
     let compared = 0
     for (const lab of ourLabs) {
       const ref = referenceFor(lab)
@@ -145,12 +182,14 @@ describe('lab tables against the Effective Paths reference', () => {
         const theirs = refByLevel.get(level.level)
         if (!theirs || theirs.durationSeconds === null || level.seconds === null) continue
         compared += 1
-        if (!agrees(level.seconds, theirs.durationSeconds)) {
-          mismatches.push(`${lab.name} L${level.level}: ours=${level.seconds}s reference=${theirs.durationSeconds}s`)
-        }
+        if (agrees(level.seconds, theirs.durationSeconds)) continue
+        const actual = gameLevel(lab.slug, level.level)?.seconds
+        if (actual !== undefined && agrees(level.seconds, actual) && !agrees(theirs.durationSeconds, actual)) behind.add(lab.name)
+        else mismatches.push(`${lab.name} L${level.level}: ours=${level.seconds}s reference=${theirs.durationSeconds}s`)
       }
     }
     expect(mismatches).toEqual([])
+    expect([...behind].sort()).toEqual(SHEET_BEHIND_THE_GAME.duration)
     // Was 4426 while "10d 19h 11m" went unparsed and every static lab was
     // skipped without a word. Now 5213.
     expect(compared).toBeGreaterThanOrEqual(5000)
@@ -231,14 +270,9 @@ describe('lab tables against the Effective Paths reference', () => {
     // Independent of the reference, and how the super_tower_bonus corruption
     // was pinned down: a cost that falls is always wrong.
     //
-    // The single exception is a datum neither source can settle. Super Tower
-    // Bonus grows by a steady x1.31-1.37 per level, except L7, which falls to
-    // x0.889 and is followed by an over-correcting x1.522 -- drop L7 and the
-    // curve is smooth. Our table and the reference carry the identical
-    // 8230000000 there, so they are not independent on it and neither can say
-    // what the real value is. Recorded exactly rather than guessed: if the
-    // sheet ever corrects it, this assertion fails and we adopt the fix.
-    const KNOWN_BAD = ['Super Tower Bonus: L6=9260000000 -> L7=8230000000']
+    // Super Tower Bonus L7 used to fall to 8230000000, in our table and the
+    // reference alike. Game data v29.2.1 settled it: L7-L9 held the next level's
+    // cost, and L7 is 12.53B. The sheet still has the old values.
     const drops: string[] = []
     for (const lab of ourLabs) {
       const levels = [...lab.levels].sort((left, right) => left.level - right.level)
@@ -251,6 +285,6 @@ describe('lab tables against the Effective Paths reference', () => {
         }
       }
     }
-    expect(drops).toEqual(KNOWN_BAD)
+    expect(drops).toEqual([])
   })
 })

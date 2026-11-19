@@ -70,6 +70,40 @@ Labs and card masteries (`facts/v29.2.1/labs.json`, with no coin or time modifie
 - **Every card mastery ladder is now tested against the game's base and increase.** The other 30
   already matched. Ultimate Crit's thirds of a percent are shown to one decimal.
 
+Every lab ladder (`facts/v29.2.1/lab-ladders.json`, 180 labs, with no coin or time modifier):
+
+- **`LAB_CATALOG` now agrees with the game at every level of those 180 labs.** A level may still
+  differ by how it is written: a cost to its own significant figures, a time to the unit it is
+  written in. 1186 levels of 65 labs differed by more and now carry the game's value.
+- **Protector Health and Protector Radius** cost 10B more per level from L2 than the catalog had
+  (90.005B at L2, not 80.01B).
+- **Super Tower Bonus L7-L9 and L24-L26** held the next level's cost. L7 is 12.53B, so the ladder
+  no longer falls at L7.
+- **Labs Speed and Labs Coin Discount** had their own bonus already taken off their times and
+  costs, so the SDK's modifiers took it off twice. They are now the base values, like every
+  other lab.
+- **Damage / Meter, Cash Bonus, Cash / Wave, Coins / Kill Bonus and Coins / Wave** start at 40
+  coins and 20 s, not Damage's 30 coins and 14 s.
+- **Death Wave Armor Stripping L1-L7** had lost their days (L1 is 200 h, not 8 h). **Death Wave
+  Cells Bonus** was off by up to 8% at every level.
+- **Other fixes include:**
+  - costs: Double Death Ray L2-L10, Reroll Shards L6 (155.26M), Recovery Package Max L4
+    (35.33B), Super Crit Chance L31, Module Coin Cost L3-L18, the Black Hole and Spotlight coin
+    bonuses;
+  - times: Module Coin Cost and Module Shard Cost L16 (225:40:53), Defense L40 and L46, Max
+    Interest L14, Missiles Explosion, Waves Required L86-L88.
+- **Ladders written to the minute that drifted** a minute every few levels now have the game's
+  minutes: the eight assist-module labs, the enemy-type labs, the resistance labs, the three
+  enhancement coin discounts and Ranged Enemy Range.
+- **Unchanged:** Wall Health L2 (1.2B for 1.2001B) was only rounding. The card masteries, the
+  effect-ban labs and the battle-condition labs' times are not in the facts. The
+  battle-condition labs' costs match the game.
+- **The game has no Ray, Scatter or Vampire Enemy Defense lab.** Their `LAB_CATALOG` rows are
+  untouched.
+- **`lab-reference.test.ts` checks the Effective Paths sheet** as before. A level may now
+  disagree with the sheet only where the game disagrees with the sheet too and the catalog
+  follows the game. That is the case on 28 labs.
+
 Campaign tier battle conditions (`facts/v29.2.1/tier-battle-conditions.json`):
 
 - **Tiers 14-24 now match the game, condition by condition.**
