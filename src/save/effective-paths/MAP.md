@@ -9,6 +9,6 @@ Effective Paths inputs recovered from a save.
 | `from-save.ts` | A save file to Effective Paths planner inputs. | buildEffectiveEconomyInputsFromSave |
 | `index.ts` | Effective Paths inputs taken from a save, and the settings that shape a plan. | — |
 | `settings.ts` | Effective Paths — the settings a save can answer for. | readEffectivePathsSettingsFromSaveRoot |
-| `types.ts` | The types `save/effective-paths/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | EffectivePathsUnmappedCandidate, EffectivePathsSaveInputs, EffectivePathsSaveSettings |
+| `types.ts` | The types `save/effective-paths/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | EffectivePathsUnmappedCandidate, EffectivePathsUnfilledConfigInput, EffectivePathsSaveInputs, EffectivePathsSaveSettings |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

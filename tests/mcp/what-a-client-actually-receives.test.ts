@@ -284,6 +284,9 @@ describe.skipIf(!BUILT)('the server over stdio', () => {
       expect(plan.isError).toBe(false)
       expect(plan.body?.startedFrom).toBe('save')
       expect(Array.isArray(plan.body?.unmapped)).toBe(true)
+      // The config half of the input: what the save left at its default is named, not silent.
+      expect(Array.isArray(plan.body?.unfilledConfig)).toBe(true)
+      expect(plan.body?.unfilledConfig.length).toBeGreaterThan(0)
 
       const zero = await call('plan_effective_path', { family: 'economy', variant: 'time', steps: 3 })
       expect(zero.body?.startedFrom).toBe('zero')
