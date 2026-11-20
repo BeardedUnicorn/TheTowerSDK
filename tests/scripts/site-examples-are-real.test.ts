@@ -50,7 +50,7 @@ function siteFiles(): string[] {
  * and only one of the two breaks a build.
  */
 /**
- * `import { … } from 'thetowersdk/…'`, capturing an optional leading `type`.
+ * `import { … } from '@beardedunicorn/thetowersdk/…'`, capturing an optional leading `type`.
  *
  * The `type` group matters: a type-only import names things that are erased at runtime and cannot
  * be found on the module object, so those are skipped. Everything else is checked, constants
