@@ -163,6 +163,14 @@ function isKnown(phrase: string): boolean {
  */
 const PACKAGE_ROOT = path.resolve(__dirname, '..', '..')
 
+/**
+ * Local agent notes, gitignored and never shipped.
+ *
+ * Their sources lines cite wiki page titles verbatim, which no catalog knows, so scanning them
+ * failed this suite on any machine that had them and passed on a clean checkout.
+ */
+const LOCAL_NOTES = path.join(PACKAGE_ROOT, 'docs', 'mechanics-map')
+
 /** Prose files: written by hand, and read by people deciding what things are called. */
 function proseFiles(): string[] {
   const found: string[] = []
@@ -177,7 +185,7 @@ function proseFiles(): string[] {
     for (const entry of entries) {
       const full = path.join(dir, entry)
       if (statSync(full).isDirectory()) {
-        if (entry !== 'node_modules' && entry !== 'generated') walk(full)
+        if (entry !== 'node_modules' && entry !== 'generated' && full !== LOCAL_NOTES) walk(full)
       }
       else if (/\.(ts|md)$/.test(entry) && !entry.includes('.generated.')) {
         found.push(full)

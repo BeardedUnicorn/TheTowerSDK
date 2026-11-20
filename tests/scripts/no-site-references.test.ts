@@ -68,6 +68,9 @@ const ROOTS = [SRC, MCP, DOCS]
 const FILES_AT_ROOT = ['README.md', 'AGENTS.md', 'CONTRIBUTING.md']
 const EXTENSIONS = /\.(ts|tsx|mjs|js|json|md)$/
 
+/** Local agent notes: gitignored, so they never ship and cannot be what this guards. */
+const LOCAL_NOTES = path.join(DOCS, 'mechanics-map')
+
 function shippedFiles(): string[] {
   const out: string[] = []
   const walk = (dir: string) => {
@@ -75,6 +78,7 @@ function shippedFiles(): string[] {
     for (const entry of readdirSync(dir)) {
       if (entry === 'node_modules') continue
       const full = path.join(dir, entry)
+      if (full === LOCAL_NOTES) continue
       if (statSync(full).isDirectory()) walk(full)
       else if (EXTENSIONS.test(full)) out.push(full)
     }
