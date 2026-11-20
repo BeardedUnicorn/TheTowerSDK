@@ -7,10 +7,10 @@
 
 <h1 class="text-3xl font-semibold">Formulas</h1>
 <p class="mt-3 text-muted">
-	<code>@beardedunicorn/thetowersdk/mechanics</code> is the maths the game runs, as functions you can call: enemy scaling
-	by tier and wave, ultimate weapon timing, lab and workshop costs, Effective Paths planning, damage reduction,
-	resource drops and more. Each one takes plain values and returns a number, so they drop straight into
-	a calculator, a chart, or a bot command.
+	<code>@beardedunicorn/thetowersdk/mechanics</code> is the maths the game runs, as functions you can
+	call: enemy scaling by tier and wave, ultimate weapon timing, lab and workshop costs, Effective Paths
+	planning, damage reduction, resource drops and more. Each one takes plain values and returns a number,
+	so they drop straight into a calculator, a chart, or a bot command.
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Infinity Threshold and Sentry Protocol</h2>

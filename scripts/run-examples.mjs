@@ -47,7 +47,7 @@ function run(dir, file) {
     return true
   }
   try {
-    execFileSync('npx', ['tsx', path.join(dir, file), ...args], {
+    execFileSync('pnpm', ['exec', 'tsx', path.join(dir, file), ...args], {
       cwd: PACKAGE_ROOT,
       stdio: ['ignore', 'ignore', 'pipe'],
       encoding: 'utf8',

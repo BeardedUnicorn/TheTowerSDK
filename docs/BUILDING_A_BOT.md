@@ -9,9 +9,9 @@ could have been done once.
 explains why it is shaped the way it is.
 
 ```bash
-npm run bot:demo                                          # list the commands
-npm run bot:demo -- lab-research labName=Damage targetLevel=10
-npm run bot:test                                          # the registry's own tests
+pnpm bot:demo                                          # list the commands
+pnpm bot:demo lab-research labName=Damage targetLevel=10
+pnpm bot:test                                          # the registry's own tests
 ```
 
 ---

@@ -1,5 +1,9 @@
 node_modules
 
+# pnpm is the package manager; pnpm-lock.yaml is committed.
+package-lock.json
+yarn.lock
+
 # Output
 .output
 .vercel

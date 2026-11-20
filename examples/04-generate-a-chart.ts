@@ -9,7 +9,7 @@
  * hand to Chart.js, D3, Vega, a spreadsheet, or an SVG path you build yourself.
  *
  * Run it:
- *   npx tsx examples/04-generate-a-chart.ts
+ *   pnpm exec tsx examples/04-generate-a-chart.ts
  */
 import { LAB_CATALOG, uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'

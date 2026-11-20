@@ -4,13 +4,17 @@
 	import { href } from '$lib/paths';
 
 	/* A const rather than an inline literal: a mustache holding a bare string is a lint error. */
-	const checkCommands = ['npm view @beardedunicorn/thetowersdk dependencies', 'npm ls --omit=dev'].join('\n');
+	const checkCommands = [
+		'npm view @beardedunicorn/thetowersdk dependencies',
+		'npm ls --omit=dev'
+	].join('\n');
 </script>
 
 <h1 class="text-3xl font-semibold">Dependencies</h1>
 <p class="mt-3 text-muted">
 	One runtime dependency, and nothing else reaches your install. The game data, the formulas and the
-	save reader are in the package. Only official JSON exports are supported; parsing run locally without a hosted service.
+	save reader are in the package. Only official JSON exports are supported; parsing run locally
+	without a hosted service.
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">The One Runtime Dependency</h2>
@@ -59,7 +63,10 @@
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Game Export Validation</h2>
-<p class="mt-3 text-muted">The official JSON export is parsed locally and validated with Zod. Private binary save files and decryption keys are unsupported.</p>
+<p class="mt-3 text-muted">
+	The official JSON export is parsed locally and validated with Zod. Private binary save files and
+	decryption keys are unsupported.
+</p>
 
 <h2 class="mt-10 text-xl font-semibold">Checking For Yourself</h2>
 <p class="mt-3 text-muted">The manifest is the authority, not this page.</p>

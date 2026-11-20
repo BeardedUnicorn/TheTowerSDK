@@ -11,7 +11,7 @@
  * - One port only. Never fall back to 4174/4175.
  * - If HMR is already healthy → do nothing. Never restart a healthy server.
  * - Never kill a healthy HMR supervisor. Never spawn a second one.
- * - Agents: only `npm run serve` / `serve:status`. Do not delete `.svelte-kit`
+ * - Agents: only `pnpm serve` / `serve:status`. Do not delete `.svelte-kit`
  *   while HMR is up.
  */
 import { execSync, spawn } from 'node:child_process';
@@ -211,7 +211,7 @@ async function main() {
 			console.error(
 				`Port ${PORT} is in use by another process (pids: ${pids.join(', ')}), not ${SITE_MARKER}.`
 			);
-			console.error(`Run: npm run serve -- --replace-foreign`);
+			console.error(`Run: pnpm serve --replace-foreign`);
 			process.exit(1);
 		}
 		killPids(pids);
@@ -223,7 +223,7 @@ async function main() {
 	}
 
 	if (!existsSync(join(root, 'node_modules', 'vite'))) {
-		console.error('Missing node_modules/vite — run npm install first.');
+		console.error('Missing node_modules/vite — run pnpm install first.');
 		process.exit(1);
 	}
 

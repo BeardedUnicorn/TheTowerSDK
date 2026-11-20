@@ -47,7 +47,7 @@ function reachedByVerify(): Set<string> {
     for (const name of [...reached]) {
       const body = manifest.scripts[name] ?? ''
       for (const other of Object.keys(manifest.scripts)) {
-        if (!reached.has(other) && new RegExp(`npm run ${other}(?![\\w:-])`).test(body)) {
+        if (!reached.has(other) && new RegExp(`pnpm run ${other}(?![\\w:-])`).test(body)) {
           reached.add(other)
         }
       }

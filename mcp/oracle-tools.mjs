@@ -45,7 +45,7 @@ function loadKnowledge() {
     const entry = path.join(base, 'knowledge', 'index.js')
     if (fs.existsSync(entry)) return require(entry)
   }
-  throw new Error('thetowersdk build not found — run `npm run build` first')
+  throw new Error('thetowersdk build not found — run `pnpm build` first')
 }
 
 let cached = null

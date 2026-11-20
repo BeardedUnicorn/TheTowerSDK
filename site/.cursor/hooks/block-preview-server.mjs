@@ -91,10 +91,10 @@ try {
 
 	// Second / alternate preview servers
 	if (/\bvite\s+preview\b/i.test(cmd) || /\bnpm\s+run\s+preview\b/i.test(cmd)) {
-		deny('FORBIDDEN: use durable HMR on :4173 (npm run serve). Do not run vite preview locally.');
+		deny('FORBIDDEN: use durable HMR on :4173 (pnpm serve). Do not run vite preview locally.');
 	}
 	if (/\bvite\s+dev\b/i.test(cmd) && !/dev-supervisor|ensure-preview|serve-status/i.test(cmd)) {
-		deny('FORBIDDEN: do not start a raw vite dev — use npm run serve only if DOWN.');
+		deny('FORBIDDEN: do not start a raw vite dev — use pnpm serve only if DOWN.');
 	}
 
 	// Package tree mutations while HMR holds native .node locks (THE repeated root cause)
@@ -114,8 +114,8 @@ try {
 	if (mutatesPackages) {
 		deny(
 			up
-				? `FORBIDDEN while HMR is UP on :${PORT}: do not npm ci/install or wipe node_modules/.svelte-kit/.vite. That unlocks native addons and crashes Vite. Verify production builds in GitHub Actions only.`
-				: `FORBIDDEN: do not npm ci/install or wipe node_modules from the agent shell. Ask the user, or rely on CI. If preview is DOWN, only npm run serve.`
+				? `FORBIDDEN while HMR is UP on :${PORT}: do not pnpm install --frozen-lockfile/install or wipe node_modules/.svelte-kit/.vite. That unlocks native addons and crashes Vite. Verify production builds in GitHub Actions only.`
+				: `FORBIDDEN: do not pnpm install --frozen-lockfile/install or wipe node_modules from the agent shell. Ask the user, or rely on CI. If preview is DOWN, only pnpm serve.`
 		);
 	}
 

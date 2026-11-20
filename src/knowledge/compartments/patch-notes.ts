@@ -69,8 +69,8 @@ export const PATCH_NOTE_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'it, because a wrong version attached to a real change reads as fact.',
       ...(ARCHIVE_IS_BEHIND
         ? [`The archive ends ${PATCH_NOTES_SOURCE.latest.slice(0, 10)}, but the channel has more: 29.1.1, 29.1.2, 29.1.3, `
-          + `29.1.4, 29.2 and 29.2.1 (posted up to ${NEWEST_KNOWN_NOTE_POSTED}) are not in it. Re-run \`npm run patch-notes:ingest\` `
-          + 'where a bot token is available, then `npm run patch-notes:build`. Until then a null from '
+          + `29.1.4, 29.2 and 29.2.1 (posted up to ${NEWEST_KNOWN_NOTE_POSTED}) are not in it. Re-run \`pnpm patch-notes:ingest\` `
+          + 'where a bot token is available, then `pnpm patch-notes:build`. Until then a null from '
           + '`whenIntroduced` for anything recent means "not ingested", not "never announced".']
         : []),
     ],

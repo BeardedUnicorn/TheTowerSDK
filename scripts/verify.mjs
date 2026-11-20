@@ -54,7 +54,7 @@ const serial = process.argv.includes('--serial')
 function runScript(name) {
   return new Promise(resolve => {
     const started = Date.now()
-    const child = spawn('npm', ['run', name], {
+    const child = spawn('pnpm', ['run', name], {
       shell: process.platform === 'win32',
       stdio: ['ignore', 'pipe', 'pipe'],
     })

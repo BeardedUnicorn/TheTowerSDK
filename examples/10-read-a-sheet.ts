@@ -1,7 +1,7 @@
 /**
  * Reading a Google Sheet, and the two ways a read lies to you.
  *
- *   npx tsx examples/10-read-a-sheet.ts
+ *   pnpm exec tsx examples/10-read-a-sheet.ts
  *
  * This runs with no credentials: the transport below is a fixture, so the traps are
  * reproduced exactly rather than described. Swap it for `templates/sheets-client.ts` and

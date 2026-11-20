@@ -7,7 +7,7 @@
  *
  * Needs Node (the decoder reads bytes). For a browser build see `browser-widget.ts`.
  *
- *   npx tsx save-cli.ts <path-to-tool_export.json>
+ *   pnpm exec tsx save-cli.ts <path-to-tool_export.json>
  */
 import { readFile } from 'node:fs/promises'
 import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'

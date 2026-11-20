@@ -100,7 +100,7 @@ function loadSdk() {
       root: require(path.join(base, 'index.js')),
     }
   }
-  throw new Error('thetowersdk build not found — run `npm run build` first')
+  throw new Error('thetowersdk build not found — run `pnpm build` first')
 }
 
 const sdk = loadSdk()

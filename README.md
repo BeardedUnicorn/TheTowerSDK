@@ -703,23 +703,23 @@ are matched case- and spacing-insensitively, and a name the catalog does not kno
 Runnable, in [`examples/`](examples):
 
 ```bash
-npx tsx examples/01-browse-game-data.ts                        # the tables, no save needed
-npx tsx examples/02-read-a-save-file.ts ~/tool_export.json       # what one player has
-npx tsx examples/03-plan-upgrades-from-a-save.ts ~/tool_export.json  # a tool: what to buy next
-npx tsx examples/04-generate-a-chart.ts                        # catalogs -> plot-ready series
-npx tsx examples/05-generate-a-cost-table.ts "Golden Tower"    # the same data as a cost table
-npx tsx examples/06-read-the-community-wiki.ts "Golden Tower"  # wiki page -> Markdown
-npx tsx examples/07-format-like-the-game.ts                    # numbers in and out, both ways
-npx tsx examples/08-build-a-calculator.ts uw.stones            # a whole calculator, rendered generically
-npx tsx examples/09-build-a-bot.ts                             # every calculator as a bot command
-npx tsx examples/10-read-a-sheet.ts                            # a sheet read, and the two ways it lies
-npx tsx examples/11-build-a-knowledge-base.ts                  # chunks derived from the catalogs
-npx tsx examples/12-show-module-and-card-art.ts                # which image belongs to which module
+pnpm exec tsx examples/01-browse-game-data.ts                        # the tables, no save needed
+pnpm exec tsx examples/02-read-a-save-file.ts ~/tool_export.json       # what one player has
+pnpm exec tsx examples/03-plan-upgrades-from-a-save.ts ~/tool_export.json  # a tool: what to buy next
+pnpm exec tsx examples/04-generate-a-chart.ts                        # catalogs -> plot-ready series
+pnpm exec tsx examples/05-generate-a-cost-table.ts "Golden Tower"    # the same data as a cost table
+pnpm exec tsx examples/06-read-the-community-wiki.ts "Golden Tower"  # wiki page -> Markdown
+pnpm exec tsx examples/07-format-like-the-game.ts                    # numbers in and out, both ways
+pnpm exec tsx examples/08-build-a-calculator.ts uw.stones            # a whole calculator, rendered generically
+pnpm exec tsx examples/09-build-a-bot.ts                             # every calculator as a bot command
+pnpm exec tsx examples/10-read-a-sheet.ts                            # a sheet read, and the two ways it lies
+pnpm exec tsx examples/11-build-a-knowledge-base.ts                  # chunks derived from the catalogs
+pnpm exec tsx examples/12-show-module-and-card-art.ts                # which image belongs to which module
 ```
 
 The third is the one to read if you are building something: it goes save → extractors → planner,
 maps a player onto the model, and reports what it could not map rather than passing a silent zero
-into the plan. They are type-checked against the package on every `npm run verify`.
+into the plan. They are type-checked against the package on every `pnpm verify`.
 
 ---
 
@@ -784,9 +784,9 @@ Nothing in it knows what a gateway is, so the same commands run under discord.js
 full speed in a test.
 
 ```bash
-npm run bot:demo                                            # list the commands
-npm run bot:demo -- lab-research labName=Damage targetLevel=10
-npm run bot:test
+pnpm bot:demo                                            # list the commands
+pnpm bot:demo lab-research labName=Damage targetLevel=10
+pnpm bot:test
 ```
 
 [`templates/bot-starter.ts`](templates/bot-starter.ts) is a complete bot with a hand-written command
@@ -1136,8 +1136,8 @@ inferred from the notes around it — a wrong version attached to a real change 
 ### Keeping it current
 
 ```bash
-npm run patch-notes:ingest   # read-only, resumable; needs DISCORD_TOKEN (see below)
-npm run patch-notes:build    # regenerate the shipped dataset
+pnpm patch-notes:ingest   # read-only, resumable; needs DISCORD_TOKEN (see below)
+pnpm patch-notes:build    # regenerate the shipped dataset
 ```
 
 Both refuse rather than write something wrong. The ingest stops if the messages come back empty —
@@ -1196,14 +1196,14 @@ The ingest script reads `.env` itself; nothing else needs to load it. A variable
 shell also works and takes precedence over the file:
 
 ```bash
-DISCORD_TOKEN=your-bot-token npm run patch-notes:ingest
+DISCORD_TOKEN=your-bot-token pnpm patch-notes:ingest
 ```
 
 **Then run:**
 
 ```bash
-npm run patch-notes:ingest   # fetches the channel into data/patch-notes/raw-messages.json (gitignored)
-npm run patch-notes:build    # regenerates src/knowledge/generated/patch-notes.generated.ts
+pnpm patch-notes:ingest   # fetches the channel into data/patch-notes/raw-messages.json (gitignored)
+pnpm patch-notes:build    # regenerates src/knowledge/generated/patch-notes.generated.ts
 ```
 
 The build derives the dataset purely from the raw archive, so let the ingest finish first. On a
@@ -1253,8 +1253,8 @@ Three surfaces, one source. Everything downstream is rendered from the files in 
 one command, so there is nothing to remember to update:
 
 ```bash
-npm run docs:seed    # regenerate the wiki pages and the shared code snippets
-npm run docs:check   # fail if any of them are stale (runs in `npm run verify`)
+pnpm docs:seed    # regenerate the wiki pages and the shared code snippets
+pnpm docs:check   # fail if any of them are stale (runs in `pnpm verify`)
 ```
 
 The wiki is rendered by [`scripts/build-wiki.mjs`](scripts/build-wiki.mjs). A GitHub wiki is a
@@ -1264,7 +1264,7 @@ overwritten on the next push.
 
 Code samples shared with the website come out of
 [`scripts/build-doc-snippets.mjs`](scripts/build-doc-snippets.mjs), which extracts marked regions
-from files that `npm run examples:run` **executes**. A hand-copied sample is correct on the day it
+from files that `pnpm examples:run` **executes**. A hand-copied sample is correct on the day it
 is pasted and silently wrong afterwards; an extracted one fails in CI before it can reach a page.
 
 ```ts

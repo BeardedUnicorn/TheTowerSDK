@@ -6,7 +6,7 @@
  * to know what the game contains.
  *
  * Run it:
- *   npx tsx examples/01-browse-game-data.ts
+ *   pnpm exec tsx examples/01-browse-game-data.ts
  */
 import { LAB_CATALOG, type LabCatalogRecord } from '@beardedunicorn/thetowersdk/data'
 

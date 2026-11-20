@@ -19,7 +19,7 @@ import { formatGroupedNumber, formatNumberForDisplay } from '../../src/formattin
  * ungrouped: `formatGroupedNumber(4770477147914)` gave '4770477147914' in the module and
  * '4,770,477,147,914' in Node. Both look like a number. Nothing would have reported it.
  *
- * These tests skip when the module has not been built (`npm run wasm:build`), because it is a
+ * These tests skip when the module has not been built (`pnpm wasm:build`), because it is a
  * build artifact and not everyone needs one — but a built module that disagrees fails.
  */
 /*

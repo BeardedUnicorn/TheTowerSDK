@@ -16,15 +16,17 @@
 <section class="mt-10">
 	<h2 class="text-xl font-medium">1. Connect An AI To The Package</h2>
 	<p class="mt-2 max-w-2xl text-sm text-muted">
-		After <code>{INSTALL_CMD}</code>, register this MCP server. The assistant can list
-		exports, read catalogs, decode saves, plan paths, and fetch wiki pages.
+		After <code>{INSTALL_CMD}</code>, register this MCP server. The assistant can list exports, read
+		catalogs, decode saves, plan paths, and fetch wiki pages.
 	</p>
 	<div class="mt-4 max-w-3xl">
 		<CodeBlock code={mcpJson} />
 	</div>
 	<p class="mt-3 text-sm text-muted">
 		Claude Code:
-		<code>claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs</code>
+		<code>
+			claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
+		</code>
 	</p>
 </section>
 

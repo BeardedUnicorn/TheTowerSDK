@@ -35,11 +35,12 @@
 	>
 		{clipboard.status === 'copied' ? 'Copied' : 'Copy'}
 	</button>
-	<span class="sr-only" role="status">{clipboard.status === 'copied' ? 'Command copied.' : ''}</span
-	>
+	<span class="sr-only" role="status">
+		{clipboard.status === 'copied' ? 'Command copied.' : ''}
+	</span>
 	{#if clipboard.status === 'failed'}
-		<span class="basis-full text-sm text-fg" role="status"
-			>Copy failed. Select the command and copy it manually.</span
-		>
+		<span class="basis-full text-sm text-fg" role="status">
+			Copy failed. Select the command and copy it manually.
+		</span>
 	{/if}
 </div>

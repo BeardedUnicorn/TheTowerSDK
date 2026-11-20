@@ -34,7 +34,7 @@ const SLIM_SERVER = path.resolve(MONOREPO_ROOT, 'tools', 'tower-mcp', 'mechanics
  * assertion runs. Node itself loads it without complaint, which is also how it is actually run.
  *
  * One spawn, at module scope, shared by every case. An earlier determinism test in this package
- * spawned `npx tsx` per case from inside a worker and tore down the worker's IPC channel under
+ * spawned `pnpm exec tsx` per case from inside a worker and tore down the worker's IPC channel under
  * load; `node -e` is a fraction of that and happens once.
  */
 const listing = (() => {

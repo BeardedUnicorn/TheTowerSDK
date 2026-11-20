@@ -17,13 +17,11 @@ import { SITE as SITE_ROOT } from '../helpers/paths'
  *
  * ## Which package the numbers describe
  *
- * The site installs `@beardedunicorn/thetowersdk` from the registry with its own lockfile, so these numbers are
- * the PUBLISHED package's, not the working tree's. That is correct for a documentation site — a
- * reader installs what the site describes — and the release pipeline's `consumers` phase bumps the
- * site onto each new version, so the prose follows a publish without anyone editing it.
+ * The site depends on `@beardedunicorn/thetowersdk` as `link:..`, so these numbers are the
+ * checkout's own build (`dist`), and they move when the SDK is rebuilt rather than when a version
+ * is published.
  *
- * It also means the site can legitimately differ from the working tree between releases. This file
- * therefore checks the SHAPE of the claim, never its value; `site-claims-are-true` owns value.
+ * This file checks the SHAPE of the claim, never its value; `site-claims-are-true` owns value.
  */
 
 const SITE = path.join(SITE_ROOT, 'src')

@@ -35,11 +35,12 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
+  "packageManager": "pnpm@12.21.0+sha512.66fd8278ee28935ce951792d34367ff3af5c432a2756445823029533835b8da529bbe0be5130afd56ed0713fb8789e47bad82d93bd5ae2fe54b15562d6276ef0",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json && node scripts/copy-assets.mjs && npm run knowledge:emit",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json && node scripts/copy-assets.mjs && pnpm run knowledge:emit",
     "knowledge:emit": "node scripts/emit-knowledge-graph.mjs",
     "daily-missions:goals": "node scripts/build-daily-mission-goals.mjs",
     "labs:categories": "node scripts/build-lab-categories.mjs",
@@ -47,7 +48,7 @@
     "test": "vitest run",
     "type-check": "tsc -p tsconfig.build.json --noEmit",
     "type-check:examples": "tsc -p tsconfig.examples.json",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "pnpm run clean && pnpm run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:docs": "node scripts/check-readme-links.mjs",
@@ -67,13 +68,13 @@
     "verify": "node scripts/verify.mjs",
     "verify:serial": "node scripts/verify.mjs --serial",
     "mcp": "node mcp/server.mjs",
-    "glossary": "npm run build && node scripts/generate-glossary.mjs",
+    "glossary": "pnpm run build && node scripts/generate-glossary.mjs",
     "bot:demo": "tsx templates/bot-starter.ts",
     "bot:test": "vitest run src/bot",
     "sheets:test": "vitest run src/sheets",
     "docs:snippets": "node scripts/build-doc-snippets.mjs",
-    "docs:seed": "npm run docs:snippets && npm run wiki:build",
-    "docs:check": "node scripts/build-doc-snippets.mjs --check && npm run wiki:check && node scripts/check-readme-links.mjs && node scripts/build-patch-notes.mjs --check",
+    "docs:seed": "pnpm run docs:snippets && pnpm run wiki:build",
+    "docs:check": "node scripts/build-doc-snippets.mjs --check && pnpm run wiki:check && node scripts/check-readme-links.mjs && node scripts/build-patch-notes.mjs --check",
     "patch-notes:ingest": "node scripts/ingest-patch-notes.mjs",
     "patch-notes:build": "node scripts/build-patch-notes.mjs",
     "wasm:build": "node wasm/build.mjs",
@@ -236,6 +237,7 @@
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@types/node": "^22.10.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9.18.0",
     "tsx": "^4.21.0",
     "typescript": "~5.8.3",

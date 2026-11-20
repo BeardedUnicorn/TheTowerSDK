@@ -1,6 +1,6 @@
 # The Organization Contract
 
-**This is not advice. `npm run lint:organization` fails on every rule below, and it runs in `npm run verify`.**
+**This is not advice. `pnpm lint:organization` fails on every rule below, and it runs in `pnpm verify`.**
 
 This document exists because the package drifted. Not in one bad decision — in a hundred small ones,
 each defensible on its own, which together produced a tree only its author could navigate: a
@@ -182,7 +182,7 @@ judgement a line count cannot make, so the mechanical rule keeps only the half t
 
 Two headers, both required, both checked:
 
-1. The generated file-map block (`npm run map`) — exports, dependencies, dependents.
+1. The generated file-map block (`pnpm map`) — exports, dependencies, dependents.
 2. **A prose docblock saying what the module is for and why it exists.** 263 of 491 files had none.
    A file with no explanation is one nobody can safely delete, which is why nothing here ever got
    deleted.
@@ -330,8 +330,8 @@ fitted, and where neither is possible the table is the honest answer.**
 ## Enforcement
 
 ```bash
-npm run lint:organization       # every rule above; runs inside npm run verify
-npm run lint:organization -- --json
+pnpm lint:organization       # every rule above; runs inside pnpm verify
+pnpm lint:organization --json
 ```
 
 Existing violations are recorded in `.organization-baseline.json` with a count per rule. **The

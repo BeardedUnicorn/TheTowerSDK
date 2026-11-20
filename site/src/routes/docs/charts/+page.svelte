@@ -66,9 +66,10 @@ console.log(dataset.rows[0])
 <h3 class="mt-6 text-lg font-medium">The Arguments</h3>
 <p class="mt-2 text-muted">
 	Several charts share one renderer — the four bot charts are the same renderer with a different bot
-	— so the argument list picks which one you want. It takes the item's <strong>display name</strong
-	>, which is the last segment of the <code>pathId</code> in title case. Deriving it from the registry
-	means you never have to keep a second list.
+	— so the argument list picks which one you want. It takes the item's <strong>
+		display name
+	</strong>, which is the last segment of the <code>pathId</code> in title case. Deriving it from the
+	registry means you never have to keep a second list.
 </p>
 <div class="mt-4">
 	<CodeBlock

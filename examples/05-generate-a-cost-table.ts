@@ -11,8 +11,8 @@
  * chart drawn from the same array.
  *
  * Run it:
- *   npx tsx examples/05-generate-a-cost-table.ts
- *   npx tsx examples/05-generate-a-cost-table.ts "Death Wave"
+ *   pnpm exec tsx examples/05-generate-a-cost-table.ts
+ *   pnpm exec tsx examples/05-generate-a-cost-table.ts "Death Wave"
  */
 import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'

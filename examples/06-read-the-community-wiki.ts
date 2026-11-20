@@ -16,7 +16,7 @@
  *   await searchWikis(title, { fetchImpl: createCurlFetch() })
  *
  * Run it:
- *   npx tsx examples/06-read-the-community-wiki.ts [page title]
+ *   pnpm exec tsx examples/06-read-the-community-wiki.ts [page title]
  */
 import {
   fetchWikiPageFromAnySource,

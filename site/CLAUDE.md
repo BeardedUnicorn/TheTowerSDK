@@ -10,8 +10,8 @@ This repo owns its preview lifecycle. There is exactly **one** server, a detache
 Vite HMR supervisor on **port 4173**.
 
 ```bash
-npm run serve         # idempotent: starts it, or says it is already healthy
-npm run serve:status  # check without touching anything
+pnpm serve         # idempotent: starts it, or says it is already healthy
+pnpm serve:status  # check without touching anything
 ```
 
 Then browse **http://127.0.0.1:4173/**. HMR is on, so an edit is usually visible
@@ -42,7 +42,7 @@ header of `scripts/ensure-preview.mjs`: one port only, never fall back to
 ## Checks
 
 ```bash
-npm run check   # svelte-check, must be 0 errors
-npm run build   # static build
-npm run lint    # prettier + eslint
+pnpm check   # svelte-check, must be 0 errors
+pnpm build   # static build
+pnpm lint    # prettier + eslint
 ```

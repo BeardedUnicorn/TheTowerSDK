@@ -1,7 +1,7 @@
 /**
  * A bot in ten lines, and what you get for free.
  *
- *   npx tsx examples/09-build-a-bot.ts
+ *   pnpm exec tsx examples/09-build-a-bot.ts
  *
  * `templates/bot-starter.ts` is the same thing with a hand-written command and a CLI.
  */

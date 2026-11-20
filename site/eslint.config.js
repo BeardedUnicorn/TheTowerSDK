@@ -41,7 +41,7 @@ export default defineConfig(
 			 * `href()` reads `base` from `$app/paths` and applies `trailingSlash: 'always'`, which
 			 * is what this rule is asking for — it just cannot see through the helper, so every
 			 * `href={href('/docs/')}` on the site reads as unresolved. That was 87 of the 88
-			 * remaining errors, and while they stood, `npm run lint` failed on every run and the
+			 * remaining errors, and while they stood, `pnpm lint` failed on every run and the
 			 * real problems hid behind them: four dead imports, a function computed and never
 			 * rendered, and an error page declaring props SvelteKit never passes, so it showed an
 			 * empty status and a generic message for every failure.

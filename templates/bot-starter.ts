@@ -4,8 +4,8 @@
  * Run it without a gateway at all — the registry is plain functions, so this file is its
  * own demo and its own test harness:
  *
- *     npx tsx templates/bot-starter.ts              # list the commands
- *     npx tsx templates/bot-starter.ts lab-research labName="Damage" targetLevel=10
+ *     pnpm exec tsx templates/bot-starter.ts              # list the commands
+ *     pnpm exec tsx templates/bot-starter.ts lab-research labName="Damage" targetLevel=10
  *
  * Wiring it to Discord is the last step and the smallest one; see the adapter at the
  * bottom and `docs/BUILDING_A_BOT.md`.

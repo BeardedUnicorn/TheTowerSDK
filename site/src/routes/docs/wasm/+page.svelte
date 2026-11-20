@@ -14,7 +14,8 @@
 <p class="mt-3 text-muted">
 	No port of the numbers, and no service to host. Every catalog, all {spelled(sdkFacts.builders)} builders,
 	{sdkFacts.formulas}
-	formulas and number formatting run inside your own process. Use official game JSON exports for account data.
+	formulas and number formatting run inside your own process. Use official game JSON exports for account
+	data.
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Get The Module</h2>
@@ -112,17 +113,17 @@ print(call(op="calc.run", id="thorns.damage",
 			<tr><td>Rust</td><td class="text-muted"><code>wasmtime</code> or <code>wasmer</code></td></tr>
 			<tr><td>Go</td><td class="text-muted"><code>wazero</code> — pure Go, no cgo</td></tr>
 			<tr><td>C# / .NET</td><td class="text-muted"><code>Wasmtime.Dotnet</code></td></tr>
-			<tr
-				><td>Java / Kotlin</td><td class="text-muted"
-					><code>chicory</code> or <code>wasmtime-java</code></td
-				></tr
-			>
+			<tr>
+				<td>Java / Kotlin</td><td class="text-muted">
+					<code>chicory</code> or <code>wasmtime-java</code>
+				</td>
+			</tr>
 			<tr><td>PHP</td><td class="text-muted"><code>wasm</code> extension</td></tr>
-			<tr
-				><td>Command line</td><td class="text-muted"
-					><code>wasmtime thetowersdk.wasm &lt; request.json</code></td
-				></tr
-			>
+			<tr>
+				<td>Command line</td><td class="text-muted">
+					<code>wasmtime thetowersdk.wasm &lt; request.json</code>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -161,7 +162,13 @@ print(call(op="calc.run", id="thorns.damage",
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Game Exports</h2>
-<p class="mt-3 text-muted">Use the Node or browser SDK to read the official <code>tool_export.json</code> file. First tap your Player ID five times to create your first export and reveal the export controls. Then use Settings → Toggles → External Tools Export → Manual Export for subsequent exports. Private save files and decryption are unsupported. Attempting to bypass save-file encryption violates The Tower Terms of Service. See <a href={href('/docs/save/')}>Game Exports</a>.</p>
+<p class="mt-3 text-muted">
+	Use the Node or browser SDK to read the official <code>tool_export.json</code> file. First tap
+	your Player ID five times to create your first export and reveal the export controls. Then use
+	Settings → Toggles → External Tools Export → Manual Export for subsequent exports. Private save
+	files and decryption are unsupported. Attempting to bypass save-file encryption violates The Tower
+	Terms of Service. See <a href={href('/docs/save/')}>Game Exports</a>.
+</p>
 
 <h2 class="mt-10 text-xl font-semibold">Does It Agree With The Library?</h2>
 <p class="mt-3 text-muted">
@@ -169,7 +176,10 @@ print(call(op="calc.run", id="thorns.damage",
 	this exists to prevent — the reason to ship a module at all is that re-implementing the numbers in
 	another language guarantees two versions that drift.
 </p>
-<p class="mt-3 text-muted">The suite compares catalog rows, calculator results and number formatting across both builds. Account-file imports use the browser or Node official-export reader.</p>
+<p class="mt-3 text-muted">
+	The suite compares catalog rows, calculator results and number formatting across both builds.
+	Account-file imports use the browser or Node official-export reader.
+</p>
 
 <p class="mt-8 text-sm">
 	<a href={href('/docs/builders/')}>Calculators →</a>

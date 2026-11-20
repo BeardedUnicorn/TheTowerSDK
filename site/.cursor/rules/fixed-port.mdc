@@ -17,7 +17,7 @@ Reload the Cursor window after changing hooks so they bind.
 | Surface | Local process | What agents usually do |
 |---|---|---|
 | **AGS public site** | Mostly static docs — **no always-on Vite holding `node_modules` locks** | Push → GitHub Pages. Nothing local to kill. |
-| **TheTowerSDK-site** | Durable **Vite HMR** on 4173 (supervisor). Native addons (`lightningcss`, etc.) stay mapped. | Agents “fix CI” with `npm ci` / wipe caches **in the same tree** → Windows `EPERM` unlink → Vite dies or restarts into a broken install. |
+| **TheTowerSDK-site** | Durable **Vite HMR** on 4173 (supervisor). Native addons (`lightningcss`, etc.) stay mapped. | Agents “fix CI” with `pnpm install --frozen-lockfile` / wipe caches **in the same tree** → Windows `EPERM` unlink → Vite dies or restarts into a broken install. |
 
 The repeated root cause is **not** “forgot to restart.” It is **mutating `node_modules` (or killing the process) while HMR is up**, then treating the crash as a symptom to restart around.
 
@@ -25,17 +25,17 @@ Instruction-only README rules failed. The shell hook denies the destructive comm
 
 ## Required
 
-- `npm run serve:status` — if `UP … mode=hmr` → **leave it alone**.
+- `pnpm serve:status` — if `UP … mode=hmr` → **leave it alone**.
 - After code edits, assume **HMR**. Hard-refresh the browser if needed.
-- Production / GitHub Pages verification → **push and watch Actions**. Do not `npm ci` locally to “match CI.”
+- Production / GitHub Pages verification → **push and watch Actions**. Do not `pnpm install --frozen-lockfile` locally to “match CI.”
 
 ## Forbidden — zero exceptions unless the user literally says to restart / reinstall
 
 - Killing or freeing port **4173** / `hmr-supervisor` / Vite
-- `npm ci`, `npm install`, wiping `node_modules`, `.svelte-kit`, or `node_modules/.vite` while HMR is up (hook-denied even when DOWN unless user asked)
+- `pnpm install --frozen-lockfile`, `pnpm install`, wiping `node_modules`, `.svelte-kit`, or `node_modules/.vite` while HMR is up (hook-denied even when DOWN unless user asked)
 - `vite preview` / a second `vite dev` on another port
 - Using local package reinstall as a substitute for reading CI logs
 
 ## If status is DOWN
 
-Run **only** `npm run serve`, then `npm run serve:status`. Read `temp/preview-out.log` / `temp/preview-err.log`. Do not improvise ports. Do not `npm ci` unless the user explicitly asks to reinstall dependencies.
+Run **only** `pnpm serve`, then `pnpm serve:status`. Read `temp/preview-out.log` / `temp/preview-err.log`. Do not improvise ports. Do not `pnpm install --frozen-lockfile` unless the user explicitly asks to reinstall dependencies.

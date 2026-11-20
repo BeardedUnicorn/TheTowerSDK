@@ -6,7 +6,7 @@
  * `decodeSaveFile` from `@beardedunicorn/thetowersdk/save-decoder`. Only the official game JSON export is supported.
  *
  * Run it:
- *   npx tsx examples/02-read-a-save-file.ts /path/to/tool_export.json
+ *   pnpm exec tsx examples/02-read-a-save-file.ts /path/to/tool_export.json
  *
  * Where to find your save is explained in the README ("Getting a save file").
  */

@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { CONTRIBUTIONS, CONTRIBUTION_SUPPORT, COMMUNITY_GUIDES } from '@beardedunicorn/thetowersdk/contributions';
+	import {
+		CONTRIBUTIONS,
+		CONTRIBUTION_SUPPORT,
+		COMMUNITY_GUIDES
+	} from '@beardedunicorn/thetowersdk/contributions';
 	import { WIKI_CREDIT_SOURCES } from '@beardedunicorn/thetowersdk/wiki';
 	import CodeBlock from '$lib/ui/CodeBlock.svelte';
 	import { href } from '$lib/paths';

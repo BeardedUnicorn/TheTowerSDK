@@ -5,33 +5,56 @@
 </script>
 
 <h1 class="text-3xl font-semibold">Game Exports</h1>
-<p class="mt-3 text-muted">Import only <code>tool_export.json</code> created by the game's External Tools Export feature. Private save files, encrypted files and legacy binary saves are unsupported. The SDK does not decrypt files or accept decryption keys.</p>
-<p class="mt-3 text-muted"><strong>Attempting to bypass save-file encryption violates The Tower Terms of Service.</strong></p>
+<p class="mt-3 text-muted">
+	Import only <code>tool_export.json</code> created by the game's External Tools Export feature. Private
+	save files, encrypted files and legacy binary saves are unsupported. The SDK does not decrypt files
+	or accept decryption keys.
+</p>
+<p class="mt-3 text-muted">
+	<strong>Attempting to bypass save-file encryption violates The Tower Terms of Service.</strong>
+</p>
 <h2 class="mt-10 text-xl font-semibold">Create The Export</h2>
 <ol class="mt-3 list-decimal space-y-2 pl-5 text-muted">
- <li>Tap your Player ID five times to create your first export and reveal the export controls.</li>
- <li>Open the game's Settings, then Toggles.</li>
- <li>Under External Tools Export, choose Manual Export.</li>
- <li>To keep the export updated, enable Auto Export for External Tools.</li>
- <li>Upload <code>tool_export.json</code>. On Android and emulators it is in <code>Android/data/com.TechTreeGames.TheTower/files/</code>.</li>
+	<li>Tap your Player ID five times to create your first export and reveal the export controls.</li>
+	<li>Open the game's Settings, then Toggles.</li>
+	<li>Under External Tools Export, choose Manual Export.</li>
+	<li>To keep the export updated, enable Auto Export for External Tools.</li>
+	<li>
+		Upload <code>tool_export.json</code>. On Android and emulators it is in
+		<code>Android/data/com.TechTreeGames.TheTower/files/</code>.
+	</li>
 </ol>
-<p class="mt-3 text-muted">Copy the export to a folder accessible to your browser, or use <a href={LINKS.adbBridge}>adb-bridge</a> to pull the export from a connected Android device or emulator. Do not upload <code>playerInfo.dat</code>.</p>
+<p class="mt-3 text-muted">
+	Copy the export to a folder accessible to your browser, or use <a href={LINKS.adbBridge}>
+		adb-bridge
+	</a>
+	to pull the export from a connected Android device or emulator. Do not upload
+	<code>playerInfo.dat</code>.
+</p>
 <h2 class="mt-10 text-xl font-semibold">Read In The Browser</h2>
-<div class="mt-4"><CodeBlock code={`import { decodeSaveFile } from '@beardedunicorn/thetowersdk/save-decoder'
+<div class="mt-4">
+	<CodeBlock
+		code={`import { decodeSaveFile } from '@beardedunicorn/thetowersdk/save-decoder'
 import { listImportableBattleRuns } from '@beardedunicorn/thetowersdk/save'
 
 async function onFile(exportFile) {
   const root = await decodeSaveFile(await exportFile.arrayBuffer())
   return listImportableBattleRuns(root)
-}`} /></div>
+}`}
+	/>
+</div>
 <h2 class="mt-10 text-xl font-semibold">Read In Node</h2>
-<div class="mt-4"><CodeBlock code={`import { readFile } from 'node:fs/promises'
+<div class="mt-4">
+	<CodeBlock
+		code={`import { readFile } from 'node:fs/promises'
 import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
 
 const { parsedRoot, battleRunCount } = await decodePlayerInfoSaveBytesAsync(
   await readFile('tool_export.json')
 )
-console.log(battleRunCount)`} /></div>
+console.log(battleRunCount)`}
+	/>
+</div>
 
 <h2 class="mt-10 text-xl font-semibold">Read The Run History</h2>
 <p class="mt-3 text-muted">
@@ -180,4 +203,6 @@ for (const lab of nextUp.slice(0, 5)) {
 	/>
 </div>
 
-<p class="mt-8 text-sm"><a href={href('/docs/data/')}>Catalogs →</a> · <a href={LINKS.adbBridge}>adb-bridge →</a></p>
+<p class="mt-8 text-sm">
+	<a href={href('/docs/data/')}>Catalogs →</a> · <a href={LINKS.adbBridge}>adb-bridge →</a>
+</p>

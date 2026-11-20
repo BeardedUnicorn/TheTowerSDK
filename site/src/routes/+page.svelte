@@ -118,7 +118,8 @@
 			 */
 			action: 'Register once — Claude Code',
 			body: 'Already inside the package, so there is nothing extra to install. Once registered, your assistant gains forty-three tools — running the shipped calculators for real numbers, an instrumented sandbox to work in, save decoding, wiki lookup, and tracing to check its own output. Using Cursor or Copilot? The MCP docs have the JSON config.',
-			command: 'claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs',
+			command:
+				'claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs',
 			docsHref: href('/docs/mcp/'),
 			docsLabel: 'MCP Docs'
 		},

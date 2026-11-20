@@ -11,7 +11,7 @@ node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```
 
 It speaks MCP over stdio, so register it as a stdio server. Working on the package itself,
-`npm run build` first — the server reads `dist/` — then `npm run mcp`.
+`pnpm build` first — the server reads `dist/` — then `pnpm mcp`.
 
 By config file:
 

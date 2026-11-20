@@ -23,6 +23,7 @@ on:
       - 'site/**'
       - 'src/**'
       - 'package.json'
+      - 'pnpm-lock.yaml'
       - 'scripts/copy-assets.mjs'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
@@ -45,21 +46,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Installs the pnpm version pinned by `packageManager` in the root package.json. An
+      # action's inputs are resolved against the repository root, not `working-directory`.
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          # The lockfile is no longer at the repository root, so the cache key has to be told
-          # where it is. Without this the setup step fails outright looking for it.
-          cache-dependency-path: site/package-lock.json
+          cache: pnpm
+          # Two projects, two lockfiles: the SDK at the root and the site in `site/`.
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            site/pnpm-lock.yaml
       - name: Install SDK dependencies
-        run: npm install --no-audit --no-fund --package-lock=false
+        run: pnpm install --frozen-lockfile
         working-directory: .
+      # The site depends on the SDK as `link:..`, so it reads this build, not a published one.
       - name: Build the SDK used by the site
-        run: npm run build
+        run: pnpm build
         working-directory: .
-      - run: npm ci
-      - run: npm run build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
         env:
           BASE_PATH: /${{ github.event.repository.name }}
       - uses: actions/upload-pages-artifact@v3

@@ -28,7 +28,7 @@ function log(line) {
 }
 
 if (!existsSync(join(buildDir, 'index.html'))) {
-	console.error(`Missing ${buildDir}/index.html — run npm run build first`);
+	console.error(`Missing ${buildDir}/index.html — run pnpm build first`);
 	process.exit(1);
 }
 

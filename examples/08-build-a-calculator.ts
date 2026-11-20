@@ -10,8 +10,8 @@
  * calculator. That is the point — the UI is yours, the plumbing is not.
  *
  * Run it:
- *   npx tsx examples/08-build-a-calculator.ts
- *   npx tsx examples/08-build-a-calculator.ts uw.stones
+ *   pnpm exec tsx examples/08-build-a-calculator.ts
+ *   pnpm exec tsx examples/08-build-a-calculator.ts uw.stones
  */
 import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 import { formatDuration, formatLargeNumber } from '@beardedunicorn/thetowersdk/formatting'

@@ -1,7 +1,7 @@
 /**
  * Pointing at artwork you supply yourself.
  *
- *   npx tsx examples/12-show-module-and-card-art.ts
+ *   pnpm exec tsx examples/12-show-module-and-card-art.ts
  *
  * This package ships **no images and no catalogue of them**. The art belongs to TechTree Games,
  * there is no permission to redistribute it, and a list naming every sprite in the game is derived

@@ -8,7 +8,7 @@
  *   mechanics → rank what to buy next (Effective Paths)
  *
  * Run it:
- *   npx tsx examples/03-plan-upgrades-from-a-save.ts <path-to-tool_export.json>
+ *   pnpm exec tsx examples/03-plan-upgrades-from-a-save.ts <path-to-tool_export.json>
  */
 import { readFile } from 'node:fs/promises'
 import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'

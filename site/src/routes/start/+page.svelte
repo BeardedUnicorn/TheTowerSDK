@@ -10,13 +10,18 @@
 <h1 class="mt-2 text-3xl font-semibold">Get Started</h1>
 <p class="mt-2 max-w-2xl text-muted">
 	Install the package, point your assistant at the MCP server, and start from a working example.
-	Catalogs and formulas work without keys or an account. Official game exports are parsed locally; optional integrations may use network access.
+	Catalogs and formulas work without keys or an account. Official game exports are parsed locally;
+	optional integrations may use network access.
 </p>
 
 <div class="mt-8 max-w-3xl space-y-10">
 	<section>
 		<h2 class="text-xl font-medium">1. Install TheTowerSDK</h2>
-		<p class="mt-2 text-sm text-muted">Use the official game export for account imports. See the <a href={href('/docs/install/')}>installation guide</a>.</p>
+		<p class="mt-2 text-sm text-muted">
+			Use the official game export for account imports. See the <a href={href('/docs/install/')}>
+				installation guide
+			</a>.
+		</p>
 		<p class="mt-2 text-sm text-muted">
 			Add the package to your app or tool repo. Pin a version when you want frozen game numbers.
 		</p>
@@ -95,7 +100,9 @@
 	<section>
 		<h2 class="text-xl font-medium">4. Official Exports From a Device (optional)</h2>
 		<p class="mt-2 text-sm text-muted">
-			First tap your Player ID five times in the game to create your first export and reveal the export controls. For subsequent exports, use Settings → Toggles → External Tools Export → Manual Export or enable Auto Export for External Tools. Android path:
+			First tap your Player ID five times in the game to create your first export and reveal the
+			export controls. For subsequent exports, use Settings → Toggles → External Tools Export →
+			Manual Export or enable Auto Export for External Tools. Android path:
 			<code>Android/data/com.TechTreeGames.TheTower/files/tool_export.json</code>.
 			<a href={LINKS.adbBridge}>adb-bridge</a>
 			can copy it from a device or emulator. Decode with
@@ -107,8 +114,9 @@
 	<section>
 		<h2 class="text-xl font-medium">5. What You Can Add Alongside It</h2>
 		<p class="mt-2 text-sm text-muted">
-			None of these are dependencies. Catalogs and formulas work offline without keys; account imports use the official game JSON export. Each of
-			these adds one capability it deliberately does not carry itself.
+			None of these are dependencies. Catalogs and formulas work offline without keys; account
+			imports use the official game JSON export. Each of these adds one capability it deliberately
+			does not carry itself.
 		</p>
 
 		<div class="mt-4 space-y-4">
@@ -149,8 +157,8 @@
 			<GlassPanel>
 				<h3 class="font-medium">discord.js — every calculator as a slash command</h3>
 				<p class="mt-2 text-sm text-muted">
-					<code>@beardedunicorn/thetowersdk/bot</code> turns the builders into commands and replies and never
-					touches a Discord client, so it is transport-agnostic. Add
+					<code>@beardedunicorn/thetowersdk/bot</code> turns the builders into commands and replies
+					and never touches a Discord client, so it is transport-agnostic. Add
 					<code>discord.js</code> when you want those commands on a server.
 				</p>
 				<p class="mt-3 text-sm"><a href={href('/docs/bots/')}>Discord bot docs →</a></p>
@@ -159,9 +167,9 @@
 			<GlassPanel>
 				<h3 class="font-medium">google-auth-library — read and write spreadsheets</h3>
 				<p class="mt-2 text-sm text-muted">
-					<code>@beardedunicorn/thetowersdk/sheets</code> takes a transport you supply and imports no Google library itself,
-					so nothing about your auth is assumed. For an unattended tool, a service account is the identity
-					to use.
+					<code>@beardedunicorn/thetowersdk/sheets</code> takes a transport you supply and imports no
+					Google library itself, so nothing about your auth is assumed. For an unattended tool, a service
+					account is the identity to use.
 				</p>
 				<p class="mt-3 text-sm"><a href={href('/docs/sheets/')}>Spreadsheet docs →</a></p>
 			</GlassPanel>

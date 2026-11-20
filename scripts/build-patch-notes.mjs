@@ -41,13 +41,13 @@ const check = process.argv.includes('--check')
 if (!existsSync(SOURCE)) {
   if (check) {
     console.log(
-      'Patch-notes check skipped — no raw archive. Run `npm run patch-notes:ingest` with '
+      'Patch-notes check skipped — no raw archive. Run `pnpm patch-notes:ingest` with '
       + 'DISCORD_TOKEN set; the committed dataset is used as-is.',
     )
     process.exit(0)
   }
   throw new Error(
-    `No archive at ${SOURCE}. Run \`npm run patch-notes:ingest\` first — this dataset is derived `
+    `No archive at ${SOURCE}. Run \`pnpm patch-notes:ingest\` first — this dataset is derived `
     + 'from it, and inventing patch notes is the one thing it must never do.',
   )
 }
@@ -258,7 +258,7 @@ const built = lines.join('\n')
 if (check) {
   const current = existsSync(OUT_FILE) ? await readFile(OUT_FILE, 'utf8') : ''
   if (current.replace(/\r\n/g, '\n') !== built) {
-    console.error('Patch-notes dataset is out of date. Run `npm run patch-notes:build`.')
+    console.error('Patch-notes dataset is out of date. Run `pnpm patch-notes:build`.')
     process.exit(1)
   }
   console.log(`Patch notes OK — ${notes.length} note(s), ${withVersion} with a version, ${span}.`)

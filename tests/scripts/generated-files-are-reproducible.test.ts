@@ -58,7 +58,7 @@ describe('a generator run twice produces the same bytes', () => {
   it.skipIf(!isMonorepoCheckout())('builds the same mechanics registry twice', async () => {
     /*
      * Called directly rather than through its CLI. The first version of this case shelled out to
-     * `npx tsx` from inside a vitest worker, which tore the worker's IPC channel down under load —
+     * `pnpm exec tsx` from inside a vitest worker, which tore the worker's IPC channel down under load —
      * a flaky test dressed up as a determinism check. The function is what has to be deterministic;
      * the subprocess added nothing but a race.
      *

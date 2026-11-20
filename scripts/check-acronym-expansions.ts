@@ -23,7 +23,7 @@
  * the initials GS, and GS is a real acronym, but `Game Speed` is a real term too and is not
  * claiming to be anything. Only a phrase that no catalog knows *and* collides is reported.
  *
- * Run: `npm run lint:acronyms` (`--json` for machine output). Covered by
+ * Run: `pnpm lint:acronyms` (`--json` for machine output). Covered by
  * `check-acronym-expansions.test.ts`, which plants both failure shapes.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────

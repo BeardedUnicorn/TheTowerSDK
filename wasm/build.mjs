@@ -86,12 +86,13 @@ function run(command, args, cwd = PACKAGE_ROOT) {
 
 async function build() {
   if (!existsSync(path.join(PACKAGE_ROOT, 'dist', 'index.js'))) {
-    throw new Error('dist/ is missing — run `npm run build` first.')
+    throw new Error('dist/ is missing — run `pnpm build` first.')
   }
   mkdirSync(BUILD, { recursive: true })
 
   console.log('Bundling …')
-  run('npx', [
+  run('pnpm', [
+    'exec',
     'esbuild',
     path.relative(PACKAGE_ROOT, path.join(HERE, 'entry.js')),
     '--bundle',
@@ -112,7 +113,7 @@ async function build() {
 
 function check() {
   if (!existsSync(MODULE)) {
-    console.error('No WASM module built. Run `npm run wasm:build`.')
+    console.error('No WASM module built. Run `pnpm wasm:build`.')
     process.exit(1)
   }
   /*
@@ -122,7 +123,7 @@ function check() {
   const moduleTime = statSync(MODULE).mtimeMs
   const distTime = statSync(path.join(PACKAGE_ROOT, 'dist', 'index.js')).mtimeMs
   if (moduleTime < distTime) {
-    console.error('The WASM module is older than dist/. Rebuild it: `npm run wasm:build`.')
+    console.error('The WASM module is older than dist/. Rebuild it: `pnpm wasm:build`.')
     process.exit(1)
   }
   console.log(`WASM module is current (${(statSync(MODULE).size / 1024 / 1024).toFixed(1)} MB).`)

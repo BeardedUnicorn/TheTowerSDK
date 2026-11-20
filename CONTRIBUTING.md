@@ -1,20 +1,21 @@
 # Contributing
 
-Contributions are welcome â€” this is meant to be the community's SDK, not one person's.
+Contributions are welcome — this is meant to be the community's SDK, not one person's.
 
 ## Getting set up
 
 ```bash
-npm install
-npm run verify   # lint, conventions, types, build, tests â€” what CI runs
+pnpm install
+pnpm verify   # lint, conventions, types, build, tests — what CI runs
 ```
 
-Or individually: `npm run lint`, `npm run lint:conventions`, `npm run type-check`,
-`npm test`, `npm run build`. Any package manager works; the scripts do not assume one.
+Or individually: `pnpm lint`, `pnpm lint:conventions`, `pnpm type-check`,
+`pnpm test`, `pnpm build`. The repository uses [pnpm](https://pnpm.io); the version is pinned by
+`packageManager` in `package.json`, and `corepack enable` gives you exactly that one.
 
 Node 20+. The only runtime dependency is `zod`.
 
-There's also an MCP server (`npm run mcp`) if you work with an AI agent â€” see
+There's also an MCP server (`pnpm mcp`) if you work with an AI agent — see
 [mcp/README.md](mcp/README.md) and [AGENTS.md](AGENTS.md).
 
 ## What's most useful
@@ -23,7 +24,7 @@ There's also an MCP server (`npm run mcp`) if you work with an AI agent â€”
 work out what a field means, an extractor is usually a small addition. See any file in `src/save/`
 for the shape.
 
-**Data corrections.** Include evidence â€” a save file, or a screenshot of the value in game. A number
+**Data corrections.** Include evidence — a save file, or a screenshot of the value in game. A number
 without evidence is hard to act on.
 
 **Examples.** If you built something with this, an example others can learn from is valuable.
@@ -35,20 +36,20 @@ anything you consider private first.
 
 ```
 src/
-  data/         game tables â€” costs, levels, effects, catalogs
+  data/         game tables — costs, levels, effects, catalogs
   save/         reading a save file
     catalogs/   save indices -> named entities
   node/         the save decoder (needs Node)
   formatting/   number formatting matching the game's display
-  mechanics/    formulas (approximate â€” see README)
+  mechanics/    formulas (approximate — see README)
 ```
 
 Public entry points are declared in `package.json`; each domain exports its API through its
-`index.ts` barrel. If you add a module, export it from the matching barrel â€”
+`index.ts` barrel. If you add a module, export it from the matching barrel —
 otherwise nobody can import it.
 
 There is no `src/internal/`. A module belongs to a domain and is exported from it, or it is
-application code and belongs in the consumer â€” see `docs/ORGANIZATION_CONTRACT.md`.
+application code and belongs in the consumer — see `docs/ORGANIZATION_CONTRACT.md`.
 
 ## Conventions
 
@@ -64,23 +65,23 @@ application code and belongs in the consumer â€” see `docs/ORGANIZATION_CON
   not where it came from or what it used to be.
 - **Use the game's names.** Look a term up with `lookupGlossary()` before writing it down; several
   acronyms mean more than one thing, and a confident wrong name is worse than no name. If you add
-  data that introduces names, run `npm run glossary` so the glossary covers them.
+  data that introduces names, run `pnpm glossary` so the glossary covers them.
 - **Nothing outside the package.** Fixtures and test data live in the package, so a fork works.
 
 ## Tests
 
 Tests live next to the code as `*.test.ts` and run under Vitest. Anything that decodes or maps save
-data should have one â€” index-mapping bugs are silent and misreport a player's data rather than
+data should have one — index-mapping bugs are silent and misreport a player's data rather than
 failing.
 
 Use a synthetic fixture rather than a real save. `src/save/fixtures/` has an example. Tests that
 genuinely need a real save read `TOWER_TEST_SAVE` and skip when it is unset, so they never block
-a contributor who does not have one â€” and no one's save data ends up in the repository.
+a contributor who does not have one — and no one's save data ends up in the repository.
 
 ## Pull requests
 
-Keep them focused; one concern per PR is much easier to review. Run `npm run verify` before
-opening â€” it is exactly what CI runs.
+Keep them focused; one concern per PR is much easier to review. Run `pnpm verify` before
+opening — it is exactly what CI runs.
 
 ## Third-party work
 

@@ -16,15 +16,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Installs the pnpm version pinned by `packageManager` in package.json.
+      - uses: pnpm/action-setup@v6
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: pnpm
 
-      # No lockfile is committed, so this resolves fresh. That is deliberate:
-      # it catches a dependency breaking the package before a user hits it.
-      - run: npm install --no-audit --no-fund
+      # pnpm-lock.yaml is committed, so this installs exactly what was verified locally and
+      # fails if the lockfile and package.json have drifted apart.
+      - run: pnpm install --frozen-lockfile
 
-      - run: npm run verify
+      - run: pnpm verify
 
       # The package must stay installable with no private registry access.
       - name: Check for non-public dependencies

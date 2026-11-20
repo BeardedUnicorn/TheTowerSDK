@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** @deprecated use `npm run serve` (ensure-preview). Kept as an alias. */
+/** @deprecated use `pnpm serve` (ensure-preview). Kept as an alias. */
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

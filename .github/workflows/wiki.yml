@@ -16,7 +16,7 @@ name: Publish wiki
 #      against the wiki. Verify before trusting CI:
 #        git clone https://<token>@github.com/TmRxJD/TheTowerSDK.wiki.git
 
-# Manual only. The wiki is normally published from a workstation with `npm run wiki:publish`,
+# Manual only. The wiki is normally published from a workstation with `pnpm wiki:publish`,
 # which uses whatever git credentials are already present and needs no secret at all. This job
 # needs a WIKI_TOKEN, so leaving it on `push` meant a red run on every commit for a step nobody
 # was relying on — a permanently failing check teaches people to ignore the ones that matter.

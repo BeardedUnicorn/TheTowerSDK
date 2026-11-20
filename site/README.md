@@ -9,12 +9,12 @@ Public site for **[@beardedunicorn/thetowersdk](https://www.npmjs.com/package/@b
 
 Live: **https://tmrxjd.github.io/TheTowerSDK/**
 
-| Resource                        | URL                                                    |
-| ------------------------------- | ------------------------------------------------------ |
-| npm                             | https://www.npmjs.com/package/@beardedunicorn/thetowersdk              |
-| SDK source                      | https://github.com/TmRxJD/TheTowerSDK                  |
-| Run Tracker (built on this SDK) | https://the-tower-run-tracker.com                      |
-| AGS public docs                 | https://github.com/TmRxJD/agent-governance-system-site |
+| Resource                        | URL                                                       |
+| ------------------------------- | --------------------------------------------------------- |
+| npm                             | https://www.npmjs.com/package/@beardedunicorn/thetowersdk |
+| SDK source                      | https://github.com/TmRxJD/TheTowerSDK                     |
+| Run Tracker (built on this SDK) | https://the-tower-run-tracker.com                         |
+| AGS public docs                 | https://github.com/TmRxJD/agent-governance-system-site    |
 
 ## Stack
 
@@ -28,12 +28,12 @@ Local preview is a **durable Vite dev server with HMR**, started outside the age
 
 ```sh
 cd ..                 # SDK root; install and build before starting the site
-npm install
-npm run build
+pnpm install
+pnpm build
 cd site
-npm install
-npm run serve          # start HMR if needed; no-op if already healthy
-npm run serve:status   # confirm mode=hmr on 4173
+pnpm install
+pnpm serve          # start HMR if needed; no-op if already healthy
+pnpm serve:status   # confirm mode=hmr on 4173
 ```
 
 The site links to the SDK in its parent directory. Rebuild the SDK after changing its source;
@@ -44,20 +44,20 @@ Open **http://127.0.0.1:4173/** — edits hot-reload. **Do not restart** the ser
 Agents must never:
 
 - kill port 4173 / stop the Vite or HMR supervisor process
-- run `npm ci` / `npm install` / wipe `node_modules` or `.svelte-kit` while HMR is up (crashes Vite via locked native addons)
+- run `pnpm install --frozen-lockfile` / `pnpm install` / wipe `node_modules` or `.svelte-kit` while HMR is up (crashes Vite via locked native addons)
 - run `vite preview` against this port while working locally
 - delete `.svelte-kit` while HMR is up
 
 Production / GitHub Pages builds set `BASE_PATH=/TheTowerSDK`, derived from the repository name by the workflow. Local HMR always uses empty `BASE_PATH`. Verify deploys in **GitHub Actions**, not by reinstalling locally.
 
 > ⚠ **On Windows, do not reproduce a base-path build from Git Bash without `MSYS_NO_PATHCONV=1`.**
-> MSYS rewrites any argument that looks like a POSIX path, so `BASE_PATH=/TheTowerSDK npm run build`
+> MSYS rewrites any argument that looks like a POSIX path, so `BASE_PATH=/TheTowerSDK pnpm build`
 > builds with `BASE_PATH=C:/Program Files/Git/TheTowerSDK` and emits
 > `src="/C:/Program Files/Git/TheTowerSDK/hero.jpg"` throughout. The build **succeeds**, which is the
 > danger — it looks like a passing verification of the very thing it got wrong. Use:
 >
 > ```bash
-> MSYS_NO_PATHCONV=1 BASE_PATH=/TheTowerSDK npm run build
+> MSYS_NO_PATHCONV=1 BASE_PATH=/TheTowerSDK pnpm build
 > ```
 >
 > CI is unaffected: the workflow sets the variable in its own `env:` block on Linux. This only bites

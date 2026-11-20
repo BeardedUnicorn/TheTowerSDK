@@ -4,7 +4,7 @@ Runnable scripts, numbered roughly by how much they assume. Each one is standalo
 header comment, run it, then copy the parts you need.
 
 ```bash
-npx tsx examples/01-browse-game-data.ts
+pnpm exec tsx examples/01-browse-game-data.ts
 ```
 
 | # | File | Needs | What it shows |
@@ -34,17 +34,17 @@ browser-safe module, and a calculator with typed inputs.
 
 ## These are type-checked and run
 
-`npm run type-check:examples` compiles everything here and in `templates/` against the package's
+`pnpm type-check:examples` compiles everything here and in `templates/` against the package's
 own source, so an example that imports a removed export fails the build rather than rotting
 quietly. It has caught exactly that before.
 
 Compiling is not the same as working, though — an example can type-check perfectly and still
-throw on its first line, which is what a reader hits. `npm run examples:run` executes all of
+throw on its first line, which is what a reader hits. `pnpm examples:run` executes all of
 them:
 
 ```bash
-npm run examples:run
-npm run examples:run -- --save ~/tool_export.json   # include the two that need a save
+pnpm examples:run
+pnpm examples:run --save ~/tool_export.json   # include the two that need a save
 ```
 
 That is how `05-generate-a-cost-table.ts` was found reading only the first word of a weapon

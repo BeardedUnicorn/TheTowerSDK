@@ -9,7 +9,7 @@
  * This entry point is browser-safe and has no game-data dependency.
  *
  * Run it:
- *   npx tsx examples/07-format-like-the-game.ts
+ *   pnpm exec tsx examples/07-format-like-the-game.ts
  */
 import {
   formatCoin,

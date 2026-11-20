@@ -23,8 +23,8 @@ or filter keys, no routes, no icons, no colours, and never the word `tracker`.
 
 **[`docs/ORGANIZATION_CONTRACT.md`](docs/ORGANIZATION_CONTRACT.md) is binding**: it fixes the
 domains, which may import which, the shape of every folder, how files are named, how long they may
-be, and what the public surface may contain. `npm run lint:organization` enforces every rule and
-runs inside `npm run verify`. Existing violations sit in `.organization-baseline.json`, which may
+be, and what the public surface may contain. `pnpm lint:organization` enforces every rule and
+runs inside `pnpm verify`. Existing violations sit in `.organization-baseline.json`, which may
 only shrink.
 
 Read it before adding a file, moving one, or naming anything.

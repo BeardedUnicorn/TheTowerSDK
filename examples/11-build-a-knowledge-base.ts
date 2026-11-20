@@ -1,7 +1,7 @@
 /**
  * Building a knowledge base whose numbers cannot go stale.
  *
- *   npx tsx examples/11-build-a-knowledge-base.ts
+ *   pnpm exec tsx examples/11-build-a-knowledge-base.ts
  *
  * `towerai` is an optional add-on and is not installed here, so this builds the chunks and
  * validates them with a local copy of the rules. With `npm install towerai` the same chunks

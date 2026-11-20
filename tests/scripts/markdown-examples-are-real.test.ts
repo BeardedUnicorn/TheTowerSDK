@@ -77,7 +77,7 @@ describe('every markdown example imports something real', () => {
   const files = markdownFiles()
 
   it('has a build to check against, so a missing dist cannot pass it', () => {
-    expect(existsSync(DIST), 'run `npm run build` first — this check needs dist').toBe(true)
+    expect(existsSync(DIST), 'run `pnpm build` first — this check needs dist').toBe(true)
     expect(files.length).toBeGreaterThan(4)
   })
 

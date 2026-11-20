@@ -7,9 +7,9 @@
 
 <h1 class="text-3xl font-semibold">Install</h1>
 <p class="mt-3 text-muted">
-	The SDK runs in Node 20 or newer and in browsers. Catalogs and formulas need no setup;
-	account imports accept only official game JSON exports. Optional wiki and Sheets integrations
-	use network access. These docs cover the published SDK version {SDK_VERSION}.
+	The SDK runs in Node 20 or newer and in browsers. Catalogs and formulas need no setup; account
+	imports accept only official game JSON exports. Optional wiki and Sheets integrations use network
+	access. These docs cover the published SDK version {SDK_VERSION}.
 </p>
 
 <div class="mt-6">
@@ -18,18 +18,20 @@
 
 <h2 class="mt-10 text-xl font-semibold">Build From Source</h2>
 <p class="mt-3 text-muted">
-	For SDK development, build from source instead of installing from npm. Build the SDK,
-	pack it, and install the generated tarball in your application. Record the source commit for reproducibility.
+	For SDK development, build from source instead of installing from npm. Build the SDK, pack it, and
+	install the generated tarball in your application. Record the source commit for reproducibility.
 </p>
 <div class="mt-4">
-	<CodeBlock code={`git clone https://github.com/TmRxJD/TheTowerSDK.git
+	<CodeBlock
+		code={`git clone https://github.com/TmRxJD/TheTowerSDK.git
 cd TheTowerSDK
-npm install
-npm run build
+pnpm install
+pnpm build
 npm pack
 
 # Run in your application directory:
-npm install /path/to/TheTowerSDK/beardedunicorn-thetowersdk-${SDK_VERSION}.tgz`} />
+npm install /path/to/TheTowerSDK/beardedunicorn-thetowersdk-${SDK_VERSION}.tgz`}
+	/>
 </div>
 
 <h2 class="mt-10 text-xl font-semibold">Pinning A Version</h2>
@@ -43,14 +45,14 @@ npm install /path/to/TheTowerSDK/beardedunicorn-thetowersdk-${SDK_VERSION}.tgz`}
 
 <h2 class="mt-10 text-xl font-semibold">What A Version Means</h2>
 <p class="mt-3 text-muted">
-	The package follows semantic versioning. Data values change when the game does, which is why
-	the line above pins an exact version rather than a range.
+	The package follows semantic versioning. Data values change when the game does, which is why the
+	line above pins an exact version rather than a range.
 </p>
 <ul class="mt-4 list-disc space-y-2 pl-5 text-muted">
 	<li><strong>Patch</strong> — fixes and data corrections.</li>
 	<li>
-		<strong>Minor</strong> — new exports, extractors and data, including data updated for a new
-		game version; existing values may change.
+		<strong>Minor</strong> — new exports, extractors and data, including data updated for a new game version;
+		existing values may change.
 	</li>
 	<li><strong>Major</strong> — breaking API changes.</li>
 </ul>
@@ -173,8 +175,10 @@ console.log(formatNumberForDisplay(total), 'coins to max')`}
 				<td><code>@beardedunicorn/thetowersdk/formatting</code></td>
 				<td class="text-muted">
 					Numbers, durations, multipliers and rates in the game's own notation — read and written. <a
-						href={href('/docs/formatting/')}>Docs</a
+						href={href('/docs/formatting/')}
 					>
+						Docs
+					</a>
 				</td>
 			</tr>
 			<tr>
@@ -206,9 +210,9 @@ function summarise(note: PatchNote) {
 
 <h2 class="mt-10 text-xl font-semibold">In The Browser</h2>
 <p class="mt-3 text-muted">
-	Everything except <code>@beardedunicorn/thetowersdk/node</code> runs in a browser bundle. The package is marked
-	side-effect free, so a bundler drops what you do not use — import the one catalog you need rather
-	than the whole of <code>data</code> if size matters.
+	Everything except <code>@beardedunicorn/thetowersdk/node</code> runs in a browser bundle. The
+	package is marked side-effect free, so a bundler drops what you do not use — import the one
+	catalog you need rather than the whole of <code>data</code> if size matters.
 </p>
 <div class="mt-4">
 	<CodeBlock

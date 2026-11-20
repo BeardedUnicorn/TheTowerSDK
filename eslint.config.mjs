@@ -7,7 +7,7 @@ export default tseslint.config(
   /*
    * `site/**` is the documentation site, which is a SvelteKit app with its own toolchain,
    * its own eslint config and its own rules — including default exports, which this config
-   * forbids and every Svelte module requires. It is linted by `npm run lint` inside `site/`.
+   * forbids and every Svelte module requires. It is linted by `pnpm lint` inside `site/`.
    */
   /*
    * `wasm/.build/**` is a 200k-line esbuild bundle of dist. Linting generated output reports
