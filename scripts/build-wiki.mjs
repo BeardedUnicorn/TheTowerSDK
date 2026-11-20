@@ -39,8 +39,8 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const REPO_BLOB = 'https://github.com/TmRxJD/TheTowerSDK/blob/main'
-const SITE_URL = 'https://tmrxjd.github.io/TheTowerSDK/'
+const REPO_BLOB = 'https://github.com/BeardedUnicorn/TheTowerSDK/blob/main'
+const SITE_URL = 'https://beardedunicorn.github.io/TheTowerSDK/'
 
 const BANNER = `> _Generated from the [thetowersdk repository](${REPO_BLOB}). Edits made here are overwritten on the next push — change the source file instead._\n\n`
 

@@ -62,7 +62,7 @@ describe('the wiki generator', () => {
 
   it('turns repo-relative links into absolute blob URLs', () => {
     const all = pages.map(name => readFileSync(path.join(outDir, name), 'utf8')).join('\n')
-    expect(all).toContain('https://github.com/TmRxJD/TheTowerSDK/blob/main/src/')
+    expect(all).toContain('https://github.com/BeardedUnicorn/TheTowerSDK/blob/main/src/')
   })
 
   it('carries the Effective Paths credit and the support code', () => {

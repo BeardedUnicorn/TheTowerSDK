@@ -27,7 +27,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code="curl -LO https://github.com/TmRxJD/TheTowerSDK/releases/latest/download/thetowersdk.wasm"
+		code="curl -LO https://github.com/BeardedUnicorn/TheTowerSDK/releases/latest/download/thetowersdk.wasm"
 	/>
 </div>
 

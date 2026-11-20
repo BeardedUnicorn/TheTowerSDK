@@ -1,7 +1,7 @@
 name: github-pages
 
 # The documentation site lives in `site/` in this repository, and is published to
-# https://tmrxjd.github.io/TheTowerSDK/.
+# https://beardedunicorn.github.io/TheTowerSDK/.
 #
 # It used to be its own repository, TheTowerSDK-site, which is where the trailing `-site` in
 # the old URL came from — GitHub Pages names the path after the repository. Folding the site

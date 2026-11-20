@@ -24,10 +24,7 @@ npm install @beardedunicorn/thetowersdk
 
 TypeScript, MIT licensed, one runtime dependency (`zod`).
 
-### 📖 [Documentation, live demos and runnable examples → upstream thetowersdk website](https://tmrxjd.github.io/TheTowerSDK/)
-
-The website is upstream's and shows the upstream package name. Its examples work here with
-`thetowersdk` replaced by `@beardedunicorn/thetowersdk` in the import.
+### 📖 [Documentation, live demos and runnable examples → thetowersdk website](https://beardedunicorn.github.io/TheTowerSDK/)
 
 > **Versions.** The package follows semantic versioning from 1.0.0 — see [Versioning](#versioning).
 > Game data changes when the game does, so pin an exact version if you need the numbers frozen.
@@ -1246,9 +1243,9 @@ The entry points listed above are the whole public API; there is no path past th
 
 | Surface | What it is | Edit it? |
 |---|---|---|
-| [thetowersdk website](https://tmrxjd.github.io/TheTowerSDK/) | Browsable docs, live demos, runnable examples | Generated |
+| [thetowersdk website](https://beardedunicorn.github.io/TheTowerSDK/) | Browsable docs, live demos, runnable examples | Generated |
 | This repo | The source of truth: this README, [`docs/`](docs), [`examples/`](examples), [`templates/`](templates) | **Yes** |
-| [GitHub wiki](https://github.com/TmRxJD/TheTowerSDK/wiki) | The same content, page-per-section, for reading on GitHub | **No — generated** |
+| [GitHub wiki](https://github.com/BeardedUnicorn/TheTowerSDK/wiki) | The same content, page-per-section, for reading on GitHub | **No — generated** |
 
 Three surfaces, one source. Everything downstream is rendered from the files in this repository by
 one command, so there is nothing to remember to update:

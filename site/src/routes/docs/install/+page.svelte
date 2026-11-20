@@ -23,7 +23,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`git clone https://github.com/TmRxJD/TheTowerSDK.git
+		code={`git clone https://github.com/BeardedUnicorn/TheTowerSDK.git
 cd TheTowerSDK
 pnpm install
 pnpm build

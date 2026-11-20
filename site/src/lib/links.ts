@@ -14,13 +14,13 @@ import { version as sdkVersion } from '../../../package.json';
 
 export const LINKS = {
 	npm: 'https://www.npmjs.com/package/@beardedunicorn/thetowersdk',
-	github: 'https://github.com/TmRxJD/TheTowerSDK',
+	github: 'https://github.com/BeardedUnicorn/TheTowerSDK',
 	/*
 	 * The site lives inside the SDK repository now — TheTowerSDK-site was folded in, which is what
 	 * removed the trailing `-site` from the published URL. The old repo still exists but its Pages
 	 * are disabled, so linking there would send a reader somewhere that no longer serves anything.
 	 */
-	siteRepo: 'https://github.com/TmRxJD/TheTowerSDK',
+	siteRepo: 'https://github.com/BeardedUnicorn/TheTowerSDK',
 	agsSite: 'https://tmrxjd.github.io/agent-governance-system-site/',
 	agsRepo: 'https://github.com/TmRxJD/agent-governance-system-site',
 	adbBridge: 'https://github.com/TmRxJD/adb-bridge',
@@ -37,7 +37,7 @@ export const LINKS = {
  * Where the published site is served from, without the base path. Link previews — Discord, Slack,
  * social cards — ignore a relative image URL, so the social tags are built from this plus `asset()`.
  */
-export const SITE_ORIGIN = 'https://tmrxjd.github.io';
+export const SITE_ORIGIN = 'https://beardedunicorn.github.io';
 
 export const PACKAGE_NAME = '@beardedunicorn/thetowersdk';
 export const INSTALL_CMD = `npm install @beardedunicorn/thetowersdk@${sdkVersion} --save-exact`;

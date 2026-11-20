@@ -33,10 +33,10 @@ describe('search and link previews', () => {
 
   it('pins the deployed canonical and image URLs, without campaign parameters', () => {
     const save = pageMetadata('/TheTowerSDK/docs/save/?utm_source=discord#example', '/TheTowerSDK')
-    expect(save.canonical).toBe('https://tmrxjd.github.io/TheTowerSDK/docs/save/')
+    expect(save.canonical).toBe('https://beardedunicorn.github.io/TheTowerSDK/docs/save/')
     expect(save.title).toBe('Read Tower Save Files · TheTowerSDK')
-    expect(shareLogoUrl('/TheTowerSDK')).toBe('https://tmrxjd.github.io/TheTowerSDK/TheTowerSDK_logo.v5.png')
-    expect(new URL(pageMetadata('//untrusted.example/').canonical).origin).toBe('https://tmrxjd.github.io')
+    expect(shareLogoUrl('/TheTowerSDK')).toBe('https://beardedunicorn.github.io/TheTowerSDK/TheTowerSDK_logo.v5.png')
+    expect(new URL(pageMetadata('//untrusted.example/').canonical).origin).toBe('https://beardedunicorn.github.io')
     const png = readFileSync(path.join(SITE, 'static/TheTowerSDK_logo.v5.png'))
     expect(png.subarray(1, 4).toString()).toBe('PNG')
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([500, 500])
@@ -44,8 +44,8 @@ describe('search and link previews', () => {
 
   it('lists actual SDK pages, excluding hidden integrations and missing routes', () => {
     const urls = sitemapUrls('/TheTowerSDK')
-    expect(urls).toContain('https://tmrxjd.github.io/TheTowerSDK/docs/save/')
-    expect(urls).not.toContain('https://tmrxjd.github.io/TheTowerSDK/ags/')
+    expect(urls).toContain('https://beardedunicorn.github.io/TheTowerSDK/docs/save/')
+    expect(urls).not.toContain('https://beardedunicorn.github.io/TheTowerSDK/ags/')
     expect(urls).toHaveLength(Object.keys(PAGE_METADATA).length)
     for (const url of urls) expect(pageMetadata(new URL(url).pathname, '/TheTowerSDK').indexable).toBe(true)
     expect(pageMetadata('/missing/').indexable).toBe(false)
@@ -55,7 +55,7 @@ describe('search and link previews', () => {
   it('emits parseable structured data and escapes script-closing content', () => {
     const schema = siteStructuredData('/TheTowerSDK')
     expect(schema['@graph'].find(node => node['@type'] === 'SoftwareSourceCode')).toMatchObject({
-      codeRepository: 'https://github.com/TmRxJD/TheTowerSDK', programmingLanguage: 'TypeScript',
+      codeRepository: 'https://github.com/BeardedUnicorn/TheTowerSDK', programmingLanguage: 'TypeScript',
     })
     const planted = { description: '</script><script>unexpected()</script>' }
     const serialized = serializeStructuredData(planted)

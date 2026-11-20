@@ -26,7 +26,7 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const WIKI_REMOTE = 'https://github.com/TmRxJD/TheTowerSDK.wiki.git'
+const WIKI_REMOTE = 'https://github.com/BeardedUnicorn/TheTowerSDK.wiki.git'
 
 const run = (command, args, cwd) =>
   execFileSync(command, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] })

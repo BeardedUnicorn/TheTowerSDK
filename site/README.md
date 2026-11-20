@@ -1,18 +1,18 @@
 # TheTowerSDK — public showcase
 
 This is the documentation site. It lives in `site/` inside the
-[TheTowerSDK](https://github.com/TmRxJD/TheTowerSDK) repository — which is what puts it at
+[TheTowerSDK](https://github.com/BeardedUnicorn/TheTowerSDK) repository — which is what puts it at
 `/TheTowerSDK/` rather than the `/TheTowerSDK-site/` it used to publish to — and is excluded
 from the published npm package.
 
 Public site for **[@beardedunicorn/thetowersdk](https://www.npmjs.com/package/@beardedunicorn/thetowersdk)**: game data, save reading, and formulas for _The Tower_.
 
-Live: **https://tmrxjd.github.io/TheTowerSDK/**
+Live: **https://beardedunicorn.github.io/TheTowerSDK/**
 
 | Resource                        | URL                                                       |
 | ------------------------------- | --------------------------------------------------------- |
 | npm                             | https://www.npmjs.com/package/@beardedunicorn/thetowersdk |
-| SDK source                      | https://github.com/TmRxJD/TheTowerSDK                     |
+| SDK source                      | https://github.com/BeardedUnicorn/TheTowerSDK             |
 | Run Tracker (built on this SDK) | https://the-tower-run-tracker.com                         |
 | AGS public docs                 | https://github.com/TmRxJD/agent-governance-system-site    |
 
