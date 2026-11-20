@@ -2398,6 +2398,7 @@ export const TOOLS = {
           levels: inputs.levels,
           mapped: inputs.mapped,
           unmapped: inputs.unmapped,
+          unfilledConfig: inputs.unfilledConfig ?? [],
           coinsPerHour: sdk.save.computeCoinsPerHourFromSaveRoot(loaded.parsedRoot),
         }
       }
@@ -2463,9 +2464,11 @@ export const TOOLS = {
               coinsPerHour: fromSave.coinsPerHour,
               mapped: fromSave.mapped.length,
               unmapped: fromSave.unmapped,
+              unfilledConfig: fromSave.unfilledConfig,
               note:
-                'Planned from this save\'s levels. `unmapped` lists the inputs the save could not '
-                + 'supply; those stayed at zero, so a step that depends on one is still shaped '
+                'Planned from this save\'s levels. `unmapped` lists the candidates the save could '
+                + 'not supply and `unfilledConfig` the config inputs it left at their defaults '
+                + '(cards, perks, module sub-effects); a step that depends on one is still shaped '
                 + 'rather than real. coinsPerHour is the mean of the three best runs — a peak.',
             }
           : {
