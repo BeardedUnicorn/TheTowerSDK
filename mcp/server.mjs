@@ -625,26 +625,130 @@ function summariseExtractor(extractor, parsedRoot) {
   }
 }
 
+/**
+ * How many characters of VALUES one previewed answer may carry.
+ *
+ * A row count is not a size. `preview` capped a sample at 40 rows and an object at its first five
+ * keys, and both were returned whole: thirty battle runs came to 123,000 characters, and the labs
+ * extract to 65,000 because its first key is the whole completion log. A client that cannot hold
+ * that spills it to a file, and the five-key rule meant `researches` and `activeQueue` were never
+ * in the answer at all — so "not in the preview" read as "not in the save".
+ *
+ * The same figure `wiki_page` cuts at, for the same reason.
+ */
+const PREVIEW_CHARS = WIKI_PAGE_CHARS
+
+/** Column names shown for a value that is described rather than returned. */
+const SHAPE_KEYS = 12
+
+/** Serialized length, which is what a client pays. Unserializable counts as too big to show. */
+const sizeOf = (value) => {
+  try {
+    return (JSON.stringify(value) ?? 'null').length
+  }
+  catch {
+    return Number.POSITIVE_INFINITY
+  }
+}
+
+const isRecord = row => Boolean(row) && typeof row === 'object' && !Array.isArray(row)
+
+/** What a value is, without its contents: enough to decide whether to go and read it. */
+const shapeOf = (value) => {
+  if (Array.isArray(value)) {
+    const [first] = value
+    return {
+      kind: 'array',
+      length: value.length,
+      ...(isRecord(first) ? { columns: Object.keys(first).slice(0, SHAPE_KEYS) } : {}),
+      ...(value.length > 0 && !isRecord(first) ? { of: Array.isArray(first) ? 'array' : typeof first } : {}),
+    }
+  }
+  if (isRecord(value)) {
+    const keys = Object.keys(value)
+    return { kind: 'object', keyCount: keys.length, keys: keys.slice(0, SHAPE_KEYS) }
+  }
+  if (typeof value === 'string') return { kind: 'string', length: value.length }
+  return { kind: value === null ? 'null' : typeof value }
+}
+
+/**
+ * The leading rows that fit the budget.
+ *
+ * `atLeastOne` is for a page a caller asked for by position: returning nothing would leave them
+ * with no `next` to move to. A preview has no such obligation and may show none.
+ */
+function fitRows(rows, { atLeastOne = false } = {}) {
+  const kept = []
+  let spent = 0
+  for (const row of rows) {
+    const cost = sizeOf(row) + 1
+    if (spent + cost > PREVIEW_CHARS && !(atLeastOne && kept.length === 0)) break
+    kept.push(row)
+    spent += cost
+  }
+  return kept
+}
+
+/**
+ * The named keys of an object, each whole if it fits and described if it does not.
+ *
+ * Every key gets an entry, so a large field is visible as a large field instead of missing.
+ * `outlined` names the ones that were described, because a shape and a real value are both
+ * objects and nothing else tells them apart.
+ */
+function fitKeys(value, keys) {
+  const sample = {}
+  const outlined = []
+  let spent = 0
+  let shown = 0
+  for (const key of keys) {
+    const overhead = key.length + 4
+    const whole = sizeOf(value[key]) + overhead
+    if (spent + whole <= PREVIEW_CHARS) {
+      sample[key] = value[key]
+      spent += whole
+      shown += 1
+      continue
+    }
+    const shape = shapeOf(value[key])
+    const described = sizeOf(shape) + overhead
+    if (spent + described > PREVIEW_CHARS) break
+    sample[key] = shape
+    outlined.push(key)
+    spent += described
+    shown += 1
+  }
+  return { sample, outlined, shown }
+}
+
 /** Values are often huge tables; never return one whole by accident. */
 const preview = (value, limit = 40) => {
   const size = sampleSize(limit)
 
   if (Array.isArray(value)) {
+    const wanted = value.slice(0, size)
+    const sample = fitRows(wanted)
     return {
       kind: 'array',
       length: value.length,
-      sample: value.slice(0, size),
-      ...(value.length > size ? { sampled: size, truncated: true } : {}),
+      sample,
+      ...(value.length > sample.length ? { sampled: sample.length, truncated: true } : {}),
+      ...(sample.length < wanted.length
+        ? { sizeLimited: true, ...(sample.length === 0 ? { rowShape: shapeOf(wanted[0]) } : {}) }
+        : {}),
     }
   }
   if (value && typeof value === 'object') {
     const keys = Object.keys(value)
+    const { sample, outlined, shown } = fitKeys(value, keys.slice(0, size))
     return {
       kind: 'object',
       keyCount: keys.length,
       keys: keys.slice(0, size),
-      sample: Object.fromEntries(keys.slice(0, 5).map(k => [k, value[k]])),
-      ...(keys.length > size ? { sampled: size, truncated: true } : {}),
+      sample,
+      ...(outlined.length > 0 ? { outlined } : {}),
+      ...(keys.length > shown ? { sampled: shown, truncated: true } : {}),
     }
   }
   return { kind: typeof value, value }
@@ -665,8 +769,15 @@ const oneLine = value => String(value ?? '').replace(/\s*[\r\n]+\s*/g, ' ').trim
  * `total` is what stops a caller reading 40 rows and believing that is all of them, and `next` is
  * the offset to ask for, so continuing is one call rather than arithmetic.
  */
-function pageOf(list, { offset, limit } = {}, { fallback = 40, ceiling = MAX_PREVIEW } = {}) {
-  const start = sampleSize(offset, 0, Math.max(0, list.length))
+function pageOf(list, { offset, limit } = {}, { fallback = 40, ceiling = MAX_PREVIEW, fromEnd = false } = {}) {
+  /*
+   * `fromEnd` is opt-in, for a list whose newest entry is last. Everywhere else a negative offset
+   * stays clamped to zero: it is a typo there, and reading it as "the tail" would answer one.
+   */
+  const counted = fromEnd && typeof offset === 'number' && Number.isFinite(offset) && offset < 0
+    ? list.length + Math.trunc(offset)
+    : offset
+  const start = sampleSize(counted, 0, Math.max(0, list.length))
   const size = sampleSize(limit, fallback, ceiling) || fallback
   const items = list.slice(start, start + size)
   const end = start + items.length
@@ -677,6 +788,203 @@ function pageOf(list, { offset, limit } = {}, { fallback = 40, ceiling = MAX_PRE
     ...(end < list.length ? { truncated: true, next: end } : {}),
     items,
   }
+}
+
+/**
+ * Filter, project and page a list of rows: the body `find_rows` and `read_save_field` share.
+ *
+ * One implementation, because the two tools answer the same question about different sources and
+ * a caller who learned `where` on one should not find it means something else on the other.
+ *
+ * `label` names the source in an error. `keyed` says the rows were made from an object's entries
+ * and so carry `_key`; a list does not, and a caller who filters a list on `_key` is told that
+ * rather than only that the column is missing.
+ */
+function rowsAnswer(rows, { where, search, fields, offset, limit } = {}, { label, keyed = false, fromEnd = false } = {}) {
+  const columns = [...new Set(rows.slice(0, 50).flatMap(row => (isRecord(row) ? Object.keys(row) : [])))]
+  const rules = isRecord(where) ? Object.entries(where) : []
+  const wanted = Array.isArray(fields) ? fields.map(String) : []
+
+  /*
+   * A filter on a column no row has is named, not silently applied. It would match nothing,
+   * and "no rows" from a misspelt field reads exactly like "no such lab".
+   */
+  const unknownFields = [...rules.map(([field]) => field), ...wanted]
+    .filter(field => !rows.some(row => isRecord(row) && Object.hasOwn(row, field)))
+  if (unknownFields.length > 0) {
+    const near = [...new Set(unknownFields.flatMap(field => nearestNames(field, columns, 3)))]
+    return {
+      error: `no row of ${label} has ${unknownFields.map(field => `"${field}"`).join(', ')}`,
+      columns,
+      ...(near.length > 0 ? { didYouMean: near } : {}),
+      ...(unknownFields.includes('_key') && !keyed
+        ? { note: `${label} is a list, so its rows have no \`_key\` — that is only added when the source is an object keyed by name. Filter on one of \`columns\`.` }
+        : {}),
+    }
+  }
+
+  const needle = typeof search === 'string' && search.length > 0 ? search.toLowerCase() : null
+  const matches = rows.filter((row) => {
+    if (rules.length > 0
+      && !(isRecord(row) && rules.every(([field, value]) => Object.hasOwn(row, field) && String(row[field]) === String(value)))) {
+      return false
+    }
+    if (!needle) return true
+    const cells = isRecord(row) ? Object.values(row) : [row]
+    return cells.some(cell => (typeof cell === 'string' || typeof cell === 'number') && String(cell).toLowerCase().includes(needle))
+  })
+
+  const picked = wanted.length > 0
+    ? matches.map(row => Object.fromEntries(wanted.filter(field => Object.hasOwn(row, field)).map(field => [field, row[field]])))
+    : matches
+  const page = pageOf(picked, { offset, limit }, { fallback: 20, ceiling: MAX_PREVIEW, fromEnd })
+
+  /*
+   * A page is cut by size as well as by count. Twenty rows is a small ask until each row is a
+   * battle run of four thousand characters; the caller still gets a `next`, and is told that
+   * naming columns is what makes the rows small.
+   */
+  const items = fitRows(page.items, { atLeastOne: true })
+  const end = page.offset + items.length
+  const cutBySize = items.length < page.items.length
+  return {
+    rows: rows.length,
+    matched: matches.length,
+    columns,
+    offset: page.offset,
+    returned: items.length,
+    ...(end < picked.length ? { truncated: true, next: end } : {}),
+    ...(cutBySize
+      ? { sizeLimited: true, hint: `Rows are large, so this page stopped at ${items.length}. Name the columns you need to fit more per page.` }
+      : {}),
+    items,
+  }
+}
+
+/**
+ * Refuse an argument the tool would not read.
+ *
+ * The transport lets unknown keys through, which is right for a tool where an extra field changes
+ * nothing. It is wrong where the extra field was the point of the call: `calc_run` given
+ * `modifiers` beside `args` dropped it and returned the undiscounted price, a number that reads
+ * as the answer to the question asked.
+ */
+function unreadArguments(toolName, given) {
+  const known = Object.keys(TOOLS[toolName].inputSchema.properties)
+  const unread = Object.keys(given ?? {}).filter(key => !known.includes(key))
+  if (unread.length === 0) return null
+  const near = [...new Set(unread.flatMap(key => nearestNames(key, known, 3)))]
+  return {
+    error: `${toolName} takes ${known.join(', ')}. It does not read ${unread.map(key => `"${key}"`).join(', ')}, so nothing was run.`,
+    ...(near.length > 0 ? { didYouMean: near } : {}),
+  }
+}
+
+/**
+ * Run one save extractor against a file, with every way that can fail reported the same way.
+ *
+ * Returns `{ failure }` — an answer ready to send — or `{ result }`, which is `null` when the
+ * save has nothing for that feature.
+ */
+async function extractFromSave(extractor, savePath) {
+  /*
+   * Own keys only, and this one mattered more than the others.
+   *
+   * `sdk.save[extractor]` walked the prototype chain, and `typeof fn !== 'function'` does not
+   * reject what it finds there — `constructor` IS a function. So asking for an extractor
+   * named "constructor" passed the guard, called `Object(parsedRoot)`, and returned the
+   * entire 741-key save root as if it were that extractor's output. `toString` returned
+   * "[object Undefined]" as a result; `valueOf` and `hasOwnProperty` threw raw TypeErrors.
+   */
+  const fn = sdk.root.hasOwnKey(sdk.save, extractor) ? sdk.save[extractor] : undefined
+  if (typeof fn !== 'function') {
+    const near = nearestNames(
+      String(extractor),
+      Object.keys(sdk.save).filter(name => /^read[A-Z].*FromSaveRoot$/.test(name)),
+      5,
+    )
+    return {
+      failure: {
+        error: `no extractor named "${extractor}"; try list_exports on "save" with filter "FromSaveRoot"`,
+        ...(near.length > 0 ? { didYouMean: near } : {}),
+      },
+    }
+  }
+  const loaded = await readSaveOrExplain(savePath)
+  if (loaded.error) return { failure: loaded }
+  /*
+   * Caught here, as `decode_save` catches it per row. An extractor that throws on an unusual
+   * save came back as a bare "run_extractor failed", with nothing to say which reader or why.
+   */
+  try {
+    return { result: fn(loaded.parsedRoot) ?? null }
+  }
+  catch (error) {
+    return {
+      failure: {
+        extractor,
+        error: `${extractor} threw on this save: ${error instanceof Error ? error.message : String(error)}`,
+      },
+    }
+  }
+}
+
+/** Warnings an extractor reported, capped: they travel beside the data, not instead of it. */
+const WARNINGS_SHOWN = 20
+function warningsOf(result) {
+  const all = Array.isArray(result?.warnings) ? result.warnings : []
+  return {
+    warnings: all.slice(0, WARNINGS_SHOWN),
+    ...(all.length > WARNINGS_SHOWN ? { warningCount: all.length } : {}),
+  }
+}
+
+/** `a.b[2].c` and `a.b.2.c` as the same list of steps. */
+const fieldSteps = field => (typeof field === 'string'
+  ? field.replace(/\[(\d+)\]/g, '.$1').split('.').map(step => step.trim()).filter(step => step.length > 0)
+  : [])
+
+/**
+ * Follow a dotted path into a value, naming the step that failed and what was there instead.
+ *
+ * Own keys only: `constructor` and `toString` are reachable through any object, and a path that
+ * resolves to one would return a function as if the save held it.
+ */
+function followField(root, steps) {
+  let current = root
+  const walked = []
+  for (const step of steps) {
+    const at = walked.length > 0 ? `"${walked.join('.')}"` : 'the result'
+    if (Array.isArray(current)) {
+      const index = /^\d+$/.test(step) ? Number(step) : Number.NaN
+      if (!(index < current.length)) {
+        return {
+          error: `${at} is a list of ${current.length}, and "${step}" is not a position in it`,
+          hint: current.length > 0
+            ? `Use a number from 0 to ${current.length - 1}, or stop the path there and read the list as rows.`
+            : 'The list is empty.',
+        }
+      }
+      current = current[index]
+    }
+    else if (isRecord(current)) {
+      if (!Object.hasOwn(current, step)) {
+        const available = Object.keys(current)
+        const near = nearestNames(step, available, 3)
+        return {
+          error: `${at} has no field "${step}"`,
+          available: available.slice(0, MAX_PREVIEW),
+          ...(near.length > 0 ? { didYouMean: near } : {}),
+        }
+      }
+      current = current[step]
+    }
+    else {
+      return { error: `${at} is ${current === null ? 'null' : `a ${typeof current}`}, so there is no "${step}" inside it` }
+    }
+    walked.push(step)
+  }
+  return { value: current }
 }
 
 /**
@@ -781,7 +1089,15 @@ export const TOOLS = {
        */
       for (const entry of ENTRIES) {
         if (sdk.root.hasOwnKey(sdk[entry], name)) {
-          return { entry, name, ...preview(sdk[entry][name], limit ?? 40) }
+          const shown = preview(sdk[entry][name], limit ?? 40)
+          return {
+            entry,
+            name,
+            ...shown,
+            ...(shown.sizeLimited || shown.outlined
+              ? { next: 'Large values are described, not returned. find_rows reads this export by filter, column and page.' }
+              : {}),
+          }
         }
       }
       return { error: `no export named "${name}"; try list_exports with a filter` }
@@ -793,8 +1109,9 @@ export const TOOLS = {
       'Read the rows you want from one table: filter, pick columns, and page. get_export shows the '
       + 'first rows of anything; this answers "the row for this lab" or "rows 200 to 240" without '
       + 'dumping the table. `where` keeps rows whose fields equal the given values, `search` keeps '
-      + 'rows with that text in any field, `fields` keeps only the named columns. An object of '
-      + 'records is read as rows too, with each key reported as `_key`.',
+      + 'rows with that text in any field, `fields` keeps only the named columns. A list is read as '
+      + 'it is, so filter on its own columns. Only an export that is an object keyed by name gains '
+      + 'a `_key` column holding each key.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -830,49 +1147,8 @@ export const TOOLS = {
         return { error: `"${name}" is a ${typeof value}, not a table; read it with get_export`, entry }
       }
 
-      const isRecord = row => row && typeof row === 'object' && !Array.isArray(row)
-      const columns = [...new Set(rows.slice(0, 50).flatMap(row => (isRecord(row) ? Object.keys(row) : [])))]
-      const rules = where && typeof where === 'object' && !Array.isArray(where) ? Object.entries(where) : []
-
-      /*
-       * A filter on a column no row has is named, not silently applied. It would match nothing,
-       * and "no rows" from a misspelt field reads exactly like "no such lab".
-       */
-      const unknownFields = [...rules.map(([field]) => field), ...(Array.isArray(fields) ? fields : [])]
-        .filter(field => !rows.some(row => isRecord(row) && Object.hasOwn(row, field)))
-      if (unknownFields.length > 0) {
-        return {
-          error: `no row of "${name}" has ${unknownFields.map(field => `"${field}"`).join(', ')}`,
-          columns,
-        }
-      }
-
-      const needle = typeof search === 'string' && search.length > 0 ? search.toLowerCase() : null
-      const matches = rows.filter((row) => {
-        if (rules.length > 0
-          && !(isRecord(row) && rules.every(([field, wanted]) => Object.hasOwn(row, field) && String(row[field]) === String(wanted)))) {
-          return false
-        }
-        if (!needle) return true
-        const cells = isRecord(row) ? Object.values(row) : [row]
-        return cells.some(cell => (typeof cell === 'string' || typeof cell === 'number') && String(cell).toLowerCase().includes(needle))
-      })
-
-      const picked = Array.isArray(fields) && fields.length > 0
-        ? matches.map(row => Object.fromEntries(fields.filter(field => Object.hasOwn(row, field)).map(field => [field, row[field]])))
-        : matches
-      const shown = pageOf(picked, { offset, limit }, { fallback: 20, ceiling: MAX_PREVIEW })
-      return {
-        entry,
-        name,
-        rows: rows.length,
-        matched: matches.length,
-        columns,
-        offset: shown.offset,
-        returned: shown.returned,
-        ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
-        items: shown.items,
-      }
+      const answer = rowsAnswer(rows, { where, search, fields, offset, limit }, { label: `"${name}"`, keyed: !Array.isArray(value) })
+      return answer.error ? answer : { entry, name, ...answer }
     },
   },
 
@@ -902,8 +1178,10 @@ export const TOOLS = {
 
   run_extractor: {
     description:
-      'Run one read*FromSaveRoot against a save and return its result previewed, including any '
-      + 'warnings. Private encrypted saves are unsupported. Returns null for absent features.',
+      'Run one read*FromSaveRoot against a save and return the shape of its result, including any '
+      + 'warnings: every field is listed, small ones in full and large ones as a count and their '
+      + 'columns. Use read_save_field for the data in a large field. Private encrypted saves are '
+      + 'unsupported. Returns null for absent features.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -913,45 +1191,134 @@ export const TOOLS = {
       required: ['extractor', 'path'],
     },
     run: async ({ extractor, path: savePath }) => {
-      /*
-       * Own keys only, and this one mattered more than the others.
-       *
-       * `sdk.save[extractor]` walked the prototype chain, and `typeof fn !== 'function'` does not
-       * reject what it finds there — `constructor` IS a function. So asking for an extractor
-       * named "constructor" passed the guard, called `Object(parsedRoot)`, and returned the
-       * entire 741-key save root as if it were that extractor's output. `toString` returned
-       * "[object Undefined]" as a result; `valueOf` and `hasOwnProperty` threw raw TypeErrors.
-       */
-      const fn = sdk.root.hasOwnKey(sdk.save, extractor) ? sdk.save[extractor] : undefined
-      if (typeof fn !== 'function') {
-        const near = nearestNames(
-          String(extractor),
-          Object.keys(sdk.save).filter(name => /^read[A-Z].*FromSaveRoot$/.test(name)),
-          5,
-        )
-        return {
-          error: `no extractor named "${extractor}"; try list_exports on "save" with filter "FromSaveRoot"`,
-          ...(near.length > 0 ? { didYouMean: near } : {}),
-        }
-      }
-      const loaded = await readSaveOrExplain(savePath)
-      if (loaded.error) return loaded
-      const { parsedRoot } = loaded
-      /*
-       * Caught here, as `decode_save` catches it per row. An extractor that throws on an unusual
-       * save came back as a bare "run_extractor failed", with nothing to say which reader or why.
-       */
-      let result
-      try {
-        result = fn(parsedRoot)
-      }
-      catch (error) {
-        return { extractor, error: `${extractor} threw on this save: ${error instanceof Error ? error.message : String(error)}` }
-      }
-      if (result === null || result === undefined) {
+      const { failure, result } = await extractFromSave(extractor, savePath)
+      if (failure) return failure
+      if (result === null) {
         return { extractor, result: null, note: 'this save has no data for that feature' }
       }
-      return { extractor, warnings: result?.warnings ?? [], ...preview(result) }
+      const shown = preview(result)
+      /*
+       * Where the rest is, in the answer that left it out. Without this a cut preview and a
+       * complete one look the same, and the first is read as "that is all the save holds".
+       */
+      const next = Array.isArray(result)
+        ? (shown.truncated ? 'read_save_field with this extractor and no `field` pages the whole list; `pick` keeps only the columns you name.' : null)
+        : (shown.outlined
+            ? `Fields in \`outlined\` are described, not returned. read_save_field with this extractor and field "${shown.outlined[0]}" reads one in full.`
+            : null)
+      return { extractor, ...warningsOf(result), ...shown, ...(next ? { next } : {}) }
+    },
+  },
+
+  read_save_field: {
+    description:
+      'Read one field of what a save extractor returns — the data itself, a page at a time. '
+      + 'run_extractor shows which fields exist; this returns one. `field` is a dotted path into '
+      + 'the result ("researches", "active.levels", "slots.0.baseStatLevels"). A list comes back as '
+      + 'rows: `pick` keeps only the named columns, `where` and `search` filter, and a negative '
+      + '`offset` counts from the end, so -10 is the last ten. An object comes back key by key, '
+      + 'with `pick` choosing keys. Omit `field` to read the result itself, which is how the run '
+      + 'list from listImportableBattleRuns is read.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        extractor: { type: 'string', description: 'e.g. readLabsFromSaveRoot, or listImportableBattleRuns' },
+        path: { type: 'string', description: 'Absolute path to tool_export.json' },
+        field: {
+          type: 'string',
+          description: 'Dotted path into the result, e.g. "researches" or "active.levels". Omit for the result itself',
+        },
+        pick: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'For a list, the columns to keep in each row. For an object, the keys to keep. Omit for everything',
+        },
+        where: {
+          type: 'object',
+          description: 'Lists only. Column → value; a row is kept when every named column equals its value (compared as text)',
+        },
+        search: { type: 'string', description: 'Lists only. Case-insensitive text to find in any top-level column of a row' },
+        offset: {
+          type: 'number',
+          description: 'Skip this many rows or keys — the `next` from a truncated answer. Negative counts from the end',
+        },
+        limit: { type: 'number', description: 'How many rows to return (default 20, at most 100), or keys of an object (default 100)' },
+      },
+      required: ['extractor', 'path'],
+    },
+    run: async (given) => {
+      const unread = unreadArguments('read_save_field', given)
+      if (unread) return unread
+      const { extractor, path: savePath, field, pick, where, search, offset, limit } = given
+
+      const { failure, result } = await extractFromSave(extractor, savePath)
+      if (failure) return failure
+      if (result === null) {
+        return { extractor, result: null, note: 'this save has no data for that feature' }
+      }
+
+      const steps = fieldSteps(field)
+      const found = followField(result, steps)
+      if (found.error) return { extractor, ...found }
+      const { value } = found
+      const located = steps.length > 0 ? { field: steps.join('.') } : {}
+      const label = steps.length > 0 ? `${extractor}.${steps.join('.')}` : extractor
+      const head = { extractor, ...located, ...warningsOf(result) }
+
+      if (Array.isArray(value)) {
+        const answer = rowsAnswer(value, { where, search, fields: pick, offset, limit }, { label, fromEnd: true })
+        return answer.error ? { extractor, ...located, ...answer } : { ...head, kind: 'list', ...answer }
+      }
+
+      if (isRecord(value)) {
+        /*
+         * Said, not skipped. `where` on an object would otherwise be dropped and the whole object
+         * returned, which reads as "every key matched".
+         */
+        const rowOnly = [where === undefined ? null : 'where', search === undefined ? null : 'search'].filter(Boolean)
+        if (rowOnly.length > 0) {
+          return {
+            extractor,
+            ...located,
+            error: `${label} is an object, and ${rowOnly.join(' and ')} filter${rowOnly.length === 1 ? 's' : ''} the rows of a list`,
+            hint: 'Use `pick` to keep some of its keys, or extend `field` to a list inside it.',
+            keys: Object.keys(value).slice(0, MAX_PREVIEW),
+          }
+        }
+        const every = Object.keys(value)
+        const wanted = Array.isArray(pick) && pick.length > 0 ? pick.map(String) : every
+        const missing = wanted.filter(key => !Object.hasOwn(value, key))
+        if (missing.length > 0) {
+          const near = [...new Set(missing.flatMap(key => nearestNames(key, every, 3)))]
+          return {
+            extractor,
+            ...located,
+            error: `${label} has no ${missing.map(key => `"${key}"`).join(', ')}`,
+            keys: every.slice(0, MAX_PREVIEW),
+            ...(near.length > 0 ? { didYouMean: near } : {}),
+          }
+        }
+        const page = pageOf(wanted, { offset, limit }, { fallback: 100, ceiling: 500, fromEnd: true })
+        const { sample, outlined, shown } = fitKeys(value, page.items)
+        const end = page.offset + shown
+        return {
+          ...head,
+          kind: 'object',
+          keyCount: every.length,
+          offset: page.offset,
+          returned: shown,
+          ...(end < wanted.length ? { truncated: true, next: end } : {}),
+          ...(outlined.length > 0
+            ? {
+                outlined,
+                hint: `Keys in \`outlined\` are described, not returned. Read one by extending the path: field "${[...steps, outlined[0]].join('.')}".`,
+              }
+            : {}),
+          value: sample,
+        }
+      }
+
+      return { ...head, kind: value === null ? 'null' : typeof value, value }
     },
   },
 
@@ -2270,7 +2637,17 @@ export const TOOLS = {
       },
       required: ['id'],
     },
-    run: async ({ id, args, savePath }) => {
+    run: async (call) => {
+      /*
+       * A calculator's parameters go inside `args`. One sent beside it — `modifiers` at the top
+       * level — was dropped, and the calculator ran on its defaults: the full price for a
+       * discounted lab, with nothing to say the discount never arrived.
+       */
+      const unread = unreadArguments('calc_run', call)
+      if (unread) {
+        return { ...unread, hint: 'A calculator\'s own parameters go inside `args`, e.g. {"id": "lab.coinCost", "args": {"labKey": "…", "level": 2, "modifiers": {…}}}.' }
+      }
+      const { id, args, savePath } = call
       const given = { ...(args && typeof args === 'object' && !Array.isArray(args) ? args : {}) }
 
       /*

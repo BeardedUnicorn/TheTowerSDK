@@ -7,7 +7,7 @@
 <h1 class="text-3xl font-semibold">MCP &amp; AI</h1>
 <p class="mt-3 text-muted">
 	The package ships an MCP server, so there is nothing extra to install. Register it and your
-	editor's assistant gains forty-two tools: it can run the shipped calculators and get real
+	editor's assistant gains forty-three tools: it can run the shipped calculators and get real
 	numbers back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and
 	validate what it produced — rather than writing game maths from memory and hoping.
 </p>
@@ -38,7 +38,7 @@
 	them, the server is registered.
 </p>
 
-<h2 class="mt-10 text-xl font-semibold">Forty-Two Tools</h2>
+<h2 class="mt-10 text-xl font-semibold">Forty-Three Tools</h2>
 <p class="mt-3 text-muted">
 	Enough that an assistant can compute, run and check its work rather than only look things up. The
 	groups below are what it gets.
@@ -102,7 +102,8 @@
 		<code>describe_schema</code> — a table's declared shape, not one guessed from a sample row
 	</li>
 	<li>
-		<code>decode_save</code> / <code>run_extractor</code> — what is in a <code>tool_export.json</code>
+		<code>decode_save</code> / <code>run_extractor</code> / <code>read_save_field</code> — what is in a
+		<code>tool_export.json</code>, the fields one reader returns, and one field's data a page at a time
 	</li>
 	<li>
 		<code>battle_history</code> — every run in a save's history, with coins per hour and an average

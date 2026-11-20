@@ -140,12 +140,17 @@ MCP server:
   - `battle_history`: every run in a save, paged, with coins per hour and an average.
   - `chart_rows`: the published rows behind a chart.
   - `form_calc`: list, describe and run the form calculators.
+  - `read_save_field`: one field of a save extractor's result, in full and a page at a time.
+    `field` is a dotted path (`researches`, `active.levels`), `pick` keeps columns, `where` and
+    `search` filter rows, and a negative `offset` counts from the end.
 - **Existing tools can do more.**
   - `plan_effective_path` takes `savePath` for the economy family and plans from the account's
     levels and coins per hour. It reports the inputs the save could not supply.
   - `calc_run` takes `savePath` for calculators that read a save, and awaits async calculators.
   - `wiki_page` takes `offset`, so a page longer than 12,000 characters can be read to the end.
   - `list_exports` takes `offset` and says when it stopped at 300 names.
+  - `calc_describe` lists the keys of an options parameter under `fields`, with units. The two
+    lab calculators and six formatters declare them.
 - **What clients receive changed.**
   - Descriptions are sent whole. They were cut to 180 characters; `TOWER_MCP_COMPACT=1` restores that.
   - A failed call sets `isError`. An answer carrying `error`, or `ok: false`, was sent as a success.
@@ -166,6 +171,18 @@ MCP server:
   - `plan_effective_path` refuses `family: "constructor"`, caps `steps` at 200 and ignores a
     `__proto__` key in `levels`.
   - `run_extractor` reports an extractor that throws, and suggests the nearest name.
+  - `run_extractor` and `get_export` fit a preview into 12,000 characters. They returned up to
+    40 rows or the first five keys whole, which reached 123,000 characters for a run history and
+    left `researches` and `activeQueue` out of the labs result. Every key is now listed; a value
+    too large to show is described by its count and columns and named in `outlined`.
+  - `find_rows` stops a page at 12,000 characters as well as at `limit`, and says so. Its error
+    for an unknown column suggests the nearest ones, and says a list has no `_key`.
+  - `calc_run` refuses a key an options parameter does not declare. `lab.coinCost` with
+    `modifiers: { coinDiscountLevel: 43 }` returned the undiscounted price; it now names the
+    real key, `coinDiscountLabLevel`. An argument sent beside `args` is refused too.
+    `runCalculator` in `thetowersdk/calculators` makes the same check: `CalculatorParam` gains
+    an optional `fields` list (new type `CalculatorParamField`), and a key outside it throws
+    `CalculatorError`. Six formatters now reject an option name they never read.
   - `sdk_sandbox_run` no longer reads Node's `fs` as an entry point, and explains a wrong save path.
   - `oracle_search` caps `limit` at 50. `oracle_brief` reports `matchedExactly`. `oracle_footguns`
     resolves a plain name before looking up its traps.

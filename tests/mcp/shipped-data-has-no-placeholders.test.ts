@@ -36,6 +36,30 @@ const allowedHoles = () => {
   return record.length as number
 }
 
+/**
+ * Every value of an export, as text.
+ *
+ * This read `get_export`'s sample, which was the first 100 rows of a list and the first five keys
+ * of an object. A sample is now also cut at 12,000 characters, so reading it here would have
+ * quietly shrunk what this test looks at. `find_rows` pages, so the scan walks the whole table
+ * instead — more than the sample ever covered — and falls back to the preview only for an export
+ * that is not a table at all.
+ */
+const everythingIn = (name: string): string => {
+  const pages: string[] = []
+  let offset: number | undefined = 0
+  while (offset !== undefined) {
+    const page = TOOLS.find_rows.run({ name, limit: 100, offset })
+    if (page.error) {
+      const value = TOOLS.get_export.run({ name, limit: 100 })
+      return value.error ? '' : JSON.stringify(value.sample ?? value.value ?? '')
+    }
+    pages.push(JSON.stringify(page.items))
+    offset = page.next
+  }
+  return pages.join('\n')
+}
+
 describe('shipped data carries no accidental placeholders', () => {
   it('records the known holes as data, not as prose', () => {
     const holes = TOOLS.get_export.run({ name: KNOWN_HOLES, limit: 100 })
@@ -52,10 +76,7 @@ describe('shipped data carries no accidental placeholders', () => {
 
     for (const entry of TOOLS.list_exports.inputSchema.properties.entry.enum as string[]) {
       for (const { name } of TOOLS.list_exports.run({ entry }).exports) {
-        const value = TOOLS.get_export.run({ name, limit: 100_000 })
-        if (value.error) continue
-
-        const text = JSON.stringify(value.sample ?? value.value ?? '')
+        const text = everythingIn(name)
         if (!text) continue
 
         for (const token of PLACEHOLDERS) {

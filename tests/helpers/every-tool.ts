@@ -123,7 +123,7 @@ const REVIEWED = new Set([
   'oracle_coverage', 'oracle_expand', 'oracle_footguns',
   'oracle_get', 'oracle_map', 'oracle_search',
   'oracle_traps', 'plan_effective_path', 'read_ids',
-  'read_path_display', 'read_range', 'record_ep_relation',
+  'read_path_display', 'read_range', 'read_save_field', 'record_ep_relation',
   'record_mechanic_note', 'record_work_status', 'run_extractor',
   'sdk_debug_snapshot', 'sdk_debug_trace', 'sdk_debug_validate',
   'sdk_debug_watch', 'sdk_docs_generate',

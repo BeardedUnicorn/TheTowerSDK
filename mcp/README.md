@@ -33,12 +33,13 @@ Claude Code: `claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/
 | Tool | What it does |
 |---|---|
 | `list_exports` | What an entry point exports, filterable. Start here rather than guessing a name. |
-| `get_export` | One export, previewed — length plus a sample, so a 300-row table doesn't flood the context. |
+| `get_export` | One export, previewed — length plus a sample that fits 12,000 characters, so a 300-row table doesn't flood the context. |
 | `find_rows` | The rows you want from one table: filter by field, search, pick columns, and page. |
 | `define_term` | What a game term, acronym or set of module initials means, and whether it is ambiguous. |
 | `describe_schema` | The declared shape of a data table, rather than one inferred from a sample row. |
 | `decode_save` | Read an official `tool_export.json` and summarise its game data. |
-| `run_extractor` | Run one `read*FromSaveRoot` against a save, with its warnings. |
+| `run_extractor` | Run one `read*FromSaveRoot` against a save: every field it returns, small ones in full and large ones as a count and columns, with its warnings. |
+| `read_save_field` | One field of an extractor's result, in full and paged: a dotted `field`, `pick` for columns, `where`/`search`, and a negative `offset` for the newest rows. |
 | `battle_history` | Every run in a save's history, paged, with coins per hour and an average. |
 | `calc_list` · `calc_describe` · `calc_run` | Find a calculator, read its inputs, and run it. |
 | `calc_chart` · `calc_graph` | Which calculators produce a chart's numbers, and which calculators feed which. |

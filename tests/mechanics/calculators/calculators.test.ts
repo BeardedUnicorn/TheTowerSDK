@@ -492,6 +492,81 @@ describe.skipIf(!MONOREPO)('calling one wrong says so, rather than answering', (
   })
 })
 
+describe('an options parameter is held to the fields it declares', () => {
+  const lab = { labKey: 'perk_option_quantity', level: 2 }
+
+  it('applies the discount under its real name', () => {
+    // 2,000,000,000 less 43 levels of 0.3%.
+    expect(runCalculator('lab.coinCost', lab).value).toBe(2_000_000_000)
+    expect(runCalculator('lab.coinCost', { ...lab, modifiers: { coinDiscountLabLevel: 43 } }).value)
+      .toBe(1_742_000_000)
+  })
+
+  it('rejects a misspelt field instead of pricing the lab undiscounted', () => {
+    /*
+     * This returned 2,000,000,000 — the full price, for a call that asked for a discount. The
+     * key was one word short, read as absent, and the default of level 0 came back as the answer.
+     */
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: { coinDiscountLevel: 43 } }))
+      .toThrow(/"modifiers" has no field "coinDiscountLevel"\. It takes: coinDiscountLabLevel/)
+  })
+
+  it('checks the type of a field, and that a number is finite', () => {
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: { coinDiscountLabLevel: '43' } }))
+      .toThrow(/wants "modifiers.coinDiscountLabLevel" as number, got string/)
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: { coinDiscountLabLevel: null } }))
+      .toThrow(/got null/)
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: { coinDiscountLabLevel: Number.NaN } }))
+      .toThrow(/finite/)
+  })
+
+  it('rejects null and an array where the bag should be', () => {
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: null }))
+      .toThrow(/as an object of named fields, got null/)
+    expect(() => runCalculator('lab.coinCost', { ...lab, modifiers: [43] }))
+      .toThrow(/got an array/)
+  })
+
+  it('accepts the whole bag on either lab calculator, so one object serves both', () => {
+    const modifiers = { coinDiscountLabLevel: 10, labSpeedLabLevel: 5, labSpeedRelicPct: 0.1, labSpeedMultiplier: 2 }
+    expect(runCalculator('lab.coinCost', { ...lab, modifiers }).value).toBe(2_000_000_000 * 0.97)
+    expect(runCalculator('lab.durationDays', { ...lab, modifiers }).value).toBeGreaterThan(0)
+  })
+
+  it('declares the same fields on every calculator that takes the bag', () => {
+    const fieldsOf = (id: string) =>
+      calculatorSpec(id)?.params.find(param => param.name === 'modifiers')?.fields?.map(field => field.name)
+
+    expect(fieldsOf('lab.coinCost')).toEqual([
+      'coinDiscountLabLevel', 'labSpeedLabLevel', 'labSpeedRelicPct', 'labSpeedMultiplier',
+    ])
+    expect(fieldsOf('lab.durationDays')).toEqual(fieldsOf('lab.coinCost'))
+  })
+
+  it('holds a formatter\'s options to the names the function reads', () => {
+    // The old `describes` said "decimals, fallback, notation". The function takes none of them.
+    expect(() => runCalculator('format.numberForDisplay', { value: 1500, options: { decimals: 1 } }))
+      .toThrow(/"options" has no field "decimals"\. It takes: mode,/)
+    expect(runCalculator('format.numberForDisplay', { value: 1500, options: { mode: 'grouped' } }).value)
+      .toBe('1,500')
+    expect(runCalculator('format.groupedNumber', { value: 'x', options: { invalidFallback: '—' } }).value)
+      .toBe('—')
+  })
+
+  it('only declares fields on object parameters, and gives each a description', () => {
+    for (const spec of CALCULATORS) {
+      for (const param of spec.params) {
+        if (!param.fields) continue
+        expect(param.kind, `${spec.id}.${param.name}`).toBe('object')
+        expect(param.fields.length, `${spec.id}.${param.name}`).toBeGreaterThan(0)
+        for (const field of param.fields) {
+          expect(field.describes.length, `${spec.id}.${param.name}.${field.name}`).toBeGreaterThan(0)
+        }
+      }
+    }
+  })
+})
+
 describe.skipIf(!MONOREPO)('the generated tier is reachable', () => {
   it('wires an implementation for every generated handle', () => {
     for (const spec of GENERATED) {

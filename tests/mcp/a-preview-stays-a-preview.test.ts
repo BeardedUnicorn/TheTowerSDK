@@ -62,14 +62,18 @@ describe('get_export never returns the whole table', () => {
      *
      * The threshold has to sit comfortably between the two behaviours or it proves nothing. The
      * first version allowed 400,000 against a 200-row cap — and PASSED with the fault planted,
-     * because the broken path returned 220 rows at ~359,000. The cap is now 100 rows (~163,000),
-     * which leaves real daylight either side.
+     * because the broken path returned 220 rows at ~359,000. The cap then became 100 rows
+     * (~163,000) under a 250,000 threshold.
+     *
+     * A sample is now cut at 12,000 characters as well, so the worst case is about that, and the
+     * threshold follows it down: at 250,000 this would have gone on passing with the size cut
+     * removed. `a-preview-fits-a-budget` measures every export; this one keeps the hostile limits.
      */
     const worst = Math.max(...HOSTILE.map(limit =>
       JSON.stringify(TOOLS.get_export.run({ name: 'LAB_CATALOG', limit })).length))
 
     expect(worst, 'a preview should not be able to reach six figures of characters')
-      .toBeLessThan(250_000)
+      .toBeLessThan(16_000)
   })
 })
 

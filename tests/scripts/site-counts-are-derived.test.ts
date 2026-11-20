@@ -63,7 +63,7 @@ const DERIVABLE = [
  */
 const NUMBER = '(?:[0-9][0-9,]*[0-9]|[0-9]|two|three|four|five|six|seven|eight|nine|ten|eleven'
   + '|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty-seven'
-  + '|twenty-nine|forty-two|forty-six)'
+  + '|twenty-nine|forty-two|forty-three|forty-six)'
 
 describe.skipIf(!existsSync(SITE))('site counts are derived, not typed', () => {
   const files = siteFiles(SITE).filter((file) => !file.endsWith('sdk-facts.ts'))

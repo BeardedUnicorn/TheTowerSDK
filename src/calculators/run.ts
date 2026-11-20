@@ -121,7 +121,7 @@ import {
 } from '../formatting/numbers/compute'
 import { GENERATED_IMPLEMENTATIONS } from './specs.generated'
 import { CALCULATORS, calculatorSpec } from './registry'
-import type { CalculatorSpec } from './types'
+import type { CalculatorParam, CalculatorSpec } from './types'
 import type { CalculatorResult } from './types'
 
 /** One entry per declared calculator. A missing key is a type error below. */
@@ -325,6 +325,47 @@ function checkArguments(spec: CalculatorSpec, args: Record<string, unknown>): vo
     if (param.kind === 'number' && !Number.isFinite(value as number)) {
       throw new CalculatorError(
         `${spec.id} wants "${param.name}" finite, got ${String(value)}.`,
+      )
+    }
+    if (param.kind === 'object' && param.fields) checkFields(spec, param, value)
+  }
+}
+
+/**
+ * Hold an options bag to the fields it declares.
+ *
+ * The parameter check above stops at `typeof value === 'object'`, so anything
+ * inside went through unread. An option under the wrong name is then simply
+ * absent, the function uses its default, and the caller gets the answer to a
+ * question they did not ask — `lab.coinCost` with `coinDiscountLevel` for
+ * `coinDiscountLabLevel` returned the undiscounted price.
+ */
+function checkFields(spec: CalculatorSpec, param: CalculatorParam, value: unknown): void {
+  const fields = param.fields ?? []
+  if (value === null || Array.isArray(value)) {
+    throw new CalculatorError(
+      `${spec.id} wants "${param.name}" as an object of named fields, got `
+      + `${value === null ? 'null' : 'an array'}.`,
+    )
+  }
+  for (const [key, given] of Object.entries(value as Record<string, unknown>)) {
+    const field = fields.find(candidate => candidate.name === key)
+    if (!field) {
+      throw new CalculatorError(
+        `${spec.id} "${param.name}" has no field "${key}". It takes: `
+        + `${fields.map(candidate => candidate.name).join(', ')}.`,
+      )
+    }
+    if (given === undefined || field.kind === 'unknown') continue
+    const actual = given === null ? 'null' : typeof given
+    if (actual !== field.kind) {
+      throw new CalculatorError(
+        `${spec.id} wants "${param.name}.${key}" as ${field.kind}, got ${actual}.`,
+      )
+    }
+    if (field.kind === 'number' && !Number.isFinite(given as number)) {
+      throw new CalculatorError(
+        `${spec.id} wants "${param.name}.${key}" finite, got ${String(given)}.`,
       )
     }
   }

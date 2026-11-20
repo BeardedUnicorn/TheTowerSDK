@@ -946,7 +946,7 @@ Or by config file:
 | `list_exports` · `get_export` | What exists, and one table previewed rather than dumped |
 | `find_rows` | The rows you want from one table — filtered, searched, paged |
 | `describe_schema` | A table's declared shape, not one guessed from a sample row |
-| `decode_save` · `run_extractor` | What is in a `tool_export.json`, and one reader's output |
+| `decode_save` · `run_extractor` · `read_save_field` | What is in a `tool_export.json`, one reader's fields, and one field's data a page at a time |
 | `battle_history` | Every run in a save's history, with coins per hour and an average |
 | `define_term` | What an acronym means, and whether it is ambiguous |
 | `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, see which chart it draws and what feeds it |

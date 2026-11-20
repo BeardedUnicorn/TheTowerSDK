@@ -40,6 +40,42 @@ describe('find_rows', () => {
     expect(wrong.columns).toContain('slug')
   })
 
+  it('suggests the column that was meant', async () => {
+    const typo = await run('find_rows', { name: 'LAB_CATALOG', where: { slugs: 'damage' } })
+    expect(typo.didYouMean).toContain('slug')
+  })
+
+  it('says a list has no _key, where an object keyed by name does', async () => {
+    /*
+     * The description said "each key reported as `_key`" without saying of what, and
+     * `LAB_RESEARCH_BY_INDEX` reads like something keyed by index. It is a list, and the column
+     * is `index`. The refusal already listed the columns; it did not say why `_key` was not one.
+     */
+    const list = await run('find_rows', { name: 'LAB_RESEARCH_BY_INDEX', where: { _key: '84' } })
+    expect(list.error).toContain('"_key"')
+    expect(list.note).toContain('is a list')
+    expect(list.columns).toContain('index')
+
+    const byIndex = await run('find_rows', { name: 'LAB_RESEARCH_BY_INDEX', where: { index: '84' } })
+    expect(byIndex.matched).toBe(1)
+
+    // An unknown column on a list is not a `_key` mistake, and is not told it was.
+    const other = await run('find_rows', { name: 'LAB_RESEARCH_BY_INDEX', where: { nope: 1 } })
+    expect(other.note).toBeUndefined()
+
+    const keyed = (await run('list_exports', { entry: 'data' })).exports
+      .filter((item: Answer) => item.type === 'object')
+    let withKey: Answer | undefined
+    for (const { name } of keyed) {
+      const page = await run('find_rows', { name, limit: 1 })
+      if (page.columns?.includes('_key')) {
+        withKey = await run('find_rows', { name, where: { _key: page.items[0]._key }, limit: 1 })
+        break
+      }
+    }
+    expect(withKey?.matched, 'an object-shaped export should still be filterable by _key').toBe(1)
+  })
+
   it('never returns more than a page, whatever it is asked for', async () => {
     const greedy = await run('find_rows', { name: 'LAB_CATALOG', limit: 100000 })
     expect(greedy.returned).toBeLessThanOrEqual(100)

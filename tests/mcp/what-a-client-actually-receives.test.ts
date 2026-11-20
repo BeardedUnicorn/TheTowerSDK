@@ -303,6 +303,44 @@ describe.skipIf(!BUILT)('the server over stdio', () => {
       expect(String(noSave.body?.error)).toContain('does not read a save')
     })
 
+    it('calc_run fails a call whose discount it would have dropped', async () => {
+      /*
+       * Both of these came back as successes carrying 2,000,000,000 — the undiscounted price.
+       * Over the wire is where it matters: the transport lets unknown keys through, so only the
+       * tool can refuse, and a refusal a client does not see as `isError` is still an answer.
+       */
+      const lab = { labKey: 'Perk Option Quantity', level: 2 }
+
+      const misspelt = await call('calc_run', { id: 'lab.coinCost', args: { ...lab, modifiers: { coinDiscountLevel: 43 } } })
+      expect(misspelt.isError).toBe(true)
+      expect(String(misspelt.body?.error)).toContain('coinDiscountLabLevel')
+
+      const beside = await call('calc_run', { id: 'lab.coinCost', args: lab, modifiers: { coinDiscountLabLevel: 43 } })
+      expect(beside.isError).toBe(true)
+      expect(String(beside.body?.error)).toContain('"modifiers"')
+      expect(String(beside.body?.hint)).toContain('inside `args`')
+
+      const right = await call('calc_run', { id: 'lab.coinCost', args: { ...lab, modifiers: { coinDiscountLabLevel: 43 } } })
+      expect(right.isError).toBe(false)
+      expect(right.body?.value).toBe(1_742_000_000)
+
+      // The name a caller needs is in the description of the calculator, not only in the refusal.
+      const described = await call('calc_describe', { id: 'lab.coinCost' })
+      const modifiers = (described.body?.params as { name: string, fields?: { name: string }[] }[])
+        .find(param => param.name === 'modifiers')
+      expect(modifiers?.fields?.map(field => field.name)).toContain('coinDiscountLabLevel')
+    })
+
+    it('read_save_field returns a field over the wire, and fails a path that is not there', async () => {
+      const rows = await call('read_save_field', { extractor: 'readLabsFromSaveRoot', path: LABS, field: 'researches', pick: ['displayName', 'level'] })
+      expect(rows.isError).toBe(false)
+      expect(rows.body?.kind).toBe('list')
+
+      const wrong = await call('read_save_field', { extractor: 'readLabsFromSaveRoot', path: LABS, field: 'research' })
+      expect(wrong.isError).toBe(true)
+      expect(wrong.body?.didYouMean).toContain('researches')
+    })
+
     it('the scratchpad explains a wrong path the way decode_save does', async () => {
       const wrong = await call('sdk_sandbox_run', { mode: 'decode', savePath: path.join(scratch, 'missing.json') })
       expect(wrong.isError).toBe(true)

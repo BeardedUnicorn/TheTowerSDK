@@ -6,6 +6,7 @@ Calculator specs and the registry over them.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `fields.ts` | — | fieldsOf, LAB_COST_MODIFIER_FIELDS, NUMBER_OPTIONS, UNKNOWN_NUMBER_OPTIONS (+4 more) |
 | `graph.ts` | How the calculators relate, so "what feeds this number?" is a lookup. | calculatorGraph, upstreamOf, calculatorsProducing, calculatorsReading |
 | `index.ts` | The calculator registry: | — |
 | `oracle-links.ts` | — | CALCULATOR_ORACLE_LINKS |
@@ -16,6 +17,6 @@ Calculator specs and the registry over them.
 | `specs-irregular.ts` | — | IRREGULAR_CALCULATORS |
 | `specs-progress.ts` | — | PROGRESS_CALCULATORS |
 | `specs.generated.ts` | — | GENERATED_CALCULATORS, GENERATED_IMPLEMENTATIONS |
-| `types.ts` | The shape of a declared calculator. | CalculatorParam, CalculatorSpec, CalculatorEdge, CalculatorGraph (+1 more) |
+| `types.ts` | The shape of a declared calculator. | CalculatorParam, CalculatorParamField, CalculatorSpec, CalculatorEdge (+2 more) |
 
 [← src](../MAP.md) · [← the package](../../MAP.md)
