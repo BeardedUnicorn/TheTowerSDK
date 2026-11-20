@@ -63,10 +63,10 @@ function markdownFiles(): string[] {
   return out
 }
 
-const NAMED_IMPORT = /import\s*\{([^}]+)\}\s*from\s*'thetowersdk(?:\/([\w/-]+))?'/g
+const NAMED_IMPORT = /import\s*\{([^}]+)\}\s*from\s*'@beardedunicorn\/thetowersdk(?:\/([\w/-]+))?'/g
 
 /**
- * `import { … } from 'thetowersdk'` elides a list rather than naming one.
+ * `import { … } from '@beardedunicorn/thetowersdk'` elides a list rather than naming one.
  *
  * A sample that writes the ellipsis is saying "and the rest"; reading it as an identifier reported
  * the README importing a symbol called `…`, which no rename will ever fix.
@@ -90,14 +90,14 @@ describe('every markdown example imports something real', () => {
         const subpath = match[2] ?? '.'
         const available = exportsOf(subpath)
         if (!available) {
-          wrong.push(`${rel}: thetowersdk/${subpath} is not an entry point`)
+          wrong.push(`${rel}: @beardedunicorn/thetowersdk/${subpath} is not an entry point`)
           continue
         }
         for (const raw of match[1].split(',')) {
           const symbol = raw.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0].trim()
           if (!symbol || IS_AN_ELISION.test(symbol)) continue
           if (!available.has(symbol)) {
-            wrong.push(`${rel}: ${symbol} is not exported by thetowersdk/${subpath}`)
+            wrong.push(`${rel}: ${symbol} is not exported by @beardedunicorn/thetowersdk/${subpath}`)
           }
         }
       }

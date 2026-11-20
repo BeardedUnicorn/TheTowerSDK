@@ -11,8 +11,8 @@
  * have. This example runs with no artwork present at all, because building a path and loading a
  * file are different steps: it prints where each file WOULD be.
  */
-import { gameAssetPath, gameAssetPaths, assetSlug, towerAssetUrl } from 'thetowersdk/assets'
-import { CARD_TEMPLATES, MODULE_TEMPLATES } from 'thetowersdk/data'
+import { gameAssetPath, gameAssetPaths, assetSlug, towerAssetUrl } from '@beardedunicorn/thetowersdk/assets'
+import { CARD_TEMPLATES, MODULE_TEMPLATES } from '@beardedunicorn/thetowersdk/data'
 
 /** Wherever you serve your own extraction from. */
 const ART_ROOT = '/art'

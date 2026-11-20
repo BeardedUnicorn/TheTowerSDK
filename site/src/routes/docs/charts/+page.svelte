@@ -17,7 +17,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { SHARED_CHART_REGISTRY } from 'thetowersdk/charts'
+		code={`import { SHARED_CHART_REGISTRY } from '@beardedunicorn/thetowersdk/charts'
 
 for (const chart of SHARED_CHART_REGISTRY) {
   console.log(chart.pathId, '—', chart.title)
@@ -44,7 +44,7 @@ console.log(SHARED_CHART_REGISTRY.length)   // 46`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { resolveCanonicalToolDataset } from 'thetowersdk/charts'
+		code={`import { resolveCanonicalToolDataset } from '@beardedunicorn/thetowersdk/charts'
 
 const dataset = resolveCanonicalToolDataset('bot-upgrades', ['Golden Bot'])
 
@@ -72,7 +72,7 @@ console.log(dataset.rows[0])
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { SHARED_CHART_REGISTRY, resolveCanonicalToolDataset } from 'thetowersdk/charts'
+		code={`import { SHARED_CHART_REGISTRY, resolveCanonicalToolDataset } from '@beardedunicorn/thetowersdk/charts'
 
 /** 'bots:upgrades-and-costs:golden-bot' -> 'Golden Bot' */
 const argsFor = (chart) => [
@@ -126,7 +126,7 @@ for (const chart of SHARED_CHART_REGISTRY) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { resolveCanonicalToolLookupTable } from 'thetowersdk/charts'
+		code={`import { resolveCanonicalToolLookupTable } from '@beardedunicorn/thetowersdk/charts'
 
 const table = resolveCanonicalToolLookupTable('gold-bot-vs-death-wave-uptime', [])
 
@@ -146,8 +146,8 @@ console.log(table.rows[0].cellsByKey.syncUptime.value)`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 
@@ -173,7 +173,7 @@ console.log(toHtmlTable(dataset))`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { listChartRendererKeys, findChartsByRendererKey } from 'thetowersdk/charts'
+		code={`import { listChartRendererKeys, findChartsByRendererKey } from '@beardedunicorn/thetowersdk/charts'
 
 console.log(listChartRendererKeys().length)          // 27
 

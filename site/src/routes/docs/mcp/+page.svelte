@@ -14,14 +14,14 @@
 
 <h2 class="mt-10 text-xl font-semibold">Register It</h2>
 <p class="mt-3 text-muted">
-	You need <code>thetowersdk</code> installed in the project first — the server runs from inside it,
+	You need <code>@beardedunicorn/thetowersdk</code> installed in the project first — the server runs from inside it,
 	which is why the path is under <code>node_modules</code>. Run this from the project root.
 </p>
 
 <h3 class="mt-6 text-lg font-medium">Claude Code</h3>
 <p class="mt-2 text-sm text-muted">One command, from your project directory:</p>
 <div class="mt-3">
-	<CodeBlock code="claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/server.mjs" />
+	<CodeBlock code="claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs" />
 </div>
 
 <h3 class="mt-6 text-lg font-medium">Cursor, Copilot, and anything else</h3>
@@ -210,7 +210,7 @@
 <h3 class="mt-6 text-lg font-medium">Registering a Service Account</h3>
 <p class="mt-2 text-sm text-muted">
 	The sheet tools reach a spreadsheet as a Google Cloud <strong>service account</strong>, the same
-	identity the <code>thetowersdk/sheets</code> client uses. The walkthrough lives with the
+	identity the <code>@beardedunicorn/thetowersdk/sheets</code> client uses. The walkthrough lives with the
 	spreadsheet docs so there is one copy of it:
 	<a href={href('/docs/sheets/#connecting-with-a-google-service-account')}
 		>Connecting with a service account</a

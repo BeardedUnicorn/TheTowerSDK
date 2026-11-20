@@ -25,7 +25,7 @@
   sheetNameFromRange,
   a1RangeCellCount,
   splitA1Range
-} from 'thetowersdk/sheets'
+} from '@beardedunicorn/thetowersdk/sheets'
 
 // Coordinates are zero-based; the A1 string is not.
 buildA1Range({ startRow: 0, startCol: 0, endRow: 9, endCol: 2 }, 'My Sheet')
@@ -68,7 +68,7 @@ for (const chunk of splitA1Range(fullRange, 50_000)) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { TowerSheets } from 'thetowersdk/sheets'
+		code={`import { TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
 
 const sheets = new TowerSheets({
   spreadsheetId: '1YwZtKP6B4WYhRba5T6APJ1YxKNdfnIGQnprgnxmO7zc',
@@ -130,7 +130,7 @@ console.log(sheets.isReadOnly)   // true, because that id is protected`}
 <div class="mt-4">
 	<CodeBlock
 		code={`import { GoogleAuth } from 'google-auth-library'
-import { TowerSheets } from 'thetowersdk/sheets'
+import { TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
 
 const auth = new GoogleAuth({
   keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
@@ -202,7 +202,7 @@ console.log(result.notes)`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 

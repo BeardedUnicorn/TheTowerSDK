@@ -16,7 +16,7 @@ import type { CommunityGuideSource } from './types'
  * They were cited one at a time, inline, as anonymous `ref` strings. That made the author
  * invisible: a compartment said "community guide" and the person who wrote it appeared nowhere a
  * reader would look. Collecting them here gives every citation a name, a link and a status, and
- * gives `thetowersdk/contributions` a roster to render.
+ * gives `@beardedunicorn/thetowersdk/contributions` a roster to render.
  *
  * ## What a guide is and is not
  *

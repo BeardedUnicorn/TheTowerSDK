@@ -22,7 +22,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { CALCULATOR_BUILDERS } from 'thetowersdk/builders'
+		code={`import { CALCULATOR_BUILDERS } from '@beardedunicorn/thetowersdk/builders'
 
 for (const builder of CALCULATOR_BUILDERS) {
   console.log(builder.id.padEnd(24), builder.title)
@@ -54,7 +54,7 @@ for (const builder of CALCULATOR_BUILDERS) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { findCalculatorBuilder } from 'thetowersdk/builders'
+		code={`import { findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 
 const uptime = findCalculatorBuilder('uptime.ratio')
 
@@ -97,7 +97,7 @@ console.log(uptime.fields)
 <p class="mt-4 text-sm text-muted">The component logic — three lines:</p>
 <div class="mt-2">
 	<CodeBlock
-		code={`import { findCalculatorBuilder } from 'thetowersdk/builders'
+		code={`import { findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 
 const builder = findCalculatorBuilder('lab.research')
 let input = $state({ ...builder.defaults })
@@ -212,7 +212,7 @@ const changed = Object.keys(used).filter((key) => used[key] !== asked[key])`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { CALCULATOR_BUILDERS, findCalculatorBuilder } from 'thetowersdk/builders'
+		code={`import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 
 const commands = CALCULATOR_BUILDERS.map((builder) => ({
   name: builder.id.replace('.', '-'),
@@ -240,7 +240,7 @@ function run(commandName, values) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { CALCULATOR_BUILDERS } from 'thetowersdk/builders'
+		code={`import { CALCULATOR_BUILDERS } from '@beardedunicorn/thetowersdk/builders'
 
 for (const builder of CALCULATOR_BUILDERS) {
   const result = builder.compute(builder.normalize(builder.defaults))

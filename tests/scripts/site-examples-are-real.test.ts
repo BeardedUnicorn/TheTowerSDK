@@ -43,7 +43,7 @@ function siteFiles(): string[] {
 }
 
 /**
- * `import { a, b } from 'thetowersdk/x'` — in real source and inside printed code samples alike.
+ * `import { a, b } from '@beardedunicorn/thetowersdk/x'` — in real source and inside printed code samples alike.
  *
  * The samples are template literals in `content.ts` and in the pages, so the same pattern finds
  * both. That is deliberate: a sample nobody can run is exactly as broken as an import that fails,
@@ -57,7 +57,7 @@ function siteFiles(): string[] {
  * included.
  */
 const IMPORT =
-  /import\s+(type\s+)?\{([^}]+)\}\s*from\s*['"`]thetowersdk(?:\/([a-z-]+))?['"`]/g
+  /import\s+(type\s+)?\{([^}]+)\}\s*from\s*['"`]@beardedunicorn\/thetowersdk(?:\/([a-z-]+))?['"`]/g
 
 describe.skipIf(!existsSync(SITE) || !existsSync(DIST))('the site imports things that exist', () => {
   const files = siteFiles()
@@ -77,7 +77,7 @@ describe.skipIf(!existsSync(SITE) || !existsSync(DIST))('the site imports things
         const subpath = match[3] ?? '.'
         const available = exportsOf(subpath)
         if (!available) {
-          unknownEntry.push(`${path.relative(SITE, file)} imports from 'thetowersdk/${subpath}'`)
+          unknownEntry.push(`${path.relative(SITE, file)} imports from '@beardedunicorn/thetowersdk/${subpath}'`)
           continue
         }
         if (typeOnlyImport) continue
@@ -105,7 +105,7 @@ describe.skipIf(!existsSync(SITE) || !existsSync(DIST))('the site imports things
            */
           if (symbol.startsWith('type ')) continue
           if (!available.has(symbol)) {
-            missing.push(`${path.relative(SITE, file)}: '${symbol}' is not in thetowersdk/${subpath}`)
+            missing.push(`${path.relative(SITE, file)}: '${symbol}' is not in @beardedunicorn/thetowersdk/${subpath}`)
           }
         }
       }
@@ -132,7 +132,7 @@ describe.skipIf(!existsSync(SITE) || !existsSync(DIST))('the site imports things
    * was not running, which is the one place that must not happen.
    */
   it('the version the site installs has every entry point the site documents', () => {
-    const installed = path.join(SITE, 'node_modules/thetowersdk/package.json')
+    const installed = path.join(SITE, 'node_modules/@beardedunicorn/thetowersdk/package.json')
     if (!existsSync(installed)) return
 
     const manifest = JSON.parse(readFileSync(installed, 'utf8')) as {
@@ -152,7 +152,7 @@ describe.skipIf(!existsSync(SITE) || !existsSync(DIST))('the site imports things
     const absent = [...documented].filter(subpath => !available.has(subpath))
     expect(
       absent,
-      `the site documents ${absent.join(', ')}, which thetowersdk@${manifest.version} does not `
+      `the site documents ${absent.join(', ')}, which @beardedunicorn/thetowersdk@${manifest.version} does not `
       + 'have. Bump the site dependency, or stop documenting what it cannot run.',
     ).toEqual([])
   })

@@ -15,7 +15,7 @@ const GAME_BOOST_FORMULA = { origin: 'code', ref: 'SDK reference model; independ
 
 const CATALOG_LABS = {
   origin: 'code',
-  ref: 'thetowersdk/data LAB_CATALOG dissonant_echo_*',
+  ref: '@beardedunicorn/thetowersdk/data LAB_CATALOG dissonant_echo_*',
   verifiedAt: '2026-08-18',
 } as const
 

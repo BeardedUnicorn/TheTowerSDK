@@ -5,7 +5,7 @@ This file is the canonical instruction set. `CLAUDE.md` and
 
 ## What this package is
 
-`thetowersdk` gives you the game's data and a reader for a player's save file, so you can build
+`@beardedunicorn/thetowersdk` gives you the game's data and a reader for a player's save file, so you can build
 calculators and tools for **The Tower** (TechTree Games' idle tower defence game). Its framework-free
 TypeScript core provides data and calculations. Explicit adapters handle save files, wiki requests,
 Sheets and MCP; random-state helpers expose their stateful behavior separately.
@@ -65,22 +65,22 @@ Sizes are exports, not files — they say how much you are searching through.
 
 | Entry point | Exports | Holds | Reach for it when |
 |---|---:|---|---|
-| `thetowersdk/data` | <!--count:sdk.exports.data-->466<!--/count--> | Game tables and catalogs | You need a cost, a level curve, an effect value, a name |
-| `thetowersdk/save` | <!--count:sdk.exports.save-->444<!--/count--> | `playerInfo.dat` readers | You need what a specific player has |
-| `thetowersdk/mechanics` | <!--count:sdk.exports.mechanics-->1467<!--/count--> | Formulas | You need to compute something the game computes |
-| `thetowersdk/knowledge` | <!--count:sdk.exports.knowledge-->377<!--/count--> | What a number MEANS, and how it is misread | You are modelling a mechanic, not just reading a value |
-| `thetowersdk/charts` | <!--count:sdk.exports.charts-->86<!--/count--> | Curated chart datasets | You are rendering a table the game shows |
-| `thetowersdk/formatting` | <!--count:sdk.exports.formatting-->44<!--/count--> | Number and duration display | You need it to read the way the game shows it |
-| `thetowersdk/wiki` | <!--count:sdk.exports.wiki-->38<!--/count--> | Wikitext → Markdown, page fetch | You need to know how a mechanic behaves |
-| `thetowersdk/builders` | <!--count:sdk.exports.builders-->28<!--/count--> | Calculators that declare their own inputs | You want a form, a command and a test from one place |
-| `thetowersdk/save-decoder` | <!--count:sdk.exports.save-decoder-->5<!--/count--> | The save reader with no Node imports | You are decoding a save in a browser |
-| `thetowersdk/node` | <!--count:sdk.exports.node-->2<!--/count--> | The save decoder | You have bytes and need a save root (Node only) |
-| `thetowersdk/sheets` | <!--count:sdk.exports.sheets-->9<!--/count--> | Reading and writing Google Sheets | You are working against a community spreadsheet |
-| `thetowersdk/bot` | <!--count:sdk.exports.bot-->5<!--/count--> | Every builder as a chat command | You are building a Discord bot |
-| `thetowersdk/contributions` | <!--count:sdk.exports.contributions-->5<!--/count--> | Whose work this package carries | You are rendering credits |
-| `thetowersdk/assets` | <!--count:sdk.exports.assets-->6<!--/count--> | Naming rules for artwork you supply | You are matching image files to catalog rows |
+| `@beardedunicorn/thetowersdk/data` | <!--count:sdk.exports.data-->466<!--/count--> | Game tables and catalogs | You need a cost, a level curve, an effect value, a name |
+| `@beardedunicorn/thetowersdk/save` | <!--count:sdk.exports.save-->444<!--/count--> | `playerInfo.dat` readers | You need what a specific player has |
+| `@beardedunicorn/thetowersdk/mechanics` | <!--count:sdk.exports.mechanics-->1467<!--/count--> | Formulas | You need to compute something the game computes |
+| `@beardedunicorn/thetowersdk/knowledge` | <!--count:sdk.exports.knowledge-->377<!--/count--> | What a number MEANS, and how it is misread | You are modelling a mechanic, not just reading a value |
+| `@beardedunicorn/thetowersdk/charts` | <!--count:sdk.exports.charts-->86<!--/count--> | Curated chart datasets | You are rendering a table the game shows |
+| `@beardedunicorn/thetowersdk/formatting` | <!--count:sdk.exports.formatting-->44<!--/count--> | Number and duration display | You need it to read the way the game shows it |
+| `@beardedunicorn/thetowersdk/wiki` | <!--count:sdk.exports.wiki-->38<!--/count--> | Wikitext → Markdown, page fetch | You need to know how a mechanic behaves |
+| `@beardedunicorn/thetowersdk/builders` | <!--count:sdk.exports.builders-->28<!--/count--> | Calculators that declare their own inputs | You want a form, a command and a test from one place |
+| `@beardedunicorn/thetowersdk/save-decoder` | <!--count:sdk.exports.save-decoder-->5<!--/count--> | The save reader with no Node imports | You are decoding a save in a browser |
+| `@beardedunicorn/thetowersdk/node` | <!--count:sdk.exports.node-->2<!--/count--> | The save decoder | You have bytes and need a save root (Node only) |
+| `@beardedunicorn/thetowersdk/sheets` | <!--count:sdk.exports.sheets-->9<!--/count--> | Reading and writing Google Sheets | You are working against a community spreadsheet |
+| `@beardedunicorn/thetowersdk/bot` | <!--count:sdk.exports.bot-->5<!--/count--> | Every builder as a chat command | You are building a Discord bot |
+| `@beardedunicorn/thetowersdk/contributions` | <!--count:sdk.exports.contributions-->5<!--/count--> | Whose work this package carries | You are rendering credits |
+| `@beardedunicorn/thetowersdk/assets` | <!--count:sdk.exports.assets-->6<!--/count--> | Naming rules for artwork you supply | You are matching image files to catalog rows |
 
-These entry points are the whole surface. There is no `thetowersdk/internal/*`: a module is exported
+These entry points are the whole surface. There is no `@beardedunicorn/thetowersdk/internal/*`: a module is exported
 from one of them or it is not part of the package. Needing something none of them exports is a gap
 worth reporting.
 
@@ -203,7 +203,7 @@ wiki_page   { title: "Wave Skip" }
 wiki_page   { title: "Cards", section: "Costs" }
 ```
 
-In code, `fetchFandomPageAsMarkdown` from `thetowersdk/wiki` does the same. Without MCP, the wiki is
+In code, `fetchFandomPageAsMarkdown` from `@beardedunicorn/thetowersdk/wiki` does the same. Without MCP, the wiki is
 at `the-tower-idle-tower-defense.fandom.com`.
 
 Behaviour that is not derivable from the data alone includes ability sources (one weapon's damage
@@ -232,17 +232,17 @@ such a package.
 
 | Import | Use it for |
 |---|---|
-| `thetowersdk/data` | Game tables — costs, levels, effects, catalogs, reference tables |
-| `thetowersdk/save` | Reading a player's `playerInfo.dat` into typed values |
-| `thetowersdk/node` | Decoding the save file (needs Node; browsers see the recipe in the README) |
-| `thetowersdk/formatting` | Numbers and durations formatted the way the game shows them |
-| `thetowersdk/mechanics` | Formulas — enemy scaling, damage, drops, workshop stats |
-| `thetowersdk/wiki` | Fandom wikitext → Markdown, and fetching a page |
+| `@beardedunicorn/thetowersdk/data` | Game tables — costs, levels, effects, catalogs, reference tables |
+| `@beardedunicorn/thetowersdk/save` | Reading a player's `playerInfo.dat` into typed values |
+| `@beardedunicorn/thetowersdk/node` | Decoding the save file (needs Node; browsers see the recipe in the README) |
+| `@beardedunicorn/thetowersdk/formatting` | Numbers and durations formatted the way the game shows them |
+| `@beardedunicorn/thetowersdk/mechanics` | Formulas — enemy scaling, damage, drops, workshop stats |
+| `@beardedunicorn/thetowersdk/wiki` | Fandom wikitext → Markdown, and fetching a page |
 
 Import from the subpath, not the root barrel, unless you genuinely want everything.
 
 **There is no path past the entry points.** The package used to export its source tree as
-`thetowersdk/internal/*`; it no longer does. If something you need is not exported, that is a gap
+`@beardedunicorn/thetowersdk/internal/*`; it no longer does. If something you need is not exported, that is a gap
 worth reporting.
 
 ## Rules that will save you a bad afternoon
@@ -310,7 +310,7 @@ they publish. Do not soften that into a default.
   no one-off exports that behave differently from their neighbours.
 - **No imports from a barrel inside the same area.** Import the sibling module directly; importing
   your own `index.ts` creates a cycle.
-- **The package never imports itself by name.** Inside `src/`, use relative paths — `thetowersdk/...`
+- **The package never imports itself by name.** Inside `src/`, use relative paths — `@beardedunicorn/thetowersdk/...`
   only resolves when a build happens to exist and breaks as soon as `clean` runs.
 
 ## Anchor an oracle node to the code that implements it

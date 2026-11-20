@@ -7,7 +7,7 @@
  * match the game to the last digit.
  *
  * @example
- * import { computeWaveBaseHealth, abilityDamage } from 'thetowersdk/mechanics'
+ * import { computeWaveBaseHealth, abilityDamage } from '@beardedunicorn/thetowersdk/mechanics'
  *
  * const hp = computeWaveBaseHealth({ tier: 10, wave: 4200, tournament: false })
  */

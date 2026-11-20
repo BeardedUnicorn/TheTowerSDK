@@ -57,7 +57,7 @@ function loadSdk() {
       node: require(path.join(base, 'node', 'index.js')),
       mechanics: require(path.join(base, 'mechanics', 'index.js')),
       /*
-       * Calculators are their own domain and entry, `thetowersdk/calculators`. The registry
+       * Calculators are their own domain and entry, `@beardedunicorn/thetowersdk/calculators`. The registry
        * declares the whole surface, so it imports save/, charts/, wiki/ and node/ — it sits above
        * all of them, never inside the browser-safe mechanics barrel.
        *
@@ -1083,7 +1083,7 @@ export const TOOLS = {
        *
        * `name in sdk[entry]` walks the prototype chain, so `get_export` cheerfully reported
        * `toString`, `constructor`, `valueOf` and `hasOwnProperty` as exports of
-       * `thetowersdk/data` — a fabricated API surface, from the one tool whose job is stopping
+       * `@beardedunicorn/thetowersdk/data` — a fabricated API surface, from the one tool whose job is stopping
        * an agent inventing export names. `AGENTS.md` opens with "find the export; do not invent
        * one", and this was confirming invented ones.
        */

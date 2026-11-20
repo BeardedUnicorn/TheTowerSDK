@@ -1,8 +1,8 @@
-import manifest from 'thetowersdk/package.json';
-import { CALCULATOR_BUILDERS } from 'thetowersdk/builders';
-import { SHARED_CHART_REGISTRY } from 'thetowersdk/charts';
-import { GAME_KNOWLEDGE, PATCH_NOTES, allNodes } from 'thetowersdk/knowledge';
-import * as mechanics from 'thetowersdk/mechanics';
+import manifest from '@beardedunicorn/thetowersdk/package.json';
+import { CALCULATOR_BUILDERS } from '@beardedunicorn/thetowersdk/builders';
+import { SHARED_CHART_REGISTRY } from '@beardedunicorn/thetowersdk/charts';
+import { GAME_KNOWLEDGE, PATCH_NOTES, allNodes } from '@beardedunicorn/thetowersdk/knowledge';
+import * as mechanics from '@beardedunicorn/thetowersdk/mechanics';
 
 /**
  * Counts read from the installed package, never typed into a sentence.
@@ -27,13 +27,13 @@ import * as mechanics from 'thetowersdk/mechanics';
  * is named. `sdkFacts.builders` is the number; there is no `sdkFacts.calculators`, deliberately.
  */
 export const sdkFacts = {
-	/** Ready-made calculators that declare their own inputs — `thetowersdk/builders`. */
+	/** Ready-made calculators that declare their own inputs — `@beardedunicorn/thetowersdk/builders`. */
 	builders: CALCULATOR_BUILDERS.length,
 
-	/** Exported functions on `thetowersdk/mechanics`. */
+	/** Exported functions on `@beardedunicorn/thetowersdk/mechanics`. */
 	formulas: Object.values(mechanics).filter((value) => typeof value === 'function').length,
 
-	/** Curated chart datasets — `thetowersdk/charts`. */
+	/** Curated chart datasets — `@beardedunicorn/thetowersdk/charts`. */
 	chartDatasets: SHARED_CHART_REGISTRY.length,
 
 	/** Entities in the knowledge graph. */

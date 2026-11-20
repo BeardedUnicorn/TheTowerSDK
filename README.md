@@ -4,8 +4,13 @@ Game data, save-file reading and the game's own formulas for **The Tower**, as t
 so you can build calculators, planners, spreadsheets, charts and bots without transcribing a single
 number by hand.
 
+> **This is a fork.** [BeardedUnicorn/TheTowerSDK](https://github.com/BeardedUnicorn/TheTowerSDK) is
+> maintained by Mike Herold and published as `@beardedunicorn/thetowersdk`. It is forked from
+> [TmRxJD/TheTowerSDK](https://github.com/TmRxJD/TheTowerSDK), the original work of **TmRxJD**, whose
+> package on npm is `thetowersdk`. See [Credits](#credits).
+
 ```bash
-npm install thetowersdk@0.13.0 --save-exact
+npm install @beardedunicorn/thetowersdk
 ```
 
 - **Game data** — labs, workshop, modules, cards, perks, relics, guardians, bots, ultimate weapons
@@ -19,11 +24,13 @@ npm install thetowersdk@0.13.0 --save-exact
 
 TypeScript, MIT licensed, one runtime dependency (`zod`).
 
-### 📖 [Documentation, live demos and runnable examples → thetowersdk website](https://tmrxjd.github.io/TheTowerSDK/)
+### 📖 [Documentation, live demos and runnable examples → upstream thetowersdk website](https://tmrxjd.github.io/TheTowerSDK/)
 
-> **Pre-1.0.** The package is published so it can be installed and exercised, not because the API is
-> settled. Exports may be renamed or removed between releases without deprecation. Pin an exact
-> version if you depend on it.
+The website is upstream's and shows the upstream package name. Its examples work here with
+`thetowersdk` replaced by `@beardedunicorn/thetowersdk` in the import.
+
+> **Versions.** The package follows semantic versioning from 1.0.0 — see [Versioning](#versioning).
+> Game data changes when the game does, so pin an exact version if you need the numbers frozen.
 
 ---
 
@@ -32,7 +39,7 @@ TypeScript, MIT licensed, one runtime dependency (`zod`).
 ### Use The Game Data
 
 ```ts
-import { LAB_CATALOG } from 'thetowersdk/data'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const costToMax = (lab) => lab.levels.reduce((sum, level) => sum + level.cost, 0)
 
@@ -49,8 +56,8 @@ without checking where either came from.
 
 ```ts
 import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
-import { readLabsFromSaveRoot } from 'thetowersdk/save'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
+import { readLabsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
 const { parsedRoot } = await decodePlayerInfoSaveBytesAsync(await readFile('tool_export.json'))
 
 const labs = readLabsFromSaveRoot(parsedRoot)
@@ -67,28 +74,28 @@ Private save files and legacy binary files are unsupported.
 
 | Import | Contains | Browser-safe |
 |---|---|---|
-| `thetowersdk/data` | Game tables — costs, levels, effects, catalogs | Yes |
-| `thetowersdk/save` | `read*FromSaveRoot()` readers and save inspection | Yes |
-| `thetowersdk/node` | The save decoder | Node — [see below](#getting-an-official-game-export) |
-| `thetowersdk/save-decoder` | The same decoder with no Node imports, for the browser | Yes |
-| `thetowersdk/formatting` | Number and duration formatting matching the game | Yes |
-| `thetowersdk/mechanics` | Game formulas — see [below](#formulas) | Yes |
-| `thetowersdk/wiki` | Fandom wikitext → Markdown — see [below](#reading-the-community-wiki) | Yes |
-| `thetowersdk/contributions` | Whose work this package carries, as data | Yes |
-| `thetowersdk/charts` | Curated chart catalog and its data — see [below](#charts) | Yes |
-| `thetowersdk/builders` | Ready-made calculators — see [below](#builders) | Yes |
-| `thetowersdk/calculators` | Every exported formula declared by name — what it reads, what it produces, how to call it | Node |
-| `thetowersdk/bot` | Command registry, and every calculator as a command — see [below](#building-a-bot-on-this) | Yes |
-| `thetowersdk/sheets` | Google Sheets reads and writes — see [below](#google-sheets) | Yes |
-| `thetowersdk/knowledge` | The mechanics oracle, and five years of patch notes — see [below](#patch-notes) | Yes |
-| `thetowersdk/assets` | Path helpers for artwork **you supply** — see [below](#using-your-own-artwork) | Yes |
+| `@beardedunicorn/thetowersdk/data` | Game tables — costs, levels, effects, catalogs | Yes |
+| `@beardedunicorn/thetowersdk/save` | `read*FromSaveRoot()` readers and save inspection | Yes |
+| `@beardedunicorn/thetowersdk/node` | The save decoder | Node — [see below](#getting-an-official-game-export) |
+| `@beardedunicorn/thetowersdk/save-decoder` | The same decoder with no Node imports, for the browser | Yes |
+| `@beardedunicorn/thetowersdk/formatting` | Number and duration formatting matching the game | Yes |
+| `@beardedunicorn/thetowersdk/mechanics` | Game formulas — see [below](#formulas) | Yes |
+| `@beardedunicorn/thetowersdk/wiki` | Fandom wikitext → Markdown — see [below](#reading-the-community-wiki) | Yes |
+| `@beardedunicorn/thetowersdk/contributions` | Whose work this package carries, as data | Yes |
+| `@beardedunicorn/thetowersdk/charts` | Curated chart catalog and its data — see [below](#charts) | Yes |
+| `@beardedunicorn/thetowersdk/builders` | Ready-made calculators — see [below](#builders) | Yes |
+| `@beardedunicorn/thetowersdk/calculators` | Every exported formula declared by name — what it reads, what it produces, how to call it | Node |
+| `@beardedunicorn/thetowersdk/bot` | Command registry, and every calculator as a command — see [below](#building-a-bot-on-this) | Yes |
+| `@beardedunicorn/thetowersdk/sheets` | Google Sheets reads and writes — see [below](#google-sheets) | Yes |
+| `@beardedunicorn/thetowersdk/knowledge` | The mechanics oracle, and five years of patch notes — see [below](#patch-notes) | Yes |
+| `@beardedunicorn/thetowersdk/assets` | Path helpers for artwork **you supply** — see [below](#using-your-own-artwork) | Yes |
 
-`import { … } from 'thetowersdk'` re-exports `data`, `save` and `formatting` together. Prefer the
+`import { … } from '@beardedunicorn/thetowersdk'` re-exports `data`, `save` and `formatting` together. Prefer the
 subpaths in real projects so your bundler can drop what you don't use.
 
 ```ts
-import { computeWaveBaseHealth, abilityDamage } from 'thetowersdk/mechanics'
-import { formatDuration } from 'thetowersdk/formatting'
+import { computeWaveBaseHealth, abilityDamage } from '@beardedunicorn/thetowersdk/mechanics'
+import { formatDuration } from '@beardedunicorn/thetowersdk/formatting'
 ```
 
 ---
@@ -122,7 +129,7 @@ Private saves such as `playerInfo.dat`, encrypted containers and legacy binary s
 **Attempting to bypass save-file encryption violates The Tower Terms of Service.**
 
 ```ts
-import { decodeSaveFile } from 'thetowersdk/save-decoder'
+import { decodeSaveFile } from '@beardedunicorn/thetowersdk/save-decoder'
 const root = await decodeSaveFile(await exportFile.arrayBuffer())
 ```
 
@@ -168,7 +175,7 @@ if (labs.warnings.length) {
 Every completed run the game kept is available, with all of its stored fields:
 
 ```ts
-import { listImportableBattleRuns, buildBattleReportStatFields } from 'thetowersdk/save'
+import { listImportableBattleRuns, buildBattleReportStatFields } from '@beardedunicorn/thetowersdk/save'
 
 const runs = listImportableBattleRuns(parsedRoot)
 
@@ -195,7 +202,7 @@ Values are loosely typed and arrays arrive in several shapes, so use the readers
 hand-parsing:
 
 ```ts
-import { coerceSaveNumber, readSaveBoolean, readSaveIntList } from 'thetowersdk/save'
+import { coerceSaveNumber, readSaveBoolean, readSaveIntList } from '@beardedunicorn/thetowersdk/save'
 
 coerceSaveNumber(parsedRoot.someKey) // number | null
 readSaveBoolean(parsedRoot.someFlag) // boolean
@@ -212,7 +219,7 @@ The Tower's wiki is on Fandom, which serves **wikitext** rather than anything yo
 templates, infoboxes, `[[File:…]]` links and vertical wikitables. This converts it to Markdown.
 
 ```ts
-import { fetchFandomPageAsMarkdown } from 'thetowersdk/wiki'
+import { fetchFandomPageAsMarkdown } from '@beardedunicorn/thetowersdk/wiki'
 
 const markdown = await fetchFandomPageAsMarkdown('Cards')
 ```
@@ -220,7 +227,7 @@ const markdown = await fetchFandomPageAsMarkdown('Cards')
 Or the halves separately, if you fetch pages your own way — from a cache, a mirror, or a build step:
 
 ```ts
-import { convertFandomWikitextToMarkdown, resolveFandomFileImages } from 'thetowersdk/wiki'
+import { convertFandomWikitextToMarkdown, resolveFandomFileImages } from '@beardedunicorn/thetowersdk/wiki'
 
 const markdown = convertFandomWikitextToMarkdown(wikitext, { pageTitle: 'Cards' })
 ```
@@ -257,8 +264,8 @@ Generator, Core order. Each has 30 levels, unlocks at tier 23, wave 500, and sta
 the primary module's bonus by 1%; the neutral multiplier of 1 and assist bonuses are unaffected.
 
 ```ts
-import { computeModuleStat, findLabResearchByIndex } from 'thetowersdk/data'
-import { applyWorkshopOvercapMultiplier } from 'thetowersdk/mechanics'
+import { computeModuleStat, findLabResearchByIndex } from '@beardedunicorn/thetowersdk/data'
+import { applyWorkshopOvercapMultiplier } from '@beardedunicorn/thetowersdk/mechanics'
 
 findLabResearchByIndex(253)?.displayName // 'Primary Module Bonus - Cannon'
 computeModuleStat({ type: 'cannon', rarityLabel: 'Epic +', level: 92, primaryLabLevel: 30 })
@@ -275,7 +282,7 @@ Card Presets has its five-level ladder. Catalog inclusion does not establish tha
 Effective Paths planner models every module effect. Inspect lab-cost coverage explicitly:
 
 ```ts
-import { labCoinsRemainingDetailed } from 'thetowersdk/mechanics'
+import { labCoinsRemainingDetailed } from '@beardedunicorn/thetowersdk/mechanics'
 
 const report = labCoinsRemainingDetailed(() => 0, { basis: 'current-catalog' })
 report.coins // Includes the four primary-module lab ladders.
@@ -291,7 +298,7 @@ there and approximately 5.25 in the SDK. The disagreement remains explicit.
 
 ## Formulas
 
-`thetowersdk/mechanics` is the calculation layer:
+`@beardedunicorn/thetowersdk/mechanics` is the calculation layer:
 
 - **Enemy scaling** — wave/tier base health and damage, enemy type multipliers, level skip,
   elite spawn chance, wave-info panel values
@@ -306,20 +313,20 @@ there and approximately 5.25 in the SDK. The disagreement remains explicit.
 - **Battle conditions** — resistance levels, tournament heat, counter labs
 
 ```ts
-import { computeWaveBaseHealth, abilityDamage, goldenComboBonus } from 'thetowersdk/mechanics'
+import { computeWaveBaseHealth, abilityDamage, goldenComboBonus } from '@beardedunicorn/thetowersdk/mechanics'
 ```
 
 ---
 
 ## Builders
 
-Ready-made calculators. Each one pairs the maths in `thetowersdk/mechanics` with the things a tool
+Ready-made calculators. Each one pairs the maths in `@beardedunicorn/thetowersdk/mechanics` with the things a tool
 needs around it and never gets for free: a complete set of defaults, a description of every input,
 normalisation of whatever half-filled state a form is in, and a result that says what it could not
 work out.
 
 ```ts
-import { labResearchCalculator } from 'thetowersdk/builders'
+import { labResearchCalculator } from '@beardedunicorn/thetowersdk/builders'
 
 const result = labResearchCalculator.compute({ labName: 'Damage', targetLevel: 10 })
 console.log(result.totalCoinCost, result.totalHours)
@@ -358,7 +365,7 @@ for (const field of labResearchCalculator.fields) {
 `CALCULATOR_BUILDERS` is all of them, and `findCalculatorBuilder(id)` looks one up — enough to
 build a calculator picker that needs no per-calculator code at all.
 
-They wrap `thetowersdk/mechanics` rather than reimplementing it, so a correction to a formula
+They wrap `@beardedunicorn/thetowersdk/mechanics` rather than reimplementing it, so a correction to a formula
 reaches every tool without anyone re-deriving it.
 
 ### Caps, clamps and level indexing
@@ -416,7 +423,7 @@ table, the tooltip. Charts stay consistent with each other because they are not 
 that happen to agree — they are the same numbers rendered more than one way.
 
 ```ts
-import { LAB_CATALOG } from 'thetowersdk/data'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const lab = LAB_CATALOG.find((l) => l.name === 'Attack Speed')
 
@@ -428,7 +435,7 @@ Hand those points to whatever already draws your charts — Chart.js, D3, Vega, 
 path you build yourself. The same operation across a whole catalog gives you a comparison chart:
 
 ```ts
-import { uwStoneChartData } from 'thetowersdk/data'
+import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 
 // One series per ultimate weapon: stone cost to reach each cooldown level.
 const datasets = Object.values(uwStoneChartData).map((weapon) => {
@@ -448,8 +455,8 @@ Most of what players actually want is a table, not a curve — "what does the ne
 what do I get for it". Same data, same `map`, different rendering:
 
 ```ts
-import { uwStoneChartData } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const gt = Object.values(uwStoneChartData).find((w) => w.name === 'Golden Tower')
 const multiplier = gt.stats.find((s) => s.name === 'Multiplier')
@@ -497,16 +504,16 @@ additional.
 
 ### The Curated Catalog
 
-`thetowersdk/charts` adds a registry of ready-made chart definitions, for when you want
+`@beardedunicorn/thetowersdk/charts` adds a registry of ready-made chart definitions, for when you want
 the same views rather than your own:
 
 ```ts
-import { SHARED_CHART_REGISTRY, findChartByPathId } from 'thetowersdk/charts'
+import { SHARED_CHART_REGISTRY, findChartByPathId } from '@beardedunicorn/thetowersdk/charts'
 ```
 
 It answers *what charts exist and what is in them* — never how they look. Rendering, styling and
 localisation stay with your application. `CHART_MECHANIC_LINKS` maps each chart to the entities in
-`thetowersdk/knowledge` it documents, so a mechanic can find its chart and vice versa.
+`@beardedunicorn/thetowersdk/knowledge` it documents, so a mechanic can find its chart and vice versa.
 
 See [`examples/04-generate-a-chart.ts`](examples/04-generate-a-chart.ts).
 
@@ -537,7 +544,7 @@ import {
   planEffectiveDamagePath,
   ZERO_EFFECTIVE_DAMAGE_LEVELS,
   zeroEffectiveDamageConfig,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 const plan = planEffectiveDamagePath({
   config: zeroEffectiveDamageConfig(),   // the account: what is unlocked, owned, equipped
@@ -572,7 +579,7 @@ import {
   ZERO_EFFECTIVE_ECONOMY_LEVELS,
   planEffectiveEconomyPath,
   zeroEffectiveEconomyConfig,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 // However you got it — a save, a database, a form.
 const myLabLevels = { 'Coins / Kill Bonus': 40, 'Golden Tower Bonus': 12 }
@@ -601,7 +608,7 @@ Golden Tower band is out. Fill the config in the same way — start from `zeroEf
 and set what you know — and those candidates appear.
 
 Reading a save is a separate step, and the extractors are in
-[`thetowersdk/save`](#reading-a-save): `readLabsFromSaveRoot`, `readWorkshopFromSaveRoot`,
+[`@beardedunicorn/thetowersdk/save`](#reading-a-save): `readLabsFromSaveRoot`, `readWorkshopFromSaveRoot`,
 `readModulesFromSaveRoot` and the rest give you the numbers to map from.
 
 ### An Empty Plan Always Says Why
@@ -670,7 +677,7 @@ the same account data a save carries, in a form a player maintains by hand.
 The readers turn that block into typed rows:
 
 ```ts
-import { readIdsLabs, readIdsWorkshop, readIdsCards } from 'thetowersdk/save'
+import { readIdsLabs, readIdsWorkshop, readIdsCards } from '@beardedunicorn/thetowersdk/save'
 
 const labs = readIdsLabs(grid)          // grid: the `_IDS` range as rows of cells
 labs.rows                               // [{ name, level, target, max, saveIndex }, …]
@@ -728,7 +735,7 @@ get wrong.
 | [`browser-widget.ts`](templates/browser-widget.ts) | A UI module with no Node built-ins anywhere | Browser |
 | [`calculator.ts`](templates/calculator.ts) | A calculator: typed input, pure compute, separate formatting | Either |
 | [`bot-starter.ts`](templates/bot-starter.ts) | A complete bot: every calculator, a hand-written command, a CLI | Node |
-| [`sheets-client.ts`](templates/sheets-client.ts) | The googleapis adapter for `thetowersdk/sheets` | Node |
+| [`sheets-client.ts`](templates/sheets-client.ts) | The googleapis adapter for `@beardedunicorn/thetowersdk/sheets` | Node |
 
 ### The three things they encode
 
@@ -736,7 +743,7 @@ get wrong.
 returns is a plain object that extractors read and never mutate, so run as many as you like over
 one root.
 
-**Only `thetowersdk/node` needs Node.** `data`, `save`, `formatting`, `mechanics`, `wiki`,
+**Only `@beardedunicorn/thetowersdk/node` needs Node.** `data`, `save`, `formatting`, `mechanics`, `wiki`,
 `charts` and `knowledge` are all browser-safe. A widget that never opens a save file
 never imports the decoder — that is why `browser-widget.ts` exists as a separate file.
 
@@ -761,7 +768,7 @@ A Tower bot answers the same few hundred questions from data that does not chang
 so most of it is already written:
 
 ```ts
-import { calculatorCommands, createTowerBot } from 'thetowersdk/bot'
+import { calculatorCommands, createTowerBot } from '@beardedunicorn/thetowersdk/bot'
 
 const bot = createTowerBot({ commands: calculatorCommands() })
 const reply = await bot.run('lab-research', { args: { labName: 'Damage', targetLevel: 10 } })
@@ -834,11 +841,11 @@ again, and next time it will be during an incident.
 
 ## Google Sheets
 
-Community workbooks hold things no save file does. `thetowersdk/sheets` reads and writes them, and
+Community workbooks hold things no save file does. `@beardedunicorn/thetowersdk/sheets` reads and writes them, and
 handles the parts that mislead:
 
 ```ts
-import { TowerSheets } from 'thetowersdk/sheets'
+import { TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
 
 const sheets = new TowerSheets({ transport, spreadsheetId, protectSpreadsheets: [COMMUNITY] })
 const grid = await sheets.readGrid('Costs!A1:C50')     // padded to the shape you asked for
@@ -866,7 +873,7 @@ sharing a sheet with it.
 
 The SDK is plain TypeScript with one runtime dependency (zod, for schema validation) and no DOM
 assumptions, so it runs unchanged
-in an Electron renderer, an Electron main process, and a Capacitor WebView. `thetowersdk/node` is the
+in an Electron renderer, an Electron main process, and a Capacitor WebView. `@beardedunicorn/thetowersdk/node` is the
 **only** entry point that needs Node — which is the boundary you want, since the decoder belongs on
 the side that is allowed to read files.
 
@@ -897,7 +904,7 @@ instead of silently invalidating it:
 
 ```ts
 import { buildTrackerAiCanonicalKbChunks, validateCanonicalKbArray } from 'towerai/kb'
-import { LAB_CATALOG } from 'thetowersdk/data'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const mine = LAB_CATALOG.map(lab => ({
   chunk_id: `mine_lab_${lab.name}`,
@@ -923,7 +930,7 @@ There's an MCP server in [`mcp/`](mcp/README.md). Point your agent at it and it 
 API and the real game data instead of guessing at both.
 
 ```bash
-claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/server.mjs
+claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```
 
 Any MCP client works — it speaks stdio.
@@ -935,7 +942,7 @@ Or by config file:
   "mcpServers": {
     "thetowersdk": {
       "command": "node",
-      "args": ["./node_modules/thetowersdk/mcp/server.mjs"]
+      "args": ["./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs"]
     }
   }
 }
@@ -1017,7 +1024,7 @@ this package’s to redistribute.
 What ships is the naming rule, so a tool can find a file in a directory of artwork **you supply**.
 
 ```ts
-import { gameAssetPath, gameAssetPaths, towerAssetUrl, assetSlug } from 'thetowersdk/assets'
+import { gameAssetPath, gameAssetPaths, towerAssetUrl, assetSlug } from '@beardedunicorn/thetowersdk/assets'
 
 gameAssetPath('Amplifying Strike', { domain: 'modules' })
 // 'modules/amplifying-strike-md.webp'
@@ -1064,7 +1071,7 @@ to one player and Spotlight to another; `GC` is Galaxy Compressor or a glass-can
 ships a glossary of 499 terms so you do not have to guess:
 
 ```ts
-import { lookupGlossary, expandAcronym, listAmbiguousGlossaryTerms } from 'thetowersdk/data'
+import { lookupGlossary, expandAcronym, listAmbiguousGlossaryTerms } from '@beardedunicorn/thetowersdk/data'
 
 expandAcronym('CF')      // 'Chrono Field'
 expandAcronym('SL')      // null — it is ambiguous, so there is no single answer
@@ -1098,7 +1105,7 @@ import {
   patchNotesBetween,
   recentPatchNotes,
   PATCH_NOTES_SOURCE,
-} from 'thetowersdk/knowledge'
+} from '@beardedunicorn/thetowersdk/knowledge'
 
 whenIntroduced('shockwave')
 // { postedAt: '2021-07-15…', version: '0.1.29', title: 'v0.1.29 is out for everyone now…' }
@@ -1139,7 +1146,7 @@ most notes are *forwarded*, and a forward carries its text in `message_snapshots
 the forward instead of the original looks like, and it stops if a version falls outside the range
 the game has ever used.
 
-`thetowersdk/knowledge` also carries a `patch-notes` compartment describing those traps, so an
+`@beardedunicorn/thetowersdk/knowledge` also carries a `patch-notes` compartment describing those traps, so an
 agent asking *when did this change* meets the dating rule before it reaches a date.
 
 ### Patch notes: Discord token
@@ -1222,14 +1229,15 @@ Wave scaling in particular builds on earlier community work — see [Credits](#c
 
 ## Versioning
 
-Below 1.0 the version is a build marker, not a compatibility promise: any release may rename or
-remove an export, and data values may change with the game. Pin an exact version.
+The package follows semantic versioning:
 
-From 1.0:
-
-- **Patch** — fixes, new extractors, additive data.
-- **Minor** — data updated for a new game version; existing values may change.
+- **Patch** — fixes and data corrections.
+- **Minor** — new exports, extractors and data, including data updated for a new game version;
+  existing values may change.
 - **Major** — breaking API changes.
+
+Versions below 1.0.0 were published upstream as `thetowersdk`, where the version was a build
+marker rather than a compatibility promise. This fork starts at 1.0.0.
 
 The entry points listed above are the whole public API; there is no path past them.
 
@@ -1308,7 +1316,7 @@ import {
   EFFECTIVE_PATHS_CONTRIBUTORS,
   EFFECTIVE_PATHS_MAINTAINERS,
   EFFECTIVE_PATHS_SUPPORT,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 console.log(EFFECTIVE_PATHS_ATTRIBUTION_WITH_SUPPORT)
 console.log(EFFECTIVE_PATHS_SUPPORT.creatorCode) // 'SHEETLORD'
@@ -1316,7 +1324,7 @@ console.log(EFFECTIVE_PATHS_SUPPORT.creatorCode) // 'SHEETLORD'
 
 ### The wiki contributors
 
-The `thetowersdk/wiki` helpers fetch and reformat pages that other people wrote. Nothing there
+The `@beardedunicorn/thetowersdk/wiki` helpers fetch and reformat pages that other people wrote. Nothing there
 produces knowledge of its own. Thank you to the volunteer editors of the
 [Fandom — The Tower: Idle Tower Defense Wiki](https://the-tower-idle-tower-defense.fandom.com/wiki/)
 and [Game Vault — The Tower Wiki and Guides](https://the-tower-idle-tower-defense.game-vault.net/wiki/).
@@ -1334,19 +1342,25 @@ used under ISC. That project worked out the structure this scaler still uses, an
 constants come from there directly. It's no longer maintained, which is part of why this exists —
 but the groundwork is theirs. See [NOTICE](NOTICE).
 
-### Author, and supporting the work
+### Original author, and supporting the work
 
-Built and maintained by **TmRxJD**, a moderator on the Official Tower Discord, alongside
-[the-tower-run-tracker.com](https://the-tower-run-tracker.com/) — which runs on this package and is
-where most of it was first proven.
+TheTowerSDK was created by **TmRxJD**, a moderator on the Official Tower Discord, alongside
+[the-tower-run-tracker.com](https://the-tower-run-tracker.com/) — which runs on the original package
+and is where most of it was first proven. The original repository is
+[TmRxJD/TheTowerSDK](https://github.com/TmRxJD/TheTowerSDK).
 
-Supporting it costs nothing: enter creator code **`JDEVO`** at checkout in
+Supporting that work costs nothing: enter creator code **`JDEVO`** at checkout in
 [The Tower webstore](https://store.techtreegames.com/thetower/). One-off donations are welcome on
 [Ko-fi](https://ko-fi.com/F1F41FUGWR) or
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=thetowertracker%40gmail.com).
 
 If you only support one thing here, make it the Effective Paths team above — their maths is the
-part of this package that took the most work, and none of it is mine.
+part of this package that took the most work, and it is entirely theirs.
+
+### Fork maintainer
+
+This fork is maintained by **Mike Herold** ([BeardedUnicorn](https://github.com/BeardedUnicorn)) and
+published as `@beardedunicorn/thetowersdk`.
 
 ## License
 

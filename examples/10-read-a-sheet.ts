@@ -8,7 +8,7 @@
  * the same code reads a real spreadsheet — `docs/GOOGLE_SHEETS.md` covers the service
  * account and sharing.
  */
-import { type SheetsTransport, TowerSheets } from 'thetowersdk/sheets'
+import { type SheetsTransport, TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
 
 /** A published workbook someone else owns. Read it; never write to it. */
 const COMMUNITY_SHEET = '1CommunityWorkbookIdGoesHere'

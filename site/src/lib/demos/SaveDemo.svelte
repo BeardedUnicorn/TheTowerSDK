@@ -37,8 +37,8 @@
 			2
 		)}</pre>
 	<p class="text-xs text-muted">
-		<code>thetowersdk/node</code> decodes the file;
-		<code>thetowersdk/save</code> extractors return typed slices (plus
+		<code>@beardedunicorn/thetowersdk/node</code> decodes the file;
+		<code>@beardedunicorn/thetowersdk/save</code> extractors return typed slices (plus
 		<code>warnings</code> when a field is missing or legacy).
 	</p>
 </div>

@@ -28,7 +28,7 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 
 const CATALOG_DAILY = {
   origin: 'code',
-  ref: 'thetowersdk/data DAILY_MISSION_TIER_REWARDS, DAILY_MISSION_WEEKLY_REWARDS',
+  ref: '@beardedunicorn/thetowersdk/data DAILY_MISSION_TIER_REWARDS, DAILY_MISSION_WEEKLY_REWARDS',
   verifiedAt: '2026-08-18',
 } as const
 

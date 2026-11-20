@@ -15,8 +15,8 @@ import {
 	getWorkshopEnhancementDefinitions,
 	getWorkshopStatDefinitions,
 	uwStoneChartData
-} from 'thetowersdk/data';
-import * as mechanics from 'thetowersdk/mechanics';
+} from '@beardedunicorn/thetowersdk/data';
+import * as mechanics from '@beardedunicorn/thetowersdk/mechanics';
 
 function countUwStats(): number {
 	return Object.values(uwStoneChartData).reduce(
@@ -44,7 +44,7 @@ function countGuardianChipStats(): number {
 	);
 }
 
-/** Callable exports from `thetowersdk/mechanics` (ready-to-use formulas). */
+/** Callable exports from `@beardedunicorn/thetowersdk/mechanics` (ready-to-use formulas). */
 function countMechanicsFormulas(): number {
 	return Object.values(mechanics).filter((value) => typeof value === 'function').length;
 }

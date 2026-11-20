@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { CALCULATOR_BUILDERS } from 'thetowersdk/builders';
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { CALCULATOR_BUILDERS } from '@beardedunicorn/thetowersdk/builders';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	/*
 	 * Nothing here knows what any calculator is.

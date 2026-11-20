@@ -11,6 +11,6 @@ Starting points to copy into your own project.
 | `calculator.ts` | TEMPLATE — a calculator with typed inputs. | AffordabilityInput, AffordabilityResult, computeAffordability, formatAffordability |
 | `optional-peers.d.ts` | Modules the templates demonstrate but this package deliberately does not depend on. | — |
 | `save-cli.ts` | TEMPLATE — a command-line tool that reads a player's save. | — |
-| `sheets-client.ts` | The googleapis adapter for `thetowersdk/sheets`. | CreateTransportOptions, createSheetsTransport, createTowerSheets |
+| `sheets-client.ts` | The googleapis adapter for `@beardedunicorn/thetowersdk/sheets`. | CreateTransportOptions, createSheetsTransport, createTowerSheets |
 
 [← the package](../MAP.md)

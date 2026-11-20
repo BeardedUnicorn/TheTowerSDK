@@ -11,7 +11,7 @@
 /* ── enemy wave panel ─────────────────────────────────────────────────────────
  * The composition that turns (tier, wave, skips, labs, perks, battle conditions)
  * into the per-enemy stats the Wave Info panel shows — HP, damage, spawn chance,
- * speed, mass — plus the wave-level footer. Consumed from `thetowersdk/mechanics`
+ * speed, mass — plus the wave-level footer. Consumed from `@beardedunicorn/thetowersdk/mechanics`
  * by apps and bots alike, and guarded by the enemy-stats parity tests.
  * ──────────────────────────────────────────────────────────────────────────── */
 import { clampCampaignTier } from '../../data/tiers/campaign'

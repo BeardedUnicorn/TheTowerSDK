@@ -16,8 +16,8 @@
 	 * because the game's stated multiplier is not its real one. That is why this reports a fraction
 	 * and makes no claim about income.
 	 */
-	import { uwStoneChartData } from 'thetowersdk/data';
-	import { estimateBotUptimeFraction } from 'thetowersdk/mechanics';
+	import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data';
+	import { estimateBotUptimeFraction } from '@beardedunicorn/thetowersdk/mechanics';
 
 	type Option = { level: number; label: string; value: string };
 

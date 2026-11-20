@@ -6,13 +6,13 @@
  * mean inventing categories — combat, economy, progression — that no builder belongs to cleanly,
  * and that would drift the first time one straddled two.
  *
- * Each builder pairs the maths in `thetowersdk/mechanics` with the things a tool needs
+ * Each builder pairs the maths in `@beardedunicorn/thetowersdk/mechanics` with the things a tool needs
  * around it and never gets for free: a complete set of defaults, a description of every
  * input, normalisation of whatever half-filled state a form is in, and a result that says
  * what it could not work out.
  *
  * ```ts
- * import { labResearchCalculator } from 'thetowersdk/builders'
+ * import { labResearchCalculator } from '@beardedunicorn/thetowersdk/builders'
  *
  * const result = labResearchCalculator.compute({ labName: 'Damage', targetLevel: 10 })
  * console.log(result.totalCoinCost, result.totalHours)

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { CONTRIBUTIONS, CONTRIBUTION_SUPPORT, COMMUNITY_GUIDES } from 'thetowersdk/contributions';
-	import { WIKI_CREDIT_SOURCES } from 'thetowersdk/wiki';
+	import { CONTRIBUTIONS, CONTRIBUTION_SUPPORT, COMMUNITY_GUIDES } from '@beardedunicorn/thetowersdk/contributions';
+	import { WIKI_CREDIT_SOURCES } from '@beardedunicorn/thetowersdk/wiki';
 	import CodeBlock from '$lib/ui/CodeBlock.svelte';
 	import { href } from '$lib/paths';
 	import { LINKS } from '$lib/links';
@@ -8,7 +8,7 @@
 	/*
 	 * Rendered from the package, not restated here.
 	 *
-	 * `thetowersdk/contributions` is the roster, so this page cannot drift from what the package
+	 * `@beardedunicorn/thetowersdk/contributions` is the roster, so this page cannot drift from what the package
 	 * says and a name cannot go missing in a redesign. Anything built on the SDK can render the
 	 * same list.
 	 */
@@ -120,7 +120,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { CONTRIBUTIONS, ATTRIBUTION_LINES } from 'thetowersdk/contributions'
+		code={`import { CONTRIBUTIONS, ATTRIBUTION_LINES } from '@beardedunicorn/thetowersdk/contributions'
 
 // One line per source — a footer or an about box.
 for (const line of ATTRIBUTION_LINES) console.log(line)

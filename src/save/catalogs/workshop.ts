@@ -22,7 +22,7 @@ import type { WorkshopCatalogRow, WorkshopEnhancementCatalogRow } from './types'
  *
  * The save decode path in shared-tool-inputs-from-save-extended.ts always
  * iterated rows and matched on `index`/`targetKey`, so imports were never
- * affected. This function is public API of `thetowersdk/save` with no in-repo
+ * affected. This function is public API of `@beardedunicorn/thetowersdk/save` with no in-repo
  * caller, so the damage was confined to external consumers — which is worse to
  * leave, not better.
  */

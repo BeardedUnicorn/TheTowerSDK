@@ -6,7 +6,7 @@
  * exists in the data. Acronym expansions are checked against those same names.
  *
  * ```ts
- * import { lookupGlossary } from 'thetowersdk/data'
+ * import { lookupGlossary } from '@beardedunicorn/thetowersdk/data'
  *
  * lookupGlossary('ILM')   // → Inner Land Mines, ultimate-weapon
  * lookupGlossary('SR')    // → two entries; the term is ambiguous

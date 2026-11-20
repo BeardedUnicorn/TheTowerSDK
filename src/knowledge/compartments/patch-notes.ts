@@ -23,7 +23,7 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 
 const ARCHIVE = {
   origin: 'code',
-  ref: 'thetowersdk/knowledge PATCH_NOTES, ingested from the official announcement channel',
+  ref: '@beardedunicorn/thetowersdk/knowledge PATCH_NOTES, ingested from the official announcement channel',
   verifiedAt: '2026-11-19',
 } as const
 

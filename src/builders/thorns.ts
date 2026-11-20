@@ -8,7 +8,7 @@
  * It used to ask for an enemy factor, a thorn multiplier and a module benefit, and return damage
  * per hit. Those are the parameters of the underlying formula, not quantities anyone can look up,
  * and the answer was in units nobody uses. `thornDamageOnHit` is still exported from
- * `thetowersdk/mechanics` for a caller who has those values already.
+ * `@beardedunicorn/thetowersdk/mechanics` for a caller who has those values already.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    thornsCalculator

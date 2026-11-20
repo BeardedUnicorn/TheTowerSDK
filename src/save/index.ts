@@ -2,15 +2,15 @@
  * Reading a player's save file.
  *
  * Two steps: decode `playerInfo.dat` into a save root, then pull typed data out
- * of that root. Decoding needs gzip and lives in `thetowersdk/node`; everything
+ * of that root. Decoding needs gzip and lives in `@beardedunicorn/thetowersdk/node`; everything
  * here is pure and runs in a browser too.
  *
  * Every `read*FromSaveRoot` returns `null` when the save has no data for that
  * feature, so older saves degrade to "this section is absent" instead of failing.
  *
  * @example
- * import { decodePlayerInfoSaveBytes } from 'thetowersdk/node'
- * import { readLabsFromSaveRoot } from 'thetowersdk/save'
+ * import { decodePlayerInfoSaveBytes } from '@beardedunicorn/thetowersdk/node'
+ * import { readLabsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
  *
  * const { parsedRoot } = decodePlayerInfoSaveBytes(bytes)
  * const labs = readLabsFromSaveRoot(parsedRoot)
@@ -61,5 +61,5 @@ export * from './tier-records'
 // Run history and battle reports
 export * from './battle'
 
-// Mapping save indices onto the named entities in `thetowersdk/data`
+// Mapping save indices onto the named entities in `@beardedunicorn/thetowersdk/data`
 export * from './catalogs'

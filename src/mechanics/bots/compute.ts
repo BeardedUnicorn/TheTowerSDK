@@ -9,7 +9,7 @@
  * They lived in `internal/game-input-data/bot-dropdown-math.ts`, where a control needed them first
  * — and where one of them was wrong for four years' worth of Thunder Bot levels without anything
  * noticing, because nothing in this package called either function. They were reachable only by a
- * consumer importing `thetowersdk/internal/*`.
+ * consumer importing `@beardedunicorn/thetowersdk/internal/*`.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    computeBotCooldownSecondsAtLevel, computeBotDurationSecondsAtLevel, computeBotDurationLabBonusSeconds

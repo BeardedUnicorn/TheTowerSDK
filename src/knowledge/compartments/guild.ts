@@ -37,19 +37,19 @@ import type { KnowledgeEdge, KnowledgeNode, Provenance } from '../substrate/type
 
 const CATALOG_GUILD: Provenance = {
   origin: 'code',
-  ref: 'thetowersdk/data GUILD_SEASONS, GUILD_CHEST_PAYOUTS',
+  ref: '@beardedunicorn/thetowersdk/data GUILD_SEASONS, GUILD_CHEST_PAYOUTS',
   verifiedAt: '2026-08-18',
 }
 
 const GUILD_BOX_TABLE: Provenance = {
   origin: 'code',
-  ref: "thetowersdk/data REFERENCE_TABLES['guilds-rewards-guild-box-rewards']",
+  ref: "@beardedunicorn/thetowersdk/data REFERENCE_TABLES['guilds-rewards-guild-box-rewards']",
   verifiedAt: '2026-08-18',
 }
 
 const MILESTONE_TABLE: Provenance = {
   origin: 'code',
-  ref: 'thetowersdk/data MILESTONE_KEY_UNLOCK_ROWS',
+  ref: '@beardedunicorn/thetowersdk/data MILESTONE_KEY_UNLOCK_ROWS',
   verifiedAt: '2026-08-18',
 }
 

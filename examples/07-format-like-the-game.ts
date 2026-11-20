@@ -18,7 +18,7 @@ import {
   formatMultiplier,
   parseDuration,
   parseResource,
-} from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/formatting'
 
 // Large numbers use the game's own suffix ladder, not scientific notation.
 console.log('Coins as the game shows them:')

@@ -38,7 +38,7 @@ const GAME_CARD_CONSTANTS = { origin: 'code', ref: 'Versioned SDK reference mode
 
 const CATALOG_CARDS = {
   origin: 'code',
-  ref: 'thetowersdk/data cards',
+  ref: '@beardedunicorn/thetowersdk/data cards',
   verifiedAt: '2026-08-17',
 } as const
 

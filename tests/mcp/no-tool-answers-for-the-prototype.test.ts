@@ -17,7 +17,7 @@ import { IN_MONOREPO, everyTool, loadedRegistries } from '../helpers/every-tool'
  *
  * - `run_extractor({ extractor: 'constructor' })` passed the function check, called
  *   `Object(parsedRoot)`, and returned the entire 741-key save root as that extractor's output.
- * - `get_export({ name: 'toString' })` reported `toString` as an export of `thetowersdk/data`,
+ * - `get_export({ name: 'toString' })` reported `toString` as an export of `@beardedunicorn/thetowersdk/data`,
  *   kind `function`. `AGENTS.md` opens with "find the export; do not invent one" — and the tool
  *   whose job is preventing invented names was confirming them.
  * - `valueOf` and `hasOwnProperty` threw raw TypeErrors out of the tool layer.

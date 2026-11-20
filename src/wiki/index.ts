@@ -11,7 +11,7 @@
  * turns that into Markdown.
  *
  * ```ts
- * import { fetchFandomPageAsMarkdown } from 'thetowersdk/wiki'
+ * import { fetchFandomPageAsMarkdown } from '@beardedunicorn/thetowersdk/wiki'
  *
  * const markdown = await fetchFandomPageAsMarkdown('Cards')
  * ```
@@ -19,7 +19,7 @@
  * Or the two halves separately, when you fetch pages your own way:
  *
  * ```ts
- * import { convertFandomWikitextToMarkdown } from 'thetowersdk/wiki'
+ * import { convertFandomWikitextToMarkdown } from '@beardedunicorn/thetowersdk/wiki'
  *
  * const markdown = convertFandomWikitextToMarkdown(wikitext, { pageTitle: 'Cards' })
  * ```

@@ -56,25 +56,25 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
  */
 const CATALOG_SUBEFFECT = {
   origin: 'code',
-  ref: 'thetowersdk/data MODULE_SUBSTATS_CLUSTER, MODULE_EFFECT_RARITY_ROWS, MODULE_SUBSTATS_MISSING_FROM_CHART',
+  ref: '@beardedunicorn/thetowersdk/data MODULE_SUBSTATS_CLUSTER, MODULE_EFFECT_RARITY_ROWS, MODULE_SUBSTATS_MISSING_FROM_CHART',
   verifiedAt: '2026-08-17',
 } as const
 
 const CATALOG_MODULE_RARITY = {
   origin: 'code',
-  ref: 'thetowersdk/data MODULE_RARITY_LEVEL_CAPS, TOWER_MODULE_RARITY_ENUM, getLevelCapForRarity, computeModuleStat',
+  ref: '@beardedunicorn/thetowersdk/data MODULE_RARITY_LEVEL_CAPS, TOWER_MODULE_RARITY_ENUM, getLevelCapForRarity, computeModuleStat',
   verifiedAt: '2026-08-17',
 } as const
 
 const CATALOG_MODULE_COSTS = {
   origin: 'code',
-  ref: 'thetowersdk/data module-costs — getModuleCoinUpgradeCost, MODULE_COIN_COSTS, MODULE_SHARD_COSTS',
+  ref: '@beardedunicorn/thetowersdk/data module-costs — getModuleCoinUpgradeCost, MODULE_COIN_COSTS, MODULE_SHARD_COSTS',
   verifiedAt: '2026-08-17',
 } as const
 
 const CATALOG_MODULE_LABS = {
   origin: 'code',
-  ref: 'thetowersdk/data LAB_RESEARCH_BY_INDEX, DAILY_MISSION_TIER_REWARDS, MODULE_REROLL_COSTS_BY_LOCKED_SUBSTATS',
+  ref: '@beardedunicorn/thetowersdk/data LAB_RESEARCH_BY_INDEX, DAILY_MISSION_TIER_REWARDS, MODULE_REROLL_COSTS_BY_LOCKED_SUBSTATS',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -376,7 +376,7 @@ export const UNIQUE_MODULE_NAMES_BY_TYPE: Readonly<Record<string, readonly strin
 /** The shipped unique-module catalog, joined to rather than copied from. */
 const CATALOG_UNIQUE_MODULES = {
   origin: 'code',
-  ref: 'thetowersdk/data UNIQUE_MODULE_TEMPLATES',
+  ref: '@beardedunicorn/thetowersdk/data UNIQUE_MODULE_TEMPLATES',
   verifiedAt: '2026-08-18',
 } as const
 

@@ -4,7 +4,7 @@
  * No I/O and no side effects: import a table and read it.
  *
  * @example
- * import { LAB_CATALOG } from 'thetowersdk/data'
+ * import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
  *
  * const totalCost = (lab) => (lab.levels ?? []).reduce((sum, l) => sum + (l.cost ?? 0), 0)
  */

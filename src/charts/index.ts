@@ -19,7 +19,7 @@
  * game knowledge.
  *
  * `chart-mechanic-links` closes that loop: it maps each chart to the entities in
- * `thetowersdk/knowledge` it documents, so a mechanic can find its chart and a
+ * `@beardedunicorn/thetowersdk/knowledge` it documents, so a mechanic can find its chart and a
  * chart can find its mechanic.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────

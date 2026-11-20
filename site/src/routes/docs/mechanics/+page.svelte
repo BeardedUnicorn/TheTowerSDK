@@ -7,7 +7,7 @@
 
 <h1 class="text-3xl font-semibold">Formulas</h1>
 <p class="mt-3 text-muted">
-	<code>thetowersdk/mechanics</code> is the maths the game runs, as functions you can call: enemy scaling
+	<code>@beardedunicorn/thetowersdk/mechanics</code> is the maths the game runs, as functions you can call: enemy scaling
 	by tier and wave, ultimate weapon timing, lab and workshop costs, Effective Paths planning, damage reduction,
 	resource drops and more. Each one takes plain values and returns a number, so they drop straight into
 	a calculator, a chart, or a bot command.
@@ -26,7 +26,7 @@
   applyWorkshopOvercapMultiplier,
   sentryProtocolWorkshopOrbFireInterval,
   sentryProtocolCardOrbFireInterval,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 applyWorkshopOvercapMultiplier(100, 7000) // approximately 195.52428085
 sentryProtocolWorkshopOrbFireInterval(2) // 0.1 seconds between shots per orb
@@ -46,8 +46,8 @@ sentryProtocolCardOrbFireInterval(1, 1)  // 0.25 seconds; card speed + lab bonus
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { computeWaveBaseHealth, computeWaveBaseDamage } from 'thetowersdk/mechanics'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { computeWaveBaseHealth, computeWaveBaseDamage } from '@beardedunicorn/thetowersdk/mechanics'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const hp = computeWaveBaseHealth({ tier: 10, wave: 4500 })
 const dmg = computeWaveBaseDamage({ tier: 10, wave: 4500 })
@@ -77,8 +77,8 @@ for (let wave = 100; wave <= 5000; wave += 100) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { computeUptimeRatio } from 'thetowersdk/mechanics'
-import { uwStoneChartData } from 'thetowersdk/data'
+		code={`import { computeUptimeRatio } from '@beardedunicorn/thetowersdk/mechanics'
+import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 
 const seconds = (value) => Number(String(value).replace(/[^0-9.]/g, ''))
 
@@ -115,7 +115,7 @@ console.log(uptime('Black Hole', 8))     // 0.1917…`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { findCalculatorBuilder } from 'thetowersdk/builders'
+		code={`import { findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 
 const wave = findCalculatorBuilder('enemy.wave')
 
@@ -174,7 +174,7 @@ console.log(wave.compute(wave.normalize(wave.defaults)))`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import * as mechanics from 'thetowersdk/mechanics'
+		code={`import * as mechanics from '@beardedunicorn/thetowersdk/mechanics'
 
 const named = (pattern) =>
   Object.keys(mechanics).filter((key) => pattern.test(key) && typeof mechanics[key] === 'function')
@@ -194,8 +194,8 @@ named(/^compute/)      // the 125 top-level calculators`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { computeWaveBaseHealth, computeWaveBaseDamage } from 'thetowersdk/mechanics'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { computeWaveBaseHealth, computeWaveBaseDamage } from '@beardedunicorn/thetowersdk/mechanics'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const towerHealth = 4.2e18
 const rows = []

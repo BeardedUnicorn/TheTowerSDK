@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 /*
  * From the package barrel, not `./substrate/graph`. The substrate functions take the graph as
  * their first argument; the barrel closes over GAME_KNOWLEDGE, and that bound pair is what a
- * consumer of `thetowersdk/knowledge` actually calls. Testing the unbound one would prove
+ * consumer of `@beardedunicorn/thetowersdk/knowledge` actually calls. Testing the unbound one would prove
  * nothing about the thing that shipped.
  */
 import { resolve, resolveWithConfidence } from '../../src/knowledge'

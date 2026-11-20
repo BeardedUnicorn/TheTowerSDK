@@ -13,7 +13,7 @@ import type { ReferenceTable } from './types'
  * chart styling stays with the site; only the values live here.
  *
  * @example
- * import { REFERENCE_TABLES } from 'thetowersdk/data'
+ * import { REFERENCE_TABLES } from '@beardedunicorn/thetowersdk/data'
  *
  * const flameBot = REFERENCE_TABLES['bots-upgrades-and-costs-flame-bot']
  * console.log(flameBot.header, flameBot.rows[0])

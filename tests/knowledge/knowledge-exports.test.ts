@@ -45,7 +45,7 @@ const SURFACES: Record<string, Record<string, unknown>> = {
   /*
    * `sheets` counts too. The spreadsheet compartment names the helpers that
    * handle the reads which mislead — a spilled range, a truncated grid — and
-   * `thetowersdk/sheets` is a published entry point like any other.
+   * `@beardedunicorn/thetowersdk/sheets` is a published entry point like any other.
    */
   sheets: sheets as unknown as Record<string, unknown>,
 }

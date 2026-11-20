@@ -169,8 +169,8 @@ export const homeExamples = [
 	{
 		title: 'Lab Costs',
 		blurb: 'Coins and research time for the next levels.',
-		code: `import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code: `import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 // Find the lab by its display name
 const lab = LAB_CATALOG.find((l) => l.name === 'Attack Speed')
@@ -190,8 +190,8 @@ console.log(formatNumberForDisplay(coins))`
 		title: 'Golden Tower vs Black Hole Uptime',
 		blurb:
 			'Two ultimate weapons compared on the same terms — duration over cooldown, at the same level.',
-		code: `import { uwStoneChartData } from 'thetowersdk/data'
-import { estimateBotUptimeFraction } from 'thetowersdk/mechanics'
+		code: `import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { estimateBotUptimeFraction } from '@beardedunicorn/thetowersdk/mechanics'
 
 function uptime(weaponName, level) {
   const weapon = Object.values(uwStoneChartData).find((w) => w.name === weaponName)
@@ -219,8 +219,8 @@ console.log({ gt, bh })`
 		code: `import {
   computeWaveBaseHealth,
   computeWaveBaseDamage,
-} from 'thetowersdk/mechanics'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/mechanics'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 // Farm tier 10, or tournament Copper as tier 1 + tournament:true
 const hp = computeWaveBaseHealth({ tier: 10, wave: 4500, tournament: false })
@@ -233,7 +233,7 @@ console.log(formatNumberForDisplay(dmg))`
 		title: 'Read A Save',
 		blurb: 'Read typed account data from a decoded save, then build your own summary.',
 		code: `import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
 import {
   readLabsFromSaveRoot,
   readModulesFromSaveRoot,
@@ -241,7 +241,7 @@ import {
   readUltimateWeaponsFromSaveRoot,
   readBotsFromSaveRoot,
   readVaultFromSaveRoot,
-} from 'thetowersdk/save'
+} from '@beardedunicorn/thetowersdk/save'
 const { parsedRoot } = await decodePlayerInfoSaveBytesAsync(
   await readFile('tool_export.json')
 )
@@ -256,8 +256,8 @@ const vault = readVaultFromSaveRoot(parsedRoot)`
 ] as const;
 
 /** Turn stored battle reports into tracker rows. */
-export const runTrackerSnippet = `import { listImportableBattleRuns } from 'thetowersdk/save'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+export const runTrackerSnippet = `import { listImportableBattleRuns } from '@beardedunicorn/thetowersdk/save'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 // Every run the game kept, as it stored them.
 const runs = listImportableBattleRuns(parsedRoot)
@@ -276,8 +276,8 @@ const coins = rows.reduce((sum, r) => sum + r.coins, 0)
 console.log(formatNumberForDisplay((coins / seconds) * 3600), 'coins/hour')`;
 
 /** A cost table generated from a level progression. */
-export const chartSnippet = `import { uwStoneChartData } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+export const chartSnippet = `import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const gt = Object.values(uwStoneChartData).find((w) => w.name === 'Golden Tower')
 const multiplier = gt.stats.find((s) => s.name === 'Multiplier')
@@ -290,7 +290,7 @@ const rows = multiplier.levels.map((l) => {
 })`;
 
 /** The same data plotted instead of tabulated. */
-export const chartCompareSnippet = `import { uwStoneChartData } from 'thetowersdk/data'
+export const chartCompareSnippet = `import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 
 // One series per ultimate weapon: stone cost to reach each cooldown level.
 const datasets = Object.values(uwStoneChartData).map((weapon) => {
@@ -307,8 +307,8 @@ const datasets = Object.values(uwStoneChartData).map((weapon) => {
 chart.data = { datasets }`;
 
 /** Connect to the bridge and receive a save as the player plays. */
-export const adbBridgeSnippet = `import { decodeSaveFile } from 'thetowersdk/save-decoder'
-import { readLabsFromSaveRoot } from 'thetowersdk/save'
+export const adbBridgeSnippet = `import { decodeSaveFile } from '@beardedunicorn/thetowersdk/save-decoder'
+import { readLabsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
 
 // Terminal: npx adb-bridge
 // First tap Player ID five times in the game to create the first export.
@@ -328,7 +328,7 @@ socket.onmessage = async (event) => {
 socket.onopen = () => socket.send(JSON.stringify({ type: 'watch', game: 'the-tower' }))`;
 
 /** Build a spreadsheet from the catalogs. */
-export const sheetBuildSnippet = `import { LAB_CATALOG } from 'thetowersdk/data'
+export const sheetBuildSnippet = `import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 // One row per level: what a sheet actually needs.
 const rows = LAB_CATALOG.flatMap((lab) =>
@@ -364,8 +364,8 @@ export const moreExamples = [
 	{
 		title: 'Module Shard Cost',
 		blurb: 'Shards to take a module from one level to the next.',
-		code: `import { getModuleShardUpgradeCost } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code: `import { getModuleShardUpgradeCost } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 // Cost to reach level 161 from 160
 const shards = getModuleShardUpgradeCost(161)
@@ -374,8 +374,8 @@ console.log(formatNumberForDisplay(shards))`
 	{
 		title: 'Card Gem Cost',
 		blurb: 'Gems to raise a card from one level to another (copies × 20).',
-		code: `import { cardLevelUpgradeGemCost } from 'thetowersdk/mechanics'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code: `import { cardLevelUpgradeGemCost } from '@beardedunicorn/thetowersdk/mechanics'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const gems = cardLevelUpgradeGemCost(0, 7)
 console.log(formatNumberForDisplay(gems))`
@@ -387,7 +387,7 @@ console.log(formatNumberForDisplay(gems))`
   planEffectiveEconomyPath,
   ZERO_EFFECTIVE_ECONOMY_LEVELS,
   zeroEffectiveEconomyConfig,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 const levels = {
   ...ZERO_EFFECTIVE_ECONOMY_LEVELS,
@@ -410,7 +410,7 @@ console.log(plan.excluded.length, 'skipped')`
 	{
 		title: 'Glossary Lookup',
 		blurb: 'Resolve Tower acronyms from the package glossary (generated + curated, no network).',
-		code: `import { lookupGlossary } from 'thetowersdk/data'
+		code: `import { lookupGlossary } from '@beardedunicorn/thetowersdk/data'
 
 const hits = lookupGlossary('CF')
 console.log(hits.map((h) => h.expansion ?? h.term))`
@@ -418,7 +418,7 @@ console.log(hits.map((h) => h.expansion ?? h.term))`
 	{
 		title: 'Any Calculator, From Its Own Declaration',
 		blurb: 'Fields, units and caps are declared, so a form renders a calculator it has never seen.',
-		code: `import { CALCULATOR_BUILDERS, findCalculatorBuilder } from 'thetowersdk/builders'
+		code: `import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
 
 const builder = findCalculatorBuilder('assist.stones')
 
@@ -565,7 +565,7 @@ export const agentPrompts = [
 		prompt: `Build an economy planner UI that runs the effective economy path for N steps and lists what was bought vs skipped (with reasons).`,
 		result: `1. ACS opens an Effective Paths / economy task (researching)
 2. Wiki + MCP context for Effective Paths before controls or tables exist
-3. Resolves planEffectiveEconomyPath and config helpers from thetowersdk/mechanics
+3. Resolves planEffectiveEconomyPath and config helpers from @beardedunicorn/thetowersdk/mechanics
 4. Builds step/variant controls; renders plan.steps and plan.excluded from the planner
 5. ACS checkpoints each slice so the UI cannot drift into a hand-written priority list`
 	},
@@ -612,7 +612,7 @@ export const towerAiSnippet = `import {
   validateCanonicalKbArray,
   buildCanonicalKbVersion,
 } from 'towerai/kb'
-import { LAB_CATALOG } from 'thetowersdk/data'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 // The shipped chunks, then your own on top.
 const base = buildTrackerAiCanonicalKbChunks()
@@ -640,14 +640,14 @@ export const mcpJson = `{
   "mcpServers": {
     "thetowersdk": {
       "command": "node",
-      "args": ["./node_modules/thetowersdk/mcp/server.mjs"]
+      "args": ["./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs"]
     }
   }
 }`;
 
 export const installSnippet = INSTALL_CMD;
 
-export const dataSnippet = `import { LAB_CATALOG } from 'thetowersdk/data'
+export const dataSnippet = `import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 // Sum every level's coin cost for one lab
 const costToMax = (lab) =>
@@ -659,8 +659,8 @@ const priciest = LAB_CATALOG
   .sort((a, b) => b.total - a.total)[0]`;
 
 export const saveSnippet = `import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
-import { readLabsFromSaveRoot } from 'thetowersdk/save'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
+import { readLabsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
 const { parsedRoot } = await decodePlayerInfoSaveBytesAsync(
   await readFile('tool_export.json')
 )
@@ -673,7 +673,7 @@ export const planSnippet = `import {
   planEffectiveDamagePath,
   ZERO_EFFECTIVE_DAMAGE_LEVELS,
   zeroEffectiveDamageConfig,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 const plan = planEffectiveDamagePath({
   config: zeroEffectiveDamageConfig(),

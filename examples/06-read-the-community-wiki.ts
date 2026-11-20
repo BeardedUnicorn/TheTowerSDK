@@ -12,7 +12,7 @@
  * will report itself unavailable below. That is expected, and the fix is to pass
  * a different HTTP client:
  *
- *   import { createCurlFetch } from 'thetowersdk/wiki'
+ *   import { createCurlFetch } from '@beardedunicorn/thetowersdk/wiki'
  *   await searchWikis(title, { fetchImpl: createCurlFetch() })
  *
  * Run it:
@@ -23,7 +23,7 @@ import {
   searchWikis,
   WIKI_ATTRIBUTION,
   WIKI_CREDIT_SOURCES,
-} from 'thetowersdk/wiki'
+} from '@beardedunicorn/thetowersdk/wiki'
 
 async function main(): Promise<void> {
   const title = process.argv.slice(2).join(' ') || 'Golden Tower'

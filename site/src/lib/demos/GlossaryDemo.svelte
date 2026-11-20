@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { lookupGlossary } from 'thetowersdk/data';
+	import { lookupGlossary } from '@beardedunicorn/thetowersdk/data';
 
 	let query = $state('CF');
 	let hits = $derived(lookupGlossary(query.trim()));

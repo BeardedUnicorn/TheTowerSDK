@@ -46,7 +46,7 @@ const WIKI_EVENTS = { origin: 'wiki', ref: 'Events', verifiedAt: '2026-08-16' } 
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_TOURNAMENTS = {
   origin: 'code',
-  ref: 'thetowersdk/data tournaments',
+  ref: '@beardedunicorn/thetowersdk/data tournaments',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -56,7 +56,7 @@ const CATALOG_TOURNAMENTS = {
  * This was its own list of six strings sitting directly beneath the import of the catalog rows it
  * duplicates. The two agreed, and nothing checked that they did — and because both are exported
  * under the same name from different entry points, `TOURNAMENT_LEAGUES` meant a list of names
- * through `thetowersdk/knowledge` and a list of league objects through `thetowersdk/data`.
+ * through `@beardedunicorn/thetowersdk/knowledge` and a list of league objects through `@beardedunicorn/thetowersdk/data`.
  *
  * Sorted by the catalog's own `order`, so promotion order comes from the data too.
  */

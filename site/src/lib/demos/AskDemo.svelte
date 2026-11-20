@@ -7,7 +7,7 @@
 	 * and answers from it, so this page holds no key, no corpus and no prompt pipeline — it sends a
 	 * question and renders what comes back, formatted the way the tracker formats it.
 	 */
-	import { SHARED_CHART_REGISTRY } from 'thetowersdk/charts';
+	import { SHARED_CHART_REGISTRY } from '@beardedunicorn/thetowersdk/charts';
 	import { renderAssistantMarkdown } from '$lib/ui/assistant-markdown';
 
 	/*

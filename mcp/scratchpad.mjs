@@ -8,7 +8,7 @@
  * A scratchpad an assistant can actually reach.
  *
  * `sdk_sandbox_run` shells out to `scripts/mechanics-trust/sandbox-cli.mjs` in the development
- * monorepo. Anyone who installs `thetowersdk` from npm has no such script — so the package
+ * monorepo. Anyone who installs `@beardedunicorn/thetowersdk` from npm has no such script — so the package
  * advertised a sandbox in `tools/list` and returned a spawn failure to every caller who tried it.
  * Nineteen of the forty-two tools were monorepo-only in the same way, and nothing said so.
  *
@@ -99,7 +99,7 @@ function createScratchpadRun({ loadSdk, readSave }) {
        */
       if (!Object.prototype.hasOwnProperty.call(module, name)) {
         const near = nearestNames(name, Object.keys(module))
-        note(`thetowersdk/${entry} does not export ${name}`)
+        note(`@beardedunicorn/thetowersdk/${entry} does not export ${name}`)
         return { found: false, entry, name, didYouMean: near }
       }
       return { found: true, entry, name, ...preview(module[name]) }

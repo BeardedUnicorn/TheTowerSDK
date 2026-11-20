@@ -38,7 +38,7 @@ const COMMUNITY = {
  */
 const CATALOG_GLOSSARY = {
   origin: 'code',
-  ref: 'thetowersdk/data GLOSSARY, expandAcronym',
+  ref: '@beardedunicorn/thetowersdk/data GLOSSARY, expandAcronym',
   verifiedAt: '2026-08-18',
 } as const
 

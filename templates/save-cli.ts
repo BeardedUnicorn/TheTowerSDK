@@ -10,12 +10,12 @@
  *   npx tsx save-cli.ts <path-to-tool_export.json>
  */
 import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
 import {
   readLabsFromSaveRoot,
   readWorkshopFromSaveRoot,
-} from 'thetowersdk/save'
-import { formatLargeNumber } from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/save'
+import { formatLargeNumber } from '@beardedunicorn/thetowersdk/formatting'
 
 /** Everything you want out of one save, gathered in one pass. */
 function report(parsedRoot: Record<string, unknown>): void {

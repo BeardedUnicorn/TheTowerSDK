@@ -6,8 +6,8 @@
 	 * saved, posted to Discord, or dropped into a wiki page. Change the data and
 	 * the image regenerates; nothing is drawn by hand.
 	 */
-	import { uwStoneChartData } from 'thetowersdk/data';
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	const weapons = Object.values(uwStoneChartData);
 

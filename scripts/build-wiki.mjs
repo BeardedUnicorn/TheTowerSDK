@@ -261,7 +261,7 @@ async function main() {
   const sidebar = [
     '**[TheTowerSDK](Home)**',
     '',
-    `[Website](${SITE_URL}) · [npm](https://www.npmjs.com/package/thetowersdk)`,
+    `[Website](${SITE_URL}) · [npm](https://www.npmjs.com/package/@beardedunicorn/thetowersdk)`,
     '',
     ...readmePages.map(page => `- [${page.title}](${page.name})`),
     '',

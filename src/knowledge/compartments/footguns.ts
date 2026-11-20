@@ -114,13 +114,13 @@ export const COOLDOWN_SYNC_TARGETS = {
 /** The stone chart, which prices every ultimate weapon cooldown level. */
 const CATALOG_UW_COOLDOWN = {
   origin: 'code',
-  ref: 'thetowersdk/data uwStoneChartData (Cooldown stat)',
+  ref: '@beardedunicorn/thetowersdk/data uwStoneChartData (Cooldown stat)',
   verifiedAt: '2026-08-18',
 } as const
 
 const CATALOG_BOT_COOLDOWN = {
   origin: 'code',
-  ref: 'thetowersdk/data BOT_UPGRADES_DATA (Cooldown stat and labInfo)',
+  ref: '@beardedunicorn/thetowersdk/data BOT_UPGRADES_DATA (Cooldown stat and labInfo)',
   verifiedAt: '2026-08-18',
 } as const
 

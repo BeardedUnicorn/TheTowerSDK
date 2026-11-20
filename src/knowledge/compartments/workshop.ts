@@ -41,14 +41,14 @@ const GAME_RECOMPUTE = { origin: 'code', ref: 'SDK reference model; independent 
  */
 const CATALOG_ENHANCEMENT = {
   origin: 'code',
-  ref: 'thetowersdk/data WSP_WORKSHOP_COSTS, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT, ENHANCEMENT_VAULT_DISCOUNT_MAX_PCT',
+  ref: '@beardedunicorn/thetowersdk/data WSP_WORKSHOP_COSTS, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT, ENHANCEMENT_VAULT_DISCOUNT_MAX_PCT',
   verifiedAt: '2026-11-18',
 } as const
 
 /** Read from the shipped table rather than transcribed, so it cannot drift. */
 const CATALOG_WORKSHOP = {
   origin: 'code',
-  ref: 'thetowersdk/data WORKSHOP_DATA',
+  ref: '@beardedunicorn/thetowersdk/data WORKSHOP_DATA',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -139,7 +139,7 @@ export const INTEREST_FORMULA =
 /** The shipped save catalog for enhancements, joined to below. */
 const CATALOG_ENHANCEMENTS = {
   origin: 'code',
-  ref: 'thetowersdk/save WORKSHOP_ENHANCEMENT_IMPORT_CATALOG',
+  ref: '@beardedunicorn/thetowersdk/save WORKSHOP_ENHANCEMENT_IMPORT_CATALOG',
   verifiedAt: '2026-08-18',
 } as const
 

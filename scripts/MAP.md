@@ -18,7 +18,7 @@ The checks and generators. Each is a `package.json` script; none is called from 
 | `check-conventions.mjs` | Enforces the package's structural conventions. | — |
 | `check-organization.mjs` | Enforces `docs/ORGANIZATION_CONTRACT.md`. | — |
 | `check-readme-links.mjs` | Validate the README's own anchors and relative file links. | — |
-| `check-sdk-specifiers.mjs` | Does every `thetowersdk/...` specifier in this repo actually resolve to a file? | — |
+| `check-sdk-specifiers.mjs` | Does every `@beardedunicorn/thetowersdk/...` specifier in this repo actually resolve to a file? | — |
 | `check-source-boundaries.mjs` | Check the public repository for private research tooling and machine-specific inputs. | auditSourceBoundaries |
 | `consumer-vocabulary.mjs` | — | CONSUMER_WORDS |
 | `copy-assets.mjs` | — | — |

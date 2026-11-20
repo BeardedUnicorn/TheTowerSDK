@@ -9,8 +9,8 @@ Never mark work finished without human `user_approved`.
 
 Key points when suggesting code here:
 
-- Import from the entry points in `package.json` `exports` — `thetowersdk/data`, `/save`,
-  `/mechanics`, `/calculators`, `/formatting` and the rest. There is no `thetowersdk/internal/*`.
+- Import from the entry points in `package.json` `exports` — `@beardedunicorn/thetowersdk/data`, `/save`,
+  `/mechanics`, `/calculators`, `/formatting` and the rest. There is no `@beardedunicorn/thetowersdk/internal/*`.
 - `read*FromSaveRoot()` returns `T | null`; always guard the result.
 - Save arrays are positional and over-allocated; prefer an unlock flag over a level to decide
   whether a slot is in use.

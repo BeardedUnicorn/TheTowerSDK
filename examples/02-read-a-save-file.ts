@@ -3,7 +3,7 @@
  *
  * Two steps: decode `tool_export.json` into a save root, then pull typed data
  * out of that root. This example uses the asynchronous Node decoder; browser tools use
- * `decodeSaveFile` from `thetowersdk/save-decoder`. Only the official game JSON export is supported.
+ * `decodeSaveFile` from `@beardedunicorn/thetowersdk/save-decoder`. Only the official game JSON export is supported.
  *
  * Run it:
  *   npx tsx examples/02-read-a-save-file.ts /path/to/tool_export.json
@@ -12,12 +12,12 @@
  */
 import { readFile } from 'node:fs/promises'
 
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
 import {
   readCardsFromSaveRoot,
   readLabsFromSaveRoot,
   readWorkshopFromSaveRoot,
-} from 'thetowersdk/save'
+} from '@beardedunicorn/thetowersdk/save'
 
 async function main(): Promise<void> {
   const savePath = process.argv[2]

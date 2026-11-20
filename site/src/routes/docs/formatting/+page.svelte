@@ -21,7 +21,7 @@
   formatCompact,
   formatLargeNumber,
   formatGroupedNumber
-} from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/formatting'
 
 formatNumberForDisplay(18_759_000)     // '18.759M'
 formatCoin(4_770_477_147_914)          // '4.77T'
@@ -49,7 +49,7 @@ formatGroupedNumber(1_234_567)         // '1,234,567'`}
   parseResource,
   parseValueWithUnit,
   standardizeNotation
-} from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/formatting'
 
 parseNumberInput('18.759K')     // 18759
 parseResource('4.77T')          // { value: 4770000000000 }
@@ -77,7 +77,7 @@ standardizeNotation('1.5b')     // '1.5B'`}
   formatSecondsAsHoursMinutes,
   parseDuration,
   parseDurationToHours
-} from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/formatting'
 
 formatDuration(3661)                 // '1h, 1m, 1s'
 formatSecondsAsHoursMinutes(5400)    // '1h 30m'
@@ -99,7 +99,7 @@ parseDurationToHours('38:53:00')     // 38.8833…  — the catalog's own format
   formatMultiplier,
   formatMultiplier3Decimals,
   computeHourlyRate
-} from 'thetowersdk/formatting'
+} from '@beardedunicorn/thetowersdk/formatting'
 
 formatMultiplier(2.4)            // '2.400×'
 formatMultiplier3Decimals(2.4)   // '2.400×'
@@ -116,8 +116,8 @@ computeHourlyRate(4_770_477_147_914, 3600)   // '1.325B'`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay, parseDurationToHours, formatHoursDuration } from 'thetowersdk/formatting'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay, parseDurationToHours, formatHoursDuration } from '@beardedunicorn/thetowersdk/formatting'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 

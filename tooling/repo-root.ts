@@ -12,7 +12,7 @@ import path from 'node:path'
  * Deliberately dependency-free, so any build can import it.
  */
 /**
- * Whether this checkout is the monorepo, rather than the standalone `thetowersdk` repository.
+ * Whether this checkout is the monorepo, rather than the standalone `@beardedunicorn/thetowersdk` repository.
  *
  * The mechanics registry and the graph tooling describe files by their MONOREPO path
  * (`packages/sdk/src/...`) and read them from a repo root discovered by walking up to

@@ -5,7 +5,7 @@
 This document exists because the package drifted. Not in one bad decision — in a hundred small ones,
 each defensible on its own, which together produced a tree only its author could navigate: a
 `mechanics/` folder holding one file next to one holding forty-six, three different names for the
-same idea, and 30,470 lines of one website's plumbing shipped to the public as `thetowersdk/internal/*`.
+same idea, and 30,470 lines of one website's plumbing shipped to the public as `@beardedunicorn/thetowersdk/internal/*`.
 
 Every rule here is written against a specific thing that actually went wrong.
 

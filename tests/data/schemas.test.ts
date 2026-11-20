@@ -24,7 +24,7 @@ describe('public data tables match their schemas', () => {
   for (const [exportName, spec] of Object.entries(DATA_TABLE_SCHEMAS)) {
     it(`${exportName}`, () => {
       const value = publicApi[exportName]
-      expect(value, `${exportName} is not exported from thetowersdk/data or /save`).toBeDefined()
+      expect(value, `${exportName} is not exported from @beardedunicorn/thetowersdk/data or /save`).toBeDefined()
 
       const failures: string[] = []
       const check = (candidate: unknown, where: string) => {

@@ -25,7 +25,7 @@
 		</div>
 		<p class="mt-2 text-sm text-muted">
 			Package:
-			<a href={LINKS.npm}>npmjs.com/package/thetowersdk</a>
+			<a href={LINKS.npm}>npmjs.com/package/@beardedunicorn/thetowersdk</a>
 			· source:
 			<a href={LINKS.github}>GitHub</a>
 		</p>
@@ -99,8 +99,8 @@
 			<code>Android/data/com.TechTreeGames.TheTower/files/tool_export.json</code>.
 			<a href={LINKS.adbBridge}>adb-bridge</a>
 			can copy it from a device or emulator. Decode with
-			<code>thetowersdk/node</code>, then extractors in
-			<code>thetowersdk/save</code>.
+			<code>@beardedunicorn/thetowersdk/node</code>, then extractors in
+			<code>@beardedunicorn/thetowersdk/save</code>.
 		</p>
 	</section>
 
@@ -149,7 +149,7 @@
 			<GlassPanel>
 				<h3 class="font-medium">discord.js — every calculator as a slash command</h3>
 				<p class="mt-2 text-sm text-muted">
-					<code>thetowersdk/bot</code> turns the builders into commands and replies and never
+					<code>@beardedunicorn/thetowersdk/bot</code> turns the builders into commands and replies and never
 					touches a Discord client, so it is transport-agnostic. Add
 					<code>discord.js</code> when you want those commands on a server.
 				</p>
@@ -159,7 +159,7 @@
 			<GlassPanel>
 				<h3 class="font-medium">google-auth-library — read and write spreadsheets</h3>
 				<p class="mt-2 text-sm text-muted">
-					<code>thetowersdk/sheets</code> takes a transport you supply and imports no Google library itself,
+					<code>@beardedunicorn/thetowersdk/sheets</code> takes a transport you supply and imports no Google library itself,
 					so nothing about your auth is assumed. For an unattended tool, a service account is the identity
 					to use.
 				</p>

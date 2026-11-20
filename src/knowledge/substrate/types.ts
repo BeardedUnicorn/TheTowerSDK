@@ -241,10 +241,10 @@ export interface KnowledgeNode {
    * `export const` inside a compartment is not eligible. The surface is what
    * the four curated entry points re-export:
    *
-   *     thetowersdk/data        src/data/index.ts
-   *     thetowersdk/mechanics   src/mechanics/index.ts
-   *     thetowersdk/save        src/save/index.ts
-   *     thetowersdk/knowledge   src/knowledge/index.ts
+   *     @beardedunicorn/thetowersdk/data        src/data/index.ts
+   *     @beardedunicorn/thetowersdk/mechanics   src/mechanics/index.ts
+   *     @beardedunicorn/thetowersdk/save        src/save/index.ts
+   *     @beardedunicorn/thetowersdk/knowledge   src/knowledge/index.ts
    *
    * Each of those lists names explicitly. If a symbol is not in one of them it
    * is not public, however exported it looks at its definition.

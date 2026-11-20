@@ -4,7 +4,7 @@
 	import { href } from '$lib/paths';
 
 	/* A const rather than an inline literal: a mustache holding a bare string is a lint error. */
-	const checkCommands = ['npm view thetowersdk dependencies', 'npm ls --omit=dev'].join('\n');
+	const checkCommands = ['npm view @beardedunicorn/thetowersdk dependencies', 'npm ls --omit=dev'].join('\n');
 </script>
 
 <h1 class="text-3xl font-semibold">Dependencies</h1>

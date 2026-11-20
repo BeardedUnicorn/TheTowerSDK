@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getModuleShardUpgradeCost } from 'thetowersdk/data';
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { getModuleShardUpgradeCost } from '@beardedunicorn/thetowersdk/data';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	const moduleLevelOptions = [
 		1, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280

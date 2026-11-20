@@ -11,7 +11,7 @@
 /*
  * These row types are NOT re-exported here.
  *
- * They belong to `thetowersdk/data`, which is where a consumer should get them.
+ * They belong to `@beardedunicorn/thetowersdk/data`, which is where a consumer should get them.
  * Re-exporting them made the same name reachable through two entry points, and
  * any barrel doing `export * from` both then failed to compile with an
  * ambiguity error — which is the compiler correctly refusing to guess which

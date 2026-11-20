@@ -38,13 +38,13 @@ const GAME_CHIP_TYPE = { origin: 'code', ref: 'Versioned SDK reference model; in
 
 const CATALOG_GUARDIAN_UPGRADES = {
   origin: 'code',
-  ref: 'thetowersdk/data guardianUpgrades',
+  ref: '@beardedunicorn/thetowersdk/data guardianUpgrades',
   verifiedAt: '2026-08-18',
 } as const
 
 const CATALOG_GUARDIAN = {
   origin: 'code',
-  ref: 'thetowersdk/data GUARDIAN_CHIP_TYPE_ENUM',
+  ref: '@beardedunicorn/thetowersdk/data GUARDIAN_CHIP_TYPE_ENUM',
   verifiedAt: '2026-08-17',
 } as const
 

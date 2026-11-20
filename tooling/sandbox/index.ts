@@ -83,7 +83,7 @@ function tryDecodeSave(savePath: string, repoRoot: string): unknown {
       path: abs,
       byteLength: fs.statSync(abs).size,
       skippedDecode: true,
-      reason: 'thetowersdk/node build not found — run pnpm build in packages/sdk, or pass a .json fixture',
+      reason: '@beardedunicorn/thetowersdk/node build not found — run pnpm build in packages/sdk, or pass a .json fixture',
     }
   }
   const bytes = fs.readFileSync(abs)

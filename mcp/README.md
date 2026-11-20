@@ -7,7 +7,7 @@ guess at one.
 ## Run it
 
 ```bash
-node ./node_modules/thetowersdk/mcp/server.mjs
+node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```
 
 It speaks MCP over stdio, so register it as a stdio server. Working on the package itself,
@@ -20,13 +20,13 @@ By config file:
   "mcpServers": {
     "thetowersdk": {
       "command": "node",
-      "args": ["./node_modules/thetowersdk/mcp/server.mjs"]
+      "args": ["./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs"]
     }
   }
 }
 ```
 
-Claude Code: `claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/server.mjs`
+Claude Code: `claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs`
 
 ## Tools
 
@@ -104,7 +104,7 @@ Set `TOWER_WIKI_DIR` to a directory of `slug.md` files and both tools read it **
 network — so an agent with no connection still has the game knowledge:
 
 ```bash
-TOWER_WIKI_DIR=/path/to/wiki-pages node ./node_modules/thetowersdk/mcp/server.mjs
+TOWER_WIKI_DIR=/path/to/wiki-pages node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```
 
 Every response reports `source: "local" | "cache" | "fandom" | "gamevault"`, so a local page that may be stale is
@@ -116,7 +116,7 @@ connection means waiting for a socket timeout instead of getting a usable answer
 local cache comes back immediately as an error with a `hint`, never a hang:
 
 ```bash
-TOWER_WIKI_DIR=/path/to/wiki-pages TOWER_WIKI_OFFLINE=1 node ./node_modules/thetowersdk/mcp/server.mjs
+TOWER_WIKI_DIR=/path/to/wiki-pages TOWER_WIKI_OFFLINE=1 node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```
 
 This is the integration point for a separate content package. Wiki text is **CC-BY-SA** and this

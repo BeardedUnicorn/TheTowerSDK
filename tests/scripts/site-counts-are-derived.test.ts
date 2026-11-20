@@ -17,7 +17,7 @@ import { SITE as SITE_ROOT } from '../helpers/paths'
  *
  * ## Which package the numbers describe
  *
- * The site installs `thetowersdk` from the registry with its own lockfile, so these numbers are
+ * The site installs `@beardedunicorn/thetowersdk` from the registry with its own lockfile, so these numbers are
  * the PUBLISHED package's, not the working tree's. That is correct for a documentation site — a
  * reader installs what the site describes — and the release pipeline's `consumers` phase bumps the
  * site onto each new version, so the prose follows a publish without anyone editing it.
@@ -74,7 +74,7 @@ describe.skipIf(!existsSync(SITE))('site counts are derived, not typed', () => {
 
     const source = readFileSync(facts, 'utf8')
     /* Read from the package, not restated — the whole point. */
-    expect(source).toMatch(/from 'thetowersdk/)
+    expect(source).toMatch(/from '@beardedunicorn\/thetowersdk/)
   })
 
   it('hardcodes no count a fact could supply', () => {

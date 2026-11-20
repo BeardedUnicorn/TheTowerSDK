@@ -13,7 +13,7 @@ export default defineConfig({
 	/*
 	 * Let SSR load the SDK the way Node does.
 	 *
-	 * `thetowersdk` is CommonJS. Installed from npm, Vite externalises it and Node requires it
+	 * `@beardedunicorn/thetowersdk` is CommonJS. Installed from npm, Vite externalises it and Node requires it
 	 * correctly. Installed as a local link — which is how the site is developed against an
 	 * unreleased SDK — Vite treats it as source, inlines it, and evaluates CJS as ESM: every page
 	 * importing a newly added entry point 500s with `exports is not defined`, while the production
@@ -23,13 +23,13 @@ export default defineConfig({
 	 * where it ships.
 	 */
 	ssr: {
-		external: ['thetowersdk']
+		external: ['@beardedunicorn/thetowersdk']
 	},
 
 	/*
 	 * Pre-bundle the SDK for the browser, even when it is linked.
 	 *
-	 * `thetowersdk` is CommonJS. Vite converts a CJS dependency to ESM for the client as part of
+	 * `@beardedunicorn/thetowersdk` is CommonJS. Vite converts a CJS dependency to ESM for the client as part of
 	 * dependency optimisation — but it skips LINKED packages, treating them as source. The browser
 	 * then received raw CommonJS and every named import failed with "does not provide an export
 	 * named LAB_CATALOG", while the server-rendered HTML was perfectly fine. A page that renders
@@ -40,19 +40,19 @@ export default defineConfig({
 	 */
 	optimizeDeps: {
 		include: [
-			'thetowersdk/bot',
-			'thetowersdk/builders',
-			'thetowersdk/charts',
-			'thetowersdk/contributions',
-			'thetowersdk/data',
-			'thetowersdk/formatting',
-			'thetowersdk/knowledge',
-			'thetowersdk/mechanics',
-			'thetowersdk/node',
-			'thetowersdk/save',
-			'thetowersdk/save-decoder',
-			'thetowersdk/sheets',
-			'thetowersdk/wiki'
+			'@beardedunicorn/thetowersdk/bot',
+			'@beardedunicorn/thetowersdk/builders',
+			'@beardedunicorn/thetowersdk/charts',
+			'@beardedunicorn/thetowersdk/contributions',
+			'@beardedunicorn/thetowersdk/data',
+			'@beardedunicorn/thetowersdk/formatting',
+			'@beardedunicorn/thetowersdk/knowledge',
+			'@beardedunicorn/thetowersdk/mechanics',
+			'@beardedunicorn/thetowersdk/node',
+			'@beardedunicorn/thetowersdk/save',
+			'@beardedunicorn/thetowersdk/save-decoder',
+			'@beardedunicorn/thetowersdk/sheets',
+			'@beardedunicorn/thetowersdk/wiki'
 		]
 	},
 	server: {

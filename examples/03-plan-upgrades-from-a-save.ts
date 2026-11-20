@@ -11,9 +11,9 @@
  *   npx tsx examples/03-plan-upgrades-from-a-save.ts <path-to-tool_export.json>
  */
 import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
-import { buildEffectiveEconomyInputsFromSave, computeCoinsPerHourFromSaveRoot } from 'thetowersdk/save'
-import { EFFECTIVE_ECONOMY_UPGRADES, planEffectiveEconomyPath } from 'thetowersdk/mechanics'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
+import { buildEffectiveEconomyInputsFromSave, computeCoinsPerHourFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
+import { EFFECTIVE_ECONOMY_UPGRADES, planEffectiveEconomyPath } from '@beardedunicorn/thetowersdk/mechanics'
 
 async function main(): Promise<void> {
   const savePath = process.argv[2]

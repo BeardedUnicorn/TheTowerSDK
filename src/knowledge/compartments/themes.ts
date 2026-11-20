@@ -29,13 +29,13 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 
 const CATALOG_THEME_BONUS = {
   origin: 'code',
-  ref: 'thetowersdk/data THEMES, THEME_CATEGORY_BONUS',
+  ref: '@beardedunicorn/thetowersdk/data THEMES, THEME_CATEGORY_BONUS',
   verifiedAt: '2026-08-18',
 } as const
 
 const CATALOG_THEME_FORMULA = {
   origin: 'code',
-  ref: 'thetowersdk/data THEME_CATEGORY_DEFINITIONS, computeThemePassiveCoinBonus',
+  ref: '@beardedunicorn/thetowersdk/data THEME_CATEGORY_DEFINITIONS, computeThemePassiveCoinBonus',
   verifiedAt: '2026-08-18',
 } as const
 

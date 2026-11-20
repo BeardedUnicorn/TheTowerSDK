@@ -11,18 +11,18 @@
 
 <h2 class="mt-10 text-xl font-semibold">The One Boundary</h2>
 <p class="mt-3 text-muted">
-	<code>thetowersdk/node</code> is the only entry point that needs Node, because it is the one that reads
+	<code>@beardedunicorn/thetowersdk/node</code> is the only entry point that needs Node, because it is the one that reads
 	files. That is the boundary you want anyway: the decoder belongs on the side that is allowed to touch
 	the filesystem, and everything else — catalogs, formulas, builders, charts, formatting — runs happily
 	in a renderer or a WebView.
 </p>
 <CodeBlock
 	code={`// Renderer or WebView: catalogs and formulas, no filesystem.
-import { LAB_CATALOG } from 'thetowersdk/data'
-import { computeWaveBaseHealth } from 'thetowersdk/mechanics'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { computeWaveBaseHealth } from '@beardedunicorn/thetowersdk/mechanics'
 
 // Main process only: this one reads a file.
-import { decodePlayerInfoSaveBytes } from 'thetowersdk/node'`}
+import { decodePlayerInfoSaveBytes } from '@beardedunicorn/thetowersdk/node'`}
 />
 
 <h2 class="mt-10 text-xl font-semibold">Pin The Toolchain</h2>
@@ -39,7 +39,7 @@ import { decodePlayerInfoSaveBytes } from 'thetowersdk/node'`}
 
 <h2 class="mt-10 text-xl font-semibold">Reading A Save On Each Platform</h2>
 <p class="mt-3 text-muted">
-	On desktop, the save is a file and <code>thetowersdk/node</code> reads it directly from the main
+	On desktop, the save is a file and <code>@beardedunicorn/thetowersdk/node</code> reads it directly from the main
 	process. On mobile, a connected device can hand it over without the player exporting anything —
 	see <a class="underline" href={href('/docs/save/')}>Save Files</a> for the whole route, including the
 	bridge.

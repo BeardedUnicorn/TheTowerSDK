@@ -1,6 +1,6 @@
 import { packageContents, sdkStats } from '$lib/sdk-stats';
 
-/** Build-time only — keeps `thetowersdk/data` out of the home client bundle. */
+/** Build-time only — keeps `@beardedunicorn/thetowersdk/data` out of the home client bundle. */
 export function load() {
 	return {
 		packageContents: packageContents.map((item) => ({

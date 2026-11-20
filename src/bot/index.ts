@@ -5,7 +5,7 @@
  * it, and the types they share. They are peers, and a folder for each would be one file deep.
  *
  * ```ts
- * import { calculatorCommands, createTowerBot } from 'thetowersdk/bot'
+ * import { calculatorCommands, createTowerBot } from '@beardedunicorn/thetowersdk/bot'
  *
  * const bot = createTowerBot({ commands: calculatorCommands() })
  * const reply = await bot.run('lab-research', { args: { labName: 'Damage', targetLevel: 10 } })

@@ -4,7 +4,7 @@
 		ZERO_EFFECTIVE_ECONOMY_LEVELS,
 		zeroEffectiveEconomyConfig,
 		type EffectiveEconomyLevels
-	} from 'thetowersdk/mechanics';
+	} from '@beardedunicorn/thetowersdk/mechanics';
 
 	const seedOptions = [
 		{ key: 'coinsPerKillBonus', label: 'Coins / Kill Bonus' },

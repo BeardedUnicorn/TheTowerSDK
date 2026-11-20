@@ -9,8 +9,8 @@
  *
  * See docs/OPTIONAL_ADD_ONS.md.
  */
-import { LAB_CATALOG, WSP_WORKSHOP_COST_LEVELS } from 'thetowersdk/data'
-import { workshopCostMaxLevel, getWorkshopCostLevelsByKey } from 'thetowersdk/data'
+import { LAB_CATALOG, WSP_WORKSHOP_COST_LEVELS } from '@beardedunicorn/thetowersdk/data'
+import { workshopCostMaxLevel, getWorkshopCostLevelsByKey } from '@beardedunicorn/thetowersdk/data'
 
 /** The required fields of a canonical chunk. */
 interface KbChunk {

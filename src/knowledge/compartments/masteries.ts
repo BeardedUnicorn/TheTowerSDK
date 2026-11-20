@@ -47,7 +47,7 @@ const WIKI_MASTERIES = {
 /** The shipped card catalog, cited where it is the thing being contradicted. */
 const CATALOG_CARDS = {
   origin: 'code',
-  ref: 'thetowersdk/data CARD_TEMPLATES',
+  ref: '@beardedunicorn/thetowersdk/data CARD_TEMPLATES',
   verifiedAt: '2026-08-18',
 } as const
 

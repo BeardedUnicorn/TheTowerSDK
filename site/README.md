@@ -5,13 +5,13 @@ This is the documentation site. It lives in `site/` inside the
 `/TheTowerSDK/` rather than the `/TheTowerSDK-site/` it used to publish to — and is excluded
 from the published npm package.
 
-Public site for **[thetowersdk](https://www.npmjs.com/package/thetowersdk)**: game data, save reading, and formulas for _The Tower_.
+Public site for **[@beardedunicorn/thetowersdk](https://www.npmjs.com/package/@beardedunicorn/thetowersdk)**: game data, save reading, and formulas for _The Tower_.
 
 Live: **https://tmrxjd.github.io/TheTowerSDK/**
 
 | Resource                        | URL                                                    |
 | ------------------------------- | ------------------------------------------------------ |
-| npm                             | https://www.npmjs.com/package/thetowersdk              |
+| npm                             | https://www.npmjs.com/package/@beardedunicorn/thetowersdk              |
 | SDK source                      | https://github.com/TmRxJD/TheTowerSDK                  |
 | Run Tracker (built on this SDK) | https://the-tower-run-tracker.com                      |
 | AGS public docs                 | https://github.com/TmRxJD/agent-governance-system-site |
@@ -67,4 +67,4 @@ Enforcement: `.cursor/hooks.json` + `.cursor/hooks/block-preview-server.mjs` (re
 
 ## License
 
-`thetowersdk` is MIT. Tower players can request a free AGS grant (Player ID) from `/license/`.
+`@beardedunicorn/thetowersdk` is MIT. Tower players can request a free AGS grant (Player ID) from `/license/`.

@@ -389,7 +389,7 @@ export function computeLabSpeedRelicBonusPercent(
  * How relics are unlocked, and the published all-relics totals.
  *
  * Game facts, not presentation. Prose describing what relics are *for* lives in
- * `thetowersdk/knowledge`.
+ * `@beardedunicorn/thetowersdk/knowledge`.
  * -------------------------------------------------------------------------- */
 
 function buildRelicBonusCategory(

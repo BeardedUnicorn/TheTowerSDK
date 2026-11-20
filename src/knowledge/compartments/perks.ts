@@ -48,7 +48,7 @@ const WIKI_PERKS = {
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_PERKS = {
   origin: 'code',
-  ref: 'thetowersdk/data perks',
+  ref: '@beardedunicorn/thetowersdk/data perks',
   verifiedAt: '2026-08-17',
 } as const
 

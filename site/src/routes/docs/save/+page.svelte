@@ -17,8 +17,8 @@
 </ol>
 <p class="mt-3 text-muted">Copy the export to a folder accessible to your browser, or use <a href={LINKS.adbBridge}>adb-bridge</a> to pull the export from a connected Android device or emulator. Do not upload <code>playerInfo.dat</code>.</p>
 <h2 class="mt-10 text-xl font-semibold">Read In The Browser</h2>
-<div class="mt-4"><CodeBlock code={`import { decodeSaveFile } from 'thetowersdk/save-decoder'
-import { listImportableBattleRuns } from 'thetowersdk/save'
+<div class="mt-4"><CodeBlock code={`import { decodeSaveFile } from '@beardedunicorn/thetowersdk/save-decoder'
+import { listImportableBattleRuns } from '@beardedunicorn/thetowersdk/save'
 
 async function onFile(exportFile) {
   const root = await decodeSaveFile(await exportFile.arrayBuffer())
@@ -26,7 +26,7 @@ async function onFile(exportFile) {
 }`} /></div>
 <h2 class="mt-10 text-xl font-semibold">Read In Node</h2>
 <div class="mt-4"><CodeBlock code={`import { readFile } from 'node:fs/promises'
-import { decodePlayerInfoSaveBytesAsync } from 'thetowersdk/node'
+import { decodePlayerInfoSaveBytesAsync } from '@beardedunicorn/thetowersdk/node'
 
 const { parsedRoot, battleRunCount } = await decodePlayerInfoSaveBytesAsync(
   await readFile('tool_export.json')
@@ -41,7 +41,7 @@ console.log(battleRunCount)`} /></div>
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { listImportableBattleRuns } from 'thetowersdk/save'
+		code={`import { listImportableBattleRuns } from '@beardedunicorn/thetowersdk/save'
 
 const runs = listImportableBattleRuns(root)
 
@@ -62,7 +62,7 @@ for (const run of runs.slice(0, 5)) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const withCph = runs.map((run) => ({
   tier: run.tier,
@@ -113,7 +113,7 @@ const enemiesByKind = {
   readBotsFromSaveRoot,
   readVaultFromSaveRoot,
   readModulesFromSaveRoot
-} from 'thetowersdk/save'
+} from '@beardedunicorn/thetowersdk/save'
 
 const labs = readLabsFromSaveRoot(root)
 console.log(labs.researchedCount)             // 189
@@ -154,9 +154,9 @@ console.log(vault.harmonyUnlockedCount)       // 45`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { readLabsFromSaveRoot } from 'thetowersdk/save'
-import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { readLabsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const owned = readLabsFromSaveRoot(root)
 

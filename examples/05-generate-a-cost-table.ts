@@ -14,8 +14,8 @@
  *   npx tsx examples/05-generate-a-cost-table.ts
  *   npx tsx examples/05-generate-a-cost-table.ts "Death Wave"
  */
-import { uwStoneChartData } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 // Join the rest of argv: every weapon but Spotlight has a space in its name, so
 // reading argv[2] alone turns `Golden Tower` into `Golden` unless the caller quotes it.

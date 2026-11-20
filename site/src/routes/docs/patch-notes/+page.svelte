@@ -37,7 +37,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { whenIntroduced } from 'thetowersdk/knowledge'
+		code={`import { whenIntroduced } from '@beardedunicorn/thetowersdk/knowledge'
 
 const note = whenIntroduced('shockwave')
 
@@ -54,7 +54,7 @@ console.log(note.title)     // 'v0.1.29 is out for everyone now…'`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { searchPatchNotes } from 'thetowersdk/knowledge'
+		code={`import { searchPatchNotes } from '@beardedunicorn/thetowersdk/knowledge'
 
 for (const note of searchPatchNotes('guardian', 5)) {
   console.log(\`\${note.postedAt.slice(0, 10)}  \${note.version ?? '—'}  \${note.title}\`)
@@ -76,7 +76,7 @@ for (const note of searchPatchNotes('guardian', 5)) {
   patchNotesBetween,
   patchNoteVersions,
   recentPatchNotes
-} from 'thetowersdk/knowledge'
+} from '@beardedunicorn/thetowersdk/knowledge'
 
 patchNotesForVersion('26.1.2')      // 'v26.1.2' works too
 patchNotesBetween('2024-01-01', '2024-12-31')
@@ -92,7 +92,7 @@ recentPatchNotes(5)                 // the latest five, newest first`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { recentPatchNotes, patchNoteVersions } from 'thetowersdk/knowledge'
+		code={`import { recentPatchNotes, patchNoteVersions } from '@beardedunicorn/thetowersdk/knowledge'
 
 const versions = patchNoteVersions()
 const latest = recentPatchNotes(20)
@@ -121,8 +121,8 @@ console.log(\`\${versions.length} versions covered\`)`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
-import { searchPatchNotes } from 'thetowersdk/knowledge'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { searchPatchNotes } from '@beardedunicorn/thetowersdk/knowledge'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 const history = searchPatchNotes(lab.name, 3)

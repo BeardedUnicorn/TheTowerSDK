@@ -6,8 +6,8 @@ import { PACKAGE_ROOT } from '../helpers/paths'
 /**
  * A name exported from two entry points must mean the same thing in both.
  *
- * `TOURNAMENT_LEAGUES` meant a list of six league objects through `thetowersdk/data` and a list of
- * six strings through `thetowersdk/knowledge` — a compartment had typed the names out again
+ * `TOURNAMENT_LEAGUES` meant a list of six league objects through `@beardedunicorn/thetowersdk/data` and a list of
+ * six strings through `@beardedunicorn/thetowersdk/knowledge` — a compartment had typed the names out again
  * directly beneath its import of the catalog rows they duplicate. The two agreed on the names, so
  * nothing looked wrong; what was wrong is that a reader who found the name in one place and used
  * it from the other got a different shape, and neither list was checked against the other.
@@ -40,7 +40,7 @@ async function entryPoints(): Promise<Loaded[]> {
   const unloadable: string[] = []
   for (const name of subpaths) {
     try {
-      loaded.push({ name, module: (await import(`thetowersdk/${name}`)) as Record<string, unknown> })
+      loaded.push({ name, module: (await import(`@beardedunicorn/thetowersdk/${name}`)) as Record<string, unknown> })
     } catch (error) {
       unloadable.push(`${name}: ${String((error as Error).message).split('\n')[0]}`)
     }
@@ -84,7 +84,7 @@ describe('the README names every entry point, and only real ones', () => {
       .sort()
 
     const readme = readFileSync(path.join(PACKAGE, 'README.md'), 'utf8')
-    const listed = [...readme.matchAll(/^\| `thetowersdk\/([a-z-]+)`/gm)].map(match => match[1]!).sort()
+    const listed = [...readme.matchAll(/^\| `@beardedunicorn\/thetowersdk\/([a-z-]+)`/gm)].map(match => match[1]!).sort()
 
     expect(listed).toEqual(exported)
   })

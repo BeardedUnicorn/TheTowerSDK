@@ -109,8 +109,8 @@ for (const file of files) {
   }
 
   // 4. The package must never import itself by name.
-  if (/from '(thetowersdk[^']*)'/.test(source) && !isTest) {
-    const m = source.match(/from '(thetowersdk[^']*)'/)
+  if (/from '(@beardedunicorn\/thetowersdk[^']*)'/.test(source) && !isTest) {
+    const m = source.match(/from '(@beardedunicorn\/thetowersdk[^']*)'/)
     problems.push(`${rel}: imports ${m[1]}; inside src/ use a relative path`)
   }
 

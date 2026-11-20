@@ -27,7 +27,7 @@ const WIKI_UW = {
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_UW = {
   origin: 'code',
-  ref: 'thetowersdk/data uwStoneChartData',
+  ref: '@beardedunicorn/thetowersdk/data uwStoneChartData',
   verifiedAt: '2026-08-17',
 } as const
 

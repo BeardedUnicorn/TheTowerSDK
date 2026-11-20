@@ -59,7 +59,7 @@ const GAME_DEFENSE_CAP = { origin: 'code', ref: 'SDK reference model; independen
  */
 const CATALOG_BERSERKER_CARD = {
   origin: 'code',
-  ref: 'thetowersdk/data CARD_TEMPLATES id "zerk" (Berserker)',
+  ref: '@beardedunicorn/thetowersdk/data CARD_TEMPLATES id "zerk" (Berserker)',
   verifiedAt: '2026-08-20',
 } as const
 
@@ -87,7 +87,7 @@ const WIKI_LIFESTEAL = { origin: 'wiki', ref: 'Lifesteal', verifiedAt: '2026-08-
  */
 const CATALOG_COMBAT = {
   origin: 'code',
-  ref: 'thetowersdk/data WORKSHOP_DATA',
+  ref: '@beardedunicorn/thetowersdk/data WORKSHOP_DATA',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -147,7 +147,7 @@ export const ENEMY_HEAT_UP_PER_HIT = 1.04
  */
 const CATALOG_WORKSHOP = {
   origin: 'code',
-  ref: 'thetowersdk/save WORKSHOP_IMPORT_CATALOG',
+  ref: '@beardedunicorn/thetowersdk/save WORKSHOP_IMPORT_CATALOG',
   verifiedAt: '2026-08-18',
 } as const
 

@@ -13,7 +13,7 @@
 import { version as sdkVersion } from '../../../package.json';
 
 export const LINKS = {
-	npm: 'https://www.npmjs.com/package/thetowersdk',
+	npm: 'https://www.npmjs.com/package/@beardedunicorn/thetowersdk',
 	github: 'https://github.com/TmRxJD/TheTowerSDK',
 	/*
 	 * The site lives inside the SDK repository now — TheTowerSDK-site was folded in, which is what
@@ -39,8 +39,8 @@ export const LINKS = {
  */
 export const SITE_ORIGIN = 'https://tmrxjd.github.io';
 
-export const PACKAGE_NAME = 'thetowersdk';
-export const INSTALL_CMD = `npm install thetowersdk@${sdkVersion} --save-exact`;
+export const PACKAGE_NAME = '@beardedunicorn/thetowersdk';
+export const INSTALL_CMD = `npm install @beardedunicorn/thetowersdk@${sdkVersion} --save-exact`;
 
 /*
  * Read from the installed package rather than restated here.

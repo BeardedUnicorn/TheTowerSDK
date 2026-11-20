@@ -1,8 +1,8 @@
 /**
- * Card gem costs — same numbers as `thetowersdk/mechanics` (`card-costs`).
+ * Card gem costs — same numbers as `@beardedunicorn/thetowersdk/mechanics` (`card-costs`).
  * Demo runtime stays self-contained: Vite SSR cannot reliably surface CJS
  * `__exportStar` / default interop for this package entry. Apps should still:
- *   import { cardLevelUpgradeGemCost } from 'thetowersdk/mechanics'
+ *   import { cardLevelUpgradeGemCost } from '@beardedunicorn/thetowersdk/mechanics'
  */
 export const CARD_LEVEL_COPY_REQUIREMENTS = [0, 1, 3, 8, 16, 28, 48, 80] as const;
 

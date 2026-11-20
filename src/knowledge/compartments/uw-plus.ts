@@ -119,7 +119,7 @@ export const UW_PLUS_MAX_TIER = 15
 /** The weapon names the ultimate-weapon compartment ships, for the join below. */
 const CATALOG_UW_NAMES = {
   origin: 'code',
-  ref: 'thetowersdk/knowledge ULTIMATE_WEAPON_STATS',
+  ref: '@beardedunicorn/thetowersdk/knowledge ULTIMATE_WEAPON_STATS',
   verifiedAt: '2026-08-18',
 } as const
 

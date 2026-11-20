@@ -98,10 +98,10 @@ describe.skipIf(!existsSync(SITE))('the site counts match the package', () => {
   }
 
   it('formula, calculator, chart and graph counts are the package’s own', async () => {
-    const mechanics = await import('thetowersdk/mechanics')
-    const builders = await import('thetowersdk/builders')
-    const charts = await import('thetowersdk/charts')
-    const knowledge = await import('thetowersdk/knowledge')
+    const mechanics = await import('@beardedunicorn/thetowersdk/mechanics')
+    const builders = await import('@beardedunicorn/thetowersdk/builders')
+    const charts = await import('@beardedunicorn/thetowersdk/charts')
+    const knowledge = await import('@beardedunicorn/thetowersdk/knowledge')
 
     const formulas = Object.values(mechanics).filter(value => typeof value === 'function').length
     expectOnly(/formulas?\b/, formulas, 'mechanics formulas')
@@ -142,7 +142,7 @@ describe.skipIf(!existsSync(SITE))('the site counts match the package', () => {
   })
 
   it('the patch-note count is the shipped archive’s own', async () => {
-    const knowledge = await import('thetowersdk/knowledge')
+    const knowledge = await import('@beardedunicorn/thetowersdk/knowledge')
     expectOnly(/(?:patch )?notes\b/, (knowledge.PATCH_NOTES ?? []).length, 'patch notes')
   })
 

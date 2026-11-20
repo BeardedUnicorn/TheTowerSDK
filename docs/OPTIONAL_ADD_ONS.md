@@ -82,7 +82,7 @@ answer confidently.
 This is the whole reason the two packages are worth using together:
 
 ```ts
-import { LAB_CATALOG } from 'thetowersdk/data'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const mine = LAB_CATALOG.map(lab => ({
   chunk_type: 'atomic' as const,
@@ -120,10 +120,10 @@ ordering.
 
 ### Keeping it honest
 
-The SDK's own knowledge graph (`thetowersdk/knowledge`) takes the harder line: every
+The SDK's own knowledge graph (`@beardedunicorn/thetowersdk/knowledge`) takes the harder line: every
 objective claim carries a machine-checkable assertion, and a test compares the asserted
 value against the code that implements it. If your corpus makes claims that matter, do the
-same — put the number in an assertion and test it against `thetowersdk/data`, rather than
+same — put the number in an assertion and test it against `@beardedunicorn/thetowersdk/data`, rather than
 leaving it in a sentence nothing can check. See
 [`../src/knowledge/sheets-claims.test.ts`](../src/knowledge/sheets-claims.test.ts) for the
 pattern.
@@ -193,8 +193,8 @@ socket.send(JSON.stringify({ type: 'LINK_ACCOUNT', … }))  // -> ACCOUNT_LINKED
 The bridge gives you the save file; the SDK reads it. That is the entire integration:
 
 ```ts
-import { decodePlayerInfoSaveBytes } from 'thetowersdk/node'
-import { readBotsFromSaveRoot } from 'thetowersdk/save'
+import { decodePlayerInfoSaveBytes } from '@beardedunicorn/thetowersdk/node'
+import { readBotsFromSaveRoot } from '@beardedunicorn/thetowersdk/save'
 
 const decoded = decodePlayerInfoSaveBytes(bytes)
 const bots = readBotsFromSaveRoot(decoded.parsedRoot)

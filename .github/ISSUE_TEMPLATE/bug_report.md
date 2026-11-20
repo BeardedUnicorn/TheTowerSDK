@@ -13,5 +13,5 @@ A save file that shows the problem is the fastest route to a fix — strip anyth
 Otherwise, the smallest code snippet that reproduces it.
 
 **Versions**
-- thetowersdk:
+- @beardedunicorn/thetowersdk:
 - node:

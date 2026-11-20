@@ -32,7 +32,7 @@ const CHART_ELITE_SPAWN = {
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_ENEMIES = {
   origin: 'code',
-  ref: 'thetowersdk/data ENEMY_TYPE_SUMMARIES',
+  ref: '@beardedunicorn/thetowersdk/data ENEMY_TYPE_SUMMARIES',
   verifiedAt: '2026-08-17',
 } as const
 const WIKI_ELS = {

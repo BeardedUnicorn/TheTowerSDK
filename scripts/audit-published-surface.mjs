@@ -89,7 +89,7 @@ function main() {
    *
    * `./internal/*` makes every module under `dist/internal` importable, but skipping the pattern
    * left all of them looking dead — the audit reported `internal/game-input-data/index.js` as
-   * unreachable while `thetowersdk/internal/game-input-data` resolves perfectly well. A reader
+   * unreachable while `@beardedunicorn/thetowersdk/internal/game-input-data` resolves perfectly well. A reader
    * chasing that would delete something a consumer can import.
    */
   const wildcards = Object.entries(pkg.exports ?? {})

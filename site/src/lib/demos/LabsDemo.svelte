@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { LAB_CATALOG, type LabCatalogRecord } from 'thetowersdk/data';
-	import { formatNumberForDisplay, parseDuration } from 'thetowersdk/formatting';
+	import { LAB_CATALOG, type LabCatalogRecord } from '@beardedunicorn/thetowersdk/data';
+	import { formatNumberForDisplay, parseDuration } from '@beardedunicorn/thetowersdk/formatting';
 
 	const defaultLab =
 		LAB_CATALOG.find((lab) => lab.name === 'Attack Speed') ??

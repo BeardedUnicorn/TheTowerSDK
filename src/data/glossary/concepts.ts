@@ -197,7 +197,7 @@ export const GLOSSARY_CONCEPTS: readonly GlossaryEntry[] = [
     domain: 'sdk',
     definition:
       '.NET Remoting Binary Format — the serialization format the save file uses. '
-      + '`thetowersdk/node` reads it for you.',
+      + '`@beardedunicorn/thetowersdk/node` reads it for you.',
   },
   {
     term: 'over-allocated array',

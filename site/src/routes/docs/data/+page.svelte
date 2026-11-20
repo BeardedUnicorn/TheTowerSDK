@@ -21,7 +21,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { computeModuleStat, findLabResearchByIndex } from 'thetowersdk/data'
+		code={`import { computeModuleStat, findLabResearchByIndex } from '@beardedunicorn/thetowersdk/data'
 
 findLabResearchByIndex(253)?.displayName // 'Primary Module Bonus - Cannon'
 computeModuleStat({ type: 'cannon', rarityLabel: 'Epic +', level: 92, primaryLabLevel: 30 })
@@ -36,7 +36,7 @@ computeModuleStat({ type: 'cannon', rarityLabel: 'Epic +', level: 92, primaryLab
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 
@@ -55,8 +55,8 @@ console.log(lab.levels[0])
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 
@@ -75,7 +75,7 @@ console.log(formatNumberForDisplay(coins))   // '18.759K' style, as in game`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG, CARD_TEMPLATES } from 'thetowersdk/data'
+		code={`import { LAB_CATALOG, CARD_TEMPLATES } from '@beardedunicorn/thetowersdk/data'
 
 const byCategory = new Map()
 for (const lab of LAB_CATALOG) {
@@ -97,7 +97,7 @@ console.log(Object.keys(byRarity))    // ['common', 'rare', 'epic']`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { CARD_TEMPLATES } from 'thetowersdk/data'
+		code={`import { CARD_TEMPLATES } from '@beardedunicorn/thetowersdk/data'
 
 const card = CARD_TEMPLATES.find((entry) => entry.name === 'Damage')
 
@@ -119,7 +119,7 @@ console.log(atLevel(card.levelValues, 3))   // 2.4`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { getWorkshopStatDefinitions } from 'thetowersdk/data'
+		code={`import { getWorkshopStatDefinitions } from '@beardedunicorn/thetowersdk/data'
 
 const damage = getWorkshopStatDefinitions().find((stat) => stat.key === 'Damage')
 
@@ -140,7 +140,7 @@ const toLevel50 = damage.levels
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { MODULE_TEMPLATES } from 'thetowersdk/data'
+		code={`import { MODULE_TEMPLATES } from '@beardedunicorn/thetowersdk/data'
 
 const module = MODULE_TEMPLATES.find((entry) => entry.name === 'Astral Deliverance')
 
@@ -161,7 +161,7 @@ const cannons = MODULE_TEMPLATES.filter((entry) => entry.type === 'Cannon')`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { uwStoneChartData } from 'thetowersdk/data'
+		code={`import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
 
 const gt = Object.values(uwStoneChartData).find((w) => w.name === 'Golden Tower')
 
@@ -186,7 +186,7 @@ console.log(cooldown.levels[8])
   findLabResearchByLooseName,
   findLabResearchBySlug,
   findLabResearchByIndex
-} from 'thetowersdk/data'
+} from '@beardedunicorn/thetowersdk/data'
 
 // Case and spacing do not matter.
 findLabResearchByLooseName('attack speed')
@@ -213,8 +213,8 @@ findLabResearchByIndex(1)               // the index a save file stores`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatNumberForDisplay, parseDurationToHours, formatHoursDuration } from 'thetowersdk/formatting'
+		code={`import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay, parseDurationToHours, formatHoursDuration } from '@beardedunicorn/thetowersdk/formatting'
 
 const lab = LAB_CATALOG.find((entry) => entry.name === 'Attack Speed')
 
@@ -242,7 +242,7 @@ formatHoursDuration(next.reduce((sum, level) => sum + parseDurationToHours(level
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_CATALOG, ALL_PERKS } from 'thetowersdk/data'
+		code={`import { LAB_CATALOG, ALL_PERKS } from '@beardedunicorn/thetowersdk/data'
 
 const categories = [...new Set(LAB_CATALOG.map((lab) => lab.category))]
 // 15 of them: 'Bots', 'Card Mastery', 'Modules', 'Attack', 'Perks', …
@@ -261,7 +261,7 @@ ALL_PERKS[0]   // { perk: 'x1.20 Max Health', quantity: 5, pool: 'standard' }`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { LAB_RESEARCH_IMPORT_CATALOG } from 'thetowersdk/data'
+		code={`import { LAB_RESEARCH_IMPORT_CATALOG } from '@beardedunicorn/thetowersdk/data'
 
 LAB_RESEARCH_IMPORT_CATALOG[0]
 // { index: 0, gameField: 'researchLevel0', displayName: 'Damage', slug: 'damage', category: null }`}
@@ -290,7 +290,7 @@ LAB_RESEARCH_IMPORT_CATALOG[0]
   MILESTONE_REWARD_ROWS,      // milestone rewards by tier
   TIER_DATA,                  // per-tier scaling
   GLOSSARY_NAME_ROWS          // canonical names, for parsing player text
-} from 'thetowersdk/data'`}
+} from '@beardedunicorn/thetowersdk/data'`}
 	/>
 </div>
 

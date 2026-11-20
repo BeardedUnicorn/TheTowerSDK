@@ -10,7 +10,7 @@ get wrong.
 | [`browser-widget.ts`](browser-widget.ts) | A UI module with no Node built-ins anywhere | Browser |
 | [`calculator.ts`](calculator.ts) | A calculator: typed input, pure compute, separate formatting | Either |
 | [`bot-starter.ts`](bot-starter.ts) | A complete bot: every calculator, a hand-written command, a CLI | Node |
-| [`sheets-client.ts`](sheets-client.ts) | The googleapis adapter for `thetowersdk/sheets` | Node |
+| [`sheets-client.ts`](sheets-client.ts) | The googleapis adapter for `@beardedunicorn/thetowersdk/sheets` | Node |
 | [`.env.example`](.env.example) | Every variable a bot or sheet client needs, with the warnings | — |
 
 ## The three things they encode
@@ -19,7 +19,7 @@ get wrong.
 returns is a plain object that extractors read and never mutate, so run as many as you like over
 one root.
 
-**Only `thetowersdk/node` needs Node.** `data`, `save`, `formatting`, `mechanics`, `wiki`,
+**Only `@beardedunicorn/thetowersdk/node` needs Node.** `data`, `save`, `formatting`, `mechanics`, `wiki`,
 `charts`, `knowledge` and `inputs` are all browser-safe. A widget that never opens an official game export
 never imports the decoder — that is why `browser-widget.ts` exists as a separate file.
 

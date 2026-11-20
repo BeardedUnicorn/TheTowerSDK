@@ -17,7 +17,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { fetchWikiPageAsMarkdown } from 'thetowersdk/wiki'
+		code={`import { fetchWikiPageAsMarkdown } from '@beardedunicorn/thetowersdk/wiki'
 
 const page = await fetchWikiPageAsMarkdown('Golden Tower')
 
@@ -43,7 +43,7 @@ console.log(page.markdown)
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { searchWiki } from 'thetowersdk/wiki'
+		code={`import { searchWiki } from '@beardedunicorn/thetowersdk/wiki'
 
 const hits = await searchWiki('golden tower')
 
@@ -68,7 +68,7 @@ const page = await fetchWikiPageAsMarkdown(hits[0].title)`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { WIKI_SOURCES, DEFAULT_WIKI_SOURCE_ID, getWikiSource } from 'thetowersdk/wiki'
+		code={`import { WIKI_SOURCES, DEFAULT_WIKI_SOURCE_ID, getWikiSource } from '@beardedunicorn/thetowersdk/wiki'
 
 for (const source of WIKI_SOURCES) {
   console.log(source.id, '—', source.label)
@@ -92,7 +92,7 @@ console.log(fandom.searchMode)    // 'search'  — Game Vault uses 'prefix'`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { fetchWikiPageFromAnySource } from 'thetowersdk/wiki'
+		code={`import { fetchWikiPageFromAnySource } from '@beardedunicorn/thetowersdk/wiki'
 
 const page = await fetchWikiPageFromAnySource('Guardian')
 console.log(page.sourceId)   // whichever one had it`}
@@ -106,7 +106,7 @@ console.log(page.sourceId)   // whichever one had it`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { fetchWikiPageLastEdited } from 'thetowersdk/wiki'
+		code={`import { fetchWikiPageLastEdited } from '@beardedunicorn/thetowersdk/wiki'
 
 const revision = await fetchWikiPageLastEdited('Golden Tower')
 
@@ -123,7 +123,7 @@ console.log(revision.title)        // 'Golden Tower'`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { fetchWikiWikitext } from 'thetowersdk/wiki'
+		code={`import { fetchWikiWikitext } from '@beardedunicorn/thetowersdk/wiki'
 
 const { wikitext, source, resolvedTitle } = await fetchWikiWikitext('Golden Tower')
 
@@ -146,7 +146,7 @@ console.log(wikitext.slice(0, 80))`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { countMarkdownTableRows, scoreFandomMarkdownQuality } from 'thetowersdk/wiki'
+		code={`import { countMarkdownTableRows, scoreFandomMarkdownQuality } from '@beardedunicorn/thetowersdk/wiki'
 
 console.log(scoreFandomMarkdownQuality(page.markdown))   // 953
 console.log(countMarkdownTableRows(page.markdown))       // 0 — this page is prose
@@ -170,7 +170,7 @@ const best = [pageA, pageB].sort(
   readFandomFileNamesFromMarkdown,
   fetchFandomImageUrlMap,
   applyFandomImageUrlMap
-} from 'thetowersdk/wiki'
+} from '@beardedunicorn/thetowersdk/wiki'
 
 const names = readFandomFileNamesFromMarkdown(page.markdown)
 
@@ -189,7 +189,7 @@ if (names.length > 0) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { WIKI_ATTRIBUTION, WIKI_CREDIT_SOURCES } from 'thetowersdk/wiki'
+		code={`import { WIKI_ATTRIBUTION, WIKI_CREDIT_SOURCES } from '@beardedunicorn/thetowersdk/wiki'
 
 console.log(WIKI_ATTRIBUTION)
 // 'Wiki content is written and maintained by the contributors to Fandom — The
@@ -206,9 +206,9 @@ console.log(WIKI_ATTRIBUTION)
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { fetchWikiPageAsMarkdown } from 'thetowersdk/wiki'
-import { uwStoneChartData } from 'thetowersdk/data'
-import { trapsFor, resolve } from 'thetowersdk/knowledge'
+		code={`import { fetchWikiPageAsMarkdown } from '@beardedunicorn/thetowersdk/wiki'
+import { uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { trapsFor, resolve } from '@beardedunicorn/thetowersdk/knowledge'
 
 async function mechanic(name) {
   const page = await fetchWikiPageAsMarkdown(name)

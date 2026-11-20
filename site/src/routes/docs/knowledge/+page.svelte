@@ -20,7 +20,7 @@
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { knowledgeFor } from 'thetowersdk/knowledge'
+		code={`import { knowledgeFor } from '@beardedunicorn/thetowersdk/knowledge'
 
 const gt = knowledgeFor('ultimateWeapon.goldenTower')
 
@@ -54,12 +54,12 @@ console.log(gt.implementedBy)  // ['uwStoneChartData'] — the export that holds
 //   value: 4,
 //   provenance: {
 //     origin: 'code',
-//     ref: 'thetowersdk/data uwStoneChartData',
+//     ref: '@beardedunicorn/thetowersdk/data uwStoneChartData',
 //     verifiedAt: '2026-08-17'
 //   }
 // }
 
-import { collectAssertions, GAME_KNOWLEDGE } from 'thetowersdk/knowledge'
+import { collectAssertions, GAME_KNOWLEDGE } from '@beardedunicorn/thetowersdk/knowledge'
 
 console.log(collectAssertions(GAME_KNOWLEDGE).length)   // 1642`}
 	/>
@@ -78,7 +78,7 @@ console.log(collectAssertions(GAME_KNOWLEDGE).length)   // 1642`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { findContradictions } from 'thetowersdk/knowledge'
+		code={`import { findContradictions } from '@beardedunicorn/thetowersdk/knowledge'
 
 for (const conflict of findContradictions()) {
   console.log(conflict.subject, conflict.predicate, '->', conflict.likelyValue)
@@ -106,7 +106,7 @@ for (const conflict of findContradictions()) {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { allNodes, GAME_KNOWLEDGE } from 'thetowersdk/knowledge'
+		code={`import { allNodes, GAME_KNOWLEDGE } from '@beardedunicorn/thetowersdk/knowledge'
 
 const nodes = allNodes(GAME_KNOWLEDGE)
 console.log(nodes.filter((node) => node.claimType === 'objective').length)   // 311
@@ -126,7 +126,7 @@ console.log(nodes.filter((node) => node.claimType === 'sentiment').length)   // 
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { trapsFor } from 'thetowersdk/knowledge'
+		code={`import { trapsFor } from '@beardedunicorn/thetowersdk/knowledge'
 
 // Walks the node and everything it connects to, so a trap that lives on a
 // neighbour still reaches you. Golden Tower's own node holds one; through its
@@ -156,7 +156,7 @@ console.log(traps[0])
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { relationsOf, neighboursOf } from 'thetowersdk/knowledge'
+		code={`import { relationsOf, neighboursOf } from '@beardedunicorn/thetowersdk/knowledge'
 
 for (const edge of relationsOf('ultimateWeapon.goldenTower')) {
   console.log(edge.kind, '->', edge.to)
@@ -181,7 +181,7 @@ console.log(neighboursOf('ultimateWeapon.goldenTower'))
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { resolve, resolveWithConfidence, search } from 'thetowersdk/knowledge'
+		code={`import { resolve, resolveWithConfidence, search } from '@beardedunicorn/thetowersdk/knowledge'
 
 resolve('gt')    // 'ultimateWeapon.goldenTower'
 resolve('gt+')   // 'ultimateWeaponPlus.goldenCombo' — a different thing entirely
@@ -210,7 +210,7 @@ search('golden tower')   // ranked hits, each with its node`}
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { compartmentMaturity, describeMaturity, compartmentOf, GAME_KNOWLEDGE } from 'thetowersdk/knowledge'
+		code={`import { compartmentMaturity, describeMaturity, compartmentOf, GAME_KNOWLEDGE } from '@beardedunicorn/thetowersdk/knowledge'
 
 for (const report of compartmentMaturity('2026-08-26')) {
   console.log(report.id.padEnd(18), describeMaturity(report))
@@ -242,7 +242,7 @@ console.log(compartmentOf(GAME_KNOWLEDGE, 'ultimateWeapon.goldenTower').id)
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { resolve, knowledgeFor, relationsOf, trapsFor } from 'thetowersdk/knowledge'
+		code={`import { resolve, knowledgeFor, relationsOf, trapsFor } from '@beardedunicorn/thetowersdk/knowledge'
 
 function brief(term) {
   const id = resolve(term)

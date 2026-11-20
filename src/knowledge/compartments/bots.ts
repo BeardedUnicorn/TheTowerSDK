@@ -25,7 +25,7 @@ const WIKI_GOLDEN_BOT = { origin: 'wiki', ref: 'Golden Bot', verifiedAt: '2026-0
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_BOTS = {
   origin: 'code',
-  ref: 'thetowersdk/data BOT_UPGRADES_DATA',
+  ref: '@beardedunicorn/thetowersdk/data BOT_UPGRADES_DATA',
   verifiedAt: '2026-08-17',
 } as const
 

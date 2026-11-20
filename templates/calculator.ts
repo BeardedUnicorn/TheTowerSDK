@@ -8,8 +8,8 @@
  * This one answers "how long until I can afford this?", which is the question
  * behind most planners.
  */
-import { LAB_CATALOG } from 'thetowersdk/data'
-import { formatDuration, formatLargeNumber, parseDurationToHours } from 'thetowersdk/formatting'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { formatDuration, formatLargeNumber, parseDurationToHours } from '@beardedunicorn/thetowersdk/formatting'
 
 export interface AffordabilityInput {
   /** Coins the player has now. */

@@ -86,7 +86,7 @@ Start from a zero and spread your data over it:
 import {
   zeroEffectiveHealthConfig,
   ZERO_EFFECTIVE_HEALTH_LEVELS,
-} from 'thetowersdk/mechanics'
+} from '@beardedunicorn/thetowersdk/mechanics'
 
 const config = { ...zeroEffectiveHealthConfig(), health: { workshopValue: 1_200_000 } }
 const levels = { ...ZERO_EFFECTIVE_HEALTH_LEVELS, health: 59 }
@@ -197,7 +197,7 @@ supports the people who derived these formulas.
 If you ship anything built on the `effectivePaths*` exports, please carry that ask through:
 
 ```ts
-import { EFFECTIVE_PATHS_ATTRIBUTION_WITH_SUPPORT } from 'thetowersdk/mechanics'
+import { EFFECTIVE_PATHS_ATTRIBUTION_WITH_SUPPORT } from '@beardedunicorn/thetowersdk/mechanics'
 // "Effective Paths formulas by Mattew, QuietFanta, Bisse and the Effective Paths maintainers.
 //  Ported from the community spreadsheet (v5.11.08.10). Support the Effective Paths team with
 //  creator code SHEETLORD in The Tower webstore."

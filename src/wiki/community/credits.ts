@@ -2,7 +2,7 @@
  * Attribution for the community wikis this package reads.
  *
  * The wiki helpers here fetch and reformat pages that other people wrote. Nothing in
- * `thetowersdk/wiki` produces knowledge of its own — it is a transport and a parser over
+ * `@beardedunicorn/thetowersdk/wiki` produces knowledge of its own — it is a transport and a parser over
  * work contributed by the wikis' editors, who are volunteers.
  *
  * Anything that surfaces wiki text to a user should carry this credit somewhere visible;

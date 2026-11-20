@@ -6,7 +6,7 @@
 	 * a tracker is a table over them plus whatever totals you want. Sample rows
 	 * stand in for a decoded save here; the shape is the same.
 	 */
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	type Run = {
 		tier: number;

@@ -1,5 +1,5 @@
 /**
- * The googleapis adapter for `thetowersdk/sheets`. Copy this into your project.
+ * The googleapis adapter for `@beardedunicorn/thetowersdk/sheets`. Copy this into your project.
  *
  * The SDK deliberately does not depend on `googleapis`: it would pull a large Node-only
  * dependency into a package that otherwise runs in a browser, and it would decide for you
@@ -18,7 +18,7 @@
  * Never commit the key file. It is a password to every sheet the account can see.
  */
 import { google } from 'googleapis'
-import { type SheetsTransport, TowerSheets } from 'thetowersdk/sheets'
+import { type SheetsTransport, TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
 
 /**
  * Spreadsheets this client must never write to.

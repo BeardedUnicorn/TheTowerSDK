@@ -35,13 +35,13 @@ import type { KnowledgeEdge, KnowledgeNode } from '../substrate/types'
 
 const CATALOG_TIERS = {
   origin: 'code',
-  ref: 'thetowersdk/data TIER_DATA, TIER_BATTLE_CONDITION_DEFINITIONS',
+  ref: '@beardedunicorn/thetowersdk/data TIER_DATA, TIER_BATTLE_CONDITION_DEFINITIONS',
   verifiedAt: '2026-08-18',
 } as const
 
 const CATALOG_HEAT_INDEX = {
   origin: 'code',
-  ref: 'thetowersdk/data V283_HEAT_BC_INDEX',
+  ref: '@beardedunicorn/thetowersdk/data V283_HEAT_BC_INDEX',
   sourceVersion: 'v28.3',
   verifiedAt: '2026-08-18',
 } as const
@@ -117,7 +117,7 @@ const WIKI_RELICS = { origin: 'wiki', ref: 'Relics', verifiedAt: '2026-08-16' } 
  */
 const CATALOG_MILESTONE = {
   origin: 'code',
-  ref: 'thetowersdk/data MILESTONE_KEY_UNLOCK_ROWS, MILESTONE_TIER_TRACKS, MILESTONE_WAVES',
+  ref: '@beardedunicorn/thetowersdk/data MILESTONE_KEY_UNLOCK_ROWS, MILESTONE_TIER_TRACKS, MILESTONE_WAVES',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -140,7 +140,7 @@ const WIKI_RELIC_TOTALS = {
 
 const CATALOG_RELIC_TOTALS = {
   origin: 'code',
-  ref: 'thetowersdk/data RELIC_TEMPLATES vs RELIC_TOTAL_BONUS_CATEGORIES',
+  ref: '@beardedunicorn/thetowersdk/data RELIC_TEMPLATES vs RELIC_TOTAL_BONUS_CATEGORIES',
   verifiedAt: '2026-08-17',
 } as const
 
@@ -171,7 +171,7 @@ export const RELIC_STAT_NAMES = [
 /**
  * Coin bonus by tier is NOT restated here.
  *
- * `TIER_COIN_BONUS_ROWS` in `thetowersdk/data` owns it. Copying the wiki's
+ * `TIER_COIN_BONUS_ROWS` in `@beardedunicorn/thetowersdk/data` owns it. Copying the wiki's
  * table into this file produced a silent conflict at tiers 22–24 within a
  * single sitting — see the `tier` node's traps. The oracle records what a
  * number *means*; the catalog records what it *is*.

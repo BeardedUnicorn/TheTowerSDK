@@ -26,7 +26,7 @@ import type { SharedChartRendererKey } from './types'
  *
  * ## The rule
  *
- * Every id here must resolve in `thetowersdk/knowledge`. A chart pointing at a
+ * Every id here must resolve in `@beardedunicorn/thetowersdk/knowledge`. A chart pointing at a
  * mechanic the oracle does not know is either a naming drift or a genuine gap,
  * and `chart-mechanic-links.parity.test.ts` fails on both.
  */

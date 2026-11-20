@@ -15,7 +15,7 @@ import {
  * level 10 instead of level 20 and reported levels 11 to 20 as an identical flat band.
  *
  * Nothing caught that, and nothing would have: neither function is called anywhere in this
- * package. They were reachable only by a consumer importing `thetowersdk/internal/*`, which is
+ * package. They were reachable only by a consumer importing `@beardedunicorn/thetowersdk/internal/*`, which is
  * exactly the surface Rule 1 exists to abolish — a public API nobody was testing because nobody
  * here used it.
  *

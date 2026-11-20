@@ -47,7 +47,7 @@ const NOTE_V29_VAULT_REWORK = {
 } as const
 const CATALOG_VAULT_V29 = {
   origin: 'code',
-  ref: 'thetowersdk/data VAULT_V29_HARMONY, VAULT_V29_POWER, VAULT_V29_ENEMY',
+  ref: '@beardedunicorn/thetowersdk/data VAULT_V29_HARMONY, VAULT_V29_POWER, VAULT_V29_ENEMY',
   verifiedAt: '2026-11-18',
 } as const
 /** The game's own vault upgrades and groups, as facts/v29.2.1/vault-upgrades.json holds them. */
@@ -85,7 +85,7 @@ const GAME_VAULT_CONSTANTS = {
 
 const CATALOG_VAULT = {
   origin: 'code',
-  ref: 'thetowersdk/data vault-tree',
+  ref: '@beardedunicorn/thetowersdk/data vault-tree',
   verifiedAt: '2026-08-17',
 } as const
 

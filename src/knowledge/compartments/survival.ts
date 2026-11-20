@@ -49,14 +49,14 @@ const WIKI_KNOCKBACK = { origin: 'wiki', ref: 'Knockback', verifiedAt: '2026-08-
  */
 const CATALOG_SURVIVAL = {
   origin: 'code',
-  ref: 'thetowersdk/data WORKSHOP_DATA',
+  ref: '@beardedunicorn/thetowersdk/data WORKSHOP_DATA',
   verifiedAt: '2026-08-17',
 } as const
 
 /** The lab catalog, which is where Energy Shield's mastery and counter-lab live. */
 const CATALOG_LABS = {
   origin: 'code',
-  ref: 'thetowersdk/data LAB_CATALOG energy_shield_mastery, energy_shields_down',
+  ref: '@beardedunicorn/thetowersdk/data LAB_CATALOG energy_shield_mastery, energy_shields_down',
   verifiedAt: '2026-08-18',
 } as const
 

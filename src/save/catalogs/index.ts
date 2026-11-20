@@ -2,7 +2,7 @@
  * Save indices to named entities.
  *
  * A save file stores most things positionally — bot 3, relic 112, vault node 47.
- * These maps turn those indices into the named entries in `thetowersdk/data`.
+ * These maps turn those indices into the named entries in `@beardedunicorn/thetowersdk/data`.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    —

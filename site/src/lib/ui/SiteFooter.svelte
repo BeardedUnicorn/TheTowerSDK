@@ -44,7 +44,7 @@
 		</nav>
 		<nav class="flex flex-col gap-1" aria-label="Related">
 			<p class="mb-1 text-xs font-semibold tracking-wide text-fg uppercase">Related</p>
-			<a href={LINKS.npm}>npm: thetowersdk</a>
+			<a href={LINKS.npm}>npm: @beardedunicorn/thetowersdk</a>
 			<a href={LINKS.github}>GitHub: TheTowerSDK</a>
 			{#if SHOW_GOVERNANCE}
 				<a href={LINKS.agsSite}>Agentic Cognition Substrate</a>

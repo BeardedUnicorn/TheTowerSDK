@@ -10,10 +10,10 @@
  * Wiring it to Discord is the last step and the smallest one; see the adapter at the
  * bottom and `docs/BUILDING_A_BOT.md`.
  */
-import { calculatorCommands, createTowerBot, markUncacheable } from 'thetowersdk/bot'
-import type { BotCommand, BotReply } from 'thetowersdk/bot'
-import { getSharedToolLabs } from 'thetowersdk/data'
-import { formatLargeNumber } from 'thetowersdk/formatting'
+import { calculatorCommands, createTowerBot, markUncacheable } from '@beardedunicorn/thetowersdk/bot'
+import type { BotCommand, BotReply } from '@beardedunicorn/thetowersdk/bot'
+import { getSharedToolLabs } from '@beardedunicorn/thetowersdk/data'
+import { formatLargeNumber } from '@beardedunicorn/thetowersdk/formatting'
 
 /*
  * ---------------------------------------------------------------------------

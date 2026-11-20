@@ -66,7 +66,7 @@ const WIKI_REND = {
  */
 const CATALOG_ATTACK = {
   origin: 'code',
-  ref: 'thetowersdk/data WORKSHOP_DATA',
+  ref: '@beardedunicorn/thetowersdk/data WORKSHOP_DATA',
   verifiedAt: '2026-08-17',
 } as const
 

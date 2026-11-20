@@ -35,7 +35,7 @@ what a gateway is**:
   not a rewrite.
 
 ```ts
-import { calculatorCommands, createTowerBot } from 'thetowersdk/bot'
+import { calculatorCommands, createTowerBot } from '@beardedunicorn/thetowersdk/bot'
 
 export const bot = createTowerBot({
   commands: [...calculatorCommands(), myOwnCommand],

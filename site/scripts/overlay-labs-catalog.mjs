@@ -1,11 +1,11 @@
 /**
  * Overlay labs-catalog identity fixes from the local monorepo SDK onto the
- * published `thetowersdk` install (slug + display-name split).
+ * published `@beardedunicorn/thetowersdk` install (slug + display-name split).
  *
  * Do not copy the whole monorepo mechanics/index — unpublished modules
  * (governance/doctor) break the site SSR.
  *
- * Card gem costs ship in thetowersdk@0.4.1+; no barrel patch needed for those.
+ * Card gem costs ship in @beardedunicorn/thetowersdk@0.4.1+; no barrel patch needed for those.
  */
 import { copyFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const siteRoot = resolve(here, '..');
 const fromDist = resolve(siteRoot, '../TrackerWebsite/the-tower-run-tracker/packages/sdk/dist');
-const toDist = join(siteRoot, 'node_modules/thetowersdk/dist');
+const toDist = join(siteRoot, 'node_modules/@beardedunicorn/thetowersdk/dist');
 
 /** Relative paths under dist/ that consume or define LAB_CATALOG identity. */
 const RELATIVE_FILES = [
@@ -47,7 +47,7 @@ if (!existsSync(fromDist)) {
 	process.exit(1);
 }
 if (!existsSync(toDist)) {
-	console.error(`Missing ${toDist} — npm install thetowersdk first.`);
+	console.error(`Missing ${toDist} — npm install @beardedunicorn/thetowersdk first.`);
 	process.exit(1);
 }
 

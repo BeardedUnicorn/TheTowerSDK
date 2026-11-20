@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.0.0
+
+**First release of the fork, as `@beardedunicorn/thetowersdk`.** Forked from
+[TmRxJD/TheTowerSDK](https://github.com/TmRxJD/TheTowerSDK); versions below 1.0.0 were published
+upstream as `thetowersdk`. Import specifiers change with the name
+(`thetowersdk/data` is now `@beardedunicorn/thetowersdk/data`); the MCP binary is still
+`thetowersdk-mcp`.
 
 **Checked against game v29.2.1 (build 1294).** v29.2.1 (patch note 1572999340027420755) fixed
 ads for European users and a Workshop tutorial soft-lock. Its relics, tournament prizes, milestone

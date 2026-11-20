@@ -11,8 +11,8 @@
  * Run it:
  *   npx tsx examples/04-generate-a-chart.ts
  */
-import { LAB_CATALOG, uwStoneChartData } from 'thetowersdk/data'
-import { formatNumberForDisplay } from 'thetowersdk/formatting'
+import { LAB_CATALOG, uwStoneChartData } from '@beardedunicorn/thetowersdk/data'
+import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting'
 
 type Point = { x: number, y: number }
 

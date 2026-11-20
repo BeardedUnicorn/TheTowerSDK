@@ -4,7 +4,7 @@ Community Tower spreadsheets hold things no game file does — planner workbooks
 guild rosters — and a tool that reads one goes further than a tool that does not. This is
 how to get access, and what to know before you trust what comes back.
 
-`thetowersdk/sheets` carries no `googleapis` dependency. It describes the two calls it needs
+`@beardedunicorn/thetowersdk/sheets` carries no `googleapis` dependency. It describes the two calls it needs
 and you supply them, so the package stays browser-safe and you keep control of your auth
 library. [`templates/sheets-client.ts`](../templates/sheets-client.ts) is the adapter.
 

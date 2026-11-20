@@ -133,7 +133,7 @@ async function callApi(
   if (source.transport === 'external' && !fetchImpl) {
     throw new Error(
       `${source.id} cannot be reached with the platform fetch — its edge blocks that client. `
-      + 'Pass fetchImpl: createCurlFetch() from thetowersdk/wiki (Node), or another HTTP client.')
+      + 'Pass fetchImpl: createCurlFetch() from @beardedunicorn/thetowersdk/wiki (Node), or another HTTP client.')
   }
   const impl = fetchImpl ?? globalThis.fetch
   const query = new URLSearchParams({ format: 'json', ...params })

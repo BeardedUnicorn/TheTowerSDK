@@ -14,7 +14,7 @@ import { describe, expect, it } from 'vitest'
  * "has no exported member" for every symbol in the entry they imported, which
  * reads as a broken package rather than a missing line of config.
  *
- * That is exactly how `thetowersdk/wiki` shipped: the tests passed, the site
+ * That is exactly how `@beardedunicorn/thetowersdk/wiki` shipped: the tests passed, the site
  * built, and the one consumer compiling against `dist` rather than source broke
  * in CI. Adding an entry point is four separate lists, and this holds two of
  * them to each other.

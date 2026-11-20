@@ -27,7 +27,7 @@ import { communityGuideSource } from '../../data/reference/community-guides'
 /** Read from the shipped catalog rather than transcribed, so it cannot drift. */
 const CATALOG_CURRENCY = {
   origin: 'code',
-  ref: 'thetowersdk/data CURRENCY_DEFINITIONS',
+  ref: '@beardedunicorn/thetowersdk/data CURRENCY_DEFINITIONS',
   verifiedAt: '2026-08-17',
 } as const
 

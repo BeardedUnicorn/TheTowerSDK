@@ -95,7 +95,7 @@ const WIKI_FREE_UPGRADES = { origin: 'wiki', ref: 'Free Upgrades', verifiedAt: '
 /** Read from the shipped workshop table rather than transcribed, so it cannot drift. */
 const CATALOG_TOWER = {
   origin: 'code',
-  ref: 'thetowersdk/data WORKSHOP_DATA',
+  ref: '@beardedunicorn/thetowersdk/data WORKSHOP_DATA',
   verifiedAt: '2026-08-17',
 } as const
 const WIKI_GAME_SPEED = { origin: 'wiki', ref: 'Game Speed', verifiedAt: '2026-08-16' } as const

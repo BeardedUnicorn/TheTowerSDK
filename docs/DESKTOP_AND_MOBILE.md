@@ -52,14 +52,14 @@ The SDK sits in both, but not the same parts:
 
 ```ts
 // main process — the decoder needs Node
-import { decodePlayerInfoSaveBytes } from 'thetowersdk/node'
+import { decodePlayerInfoSaveBytes } from '@beardedunicorn/thetowersdk/node'
 
 // renderer — everything else is browser-safe
-import { LAB_CATALOG } from 'thetowersdk/data'
-import { calculatorCommands } from 'thetowersdk/bot'
+import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
+import { calculatorCommands } from '@beardedunicorn/thetowersdk/bot'
 ```
 
-`thetowersdk/node` is the **only** entry point that needs Node. Importing it in a renderer
+`@beardedunicorn/thetowersdk/node` is the **only** entry point that needs Node. Importing it in a renderer
 with `nodeIntegration: false` — which is the correct setting — fails at bundle time, and
 that failure is the design working: the decoder belongs on the side of the boundary that is
 allowed to read files.
@@ -182,7 +182,7 @@ Two shapes, and they differ in whether you have a Node process at all.
 ### Capacitor — a WebView with native plugins
 
 Your existing web build ships almost unchanged. Every browser-safe SDK entry point works;
-`thetowersdk/node` does not, because there is no Node.
+`@beardedunicorn/thetowersdk/node` does not, because there is no Node.
 
 ```bash
 npm install @capacitor/core @capacitor/cli
@@ -199,7 +199,7 @@ painful because it changes what the first screen asks for.
 ### React Native — a JS runtime, no DOM
 
 Data, formatting, mechanics, builders and bot all work — they are plain TypeScript with no
-DOM. `thetowersdk/node` does not; the decoder uses Node's `Buffer` and stream primitives.
+DOM. `@beardedunicorn/thetowersdk/node` does not; the decoder uses Node's `Buffer` and stream primitives.
 Decode server-side and send the extracted shape down, which is what you want anyway: it is
 smaller and it means one implementation of decoding rather than one per platform.
 
@@ -207,7 +207,7 @@ smaller and it means one implementation of decoding rather than one per platform
 
 ## What to check before you ship
 
-- **Bundle size.** Import the subpaths (`thetowersdk/data`) rather than the root, so your
+- **Bundle size.** Import the subpaths (`@beardedunicorn/thetowersdk/data`) rather than the root, so your
   bundler can drop what you do not use. The root re-exports data, save and formatting
   together for convenience, and convenience is expensive on mobile.
 - **The decoder is the only Node-only part.** If something else fails to bundle for a

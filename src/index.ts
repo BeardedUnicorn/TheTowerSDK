@@ -3,13 +3,13 @@
  *
  * This barrel re-exports three browser-safe entry points:
  *
- *   `thetowersdk/data`  game tables — costs, levels, effects, catalogs
- *   `thetowersdk/save`  read a player's save file into typed values
- *   `thetowersdk/formatting`  number and duration display
+ *   `@beardedunicorn/thetowersdk/data`  game tables — costs, levels, effects, catalogs
+ *   `@beardedunicorn/thetowersdk/save`  read a player's save file into typed values
+ *   `@beardedunicorn/thetowersdk/formatting`  number and duration display
  *
  * Prefer those subpaths in application code so bundlers can drop what you do not
- * use. Node save decoding is imported from `thetowersdk/node`; browsers use
- * `thetowersdk/save-decoder`.
+ * use. Node save decoding is imported from `@beardedunicorn/thetowersdk/node`; browsers use
+ * `@beardedunicorn/thetowersdk/save-decoder`.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    atIndex, hasOwnKey, ownLookup, ownLookupOr

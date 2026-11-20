@@ -26,7 +26,7 @@ const EPATHS_ORACLE = {
 
 const SDK_SHEETS = {
   origin: 'code',
-  ref: 'thetowersdk/sheets TowerSheets, packages/sdk/src/sheets/sheets.test.ts',
+  ref: '@beardedunicorn/thetowersdk/sheets TowerSheets, packages/sdk/src/sheets/sheets.test.ts',
   verifiedAt: '2026-08-25',
 } as const
 

@@ -4,7 +4,7 @@
  *
  * v29 replaced these trees (patch note 1541918025244999721, 2026-08-25): Harmony, Power and a new
  * Enemy tab, organised by category, with no prerequisite order and new key costs. The current
- * vault is `VAULT_V29_HARMONY`, `VAULT_V29_POWER` and `VAULT_V29_ENEMY` in `thetowersdk/data`.
+ * vault is `VAULT_V29_HARMONY`, `VAULT_V29_POWER` and `VAULT_V29_ENEMY` in `@beardedunicorn/thetowersdk/data`.
  * These trees remain because saves written before v29 store the old node layout, and the
  * Effective Paths port prices vault keys the way its sheet does.
  */

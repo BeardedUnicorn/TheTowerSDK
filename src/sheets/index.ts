@@ -5,7 +5,7 @@
  * that only ever appear together would cost a level of nesting and explain nothing.
  *
  * ```ts
- * import { TowerSheets } from 'thetowersdk/sheets'
+ * import { TowerSheets } from '@beardedunicorn/thetowersdk/sheets'
  *
  * const sheets = new TowerSheets({
  *   transport,                          // templates/sheets-client.ts is the googleapis one

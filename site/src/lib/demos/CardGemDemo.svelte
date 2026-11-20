@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CARD_LEVEL_COPY_REQUIREMENTS, cardLevelUpgradeGemCost } from '$lib/sdk-card-costs';
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	const levelOptions = ['0', '1', '2', '3', '4', '5', '6', '7'] as const;
 

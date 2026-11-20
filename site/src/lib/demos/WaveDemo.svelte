@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { TIERS } from 'thetowersdk/data';
-	import { computeWaveBaseDamage, computeWaveBaseHealth } from 'thetowersdk/mechanics';
-	import { formatNumberForDisplay } from 'thetowersdk/formatting';
+	import { TIERS } from '@beardedunicorn/thetowersdk/data';
+	import { computeWaveBaseDamage, computeWaveBaseHealth } from '@beardedunicorn/thetowersdk/mechanics';
+	import { formatNumberForDisplay } from '@beardedunicorn/thetowersdk/formatting';
 
 	/** Farm tiers plus tournament league bases (tier+), selectable as distinct rows. */
 	const tierOptions = [

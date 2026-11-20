@@ -7,7 +7,7 @@
 <h1 class="text-3xl font-semibold">Discord Bots</h1>
 <p class="mt-3 text-muted">
 	Every <a href={href('/docs/builders/')}>builder</a> is already a command.
-	<code>thetowersdk/bot</code>
+	<code>@beardedunicorn/thetowersdk/bot</code>
 	turns the {spelled(sdkFacts.builders)} builders into {spelled(sdkFacts.builders)} commands with their
 	options declared, runs them, and returns a reply shaped like an embed — title, description, fields.
 	Nothing here talks to Discord, so the same commands serve a Discord bot, a Slack app, or an HTTP endpoint.
@@ -16,7 +16,7 @@
 <h2 class="mt-10 text-xl font-semibold">The Commands</h2>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { calculatorCommands } from 'thetowersdk/bot'
+		code={`import { calculatorCommands } from '@beardedunicorn/thetowersdk/bot'
 
 const commands = calculatorCommands()
 console.log(commands.length)   // 15
@@ -81,7 +81,7 @@ console.log(reply)
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { createTowerBot, calculatorCommands } from 'thetowersdk/bot'
+		code={`import { createTowerBot, calculatorCommands } from '@beardedunicorn/thetowersdk/bot'
 
 const bot = createTowerBot({ commands: calculatorCommands() })
 
@@ -122,7 +122,7 @@ await bot.run('uptime-ratio', { args: { durationSeconds: '23', cooldownSeconds: 
 <div class="mt-4">
 	<CodeBlock
 		code={`import { SlashCommandBuilder } from 'discord.js'
-import { createTowerBot, calculatorCommands } from 'thetowersdk/bot'
+import { createTowerBot, calculatorCommands } from '@beardedunicorn/thetowersdk/bot'
 
 const bot = createTowerBot({ commands: calculatorCommands() })
 
@@ -170,8 +170,8 @@ client.on('interactionCreate', async (interaction) => {
 </p>
 <div class="mt-4">
 	<CodeBlock
-		code={`import { createTowerBot, calculatorCommands, markUncacheable } from 'thetowersdk/bot'
-import { searchPatchNotes } from 'thetowersdk/knowledge'
+		code={`import { createTowerBot, calculatorCommands, markUncacheable } from '@beardedunicorn/thetowersdk/bot'
+import { searchPatchNotes } from '@beardedunicorn/thetowersdk/knowledge'
 
 const whenChanged = {
   name: 'when-changed',

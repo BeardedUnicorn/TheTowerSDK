@@ -9,7 +9,7 @@ import type { DailyMissionLabLevel, DailyMissionTierReward, DailyMissionWeeklyRe
  * Daily missions — reward tables.
  *
  * Game numbers, not presentation: what each mission pays and at what tier. Prose
- * describing how missions are handed out lives in `thetowersdk/knowledge`.
+ * describing how missions are handed out lives in `@beardedunicorn/thetowersdk/knowledge`.
  */
 
 /**

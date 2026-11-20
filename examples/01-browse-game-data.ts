@@ -8,7 +8,7 @@
  * Run it:
  *   npx tsx examples/01-browse-game-data.ts
  */
-import { LAB_CATALOG, type LabCatalogRecord } from 'thetowersdk/data'
+import { LAB_CATALOG, type LabCatalogRecord } from '@beardedunicorn/thetowersdk/data'
 
 console.log(`The game has ${LAB_CATALOG.length} labs.\n`)
 

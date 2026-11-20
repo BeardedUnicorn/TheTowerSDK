@@ -1,7 +1,7 @@
 /**
  * Modules the templates demonstrate but this package deliberately does not depend on.
  *
- * `templates/sheets-client.ts` shows how to drive `thetowersdk/sheets` with `googleapis`. The
+ * `templates/sheets-client.ts` shows how to drive `@beardedunicorn/thetowersdk/sheets` with `googleapis`. The
  * SDK does not depend on it — that would pull a large Node-only tree into a package most
  * consumers use for game data — so the template is meant to be copied into a project that
  * installs it. Which leaves the template itself unable to type-check here.

@@ -15,7 +15,7 @@ In the Run Tracker monorepo also follow
 
 ## Quick orientation
 
-- Public API: `thetowersdk/data`, `/save`, `/node`, `/formatting`, `/mechanics`, `/wiki`.
-  There is no `thetowersdk/internal/*`; the entry points are the whole surface.
+- Public API: `@beardedunicorn/thetowersdk/data`, `/save`, `/node`, `/formatting`, `/mechanics`, `/wiki`.
+  There is no `@beardedunicorn/thetowersdk/internal/*`; the entry points are the whole surface.
 - Save extractors return `null` rather than throwing, and report `warnings`.
 - Run `pnpm verify` before proposing a change.

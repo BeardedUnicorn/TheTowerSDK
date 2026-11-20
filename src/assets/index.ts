@@ -5,7 +5,7 @@
  * TechTree Games; the SDK distributes path conventions, with no images or filename index.
  *
  * ```ts
- * import { gameAssetPath, towerAssetUrl } from 'thetowersdk/assets'
+ * import { gameAssetPath, towerAssetUrl } from '@beardedunicorn/thetowersdk/assets'
  *
  * gameAssetPath('Amplifying Strike', { domain: 'modules' })
  * // 'modules/amplifying-strike-md.webp'

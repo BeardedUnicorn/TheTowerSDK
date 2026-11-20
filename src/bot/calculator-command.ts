@@ -1,7 +1,7 @@
 /**
  * Any calculator builder, as a bot command — options, parsing, formatting and all.
  *
- * The fifteen builders in `thetowersdk/builders` already describe their own inputs, so a
+ * The fifteen builders in `@beardedunicorn/thetowersdk/builders` already describe their own inputs, so a
  * bot does not need per-calculator code to expose them. `calculatorCommands()` turns the
  * whole set into commands in one line, and a builder added later appears without anyone
  * touching the bot.

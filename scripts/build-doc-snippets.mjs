@@ -23,7 +23,7 @@
  * In any file under `examples/`, `templates/` or `docs/`:
  *
  *     // >>> snippet: install-and-read
- *     import { LAB_CATALOG } from 'thetowersdk/data'
+ *     import { LAB_CATALOG } from '@beardedunicorn/thetowersdk/data'
  *     // <<< snippet
  *
  * Markdown uses the same markers inside an HTML comment. The marker lines are stripped, and

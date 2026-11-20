@@ -5,7 +5,7 @@
  *
  * `templates/bot-starter.ts` is the same thing with a hand-written command and a CLI.
  */
-import { calculatorCommands, createTowerBot } from 'thetowersdk/bot'
+import { calculatorCommands, createTowerBot } from '@beardedunicorn/thetowersdk/bot'
 
 /*
  * Every calculator in the SDK, as a command. There is no per-calculator code here and none

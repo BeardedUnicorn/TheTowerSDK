@@ -24,7 +24,7 @@
 	</div>
 	<p class="mt-3 text-sm text-muted">
 		Claude Code:
-		<code>claude mcp add thetowersdk -- node ./node_modules/thetowersdk/mcp/server.mjs</code>
+		<code>claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs</code>
 	</p>
 </section>
 

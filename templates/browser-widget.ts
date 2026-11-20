@@ -2,7 +2,7 @@
  * TEMPLATE — a browser-safe module.
  *
  * Everything here runs in a bundle with no Node built-ins. That is the whole
- * point of the file: `thetowersdk/node` is the only entry point that needs Node,
+ * point of the file: `@beardedunicorn/thetowersdk/node` is the only entry point that needs Node,
  * so a widget that never decodes a save file never imports it.
  *
  * Copy this into a component, a Svelte store, a plain <script type="module"> —
@@ -11,8 +11,8 @@
  * Browser-safe entry points: data, save, formatting, mechanics, wiki, charts,
  * knowledge, inputs. Node-only: node.
  */
-import { LAB_CATALOG, type LabCatalogRecord } from 'thetowersdk/data'
-import { formatDuration, formatLargeNumber, parseDurationToHours } from 'thetowersdk/formatting'
+import { LAB_CATALOG, type LabCatalogRecord } from '@beardedunicorn/thetowersdk/data'
+import { formatDuration, formatLargeNumber, parseDurationToHours } from '@beardedunicorn/thetowersdk/formatting'
 
 export interface LabSummary {
   readonly name: string

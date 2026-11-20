@@ -13,8 +13,8 @@
  *   npx tsx examples/08-build-a-calculator.ts
  *   npx tsx examples/08-build-a-calculator.ts uw.stones
  */
-import { CALCULATOR_BUILDERS, findCalculatorBuilder } from 'thetowersdk/builders'
-import { formatDuration, formatLargeNumber } from 'thetowersdk/formatting'
+import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '@beardedunicorn/thetowersdk/builders'
+import { formatDuration, formatLargeNumber } from '@beardedunicorn/thetowersdk/formatting'
 
 const requestedId = process.argv[2] ?? 'lab.research'
 const builder = findCalculatorBuilder(requestedId)
