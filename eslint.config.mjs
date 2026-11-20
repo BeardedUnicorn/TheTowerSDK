@@ -18,6 +18,20 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    /*
+     * Three rules ESLint 10 added to `recommended`. The code they flag predates them — twelve
+     * lines, several inside mechanics formulas — and none is a behaviour bug: an initial value
+     * that is always overwritten, a rethrow without `cause`. Rewriting formula code as a side
+     * effect of a linter upgrade is the wrong trade, so they warn. Clear them as you touch each
+     * file, the same way as the unused locals below.
+     */
+    rules: {
+      'no-useless-assignment': 'warn',
+      'no-unassigned-vars': 'warn',
+      'preserve-caught-error': 'warn',
+    },
+  },
+  {
     files: ['**/*.ts'],
     rules: {
       // Named exports only — keeps re-exports and tooling predictable.

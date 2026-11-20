@@ -13,7 +13,7 @@ Or individually: `pnpm lint`, `pnpm lint:conventions`, `pnpm type-check`,
 `pnpm test`, `pnpm build`. The repository uses [pnpm](https://pnpm.io); the version is pinned by
 `packageManager` in `package.json`, and `corepack enable` gives you exactly that one.
 
-Node 20+. The only runtime dependency is `zod`.
+Node 22+. The only runtime dependency is `zod`.
 
 There's also an MCP server (`pnpm mcp`) if you work with an AI agent — see
 [mcp/README.md](mcp/README.md) and [AGENTS.md](AGENTS.md).

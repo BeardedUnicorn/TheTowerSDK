@@ -7,7 +7,7 @@
 
 <h1 class="text-3xl font-semibold">Install</h1>
 <p class="mt-3 text-muted">
-	The SDK runs in Node 20 or newer and in browsers. Catalogs and formulas need no setup; account
+	The SDK runs in Node 22 or newer and in browsers. Catalogs and formulas need no setup; account
 	imports accept only official game JSON exports. Optional wiki and Sheets integrations use network
 	access. These docs cover the published SDK version {SDK_VERSION}.
 </p>

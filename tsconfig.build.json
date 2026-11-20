@@ -7,7 +7,11 @@
     // `wiki-transport-curl.ts` fails to compile.
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "CommonJS",
-    "moduleResolution": "node",
+    // TypeScript 6 deprecates `node` (node10) resolution. `bundler` is its replacement for a
+    // CommonJS emit: it resolves the same extensionless relative imports and reads `exports`.
+    "moduleResolution": "bundler",
+    // TypeScript 6 no longer loads every `@types/*` package by default, so Node's types are named.
+    "types": ["node"],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

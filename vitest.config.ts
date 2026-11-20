@@ -4,6 +4,10 @@ import { readFileSync } from 'node:fs'
 export default defineConfig({
   // SDK tests can import plain site modules before SvelteKit generates its config.
   // A raw string makes Vite use the SDK compiler settings without nearest-config discovery.
+  //
+  // This is why `vite` is held on 7.x: Vite 8 transforms with oxc, ignores `esbuild` options, and
+  // has no raw-tsconfig equivalent — `tests/site` then fails wherever `site/.svelte-kit` has not
+  // been generated, which is the state CI runs in.
   esbuild: {
     tsconfigRaw: readFileSync(new URL('./tsconfig.build.json', import.meta.url), 'utf8'),
   },
