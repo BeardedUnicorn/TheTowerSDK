@@ -83,6 +83,34 @@ a contributor who does not have one — and no one's save data ends up in the re
 Keep them focused; one concern per PR is much easier to review. Run `pnpm verify` before
 opening — it is exactly what CI runs.
 
+## Releases
+
+Nobody cuts a release by hand. Every push to `main` runs
+[`.github/workflows/release.yml`](.github/workflows/release.yml), which reads the commits since
+the last `v*` tag and decides the next version from their
+[Conventional Commit](https://www.conventionalcommits.org) types:
+
+| Commit | Release |
+|---|---|
+| `fix: …` | patch |
+| `feat: …` | minor |
+| `feat!: …`, or a `BREAKING CHANGE:` footer | major |
+| `docs`, `chore`, `test`, `build`, `ci`, `refactor`, `style` | none |
+
+When there is something to release, the workflow writes the entry into `CHANGELOG.md`, bumps
+`package.json`, commits both as `chore(release): <version> [skip ci]`, tags it, publishes to npm,
+creates the GitHub release and attaches `thetowersdk.wasm`. Do not edit the version or add
+changelog entries yourself.
+
+Two things follow from that:
+
+- **A `feat` or `fix` that reaches `main` is published.** There is no review step after the
+  merge, and a published version cannot be changed. If a change is not ready to ship, it is not
+  ready to merge.
+- **The commit subject is the changelog line.** `fix(save): read the relic list when the export
+  omits the count` is what a reader of the changelog sees, so write it for them. With squash
+  merges, that is the pull request title.
+
 ## Third-party work
 
 If you contribute code adapted from another project, say so in the PR and add the project and its

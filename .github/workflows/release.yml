@@ -1,0 +1,114 @@
+# Version, publish and release — automatically, on every push to main.
+#
+# semantic-release reads the commits since the last `v*` tag and decides the next version from
+# their Conventional Commit types:
+#
+#   fix: …                          → patch
+#   feat: …                         → minor
+#   feat!: … / BREAKING CHANGE: …   → major
+#   docs, chore, test, build, ci …  → no release
+#
+# When there is something to release it, in this order:
+#
+#   1. writes the notes into CHANGELOG.md and the version into package.json,
+#   2. commits both to main as `chore(release): <version> [skip ci]` and tags it `v<version>`,
+#   3. publishes to npm,
+#   4. creates the GitHub release with the same notes,
+#
+# and then the WASM job below attaches `thetowersdk.wasm` to that release. The configuration is
+# `.releaserc.json`.
+#
+# THERE IS NO REVIEW STEP. A `feat` or `fix` commit that reaches main is a published npm version,
+# and a published version can never be changed or reused. `pnpm verify` below is the only gate.
+#
+# npm authentication is trusted publishing (OIDC): no token is stored anywhere. One-time setup,
+# which cannot be done from a workflow:
+#
+#   1. The package has to exist on npm before a publisher can be attached to it, so publish
+#      1.0.0 by hand.
+#   2. npmjs.com → the package → Settings → Trusted Publisher → GitHub Actions:
+#      this repository, workflow filename `release.yml`.
+#   3. Tag the commit that was published `v1.0.0` and push the tag.
+#
+# In that order. Until a `v*` tag exists the release step below skips itself: with no tag,
+# semantic-release would treat the whole history as unreleased and try to publish 1.0.0 again.
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Two releases racing would compute the same version from the same tag.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the release commit, the tag and the GitHub release
+      id-token: write # npm trusted publishing (OIDC) and provenance
+    outputs:
+      published: ${{ steps.release.outputs.published }}
+      tag: ${{ steps.release.outputs.tag }}
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Every commit and tag: the version is computed from the history since the last tag.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The gate. Nothing below runs unless the full check passes.
+      - run: pnpm verify
+
+      # semantic-release is run with `pnpm dlx` at exact versions rather than added to
+      # devDependencies: it pulls in the whole npm CLI, which every contributor and every CI job
+      # would otherwise install to use a tool only this job runs.
+      - name: Version, publish and release
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git tag --list 'v*')" ]; then
+            echo "::notice::No v* tag yet, so nothing is released. Publish 1.0.0 by hand and tag it v1.0.0 first — see the header of release.yml."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          before=$(git tag --list 'v*' | sort)
+          pnpm \
+            --package=semantic-release@25.0.9 \
+            --package=@semantic-release/changelog@7.0.0 \
+            --package=@semantic-release/git@11.0.1 \
+            dlx semantic-release
+          tag=$(comm -13 <(echo "$before") <(git tag --list 'v*' | sort) | tail -n 1)
+          if [ -n "$tag" ]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # A release created with the Actions token does not fire `on: release` in other workflows, so
+  # the WASM build is called directly. Without this the module would stop being attached and
+  # nothing would fail.
+  wasm:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/wasm.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}

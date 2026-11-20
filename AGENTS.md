@@ -412,6 +412,12 @@ pnpm verify      # lint + conventions + types + build + tests
 Individually: `pnpm lint`, `pnpm lint:conventions`, `pnpm type-check`, `pnpm test`,
 `pnpm test:schema`, `pnpm build`.
 
+**Commit types publish.** Every push to `main` is versioned and released automatically from its
+Conventional Commit types: `fix:` is a patch, `feat:` a minor, `!` or `BREAKING CHANGE:` a major,
+and anything else releases nothing. The commit subject becomes the changelog line. Never edit the
+`version` in `package.json` or add a `CHANGELOG.md` entry by hand — see the Releases section of
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Adding things
 
 **A new extractor** — put it in `src/save/`, export it from `src/save/index.ts`, return `null` when

@@ -4,11 +4,20 @@
 # npm — they are writing Python, Rust, Go or C#. So it ships as a release asset rather than inside
 # the package: a JavaScript caller pays nothing for it, and everyone else downloads one file.
 #
-# Runs on a release, and on demand. Not on every push: nothing in CI consumes the module, and
+# Runs for every release, and on demand. Not on every push: nothing in CI consumes the module, and
 # building it on each commit spends several minutes producing an artifact nobody reads.
 name: WASM
 
 on:
+  # Called by release.yml with the tag it just created. That is the path a normal release takes:
+  # a release made with the Actions token does not fire `on: release` here.
+  workflow_call:
+    inputs:
+      tag:
+        description: The release tag to build from and attach the module to.
+        required: true
+        type: string
+  # A release published by hand, from the GitHub UI or `gh release create`.
   release:
     types: [published]
   workflow_dispatch:
@@ -21,6 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The release's own tag when called with one; otherwise whatever triggered the run.
+          ref: ${{ inputs.tag || github.ref }}
 
       - uses: pnpm/action-setup@v6
 
@@ -43,13 +55,14 @@ jobs:
       - run: pnpm exec vitest run wasm/
 
       - name: Attach to the release
-        if: github.event_name == 'release'
+        if: inputs.tag != '' || github.event_name == 'release'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name }}" wasm/.build/thetowersdk.wasm --clobber
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" wasm/.build/thetowersdk.wasm --clobber
 
       - name: Keep it as a build artifact otherwise
-        if: github.event_name != 'release'
+        if: inputs.tag == '' && github.event_name != 'release'
         uses: actions/upload-artifact@v7
         with:
           name: thetowersdk-wasm

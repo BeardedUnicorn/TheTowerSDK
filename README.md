@@ -1229,7 +1229,8 @@ Wave scaling in particular builds on earlier community work — see [Credits](#c
 
 ## Versioning
 
-The package follows semantic versioning:
+The package follows semantic versioning, and releases are cut automatically from the commit
+history — each one is on npm, in [CHANGELOG.md](CHANGELOG.md) and on the repository's Releases page:
 
 - **Patch** — fixes and data corrections.
 - **Minor** — new exports, extractors and data, including data updated for a new game version;
