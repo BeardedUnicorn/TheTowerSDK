@@ -15,7 +15,7 @@ npm install thetowersdk@0.13.0 --save-exact
 - **Formulas** — enemy scaling, damage, ultimate weapons, drops and workshop stats, as functions you
   call with a tier, a wave or a level.
 - **Charts** — every level progression is already a plot-ready series, so the shipped catalogs cover
-  [808 chartable series](#charts) without you authoring one.
+  [800 chartable series](#charts) without you authoring one.
 
 TypeScript, MIT licensed, one runtime dependency (`zod`).
 
@@ -478,12 +478,12 @@ every chart over the same array update together — which is the point of
 Markdown, so documentation tables regenerate instead of rotting.
 See [`examples/05-generate-a-cost-table.ts`](examples/05-generate-a-cost-table.ts).
 
-**How much is chartable.** The shipped catalogs support **808 distinct series** — one per measurable
+**How much is chartable.** The shipped catalogs support **800 distinct series** — one per measurable
 field that varies across a level range:
 
 | Source | Series | What varies |
 |---|---|---|
-| Labs | 470 | Coin cost and research time, per lab |
+| Labs | 462 | Coin cost and research time, per lab |
 | Workshop | 141 | Stat value, cash cost, coin cost |
 | Cards | 64 | Level values and mastery values |
 | Ultimate weapons | 72 | Stat value and stone cost, per stat |

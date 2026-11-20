@@ -31,8 +31,10 @@ describe('lab catalog', () => {
 
   it('holds the whole catalog', () => {
     // 150 from labs-levels plus 75 from labs-static, which were disjoint, plus the v29
-    // additions (Cells Mastery, the three Fleet labs now under Enemies, and the preset labs).
-    expect(LAB_CATALOG.length).toBe(234)
+    // additions (Cells Mastery, the three Fleet labs now under Enemies, and the preset labs),
+    // less Ray, Scatter and Vampire Enemy Defense: the game has no such labs, and the rows
+    // were copies of the Health labs.
+    expect(LAB_CATALOG.length).toBe(231)
     const levels = LAB_CATALOG.reduce((total, lab) => total + lab.levels.length, 0)
     expect(levels).toBeGreaterThanOrEqual(5900)
   })

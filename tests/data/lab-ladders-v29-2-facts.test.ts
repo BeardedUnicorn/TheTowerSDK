@@ -47,7 +47,6 @@ const BATTLE_CONDITION_LABS = [
   'fasts_ultimate', 'ranged_ultimate', 'bosss_ultimate', 'basics_ultimate', 'tanks_ultimate',
   'protectors_ultimate', 'armored_enemies', 'enemy_speed', 'more_enemies', 'enemy_attack_speed',
 ]
-const NOT_IN_THE_GAME = ['ray_enemy_defense', 'scatter_enemy_defense', 'vampire_enemy_defense']
 const isMastery = (slug: string) => slug.endsWith('_mastery')
 
 const significantFigures = (x: number) =>
@@ -91,12 +90,14 @@ describe('lab ladders, as game data v29.2.1 has them', () => {
   })
 
   it('holds every catalog lab, or says why not', () => {
+    // A row with no research index is not a lab in the game. Ray, Scatter and Vampire Enemy
+    // Defense were three such rows, copies of the Health labs, and were removed.
     const missing = LAB_CATALOG
       .map(row => row.slug)
       .filter(slug => !factByIndex.has(indexOf(slug) ?? -1))
       .filter(slug => !isMastery(slug))
-    expect(missing.sort()).toEqual([...EFFECT_BANS, ...BATTLE_CONDITION_LABS, ...NOT_IN_THE_GAME].sort())
-    for (const slug of NOT_IN_THE_GAME) expect(indexOf(slug), slug).toBeUndefined()
+    expect(missing.sort()).toEqual([...EFFECT_BANS, ...BATTLE_CONDITION_LABS].sort())
+    for (const slug of missing) expect(indexOf(slug), slug).toBeDefined()
   })
 
   it.each(facts.labs.map(lab => [lab.slug, lab] as const))('%s costs and takes what the game asks at every level', (slug, lab) => {

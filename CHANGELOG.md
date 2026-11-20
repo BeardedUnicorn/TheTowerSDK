@@ -98,8 +98,14 @@ Every lab ladder (`facts/v29.2.1/lab-ladders.json`, 180 labs, with no coin or ti
 - **Unchanged:** Wall Health L2 (1.2B for 1.2001B) was only rounding. The card masteries, the
   effect-ban labs and the battle-condition labs' times are not in the facts. The
   battle-condition labs' costs match the game.
-- **The game has no Ray, Scatter or Vampire Enemy Defense lab.** Their `LAB_CATALOG` rows are
-  untouched.
+- **Removed `ray_enemy_defense`, `scatter_enemy_defense` and `vampire_enemy_defense` from
+  `LAB_CATALOG`**, which now holds 231 labs. Neither the game nor the wiki has these labs.
+  Ray, Scatter and Vampire have only Attack and Health labs. The rows were copies of the Health
+  labs. The wiki page "Lab/Vampire Enemy Defense" is an old title for Vampire Enemy Health.
+  `labCoinsRemaining` with no lab researched drops by 3.49e20 coins. Its `ep-port-baseline`
+  total is now 0.04% above the Effective Paths sheet, down from 0.75%. The README's chartable
+  series count is now 800 (462 from labs). It had said 808, two more than the catalogs held
+  even before this change.
 - **`lab-reference.test.ts` checks the Effective Paths sheet** as before. A level may now
   disagree with the sheet only where the game disagrees with the sheet too and the catalog
   follows the game. That is the case on 28 labs.

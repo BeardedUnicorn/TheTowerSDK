@@ -243,9 +243,11 @@ describe('the totals the priority selector weighs', () => {
     // read off the live sheet. Measured the same way: setting a lab to its
     // maximum drops the function by exactly that lab's remaining cost.
     //
-    // 0.035% of the gap is the two tables disagreeing on labs they both have;
-    // the rest is the 40 labs — masteries, Enemy Defense — that the sheet's
-    // table does not carry and this deliberately still counts.
+    // We land 0.04% above the sheet. Nearly all of it is the two tables
+    // disagreeing on labs they both have; the rest is the card masteries,
+    // which the sheet's table does not carry and this deliberately still
+    // counts. It was 0.75% while LAB_CATALOG held Ray, Scatter and Vampire
+    // Enemy Defense, three labs the game does not have.
     const sheet = 4.897074139405717e22
     const ours = labCoinsRemainingDetailed(() => 0, { basis: 'ep-port-baseline' }).coins
     expect(ours / sheet).toBeGreaterThan(1)

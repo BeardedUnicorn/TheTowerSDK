@@ -16,7 +16,7 @@ import { getWorkshopStatDefinitions } from '../../src/data/workshop/progress-def
  * the docs quietly wrong.
  */
 
-const PUBLISHED_TOTAL = 806
+const PUBLISHED_TOTAL = 800
 
 function isPlottable(value: unknown): boolean {
   if (typeof value === 'number') return Number.isFinite(value)
@@ -86,7 +86,7 @@ function countByCategory(): Record<string, number> {
 describe('chartable series count published in the docs', () => {
   it('still matches the shipped catalogs', () => {
     const parts = countByCategory()
-    expect(parts).toEqual({ labs: 468, workshop: 141, cards: 64, ultimateWeapons: 72, bots: 25, guardians: 36 })
+    expect(parts).toEqual({ labs: 462, workshop: 141, cards: 64, ultimateWeapons: 72, bots: 25, guardians: 36 })
     const total = Object.values(parts).reduce((sum, count) => sum + count, 0)
 
     expect(

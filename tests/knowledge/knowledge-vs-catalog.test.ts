@@ -400,7 +400,7 @@ describe('the oracle agrees with the catalogs', () => {
 
     expect(LAB_RESEARCH_BY_INDEX).toHaveLength(260)
     expect(named).toHaveLength(236)
-    expect(LAB_CATALOG.length, 'LAB_CATALOG carries level tables and omits labs without one').toBe(234)
+    expect(LAB_CATALOG.length, 'LAB_CATALOG carries level tables and omits labs without one').toBe(231)
 
     // The four counts must stay different, or one of them has silently become
     // a copy of another and the distinction this documents is gone.
