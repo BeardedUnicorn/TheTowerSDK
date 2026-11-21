@@ -33,8 +33,13 @@
 #   2. npmjs.com → the package → Settings → Trusted Publisher → GitHub Actions:
 #      this repository, workflow filename `release.yml`. Under "Allowed actions" the choices
 #      are `npm publish` and `npm dist-tag`; allow `npm publish`, which is what this workflow
-#      runs. Without it the release fails at `ENONPMTOKEN No npm token specified`.
+#      runs.
 #   3. Tag the commit that was published `v1.0.0` and push the tag.
+#
+# `publishConfig.registry` in package.json must be exactly `https://registry.npmjs.org/`, with
+# the trailing slash. @semantic-release/npm compares it as text before it tries OIDC at all;
+# without the slash it skips trusted publishing, asks for a token, and the release fails at
+# `ENONPMTOKEN No npm token specified` however the publisher is set up.
 #
 # The wiki job needs one more secret, `WIKI_TOKEN`: the built-in token cannot push to a wiki. Its
 # setup is in the header of `wiki.yml`. Without it a release still succeeds and the wiki job
