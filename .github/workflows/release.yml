@@ -31,10 +31,9 @@
 #      and `npm stage approve <stage-id>`. The placeholder is not the release. 1.0.0 is
 #      published when `npm view @beardedunicorn/thetowersdk version` prints 1.0.0.
 #   2. npmjs.com → the package → Settings → Trusted Publisher → GitHub Actions:
-#      this repository, workflow filename `release.yml`. Under "Allowed actions", allow
-#      `npm publish` as well as `npm stage publish`. A new trusted publisher allows staging
-#      only, and this workflow runs `npm publish`. Staging instead would leave every release
-#      waiting for a manual approval, which an OIDC token cannot give.
+#      this repository, workflow filename `release.yml`. Under "Allowed actions" the choices
+#      are `npm publish` and `npm dist-tag`; allow `npm publish`, which is what this workflow
+#      runs. Without it the release fails at `ENONPMTOKEN No npm token specified`.
 #   3. Tag the commit that was published `v1.0.0` and push the tag.
 #
 # The wiki job needs one more secret, `WIKI_TOKEN`: the built-in token cannot push to a wiki. Its
