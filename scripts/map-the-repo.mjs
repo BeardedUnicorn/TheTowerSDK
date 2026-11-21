@@ -96,6 +96,8 @@ const DIRECTORY_PURPOSE = {
   'src': 'The package itself — everything that ships, and nothing that does not.',
   'tooling': 'Development tooling for this repository. Never published, never imported by `src`.',
   'scripts': 'The checks and generators. Each is a `package.json` script; none is called from `src`.',
+  'scripts/game-wiki': 'The game pages of the GitHub wiki, generated from the built package.',
+  'scripts/game-wiki/pages': 'One module per game system, each turning its data into wiki pages.',
   'mcp': 'The MCP server, so an agent can query the package instead of guessing at it.',
   'wasm': 'The WebAssembly build, which puts the whole library behind one JSON call.',
   'examples': 'Runnable programs, one per thing you might want to do.',

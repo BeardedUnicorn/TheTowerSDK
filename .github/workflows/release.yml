@@ -15,8 +15,8 @@
 #   3. publishes to npm,
 #   4. creates the GitHub release with the same notes,
 #
-# and then the WASM job below attaches `thetowersdk.wasm` to that release. The configuration is
-# `.releaserc.json`.
+# and then the two jobs below attach `thetowersdk.wasm` to that release and regenerate the GitHub
+# wiki from the released tag. The configuration is `.releaserc.json`.
 #
 # THERE IS NO REVIEW STEP. A `feat` or `fix` commit that reaches main is a published npm version,
 # and a published version can never be changed or reused. `pnpm verify` below is the only gate.
@@ -36,6 +36,10 @@
 #      only, and this workflow runs `npm publish`. Staging instead would leave every release
 #      waiting for a manual approval, which an OIDC token cannot give.
 #   3. Tag the commit that was published `v1.0.0` and push the tag.
+#
+# The wiki job needs one more secret, `WIKI_TOKEN`: the built-in token cannot push to a wiki. Its
+# setup is in the header of `wiki.yml`. Without it a release still succeeds and the wiki job
+# skips itself with a warning.
 #
 # In that order. Until a `v*` tag exists the release step below skips itself: with no tag,
 # semantic-release would treat the whole history as unreleased and try to publish 1.0.0 again.
@@ -125,3 +129,16 @@ jobs:
     uses: ./.github/workflows/wasm.yml
     with:
       tag: ${{ needs.release.outputs.tag }}
+
+  # Same reason as the WASM job: called directly, because the release above fires no event.
+  # The wiki is generated from the released tag, so its game pages match the published version.
+  wiki:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/wiki.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+    secrets:
+      WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}

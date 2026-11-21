@@ -11,7 +11,7 @@ inside the file — what depends on it.
 |---|---:|---|---|
 | [`src`](src/MAP.md) | 623 | The package itself — everything that ships, and nothing that does not. | yes |
 | [`tooling`](tooling/MAP.md) | 52 | Development tooling for this repository. Never published, never imported by `src`. | yes |
-| [`scripts`](scripts/MAP.md) | 27 | The checks and generators. Each is a `package.json` script; none is called from `src`. | yes |
+| [`scripts`](scripts/MAP.md) | 41 | The checks and generators. Each is a `package.json` script; none is called from `src`. | yes |
 | [`mcp`](mcp/MAP.md) | 7 | The MCP server, so an agent can query the package instead of guessing at it. | yes |
 | [`wasm`](wasm/MAP.md) | 2 | The WebAssembly build, which puts the whole library behind one JSON call. | yes |
 | [`examples`](examples/MAP.md) | 12 | Runnable programs, one per thing you might want to do. | no |
@@ -21,5 +21,5 @@ Regenerate with `pnpm map`. `pnpm lint:map` runs inside `verify` and fails if an
 it has drifted, so none of these files should ever be edited by hand.
 
 The prose above each generated block is written by hand, and is the one thing no generator can
-produce. 541 of 729 files have one; 188 do not, and
+produce. 555 of 743 files have one; 188 do not, and
 show as `—` in their directory's Purpose column.

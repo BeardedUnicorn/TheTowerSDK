@@ -1255,6 +1255,11 @@ pnpm docs:seed    # regenerate the wiki pages and the shared code snippets
 pnpm docs:check   # fail if any of them are stale (runs in `pnpm verify`)
 ```
 
+The wiki also carries the game itself — a page for every workshop stat, lab, card, module and
+ultimate weapon, plus tiers, tournaments, the vault and the patch notes. Those pages are generated
+by [`scripts/game-wiki/`](scripts/game-wiki) from this package's own data, so they say exactly what
+the SDK says. Every release regenerates and publishes the wiki from the released tag.
+
 The wiki is rendered by [`scripts/build-wiki.mjs`](scripts/build-wiki.mjs). A GitHub wiki is a
 separate repository that no pull request reviews, so hand-editing it would create a third docs
 surface that silently drifts — every page carries a banner saying so, and an edit made there is

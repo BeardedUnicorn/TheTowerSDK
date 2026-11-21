@@ -4,6 +4,13 @@
 
 The checks and generators. Each is a `package.json` script; none is called from `src`.
 
+| Directory | Files | What lives here |
+|---|---|---|
+| [`scripts/game-wiki`](game-wiki/MAP.md) | 2 | The game pages of the GitHub wiki, generated from the built package. |
+| [`scripts/game-wiki/pages`](game-wiki/pages/MAP.md) | 12 | One module per game system, each turning its data into wiki pages. |
+
+## Directly in `scripts`
+
 | File | Purpose | Exports |
 |---|---|---|
 | `audit-package-contents.mjs` | Assert what the published tarball actually contains — not what `files` says it should. | — |

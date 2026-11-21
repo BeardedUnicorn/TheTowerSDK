@@ -16,13 +16,27 @@ name: Publish wiki
 #      against the wiki. Verify before trusting CI:
 #        git clone https://<token>@github.com/BeardedUnicorn/TheTowerSDK.wiki.git
 
-# Manual only. The wiki is normally published from a workstation with `pnpm wiki:publish`,
-# which uses whatever git credentials are already present and needs no secret at all. This job
-# needs a WIKI_TOKEN, so leaving it on `push` meant a red run on every commit for a step nobody
-# was relying on — a permanently failing check teaches people to ignore the ones that matter.
+# Runs after every release, and on demand. `release.yml` calls it with the tag it just created,
+# so the wiki describes the version that was published. It is not triggered by `on: release`: a
+# release made with the Actions token does not fire that event in another workflow.
 #
-# Set WIKI_TOKEN (classic PAT, `repo` scope) if you want to run it from here instead.
+# A docs-only commit does not release, so it reaches the wiki with the next release — or sooner
+# by running this by hand, or with `pnpm wiki:publish` from a machine that can already push.
+#
+# Without WIKI_TOKEN a release run skips the wiki with a warning rather than failing: the npm
+# version is already published by then and cannot be taken back, and a check that is always red
+# teaches people to ignore the ones that matter. A run started by hand fails instead, because
+# publishing the wiki is the only thing it was asked to do.
 on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The release tag to generate the wiki from.
+        required: true
+        type: string
+    secrets:
+      WIKI_TOKEN:
+        required: false
   workflow_dispatch:
 
 # Two pushes racing would fight over the same wiki repo.
@@ -38,28 +52,57 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          # The release's own tag when called with one; otherwise whatever triggered the run.
+          ref: ${{ inputs.tag || github.ref }}
 
-      # The generator only reads files and writes markdown — no dependencies needed.
-      - name: Render the wiki
-        run: node scripts/build-wiki.mjs --out "$RUNNER_TEMP/wiki-pages"
-
-      - name: Clone the wiki repository
+      - name: Check for the wiki token
+        id: token
         env:
           WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+          FROM_RELEASE: ${{ inputs.tag != '' }}
         run: |
-          if [ -z "$WIKI_TOKEN" ]; then
+          if [ -n "$WIKI_TOKEN" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          elif [ "$FROM_RELEASE" = "true" ]; then
+            echo "::warning::WIKI_TOKEN is not set, so the wiki was not updated for this release. See the header of wiki.yml for setup."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
             echo "WIKI_TOKEN is not set — see the header of this workflow for setup." >&2
             exit 1
           fi
+
+      - uses: pnpm/action-setup@v6
+        if: steps.token.outputs.present == 'true'
+
+      - uses: actions/setup-node@v7
+        if: steps.token.outputs.present == 'true'
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # The game pages are read from the built package, so the wiki needs a build first.
+      - name: Build the package
+        if: steps.token.outputs.present == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Render the wiki
+        if: steps.token.outputs.present == 'true'
+        run: node scripts/build-wiki.mjs --out "$RUNNER_TEMP/wiki-pages"
+
+      - name: Clone the wiki repository
+        if: steps.token.outputs.present == 'true'
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+        run: |
           git clone \
             "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" \
             "$RUNNER_TEMP/wiki-repo"
 
       - name: Sync pages
+        if: steps.token.outputs.present == 'true'
         run: |
           cd "$RUNNER_TEMP/wiki-repo"
           # Delete tracked pages first so a removed source file removes its page too;
@@ -69,7 +112,10 @@ jobs:
           git add -A
 
       - name: Commit and push
+        if: steps.token.outputs.present == 'true'
         run: |
+          # The commit that was checked out, which for a release is the tag, not GITHUB_SHA.
+          source_sha=$(git -C "$GITHUB_WORKSPACE" rev-parse --short HEAD)
           cd "$RUNNER_TEMP/wiki-repo"
           if git diff --cached --quiet; then
             echo "Wiki already matches the sources; nothing to push."
@@ -77,5 +123,5 @@ jobs:
           fi
           git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-              commit -m "Regenerate wiki from ${GITHUB_SHA:0:7}"
+              commit -m "Regenerate wiki from ${source_sha}"
           git push origin HEAD
