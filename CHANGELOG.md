@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 (2026-11-21)
+
+
+### Bug Fixes
+
+* **mcp:** explain an unreadable export in a sentence, and guard decode_save ([35e4680](https://github.com/BeardedUnicorn/TheTowerSDK/commit/35e46802781f12dc8f3e8c67492915c3eb4faf42))
+
 ## 1.0.0
 
 **First release of the fork, as `@beardedunicorn/thetowersdk`.** Forked from
