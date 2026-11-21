@@ -566,17 +566,28 @@ const sampleSize = (limit, fallback = 40, ceiling = MAX_PREVIEW) => {
  * A path is the one argument here that comes from a person typing, so wrong paths are the ordinary
  * case rather than the exotic one, and "not a file" deserves a sentence rather than an errno.
  */
-async function readSaveOrExplain(savePath) {
-  if (typeof savePath !== 'string' || savePath.length === 0) {
+async function readSaveOrExplain(givenPath) {
+  if (typeof givenPath !== 'string' || givenPath.trim().length === 0) {
     return { error: 'decode needs an absolute path to a tool_export.json.' }
   }
+
+  /*
+   * `~` is the shell's, not the filesystem's. A path typed the way a person types one came back
+   * as "no file at ~/Downloads/tool_export.json", which reads as "you have not exported yet".
+   */
+  const savePath = /^~(?=$|[\\/])/.test(givenPath) ? path.join(os.homedir(), givenPath.slice(1)) : givenPath
 
   let stats
   try {
     stats = fs.statSync(savePath)
   }
   catch {
-    return { error: `no file at ${savePath}` }
+    return {
+      error: `no file at ${savePath}`,
+      ...(path.isAbsolute(savePath)
+        ? {}
+        : { hint: `That is a relative path, read from ${process.cwd()}. Give the absolute path to the export.` }),
+    }
   }
 
   if (stats.isDirectory()) {
@@ -588,7 +599,11 @@ async function readSaveOrExplain(savePath) {
     bytes = fs.readFileSync(savePath)
   }
   catch (error) {
-    return { error: `could not read ${savePath}: ${error.message}` }
+    return { error: `could not read ${savePath}: ${reasonOf(error)}` }
+  }
+
+  if (bytes.length === 0) {
+    return { error: `${savePath} is empty (0 bytes), so there is no export in it. Export again from the game.` }
   }
 
   try {
@@ -598,9 +613,24 @@ async function readSaveOrExplain(savePath) {
     return {
       error:
         `${savePath} is not a tool_export.json, or is incomplete — the decoder reported: `
-        + `${error.message}`,
+        + `${reasonOf(error)}`,
     }
   }
+}
+
+/**
+ * Why something threw, as one line of prose.
+ *
+ * The decoder validates with a schema, and a schema error's `message` is its issue list as
+ * indented JSON. Passed through, an export that was merely the wrong file answered with a
+ * bracketed dump of `code`, `path` and `expected` in the middle of a sentence. A thrown value
+ * that is not an Error has no `message` at all, and reported "undefined".
+ */
+function reasonOf(error) {
+  if (Array.isArray(error?.issues) && error.issues.length > 0) {
+    return [...new Set(error.issues.map(issue => String(issue?.message ?? 'invalid')))].join('; ')
+  }
+  return error instanceof Error && error.message ? error.message : String(error)
 }
 
 /**
@@ -614,14 +644,14 @@ function summariseExtractor(extractor, parsedRoot) {
     result = sdk.save[extractor](parsedRoot)
   }
   catch (error) {
-    return { extractor, found: false, error: error.message }
+    return { extractor, found: false, error: reasonOf(error) }
   }
   if (result === null || result === undefined) return { extractor, found: false }
   return {
     extractor,
     found: true,
-    ...(Array.isArray(result) ? { count: result.length } : { fields: Object.keys(result) }),
-    warnings: result.warnings?.length ?? 0,
+    ...(Array.isArray(result) ? { count: result.length } : { fields: isRecord(result) ? Object.keys(result) : [] }),
+    warnings: Array.isArray(result.warnings) ? result.warnings.length : 0,
   }
 }
 
