@@ -25,13 +25,26 @@
 # which cannot be done from a workflow:
 #
 #   1. The package has to exist on npm before a publisher can be attached to it, so publish
-#      1.0.0 by hand.
+#      1.0.0 by hand. If that publish is staged rather than direct, npm creates a public
+#      `0.0.0-stage` placeholder and holds the real version back until a maintainer approves it
+#      with 2FA: npmjs.com → account settings → Staged Packages → Approve, or `npm stage list`
+#      and `npm stage approve <stage-id>`. The placeholder is not the release. 1.0.0 is
+#      published when `npm view @beardedunicorn/thetowersdk version` prints 1.0.0.
 #   2. npmjs.com → the package → Settings → Trusted Publisher → GitHub Actions:
-#      this repository, workflow filename `release.yml`.
+#      this repository, workflow filename `release.yml`. Under "Allowed actions", allow
+#      `npm publish` as well as `npm stage publish`. A new trusted publisher allows staging
+#      only, and this workflow runs `npm publish`. Staging instead would leave every release
+#      waiting for a manual approval, which an OIDC token cannot give.
 #   3. Tag the commit that was published `v1.0.0` and push the tag.
 #
 # In that order. Until a `v*` tag exists the release step below skips itself: with no tag,
 # semantic-release would treat the whole history as unreleased and try to publish 1.0.0 again.
+#
+# npm expires a new trusted publisher that has not completed a successful publish within two
+# days. Only `feat` and `fix` commits publish, so do step 2 when one is about to land, and if a
+# release later fails to authenticate, check that the publisher is still there.
+#
+# Reference: https://docs.npmjs.com/staged-publishing and https://docs.npmjs.com/trusted-publishers
 name: Release
 
 on:
