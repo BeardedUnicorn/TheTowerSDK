@@ -24,7 +24,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/currency`](data/currency/MAP.md) | 3 | The game’s currencies, and what each is spent on. |
 | [`src/data/daily-missions`](data/daily-missions/MAP.md) | 3 | Daily missions and their rewards. |
 | [`src/data/enemies`](data/enemies/MAP.md) | 3 | Enemy types and the multipliers that separate them. |
-| [`src/data/generated`](data/generated/MAP.md) | 12 | Emitted catalogs. Do not hand-edit. |
+| [`src/data/generated`](data/generated/MAP.md) | 13 | Emitted catalogs. Do not hand-edit. |
 | [`src/data/glossary`](data/glossary/MAP.md) | 4 | Community shorthand and what each term expands to. |
 | [`src/data/guardians`](data/guardians/MAP.md) | 4 | Guardian definitions and their upgrade ladders. |
 | [`src/data/guild`](data/guild/MAP.md) | 3 | Guilds: levels, perks, and what each contributes. |
@@ -89,7 +89,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/current-run`](save/current-run/MAP.md) | 3 | Saved current-run upgrade arrays and position, distinct from purchased workshop. |
 | [`src/save/dissonance`](save/dissonance/MAP.md) | 3 | What a save says about dissonance. |
 | [`src/save/effective-paths`](save/effective-paths/MAP.md) | 4 | Effective Paths inputs recovered from a save. |
-| [`src/save/events`](save/events/MAP.md) | 3 | The events a player took part in, with medals and relics. |
+| [`src/save/events`](save/events/MAP.md) | 4 | The events a player took part in, with medals and relics. |
 | [`src/save/export-info`](save/export-info/MAP.md) | 3 | What an official export says about itself, and whether it is newer than this SDK knows. |
 | [`src/save/guardians`](save/guardians/MAP.md) | 3 | What a save says about guardians. |
 | [`src/save/ids`](save/ids/MAP.md) | 9 | The IDS block: the grid and every domain read out of it. |
@@ -100,6 +100,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/modules`](save/modules/MAP.md) | 8 | Module effects as stored, decoded and displayed. |
 | [`src/save/perks`](save/perks/MAP.md) | 3 | What a save says about perks. |
 | [`src/save/presets`](save/presets/MAP.md) | 3 | Global Presets and which kind of battle each is assigned to. |
+| [`src/save/profile`](save/profile/MAP.md) | 3 | The player's profile: name, avatar and guild membership. |
 | [`src/save/purchases`](save/purchases/MAP.md) | 3 | Permanent purchase ownership explicitly recorded in a save. |
 | [`src/save/relics`](save/relics/MAP.md) | 3 | What a save says about relics. |
 | [`src/save/runs`](save/runs/MAP.md) | 3 | The fields a run records, and how their text normalises. |

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { RELIC_TEMPLATES, RELIC_UNLOCK_METHODS } from '../../src/data/relics/data'
+import { RELIC_GAME_TABLE } from '../../src/data/generated/relic-game-table.generated'
+import { RELIC_INDICES_NOT_OUT_AT_LAST_READ, RELIC_TEMPLATES, RELIC_UNLOCK_METHODS } from '../../src/data/relics/data'
 import { RELIC_IMPORT_CATALOG } from '../../src/save/catalogs/indexes.data'
 import { GUARDIAN_CHIP_TYPE_ENUM } from '../../src/data/player-stats/fields.data'
 import {
@@ -33,10 +34,11 @@ const CATALOG_WITH_TEMPLATES = CATALOG.filter(row => templateFor(row))
 
 describe('the catalog against the game enum', () => {
   it('has one template per catalog row, matched by name', () => {
-    // RELIC_TEMPLATES mirrors RELIC_IMPORT_CATALOG: indices 0-324, 326-329 and 334-335, the relics
-    // released by v29.2.0 (facts/v29.2.0/relics.json). 325 and 330-333 exist in the game but were
-    // not out yet; 336-349 are later.
+    // RELIC_TEMPLATES holds the relics that were out when it was last read: indices 0-324, 326-329
+    // and 334-335. The catalog also names the 19 the game defines that were not out yet
+    // (RELIC_INDICES_NOT_OUT_AT_LAST_READ), so a 350-slot save reads fully named.
     expect(RELIC_TEMPLATES).toHaveLength(331)
+    expect(CATALOG).toHaveLength(RELIC_TEMPLATES.length + RELIC_INDICES_NOT_OUT_AT_LAST_READ.length)
     expect(CATALOG.length).toBeGreaterThanOrEqual(RELIC_TEMPLATES.length)
     expect(CATALOG_WITH_TEMPLATES).toHaveLength(RELIC_TEMPLATES.length)
     for (const row of CATALOG_WITH_TEMPLATES) expect(Boolean(templateFor(row)), row.name).toBe(true)
@@ -107,8 +109,10 @@ describe('relic state', () => {
 })
 
 describe('unlock methods against the game enum', () => {
-  it('has the same count as the game, which is what hid the difference', () => {
-    expect(RELIC_UNLOCK_METHODS).toHaveLength(RELIC_GAME_UNLOCK_TYPES.length)
+  it('had the same count as the game until v29.2 added Purchase, which is what hid the difference', () => {
+    expect(RELIC_UNLOCK_METHODS).toHaveLength(6)
+    expect(RELIC_GAME_UNLOCK_TYPES).toHaveLength(7)
+    expect(new Set(RELIC_GAME_TABLE.map(relic => relic.unlockType))).toEqual(new Set(RELIC_GAME_UNLOCK_TYPES))
   })
 
   it('drops Gift, and Gift is not hypothetical', () => {
@@ -122,6 +126,7 @@ describe('unlock methods against the game enum', () => {
     }
     const gifts = CATALOG.filter(row => /gift/i.test(String(row.unlockDescription ?? '')))
     expect(gifts.map(row => row.name).sort()).toEqual([...RELIC_GIFT_UNLOCK_RELICS].sort())
+    expect(RELIC_GAME_TABLE.filter(relic => relic.unlockType === 'Gift')).toHaveLength(RELIC_GIFT_UNLOCK_RELICS.length)
   })
 
   it('carries no unlock type in the import catalog', () => {

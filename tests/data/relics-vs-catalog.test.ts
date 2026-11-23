@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { RELIC_TEMPLATES } from '../../src/data/relics/data'
+import { RELIC_INDICES_NOT_OUT_AT_LAST_READ, RELIC_TEMPLATES } from '../../src/data/relics/data'
 import { RELIC_IMPORT_CATALOG } from '../../src/save/catalogs/indexes.data'
 
 /**
@@ -38,13 +38,19 @@ const effectOf = (description: string) =>
     .trim()
 
 type CatalogRow = {
+  index?: number
   label?: string
   description?: string
   benefit?: number
   benefitType?: number
 }
 
-const rows = (RELIC_IMPORT_CATALOG as CatalogRow[]).filter(row => row?.label)
+/*
+ * The catalog names every slot the game defines; the templates hold the relics that are out. The
+ * comparisons below are over the relics that are out, which is the set both lists cover.
+ */
+const NOT_OUT: ReadonlySet<number> = new Set(RELIC_INDICES_NOT_OUT_AT_LAST_READ)
+const rows = (RELIC_IMPORT_CATALOG as CatalogRow[]).filter(row => row?.label && !NOT_OUT.has(row.index ?? -1))
 
 it('retains the existing template IDs for the reviewed Epic relics', () => {
   const ids = [
