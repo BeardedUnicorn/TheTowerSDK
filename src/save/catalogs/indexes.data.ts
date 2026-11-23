@@ -5398,7 +5398,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase defense absolute by 2%',
     'benefit': 0.02,
     'benefitType': 11,
-    'unlockDescription': 'Purchased from the Season 10 Guild Store',
+    'unlockDescription': 'Earn 350 medals during the Meowy Night event',
     'slug': 'starlight-yarn',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5412,7 +5412,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical factor by 5%',
     'benefit': 0.05,
     'benefitType': 3,
-    'unlockDescription': 'Purchased from the Season 10 Guild Store',
+    'unlockDescription': 'Earn 700 medals during the Meowy Night event',
     'slug': 'galactic-beverage',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5426,7 +5426,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase health regen by 2%',
     'benefit': 0.02,
     'benefitType': 9,
-    'unlockDescription': 'Earn 350 medals during the Meowy Night event',
+    'unlockDescription': 'Earn 550 medals during the Meowy Night event',
     'slug': 'cat-tome',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5440,7 +5440,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase coins earned by 5%',
     'benefit': 0.05,
     'benefitType': 17,
-    'unlockDescription': 'Earn 700 medals during the Meowy Night event',
+    'unlockDescription': 'Earn 1100 medals during the Meowy Night event',
     'slug': 'celestial-fishbones',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5496,7 +5496,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase attack speed by 1%',
     'benefit': 0.01,
     'benefitType': 1,
-    'unlockDescription': 'Earn 350 medals during the Ocean Night event',
+    'unlockDescription': 'Purchased from the Season 10 Guild Store',
     'slug': 'manta-ray',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5511,7 +5511,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free attack upgrade by 2%',
     'benefit': 0.02,
     'benefitType': 18,
-    'unlockDescription': 'Earn 700 medals during the Ocean Night event',
+    'unlockDescription': 'Purchased from the Season 10 Guild Store',
     'slug': 'pearl-shell',
     'saveFields': {
       'profile': 'profileRelics',

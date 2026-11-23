@@ -80,17 +80,61 @@ describe('every relic slot the game defines', () => {
   })
 })
 
+describe('unlock text against the game table', () => {
+  const kindOf = (text: string): string | null => {
+    if (/ medals during /.test(text)) return 'Medals'
+    if (/Guild Store/.test(text)) return 'Guild'
+    if (/^Gift /.test(text)) return 'Gift'
+    if (/^Beat wave /.test(text)) return 'Tier'
+    if (/^Play for /.test(text)) return 'PlayTime'
+    if (/Tournament/.test(text)) return 'Tournament'
+    return null
+  }
+
+  it('agrees on how every relic is unlocked, and on the medals an event relic takes', () => {
+    // Six rows used to disagree: Starlight Yarn and Galactic Beverage (296, 297) carried the Season 10
+    // Guild Store text, Manta Ray and Pearl Shell (303, 304) carried an event text, and Cat Tome and
+    // Celestial Fishbones (298, 299) said 350 and 700 medals where the game takes 550 and 1100.
+    for (const row of listRelicCatalogRows()) {
+      const game = RELIC_GAME_TABLE[row.index]!
+      const text = row.unlockDescription ?? ''
+      const kind = kindOf(text)
+      if (kind) expect(kind, `${row.index} ${row.label}: ${text}`).toBe(game.unlockType)
+      const medals = text.match(/^Earn (\d+) medals/)?.[1]
+      if (medals) expect(Number(medals), `${row.index} ${row.label}`).toBe(game.unlockCost)
+    }
+  })
+
+  it('gives each guild season its relics in 75 and 150 token pairs, Season 10 included', () => {
+    const bySeason = new Map<string, number[]>()
+    for (const row of listRelicCatalogRows()) {
+      const season = row.unlockDescription?.match(/Season (\d+) Guild Store/)?.[1]
+      if (season) bySeason.set(season, [...(bySeason.get(season) ?? []), RELIC_GAME_TABLE[row.index]!.unlockCost])
+    }
+    expect(bySeason.get('10')).toEqual([75, 150])
+    for (const [season, costs] of bySeason) {
+      expect(costs.length % 2, `season ${season}`).toBe(0)
+      costs.forEach((cost, position) => expect(cost, `season ${season}`).toBe(position % 2 === 0 ? 75 : 150))
+    }
+  })
+})
+
 describe('event relics', () => {
   it('groups relics by the event their unlock text names', () => {
     expect(findEventRelicSet('Fractals')!.relics.map(relic => [relic.label, relic.medals, relic.needsEventPass])).toEqual([
       ['Hex Flower', 350, false], ['Chained Hex', 700, false], ['Elite Fractal', 550, true], ['Fractal Core', 1100, true],
     ])
-    // Open: the unlock text puts Manta Ray and Pearl Shell (303, 304) in the Ocean Night event, where
-    // the game table says they are guild relics. Every other relic in a set is a medal relic in both.
-    const notMedalRelics = EVENT_RELIC_SETS.flatMap(set => set.relics)
-      .filter(relic => RELIC_GAME_TABLE[relic.index]!.unlockType !== 'Medals')
-    expect(notMedalRelics.map(relic => relic.index)).toEqual([303, 304])
-    expect(notMedalRelics.map(relic => relic.medals)).toEqual([null, null])
+    // Every relic an event set holds is a medal relic in the game table, at the medals the text says.
+    for (const set of EVENT_RELIC_SETS) {
+      for (const relic of set.relics) {
+        expect(RELIC_GAME_TABLE[relic.index]!.unlockType, `${set.event} ${relic.label}`).toBe('Medals')
+        expect(relic.medals, `${set.event} ${relic.label}`).toBe(RELIC_GAME_TABLE[relic.index]!.unlockCost)
+      }
+    }
+    // The newest four of the Meowy Night relics; the event's first run has its own two before them.
+    expect(findEventRelicSet('MEOWY_NIGHT')!.relics.slice(-4).map(relic => [relic.label, relic.medals])).toEqual([
+      ['Starlight Yarn', 350], ['Galactic Beverage', 700], ['Cat Tome', 550], ['Celestial Fishbones', 1100],
+    ])
   })
 
   it('finds an event by the name a save writes', () => {
