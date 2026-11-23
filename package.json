@@ -43,6 +43,7 @@
     "build": "pnpm run clean && tsc -p tsconfig.build.json && node scripts/copy-assets.mjs && pnpm run knowledge:emit",
     "knowledge:emit": "node scripts/emit-knowledge-graph.mjs",
     "daily-missions:goals": "node scripts/build-daily-mission-goals.mjs",
+    "relics:game-table": "node scripts/build-relic-game-table.mjs",
     "labs:categories": "node scripts/build-lab-categories.mjs",
     "clean": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true})\"",
     "test": "vitest run",

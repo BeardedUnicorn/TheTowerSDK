@@ -123,6 +123,7 @@ const DIRECTORY_PURPOSE = {
   'src/save/current-run': 'Saved current-run upgrade arrays and position, distinct from purchased workshop.',
   'src/save/runtime-controls': 'Saved gameplay selections and ordered life-saving effect identities.',
   'src/save/purchases': 'Permanent purchase ownership explicitly recorded in a save.',
+  'src/save/profile': 'The player\'s profile: name, avatar and guild membership.',
   'src/save/lifetime': 'What a save says about lifetime.',
   'src/save/ultimate-weapons': 'What a save says about ultimate weapons.',
   'src/save/cards': 'What a save says about cards.',

@@ -7,7 +7,7 @@ What a save says about relics.
 | File | Purpose | Exports |
 |---|---|---|
 | `index.ts` | Which relics a player owns, and how many. | — |
-| `read.ts` | — | RELICS_SAVE_PROFILE_KEY, RELICS_SAVE_UNLOCKED_KEY, RELIC_STATE_UNLOCKED_VALUE, readRelicsFromSaveRoot (+2 more) |
-| `types.ts` | The types `save/relics/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | RelicSaveRow, RelicsSaveExtract |
+| `read.ts` | — | RELICS_SAVE_PROFILE_KEY, RELICS_SAVE_UNLOCKED_KEY, RELIC_STATE_UNLOCKED_VALUE, readRelicEventFromUnlockText (+3 more) |
+| `types.ts` | The types `save/relics/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | RelicSaveState, RelicSaveRow, RelicsSaveExtract |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

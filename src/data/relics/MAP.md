@@ -6,7 +6,7 @@ Relics, their tiers, and the bonuses each grants.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `data.ts` | Relics as data: | computeLabSpeedRelicBonusPercent, RELIC_UNLOCK_METHODS, RELIC_TOTALS_READ_FROM_WIKI_ON, RELIC_MISC_TOTALS (+5 more) |
+| `data.ts` | Relics as data: | computeLabSpeedRelicBonusPercent, RELIC_UNLOCK_METHODS, RELIC_TOTALS_READ_FROM_WIKI_ON, RELIC_INDICES_NOT_OUT_AT_LAST_READ (+6 more) |
 | `index.ts` | Relics, their tiers, and the bonuses each grants. | — |
 | `types.ts` | The types `data/relics/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | RelicTemplate, RelicUnlockMethodKey, RelicUnlockMethodDefinition, RelicBonusTotalRow (+2 more) |
 

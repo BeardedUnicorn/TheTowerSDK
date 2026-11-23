@@ -415,24 +415,28 @@ export const RELIC_STAT_ENUM_ORDER: readonly string[] = [
 
 
 export const RELIC_GAME_UNLOCK_TYPES: readonly string[] = [
-  'Medals', 'Tournament', 'Tier', 'PlayTime', 'Guild', 'Gift',
+  'Medals', 'Tournament', 'Tier', 'PlayTime', 'Guild', 'Gift', 'Purchase',
 ]
 
 /**
- * Our unlock-method list has the right COUNT and the wrong contents.
+ * Our unlock-method list had the right COUNT and the wrong contents.
  *
- * All three sources list six methods, which is exactly why this went unnoticed.
- * The game says Medals, Tournament, Tier, PlayTime, Guild, Gift. The wiki says
- * the same six in prose. `RELIC_UNLOCK_METHODS` drops `Gift` entirely and splits
+ * All three sources listed six methods, which is exactly why this went unnoticed.
+ * The game said Medals, Tournament, Tier, PlayTime, Guild, Gift, and since v29.2
+ * it has a seventh, Purchase, used by one relic (Turkey, slot 325). The wiki says
+ * the first six in prose. `RELIC_UNLOCK_METHODS` drops `Gift` entirely and splits
  * the event method into `event_completion` and `event_rerun_store` — turning the
  * wiki's footnote that "event store relics can only be obtained on event
  * re-runs" into a method of its own.
  *
- * Two relics in the catalog are gift unlocks, so the dropped method is not
- * hypothetical.
+ * Four relics in the catalog are gift unlocks, so the dropped method is not
+ * hypothetical: two for the 5th anniversary and two for the 2026 holidays.
+ *
+ * `RELIC_GAME_TABLE` carries the game's unlock type for every relic, so a question
+ * such as "which relics are gifts" is answered from it and not from this list.
  */
 export const RELIC_UNLOCK_METHOD_MISSING_FROM_OURS = ['Gift'] as const
-export const RELIC_GIFT_UNLOCK_RELICS = ['Big Party', 'Celebration'] as const
+export const RELIC_GIFT_UNLOCK_RELICS = ['Big Party', 'Celebration', 'CandyCanes', 'HotCocoa'] as const
 
 /**
  * Stats where the WIKI total exceeds the sum of our catalog.
@@ -960,8 +964,10 @@ assertions: [{ subject: 'relic.rarityLabel', predicate: 'gameRarityCount', value
     traps: ['NOTHING JOINS A RELIC TO AN UNLOCK METHOD. The method list is exposed as data — the TowerAI '
       + 'naming registry surfaces it as `Relic Unlock Methods` — so it looks queryable, but no '
       + 'relic references a key. "Which relics come from the guild store" cannot be answered from '
-      + 'it, and a tool that offers the filter will return nothing rather than fail.',
-'OUR SIX METHODS ARE NOT THE GAME\'S SIX. The count matches, which is why this was invisible. '
+      + 'it, and a tool that offers the filter will return nothing rather than fail. For the game\'s '
+      + 'own answer use `RELIC_GAME_TABLE`, which has an `unlockType` and cost for every save index, '
+      + 'and `EVENT_RELIC_SETS` for the relics each event awards.',
+'OUR SIX METHODS ARE NOT THE GAME\'S. The count matched until v29.2 added Purchase, which is why this was invisible. '
       + `We drop \`${RELIC_UNLOCK_METHOD_MISSING_FROM_OURS.join(', ')}\` — used by `
       + `${RELIC_GIFT_UNLOCK_RELICS.length} real relics (${RELIC_GIFT_UNLOCK_RELICS.join(', ')}) — `
       + 'and split the event method into `event_completion` and `event_rerun_store`, promoting the '

@@ -15,6 +15,7 @@ Emitted catalogs. Do not hand-edit.
 | `labs-research.generated.ts` | — | LabResearchRecord, LAB_RESEARCH_COUNT, LAB_RESEARCH_BY_INDEX, LAB_RESEARCH_SLUG_TO_INDEX (+2 more) |
 | `meta.generated.ts` | — | V283_GAME_DATA_META, V283GameDataMeta |
 | `perk-tables.generated.ts` | — | V283_PERK_MAX_LEVEL, V283_PERK_BENEFIT_UP_BASE, V283_PERK_BENEFIT_UP_INCREASE, V283_PERK_BENEFIT_DOWN |
+| `relic-game-table.generated.ts` | — | RelicGameRarity, RelicGameUnlockType, RelicGameRow, RELIC_GAME_TABLE (+1 more) |
 | `relic-slice.generated.ts` | — | V283RelicSliceRow, V283_RELIC_SLICE, V283_RELIC_SLICE_INDEX_MIN, V283_RELIC_SLICE_INDEX_MAX |
 | `tournament-prizes-v29.generated.ts` | — | TOURNAMENT_PRIZES_V29_PROVENANCE, TournamentPrizeEntryV29, COPPER_TOURNAMENT_PRIZES_V29, SILVER_TOURNAMENT_PRIZES_V29 (+8 more) |
 | `vault-v29.generated.ts` | — | VaultV29Category, VaultV29Status, VaultV29Unit, VaultV29Requirement (+8 more) |

@@ -38,8 +38,11 @@ const LATEST_ARCHIVED_VERSION = [...PATCH_NOTES].reverse().find(note => note.ver
  * 29.1.3 (1562512032803201145), 29.1.4 (1566858291710136333), the 29.2 preview and release
  * (1571908549376872459) and 29.2.1 (1572999340027420755) are all in. Move this date forward when a
  * newer note is seen before it is ingested, and the trap below names the archive as behind again.
+ *
+ * Moved to 2026-11-21 for the v29.2.2 note, read on 2026-11-23 from a copy of the post with no
+ * message id, so it is named in the trap and not added to the archive.
  */
-const NEWEST_KNOWN_NOTE_POSTED = '2026-11-19'
+const NEWEST_KNOWN_NOTE_POSTED = '2026-11-21'
 const ARCHIVE_IS_BEHIND = PATCH_NOTES_SOURCE.latest.slice(0, 10) < NEWEST_KNOWN_NOTE_POSTED
 
 export const PATCH_NOTE_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
@@ -68,8 +71,9 @@ export const PATCH_NOTE_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'version. `version` is null on the rest rather than being inferred from the notes around '
       + 'it, because a wrong version attached to a real change reads as fact.',
       ...(ARCHIVE_IS_BEHIND
-        ? [`The archive ends ${PATCH_NOTES_SOURCE.latest.slice(0, 10)}, but the channel has more: 29.1.1, 29.1.2, 29.1.3, `
-          + `29.1.4, 29.2 and 29.2.1 (posted up to ${NEWEST_KNOWN_NOTE_POSTED}) are not in it. Re-run \`pnpm patch-notes:ingest\` `
+        ? [`The archive ends ${PATCH_NOTES_SOURCE.latest.slice(0, 10)}, but the channel has more: the v29.2.2 note `
+          + `(dated ${NEWEST_KNOWN_NOTE_POSTED}), which announces a fix to tournament reward validation and no other `
+          + 'change, is not in it. Re-run `pnpm patch-notes:ingest` '
           + 'where a bot token is available, then `pnpm patch-notes:build`. Until then a null from '
           + '`whenIntroduced` for anything recent means "not ingested", not "never announced".']
         : []),
