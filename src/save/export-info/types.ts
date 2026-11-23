@@ -14,7 +14,7 @@ export interface ExportInfoSaveExtract {
   exportVersion: number | null
   /** When the game wrote the export, ISO. */
   exportedAt: string | null
-  /** The game's build number (1286 is v29.2.0, 1294 is v29.2.1). */
+  /** The game's build number (1286 is v29.2.0, 1294 is v29.2.1, 1296 is v29.2.2). */
   versionNumber: number | null
   /** The game's save-data version. Renames such as the `_v2` shard keys come with a bump. */
   dataVersion: number | null

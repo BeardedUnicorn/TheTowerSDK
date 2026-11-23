@@ -29,12 +29,17 @@ const DECODER_RENAMED_KEYS: ReadonlySet<string> = new Set(['inventory'])
  *
  * v29.2.1 (build 1294, patch note 1572999340027420755) changed no save field, constant or game
  * table the SDK reads; the v29.2.0 facts hold for it unchanged.
+ *
+ * v29.2.2 (build 1296) was announced as a fix to tournament reward validation and nothing else. A
+ * build 1296 export has the same 456 fields at data version 35, every reader returns without a
+ * warning, and the game still defines the same 350 relics. Of the game tables, the vault upgrades
+ * and card values were read again from build 1296 and match; the others were not read again.
  */
 export const NEWEST_CHECKED_EXPORT = {
   exportVersion: 1,
-  versionNumber: 1294,
+  versionNumber: 1296,
   dataVersion: 35,
-  gameVersion: 'v29.2.1',
+  gameVersion: 'v29.2.2',
 } as const
 
 const EXPORT_INFO_KEYS = ['exportVersion', 'exportedAt', 'versionNumber', 'dataVersion'] as const
