@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0 (2026-11-23)
+
+
+### Bug Fixes
+
+* **data:** match six relics' unlock text to the game's relic table ([6f0286b](https://github.com/BeardedUnicorn/TheTowerSDK/commit/6f0286bc94825a3d42d40ccbe0480e5c1bc1aedc))
+
+
+### Features
+
+* **save:** name every relic slot, say what each relic grants, and group relics by event ([034e572](https://github.com/BeardedUnicorn/TheTowerSDK/commit/034e572adfd1578a398c1687e5a9e20c26ff4a33))
+
 ## 1.0.1 (2026-11-21)
 
 
