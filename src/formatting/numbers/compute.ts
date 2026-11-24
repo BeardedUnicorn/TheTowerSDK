@@ -30,7 +30,8 @@ function buildTowerInGameDoubleLetterNotations(): Record<string, number> {
   const out: Record<string, number> = {}
   for (let tier = 0; tier <= TOWER_MAX_DOUBLE_LETTER_TIER; tier += 1) {
     const suffix = String.fromCharCode(65 + tier)
-    const multiplier = 10 ** (TOWER_DOUBLE_LETTER_NOTATION_BASE_EXPONENT + tier * 3)
+    // A decimal literal, not `10 **`: see `compactNotationStep` for why the two differ on Node 22.
+    const multiplier = Number(`1e${TOWER_DOUBLE_LETTER_NOTATION_BASE_EXPONENT + tier * 3}`)
     out[`A${suffix}`] = multiplier
   }
   return out

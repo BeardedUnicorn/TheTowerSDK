@@ -31,9 +31,15 @@ export const COMPACT_NUMBER_SUFFIX_ORDER = [
   ...Array.from({ length: 26 }, (_, tier) => `A${String.fromCharCode(65 + tier)}`),
 ] as const
 
-/** The multiplier a notation stands for: `K` is 1e3, `D` is 1e33, `AZ` is 1e111. */
+/**
+ * The multiplier a notation stands for: `K` is 1e3, `D` is 1e33, `AZ` is 1e111.
+ *
+ * Parsed from its decimal literal rather than computed with `10 **`. Parsing is correctly rounded
+ * on every engine; `**` is not. Node 22's V8 lands one ulp off for 1e36, 1e39, 1e42, 1e96 and
+ * 1e111, so `1e111 >= 10 ** 111` was false there and 1e111 printed as `1000.00AY`.
+ */
 export function compactNotationStep(tier: number): number {
-  return 10 ** (3 * (tier + 1))
+  return Number(`1e${3 * (tier + 1)}`)
 }
 
 /** Digits kept after the point in an abbreviated amount. */
