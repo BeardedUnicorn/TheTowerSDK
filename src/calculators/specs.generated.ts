@@ -1825,7 +1825,9 @@ import {
   readEventsFromSaveRoot,
 } from '../save/events/read'
 import {
+  findThemeSourceEvent,
   normalizeEventName,
+  selectEventRelicEdition,
 } from '../save/events/relic-sets'
 import {
   readEventShopFromSaveRoot,
@@ -24249,6 +24251,41 @@ const GENERATED_SAVE: readonly CalculatorSpec[] = [
     dependsOn: [],
   },
   {
+    id: 'save.findThemeSourceEvent',
+    title: 'findThemeSourceEvent',
+    entry: 'save',
+    module: 'src/save/events/relic-sets.ts',
+    symbol: 'findThemeSourceEvent',
+    tier: 'generated',
+    because: 'Exported from save and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'name', kind: 'string', optional: true, describes: 'string | null | undefined' },
+    ],
+    returns: { kind: 'string', nullable: true, describes: 'string | null' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['save.findThemeSourceEvent'],
+    dependsOn: [],
+  },
+  {
+    id: 'save.selectEventRelicEdition',
+    title: 'selectEventRelicEdition',
+    entry: 'save',
+    module: 'src/save/events/relic-sets.ts',
+    symbol: 'selectEventRelicEdition',
+    tier: 'generated',
+    because: 'Exported from save and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'set', kind: 'object', describes: 'EventRelicSet' },
+      { name: 'date', kind: 'string', optional: true, describes: 'string | null' },
+    ],
+    returns: { kind: 'object', describes: 'EventRelicRow[]' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['save.selectEventRelicEdition'],
+    dependsOn: [],
+  },
+  {
     id: 'save.readEventShopFromSaveRoot',
     title: 'readEventShopFromSaveRoot',
     entry: 'save',
@@ -29035,6 +29072,8 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'save.readEffectivePathsSettingsFromSaveRoot': a => readEffectivePathsSettingsFromSaveRoot(a.root as never),
   'save.readEventsFromSaveRoot': a => readEventsFromSaveRoot(a.root as never),
   'save.normalizeEventName': a => normalizeEventName(a.name as never),
+  'save.findThemeSourceEvent': a => findThemeSourceEvent(a.name as never),
+  'save.selectEventRelicEdition': a => selectEventRelicEdition(a.set as never, a.date as never),
   'save.readEventShopFromSaveRoot': a => readEventShopFromSaveRoot(a.root as never),
   'save.readExportInfoFromSaveRoot': a => readExportInfoFromSaveRoot(a.root as never),
   'save.readGuardiansFromSaveRoot': a => readGuardiansFromSaveRoot(a.root as never),

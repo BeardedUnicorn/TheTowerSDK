@@ -47,7 +47,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/formatting/numbers`](formatting/numbers/MAP.md) | 4 | Reading and writing numbers in the game’s notation ladder. |
 | [`src/formatting/tools`](formatting/tools/MAP.md) | 2 | Grouped and abbreviated forms for numbers shown beside each other. |
 | [`src/knowledge`](knowledge/MAP.md) | 1 | The mechanics graph: what a number MEANS, and how it is misread. |
-| [`src/knowledge/compartments`](knowledge/compartments/MAP.md) | 31 | One file per subject area; each owns its nodes and edges. |
+| [`src/knowledge/compartments`](knowledge/compartments/MAP.md) | 32 | One file per subject area; each owns its nodes and edges. |
 | [`src/knowledge/generated`](knowledge/generated/MAP.md) | 2 | Knowledge tables written by a generator — edit the generator, not these. |
 | [`src/knowledge/history`](knowledge/history/MAP.md) | 2 | When things arrived: the developers' patch notes, by version and by text. |
 | [`src/knowledge/substrate`](knowledge/substrate/MAP.md) | 7 | The graph engine — schema, queries, contradictions, maturity. |

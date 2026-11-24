@@ -1,0 +1,65 @@
+{
+  "gameVersion": "v29.2.2",
+  "build": 1296,
+  "checkedAt": "2026-11-24",
+  "note": "What The Tower v29.2.2 (build 1296, macOS) showed on the Event menu's Missions, Event Shop and Bots tabs on 2026-11-24, during event 101. Text is as shown on screen. Nothing was bought or claimed. The Relics screen was not opened, so no relic's unlock sentence was read on screen: the Howling Wolf name comes from this menu's title and the sentence from the game's text table entry 3650, \"Earn {0} medals during the {1} event\".",
+  "event": {
+    "title": "EVENT - HOWLING WOLF",
+    "saveName": "HOWLING_WOLF",
+    "eventNumber": 101,
+    "endsIn": "13d 2h",
+    "medalBalance": 130,
+    "medalsEarnedThisEvent": 45,
+    "freeRelics": [
+      { "index": 330, "name": "Wolf Paw", "medals": 350 },
+      { "index": 331, "name": "Midnight Forest", "medals": 700 }
+    ],
+    "eventBoostRelics": [
+      { "index": 332, "name": "Fang Amulet", "medals": 550 },
+      { "index": 333, "name": "Lycan Essence", "medals": 1100 }
+    ],
+    "eventBoost": { "shown": "EVENT BOOST + GEMS + RELICS", "price": "$14.99", "lines": ["x2 this event (retroactive)", "Access to 2 unique relics", "+250 instantly"] },
+    "missions": [
+      { "shown": "Login for 7 days", "tier": "1/3", "medals": 10, "progress": "1 / 7" },
+      { "shown": "Buy 20 cards", "tier": "1/3", "medals": 10, "progress": "0 / 20" },
+      { "shown": "Get the free gem reward in store 7 times", "tier": "1/3", "medals": 10, "progress": "1 / 7" },
+      { "shown": "Have a total lab research time of 12d (rushed labs count)", "tier": "1/3", "medals": 10 },
+      { "shown": "Participate in 1 tournaments", "tier": "1/3", "medals": 10, "progress": "0 / 1" },
+      { "shown": "Reach wave 20 without any card equipped on tier 11 or above", "tier": "1/3", "medals": 10, "progress": "0 / 20" },
+      { "shown": "Skip a total of 500 waves", "state": "COMPLETED" }
+    ],
+    "newMissionsIn": "2h 48m"
+  },
+  "eventShop": {
+    "currencies": [
+      { "gives": "x 150 gems", "medals": 40 },
+      { "gives": "x 15 stones", "medals": 40 },
+      { "gives": "x 250 shards", "medals": 40, "kinds": 4 }
+    ],
+    "themes": [
+      { "kind": "Tower", "name": "Howling Wolf", "tag": "Limited", "coinBonus": "+0.4%", "medals": 150 },
+      { "kind": "Background", "name": "Mountain Night", "tag": "Limited", "coinBonus": "+0.8%", "medals": 250 }
+    ],
+    "relics": [
+      { "index": 26, "name": "Dreamcatcher", "tag": "Limited", "medals": 200 },
+      { "index": 27, "name": "Spirit Wolf", "tag": "Limited", "medals": 500 }
+    ],
+    "rotatingRelics": {
+      "leavingIn": "6d 2h",
+      "shelf": [
+        { "name": "Magma River", "shown": "OWNED" },
+        { "name": "Shining Light", "gems": 600 },
+        { "name": "Rainbow", "gems": 1200 },
+        { "name": "Space Nebula", "gems": 1200 }
+      ]
+    },
+    "songs": [
+      { "shown": "Krisu - Oceans Sing", "coinBonus": "+0.6%", "state": "PURCHASED" },
+      { "shown": "Krisu - Hiding in Himalaya", "coinBonus": "+0.6%", "state": "PURCHASED" },
+      { "shown": "Krisu - Forest Bathing", "coinBonus": "+0.6%", "state": "PURCHASED" }
+    ]
+  },
+  "bots": {
+    "fifthBotUnlock": { "name": "Bot Bot", "shown": "UNLOCK BOT", "medals": 1200 }
+  }
+}

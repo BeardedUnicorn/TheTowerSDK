@@ -34,10 +34,10 @@ const CATALOG_WITH_TEMPLATES = CATALOG.filter(row => templateFor(row))
 
 describe('the catalog against the game enum', () => {
   it('has one template per catalog row, matched by name', () => {
-    // RELIC_TEMPLATES holds the relics that were out when it was last read: indices 0-324, 326-329
-    // and 334-335. The catalog also names the 19 the game defines that were not out yet
+    // RELIC_TEMPLATES holds the relics that were out when it was last read: indices 0-324 and
+    // 326-335. The catalog also names the 15 the game defines that were not out yet
     // (RELIC_INDICES_NOT_OUT_AT_LAST_READ), so a 350-slot save reads fully named.
-    expect(RELIC_TEMPLATES).toHaveLength(331)
+    expect(RELIC_TEMPLATES).toHaveLength(335)
     expect(CATALOG).toHaveLength(RELIC_TEMPLATES.length + RELIC_INDICES_NOT_OUT_AT_LAST_READ.length)
     expect(CATALOG.length).toBeGreaterThanOrEqual(RELIC_TEMPLATES.length)
     expect(CATALOG_WITH_TEMPLATES).toHaveLength(RELIC_TEMPLATES.length)

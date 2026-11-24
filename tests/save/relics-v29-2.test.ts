@@ -56,7 +56,7 @@ describe('every relic slot the game defines', () => {
     expect(extract.relics).toHaveLength(350)
     expect(extract.relics.filter(relic => relic.name === null)).toEqual([])
     expect(extract.relics[325]).toMatchObject({ label: 'Turkey', unlockType: 'Purchase', stat: 'FreeAttackUpgrade', benefit: 0.02 })
-    expect(extract.relics[333]).toMatchObject({ label: 'Lycan Essence', rarity: 'Epic', unlockType: 'Medals', unlockCost: 1100, event: null })
+    expect(extract.relics[333]).toMatchObject({ label: 'Lycan Essence', rarity: 'Epic', unlockType: 'Medals', unlockCost: 1100, event: 'Howling Wolf' })
     expect(extract.relics[340]).toMatchObject({ label: 'Knitted Socks', stat: 'BotRange', benefit: 1, releaseDate: '2026-12-08' })
     expect(extract.relics[326]).toMatchObject({
       label: 'Rain Gauge', event: 'Rainfall', unlockCost: 350, unlockDescription: 'Earn 350 medals during the Rainfall event',

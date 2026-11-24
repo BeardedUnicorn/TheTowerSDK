@@ -303,6 +303,11 @@ const RELIC_TEMPLATES: RelicTemplate[] = [
   { id: '2-Epic-v29-327', name: 'Thunder Strike', bonusType: 'Thorns', value: '2%', rarity: 'Epic', event: 'Rainfall', type: 'Standard', requirement: 'Earn 700 medals during the Rainfall event' },
   { id: '1-Rare-v29-328', name: 'Changing Winds', bonusType: 'Knockback Force', value: '2%', rarity: 'Rare', event: 'Rainfall', type: 'Premium', requirement: 'Earn 550 medals during the Rainfall event' },
   { id: '2-Epic-v29-329', name: 'Weather Talisman', bonusType: 'Attack Speed', value: '2%', rarity: 'Epic', event: 'Rainfall', type: 'Premium', requirement: 'Earn 1100 medals during the Rainfall event' },
+  // Howling Wolf (event 101): names, medals and track read on the game's Event screen, build 1296, 2026-11-24; values from facts/v29.2.0/relics.json.
+  { id: '1-Rare-v29-330', name: 'Wolf Paw', bonusType: 'Defense Absolute', value: '2%', rarity: 'Rare', event: 'Howling Wolf', type: 'Standard', requirement: 'Earn 350 medals during the Howling Wolf event' },
+  { id: '2-Epic-v29-331', name: 'Midnight Forest', bonusType: 'Free Utility Upgrade', value: '2%', rarity: 'Epic', event: 'Howling Wolf', type: 'Standard', requirement: 'Earn 700 medals during the Howling Wolf event' },
+  { id: '1-Rare-v29-332', name: 'Fang Amulet', bonusType: 'Free Defense Upgrade', value: '1%', rarity: 'Rare', event: 'Howling Wolf', type: 'Premium', requirement: 'Earn 550 medals during the Howling Wolf event' },
+  { id: '2-Epic-v29-333', name: 'Lycan Essence', bonusType: 'Crit Chance', value: '2%', rarity: 'Epic', event: 'Howling Wolf', type: 'Premium', requirement: 'Earn 1100 medals during the Howling Wolf event' },
   { id: '1-Rare-v29-334', name: 'Cave Map', bonusType: 'Health Regen', value: '2%', rarity: 'Rare', event: 'Season 12 Guild Store', type: 'Standard', requirement: 'Purchased from the Season 12 Guild Store' },
   { id: '2-Epic-v29-335', name: 'Treasure Guardian', bonusType: 'Crit Chance', value: '2%', rarity: 'Epic', event: 'Season 12 Guild Store', type: 'Standard', requirement: 'Purchased from the Season 12 Guild Store' },
   // Import-catalog templates (auto-added by scripts/generate-missing-relic-templates.mjs)
@@ -463,20 +468,24 @@ export const RELIC_UNLOCK_METHODS = [
  * Re-read 2026-11-18 and summed from the game's own relic table (facts/v29.2.0/relics.json) over the
  * relics released by v29.2.0. Every total agrees with the wiki except Damage/Meter (98 vs 93) and
  * Coins (99 vs 97): the wiki's table leaves out Neon Sunglasses and Cassette.
+ *
+ * 2026-11-24: the Howling Wolf set (330-333) shipped and is added from the same table: Crit Chance
+ * +2, Defense Absolute +2, Free Defense Upgrade +1, Free Utility Upgrade +2. The wiki did not list
+ * those four yet, so on these stats the totals are ahead of its page.
  */
 export const RELIC_TOTALS_READ_FROM_WIKI_ON = '2026-11-18'
 
 /**
  * Save indices the game defines whose relics no player could own when the templates were last
- * read: Turkey (325), the Wolf Paw set (330-333) and the fourteen dated 2026-12-08 and later
- * (336-349).
+ * read: Turkey (325) and the fourteen dated 2026-12-08 and later (336-349). The Wolf Paw set
+ * (330-333) left this list on 2026-11-24, when the Howling Wolf event awarded it in game.
  *
  * They are in `RELIC_GAME_TABLE` and the save catalog, so a save names them, and they are kept out
  * of `RELIC_TEMPLATES` so a sum over the templates stays "what an account can hold today". Move an
  * index out of this list and into the templates when its relic ships.
  */
 export const RELIC_INDICES_NOT_OUT_AT_LAST_READ: readonly number[] = [
-  325, 330, 331, 332, 333, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349,
+  325, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349,
 ]
 
 export const RELIC_MISC_TOTALS = [
@@ -488,7 +497,7 @@ export const RELIC_DAMAGE_TOTALS = [
   { stat: 'Damage', total: '144%' },
   { stat: 'Ultimate Damage', total: '52%' },
   { stat: 'Attack Speed', total: '20%' },
-  { stat: 'Crit Chance', total: '18%' },
+  { stat: 'Crit Chance', total: '20%' },
   { stat: 'Crit Factor', total: '120%' },
   { stat: 'Damage/Meter', total: '98%' },
   { stat: 'Super Critical Chance', total: '6%' },
@@ -500,7 +509,7 @@ export const RELIC_DEFENSE_TOTALS = [
   { stat: 'Health', total: '136%' },
   { stat: 'Health Regen', total: '41%' },
   { stat: 'Defense', total: '6%' },
-  { stat: 'Defense Absolute', total: '76%' },
+  { stat: 'Defense Absolute', total: '78%' },
   { stat: 'Thorns', total: '16%' },
   { stat: 'Knockback Force', total: '35%' },
   { stat: 'Orb Speed', total: '36%' },
@@ -511,8 +520,8 @@ export const RELIC_UTILITY_TOTALS = [
   { stat: 'Cash', total: '41%' },
   { stat: 'Coins', total: '99%' },
   { stat: 'Free Attack Upgrade', total: '17%' },
-  { stat: 'Free Defense Upgrade', total: '12%' },
-  { stat: 'Free Utility Upgrade', total: '10%' },
+  { stat: 'Free Defense Upgrade', total: '13%' },
+  { stat: 'Free Utility Upgrade', total: '12%' },
   { stat: 'Recovery Amount', total: '22%' },
   { stat: 'Enemy Attack Level Skip', total: '2%' },
   { stat: 'Enemy Health Level Skip', total: '2%' },

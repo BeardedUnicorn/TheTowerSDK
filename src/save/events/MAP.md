@@ -8,8 +8,8 @@ The events a player took part in, with medals and relics.
 |---|---|---|
 | `index.ts` | The events a player took part in: | — |
 | `read.ts` | The events a player took part in: | readEventsFromSaveRoot |
-| `relic-sets.ts` | The relics each event awards, joined from the relic catalog: | normalizeEventName, EVENT_RELIC_SETS, findEventRelicSet |
-| `shop.ts` | The current event's shop: | readEventShopFromSaveRoot |
-| `types.ts` | The types `save/events/` exports, in one place. | EventRecordSaveRow, EventRecordRelic, EventRelicRow, EventRelicSet (+5 more) |
+| `relic-sets.ts` | The relics each event awards, joined from the relic catalog: | normalizeEventName, EVENT_RELIC_SETS, findEventRelicSet, findThemeSourceEvent (+1 more) |
+| `shop.ts` | The current event: | readEventShopFromSaveRoot |
+| `types.ts` | The types `save/events/` exports, in one place. | EventRecordSaveRow, EventRecordRelic, EventRelicRow, EventRelicSet (+6 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

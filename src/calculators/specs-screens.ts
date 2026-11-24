@@ -303,11 +303,14 @@ export const SCREEN_CALCULATORS: readonly CalculatorSpec[] = [
     module: `${SAVE}/events/relic-sets.ts`,
     symbol: 'findEventRelicSet',
     because:
-      'A rerun is named in the save after its tower theme, not after the event, so a lookup by the '
-      + 'save\'s name misses unless it is resolved through the theme catalog.',
-    params: [{ name: 'name', kind: 'string', describes: 'the event or its theme, in any spelling' }],
-    returns: { kind: 'object', nullable: true, describes: '{ event, key, relics } with medals, pass and shop prices' },
-    invariants: ['null for an event with no relics in the catalog'],
+      'The save spells an event `HOWLING_WOLF` where the relic text says "Howling Wolf", and a set '
+      + 'holds the relics of every run of its event, so each relic carries the run it belongs to.',
+    params: [{ name: 'name', kind: 'string', describes: 'the event, in any spelling' }],
+    returns: { kind: 'object', nullable: true, describes: '{ event, key, editions, relics } with medals, pass, edition and shop prices' },
+    invariants: [
+      'null for an event no relic names; a theme\'s name is not an event\'s',
+      'relics spans every run of the event: filter by edition for the ones a single event awards',
+    ],
     reads: ['event.name'],
     produces: ['event.relics'],
     dependsOn: [],

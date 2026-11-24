@@ -1,5 +1,5 @@
 /**
- * The current event's shop: the themes, relics and songs it sells and what each costs.
+ * The current event: the relics it awards, and the themes, relics and songs its shop sells.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    readEventShopFromSaveRoot
@@ -12,8 +12,10 @@ import { BACKGROUND, SONGS, THEME_CATEGORY_BONUS, TOWER } from '../../data/theme
 import type { ThemeItem } from '../../data/themes/types'
 import { readRelicsFromSaveRoot } from '../relics/read'
 import { readEventsFromSaveRoot } from './read'
-import { findEventRelicSet, normalizeEventName } from './relic-sets'
-import type { EventShopRelicRow, EventShopSaveExtract, EventShopSongRow, EventShopThemeRow } from './types'
+import { findEventRelicSet, findThemeSourceEvent, normalizeEventName, selectEventRelicEdition } from './relic-sets'
+import type {
+  EventEarnTrackRow, EventShopRelicRow, EventShopSaveExtract, EventShopSongRow, EventShopThemeRow,
+} from './types'
 
 /** The `event` the theme catalog gives the three songs the shop always sells. */
 const SHOP_SONG_EVENT = 'Event Store'
@@ -27,15 +29,24 @@ function themeRows(kind: 'tower' | 'background', items: readonly ThemeItem[], ev
     .map(item => ({ kind, name: item.name, ...price, coinBonus }))
 }
 
+function hasThemesOfEvent(eventKey: string): boolean {
+  return [...TOWER, ...BACKGROUND].some(item => item.event !== undefined && normalizeEventName(item.event) === eventKey)
+}
+
 /**
- * What the current event's shop sells, or null for a save with no event data.
+ * The current event's relic track and what its shop sells, or null for a save with no event data.
  *
- * The current event is the last event record. Prices are the shop's own (`EVENT_SHOP_PRICES`), not
- * a relic's earn threshold, which is reported beside each relic as `earnThreshold`.
+ * The current event is the last event record. Two lists of relics, which are different relics:
  *
- * Only the two relics every player can earn are listed: those are what the shop showed for the
- * Full Moon rerun. The save has no field for the Rotating Relics shelf, so its line-up is absent
- * and only its prices are given.
+ * - `earnTrack` is what the event GIVES for medals earned in it: two free (350, 700) and two that
+ *   also need the event boost (550, 1100).
+ * - `relics` is what the shop SELLS for medals: relics of a past event, at `EVENT_SHOP_PRICES`.
+ *
+ * Read on the game's screens for Howling Wolf (event 101, build 1296): Wolf Paw and Midnight Forest
+ * are the free relics, and the shop sells Full Moon's Dreamcatcher (200) and Spirit Wolf (500)
+ * beside the Howling Wolf and Mountain Night themes. The shelf of past relics is only known for an
+ * event that returns under its theme's name, as that one does; for any other it is left empty with
+ * a warning. The save has no field for the Rotating Relics shelf, so only its prices are given.
  */
 export function readEventShopFromSaveRoot(root: Record<string, unknown> | null): EventShopSaveExtract | null {
   const events = readEventsFromSaveRoot(root)
@@ -44,17 +55,37 @@ export function readEventShopFromSaveRoot(root: Record<string, unknown> | null):
   const current = events.records.at(-1) ?? null
   const saveName = current?.name ?? null
   const set = findEventRelicSet(saveName)
+  const hasOwnThemes = set !== null && hasThemesOfEvent(set.key)
+  // An event that returns under its theme's name sells the themes and relics of the event that
+  // theme came from. One whose themes carry its own name sells its own themes.
+  const sourceEvent = hasOwnThemes ? null : findThemeSourceEvent(saveName)
+  const sourceSet = findEventRelicSet(sourceEvent)
+  const themeKey = hasOwnThemes ? set.key : sourceEvent ? normalizeEventName(sourceEvent) : set?.key ?? null
+  const label = saveName ? ` (${saveName})` : ''
 
-  if (!current) warnings.push('The save lists no event, so the shop\'s themes and relics cannot be named.')
+  if (!current) warnings.push('The save lists no event, so its relics and the shop\'s themes cannot be named.')
   else if (!set) {
     warnings.push(
-      `The current event${saveName ? ` (${saveName})` : ''} matches no event this package knows, `
-      + 'so its themes and relics cannot be named. The prices still apply.',
+      `No relic this package knows names the current event${label}, so the relics it awards `
+      + 'cannot be named. The prices still apply.',
     )
   }
 
   const relicSave = readRelicsFromSaveRoot(root)
-  const relics: EventShopRelicRow[] = (set?.relics ?? [])
+  const owned = (index: number): boolean | null => relicSave ? relicSave.relics[index]?.unlocked ?? false : null
+
+  const earnTrack: EventEarnTrackRow[] = (set ? selectEventRelicEdition(set, current?.date) : [])
+    .map(relic => ({
+      index: relic.index,
+      label: relic.label,
+      rarity: relic.rarity,
+      medals: relic.medals,
+      needsEventPass: relic.needsEventPass,
+      owned: owned(relic.index),
+    }))
+    .sort((a, b) => (a.medals ?? 0) - (b.medals ?? 0))
+
+  const relics: EventShopRelicRow[] = (sourceSet && sourceSet.editions === 1 ? sourceSet.relics : [])
     .filter(relic => relic.needsEventPass === false)
     .map(relic => ({
       index: relic.index,
@@ -62,9 +93,15 @@ export function readEventShopFromSaveRoot(root: Record<string, unknown> | null):
       rarity: relic.rarity,
       price: relic.shopPrice?.price ?? null,
       currency: relic.shopPrice?.currency ?? null,
-      earnThreshold: relic.medals,
-      owned: relicSave ? relicSave.relics[relic.index]?.unlocked ?? false : null,
+      fromEvent: sourceSet!.event,
+      owned: owned(relic.index),
     }))
+  if (current && relics.length === 0) {
+    warnings.push(
+      `Which past relics the shop sells for medals in the current event${label} is not known; `
+      + 'only their prices by rarity are.',
+    )
+  }
 
   const songPrice = findEventShopPrice('song')
   const songs: EventShopSongRow[] = songPrice
@@ -81,7 +118,8 @@ export function readEventShopFromSaveRoot(root: Record<string, unknown> | null):
     saveName,
     eventNumber: current?.number ?? null,
     medalsCurrentEvent: events.medalsCurrentEvent,
-    themes: set ? [...themeRows('tower', TOWER, set.key), ...themeRows('background', BACKGROUND, set.key)] : [],
+    themes: themeKey ? [...themeRows('tower', TOWER, themeKey), ...themeRows('background', BACKGROUND, themeKey)] : [],
+    earnTrack,
     relics,
     rotatingRelicPrices: (['Rare', 'Epic'] as const).flatMap((rarity) => {
       const price = findEventShopPrice('rotatingRelic', rarity)

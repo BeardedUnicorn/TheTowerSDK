@@ -4558,7 +4558,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increases Defense Absolute by 2%',
     'benefit': 0.019999999552965164,
     'benefitType': 11,
-    'unlockDescription': 'What time is it?',
+    'unlockDescription': 'Earn 350 medals during the What time is it? event',
     'slug': 'ancient-times',
     'saveFields': {
       'profile': 'profileRelics',
@@ -4572,7 +4572,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase attack speed by 1%',
     'benefit': 0.009999999776482582,
     'benefitType': 1,
-    'unlockDescription': 'What time is it?',
+    'unlockDescription': 'Earn 550 medals during the What time is it? event',
     'slug': 'space-distortion',
     'saveFields': {
       'profile': 'profileRelics',
@@ -4586,7 +4586,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase cash bonus by 5%',
     'benefit': 0.05000000074505806,
     'benefitType': 16,
-    'unlockDescription': 'What time is it?',
+    'unlockDescription': 'Earn 700 medals during the What time is it? event',
     'slug': 'clock-tower',
     'saveFields': {
       'profile': 'profileRelics',
@@ -4600,7 +4600,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical chance by 2%',
     'benefit': 0.019999999552965164,
     'benefitType': 2,
-    'unlockDescription': 'What time is it?',
+    'unlockDescription': 'Earn 1100 medals during the What time is it? event',
     'slug': 'time-travel',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5875,7 +5875,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase defense absolute by 2%',
     'benefit': 0.02,
     'benefitType': 11,
-    'unlockDescription': 'Earn 350 medals during an event',
+    'unlockDescription': 'Earn 350 medals during the Howling Wolf event',
     'slug': 'wolf-paw',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5889,7 +5889,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free utility upgrade by 2%',
     'benefit': 0.02,
     'benefitType': 20,
-    'unlockDescription': 'Earn 700 medals during an event',
+    'unlockDescription': 'Earn 700 medals during the Howling Wolf event',
     'slug': 'midnight-forest',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5903,7 +5903,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free defense upgrade by 1%',
     'benefit': 0.01,
     'benefitType': 19,
-    'unlockDescription': 'Earn 550 medals during an event',
+    'unlockDescription': 'Earn 550 medals during the Howling Wolf event',
     'slug': 'fang-amulet',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5917,7 +5917,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical chance by 2%',
     'benefit': 0.02,
     'benefitType': 2,
-    'unlockDescription': 'Earn 1100 medals during an event',
+    'unlockDescription': 'Earn 1100 medals during the Howling Wolf event',
     'slug': 'lycan-essence',
     'saveFields': {
       'profile': 'profileRelics',
