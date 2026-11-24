@@ -24,6 +24,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/currency`](data/currency/MAP.md) | 3 | The game’s currencies, and what each is spent on. |
 | [`src/data/daily-missions`](data/daily-missions/MAP.md) | 3 | Daily missions and their rewards. |
 | [`src/data/enemies`](data/enemies/MAP.md) | 3 | Enemy types and the multipliers that separate them. |
+| [`src/data/events`](data/events/MAP.md) | 3 | Events: what the event shop charges for themes, songs and relics. |
 | [`src/data/generated`](data/generated/MAP.md) | 13 | Emitted catalogs. Do not hand-edit. |
 | [`src/data/glossary`](data/glossary/MAP.md) | 4 | Community shorthand and what each term expands to. |
 | [`src/data/guardians`](data/guardians/MAP.md) | 4 | Guardian definitions and their upgrade ladders. |
@@ -75,7 +76,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/waves`](mechanics/waves/MAP.md) | 20 | Wave scaling and pacing — enemy counts, spawn rates and skips. |
 | [`src/mechanics/waves/reference`](mechanics/waves/reference/MAP.md) | 5 | Earlier public wave formulas, kept as the reference the current ones are checked against. |
 | [`src/mechanics/workshop`](mechanics/workshop/MAP.md) | 11 | Workshop upgrades: their stats, costs and the tables that describe them. |
-| [`src/node`](node/MAP.md) | 3 | Decoding playerInfo.dat in Node. |
+| [`src/node`](node/MAP.md) | 4 | Decoding playerInfo.dat in Node. |
 | [`src/node/nrbf`](node/nrbf/MAP.md) | 4 | The .NET Binary Format reader, ported to TypeScript. |
 | [`src/save`](save/MAP.md) | 1 | Extractors over a decoded save. |
 | [`src/save-decoder`](save-decoder/MAP.md) | 2 | The same save reader with no Node imports, for the browser. |
@@ -89,7 +90,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/current-run`](save/current-run/MAP.md) | 3 | Saved current-run upgrade arrays and position, distinct from purchased workshop. |
 | [`src/save/dissonance`](save/dissonance/MAP.md) | 3 | What a save says about dissonance. |
 | [`src/save/effective-paths`](save/effective-paths/MAP.md) | 4 | Effective Paths inputs recovered from a save. |
-| [`src/save/events`](save/events/MAP.md) | 4 | The events a player took part in, with medals and relics. |
+| [`src/save/events`](save/events/MAP.md) | 5 | The events a player took part in, with medals and relics. |
 | [`src/save/export-info`](save/export-info/MAP.md) | 3 | What an official export says about itself, and whether it is newer than this SDK knows. |
 | [`src/save/guardians`](save/guardians/MAP.md) | 3 | What a save says about guardians. |
 | [`src/save/ids`](save/ids/MAP.md) | 9 | The IDS block: the grid and every domain read out of it. |
