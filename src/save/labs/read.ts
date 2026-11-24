@@ -51,8 +51,11 @@ function readCompleteDate(value: unknown): string | null {
  * Seconds from when the export was written to when the game says the level finishes.
  *
  * Measured from `exportedAt`, not the clock, so the same export always gives the same answer. The
- * game's date already includes every speed source: Labs Speed, relics, the Vault and any gem
- * speed-up running, none of which an estimate from the catalog sees.
+ * game's date includes Labs Speed, relics and the Vault, none of which an estimate from the
+ * catalog sees — but not a speed-up bought for the slot. On two exports 4.9 hours apart, every
+ * slot at a 2x speed-up had its date move 4.9 hours earlier and the slot at 1.5x half that: the
+ * date is worked out at the normal rate and slides while a speed-up runs.
+ * `secondsWithSpeedUp` applies it.
  */
 function secondsUntil(completeDate: string | null, exportedAt: string | null): number | null {
   if (!completeDate || !exportedAt) return null
@@ -60,6 +63,25 @@ function secondsUntil(completeDate: string | null, exportedAt: string | null): n
   const start = Date.parse(exportedAt)
   if (!Number.isFinite(end) || !Number.isFinite(start)) return null
   return Math.max(0, Math.round((end - start) / 1000))
+}
+
+/**
+ * Real seconds left once the slot's speed-up is applied to `remaining` seconds at the normal rate.
+ *
+ * The speed-up does `speed` seconds of research a second for as long as it has left, and is not
+ * assumed to be renewed; whatever is left after it runs at the normal rate. A speed of 1 or less,
+ * or nothing left on it, changes nothing.
+ */
+function secondsWithSpeedUp(
+  remaining: number | null,
+  speed: number | null,
+  speedUpRemaining: number | null,
+): number | null {
+  if (remaining === null) return null
+  if (speed === null || !(speed > 1) || speedUpRemaining === null || !(speedUpRemaining > 0)) return remaining
+  const coveredBySpeedUp = speed * speedUpRemaining
+  if (remaining <= coveredBySpeedUp) return Math.round(remaining / speed)
+  return Math.round(speedUpRemaining + (remaining - coveredBySpeedUp))
 }
 
 /**
@@ -218,16 +240,19 @@ export function readLabsFromSaveRoot(root: Record<string, unknown> | null): Labs
         completeDates[researchInt] ?? null,
         labSpeedRelicFraction,
       )
-    // A research being worked on finishes when the game says it does.
+    // A research being worked on finishes when the game says it does, at the normal rate.
     const gameRemaining = queued ? secondsUntil(queued.completeDate, exportedAt) : null
+    const research = queued && gameRemaining !== null ? { ...queued, remainingSeconds: gameRemaining } : queued
+    const slotSpeedUpRemaining = speedUpRemainingSeconds[slotIndex] ?? null
     activeQueue.push({
       slotIndex,
       labLevel: labLevels[slotIndex] ?? null,
       researchInt,
       active: labActive[slotIndex] ?? false,
       speedUp: slotSpeed,
-      speedUpRemainingSeconds: speedUpRemainingSeconds[slotIndex] ?? null,
-      research: queued && gameRemaining !== null ? { ...queued, remainingSeconds: gameRemaining } : queued,
+      speedUpRemainingSeconds: slotSpeedUpRemaining,
+      research,
+      remainingSecondsWithSpeedUp: secondsWithSpeedUp(research?.remainingSeconds ?? null, slotSpeed, slotSpeedUpRemaining),
     })
   }
 
