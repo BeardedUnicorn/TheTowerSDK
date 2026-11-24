@@ -126,6 +126,19 @@
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
     {
+      "id": "save:cards/draw-odds",
+      "surface": "save",
+      "label": "cards/draw-odds",
+      "graphNodeIds": [
+        "oracle.card.rarity"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/cards/draw-odds.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
       "id": "save:cards/read",
       "surface": "save",
       "label": "cards/read",

@@ -6,8 +6,9 @@ What a save says about cards.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `draw-odds.ts` | What a card pull can land on for the account in a save. | readCardDrawOddsFromSaveRoot |
 | `index.ts` | Card levels and mastery, indexed by slot. | — |
 | `read.ts` | — | CARDS_SAVE_LEVEL_KEY, CARDS_SAVE_COUNT_KEY, CARDS_SAVE_UNLOCKED_KEY, CARDS_SAVE_ACTIVE_KEY (+16 more) |
-| `types.ts` | The types `save/cards/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | CardSaveRow, CardPresetSlotRow, CardsSaveExtract |
+| `types.ts` | The types `save/cards/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | CardSaveRow, CardPresetSlotRow, CardsSaveExtract, CardDrawPoolSaveRow (+1 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)
