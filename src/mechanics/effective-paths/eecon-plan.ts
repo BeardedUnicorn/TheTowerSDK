@@ -180,41 +180,74 @@ const WEAPON_GATED_CANDIDATES: Readonly<Record<string, keyof EffectiveEconomyCon
   'Gold Bot - Duration': 'goldBot',
 }
 
+/** A row the sheet hides until something about the account is true, and what that something is. */
+interface TimePathPrerequisite {
+  readonly met: (config: EffectiveEconomyConfig) => boolean
+  /**
+   * What is missing when it is not met, for the exclusion reason.
+   *
+   * One reason used to cover all nine rows, so a planner fed a real save said "its prerequisite
+   * is not met" for Standard Perks Bonus on an account that had researched it to level 8. The
+   * gate was the perk configuration the save cannot supply; nothing said so.
+   */
+  readonly unmet: string
+}
+
 /**
  * Time/coin candidates the sheet hides until a prerequisite is met.
  *
  * Read off `eEcon!DV2:ER2`. Same shape as the damage tab's lab prerequisites:
  * unmet, their gain is ~0 and a zero still fills the path in tie-break order.
  */
-const TIME_PATH_PREREQUISITES: Readonly<
-  Record<string, (config: EffectiveEconomyConfig) => boolean>
-> = {
+const TIME_PATH_PREREQUISITES: Readonly<Record<string, TimePathPrerequisite>> = {
   // `AO7+AS7=0` — Galaxy Compressor unique (primary + assist).
-  'Recovery Package Chance': config => {
-    const u = config.uniques.galaxyCompressor
-    return u.primary + u.assist !== 0
+  'Recovery Package Chance': {
+    met: config => {
+      const u = config.uniques.galaxyCompressor
+      return u.primary + u.assist !== 0
+    },
+    unmet: 'no Galaxy Compressor is equipped, as primary or assist',
   },
   // `AO6+AS6=0` on the Free Upgrades enhancement column.
-  'Free Upgrades': config => {
-    const u = config.uniques.blackHoleDigestor
-    return u.primary + u.assist !== 0
+  'Free Upgrades': {
+    met: config => {
+      const u = config.uniques.blackHoleDigestor
+      return u.primary + u.assist !== 0
+    },
+    unmet: 'no Black Hole Digestor is equipped, as primary or assist',
   },
   // `NOT(AZ32)` — card equipped and mastery unlocked (`AND(AZ31, IDS_CARD_MASTERY)`).
-  'Coins Mastery': config =>
-    Boolean(config.cards.coins.active && config.cards.coinsMastery.active),
+  'Coins Mastery': {
+    met: config => Boolean(config.cards.coins.active && config.cards.coinsMastery.active),
+    unmet: 'the Coins mastery is not unlocked, or the Coins card is not equipped',
+  },
   // `AZ34` uses LEFT(AU34,9)="Extra Orb" plus cards-on and mastery.
-  'Extra Orb Mastery': config => Boolean(config.cards.extraOrbMastery.active),
-  'Wave Skip Mastery': config =>
-    Boolean(config.cards.waveSkip.active && config.cards.waveSkipMastery.active),
-  'Intro Sprint Mastery': config =>
-    Boolean(config.cards.introSprint.active && config.cards.introSprintMastery.active),
-  'Wave Accelerator Mastery': config => Boolean(config.cards.waveAcceleratorMastery.active),
+  'Extra Orb Mastery': {
+    met: config => Boolean(config.cards.extraOrbMastery.active),
+    unmet: 'the Extra Orb mastery is not unlocked',
+  },
+  'Wave Skip Mastery': {
+    met: config => Boolean(config.cards.waveSkip.active && config.cards.waveSkipMastery.active),
+    unmet: 'the Wave Skip mastery is not unlocked, or the Wave Skip card is not equipped',
+  },
+  'Intro Sprint Mastery': {
+    met: config => Boolean(config.cards.introSprint.active && config.cards.introSprintMastery.active),
+    unmet: 'the Intro Sprint mastery is not unlocked, or the Intro Sprint card is not equipped',
+  },
+  'Wave Accelerator Mastery': {
+    met: config => Boolean(config.cards.waveAcceleratorMastery.active),
+    unmet: 'the Wave Accelerator mastery is not unlocked',
+  },
   // `NOT(AZ43)` or `NOT(OR(AZ45, AZ46))` — perks on, and Coins or Free Ups taken.
-  'Standard Perks Bonus': config =>
-    config.perksEquipped && (config.perks.coins || config.perks.freeUpgrades),
+  'Standard Perks Bonus': {
+    met: config => config.perksEquipped && (config.perks.coins || config.perks.freeUpgrades),
+    unmet: 'perks are off, or neither the Coins nor the Free Upgrades perk is marked as taken',
+  },
   // `NOT(AND(AZ43, AZ47))` — perks on and the coin trade-off taken.
-  'Improve Trade-off Perks': config =>
-    config.perksEquipped && config.perks.coinsTradeOff,
+  'Improve Trade-off Perks': {
+    met: config => config.perksEquipped && config.perks.coinsTradeOff,
+    unmet: 'perks are off, or the coin trade-off perk is not marked as taken',
+  },
 }
 
 /**
@@ -719,11 +752,11 @@ export function planEffectiveEconomyPath(
     // Time/coin hide-row prerequisites — assist slots, unique modules, mastery
     // labs that need the unlock first, and perk labs.
     if (variant === 'time' || variant === 'coin') {
-      const ready = TIME_PATH_PREREQUISITES[upgrade.sheetName]
-      if (ready && !ready(config)) {
+      const prerequisite = TIME_PATH_PREREQUISITES[upgrade.sheetName]
+      if (prerequisite && !prerequisite.met(config)) {
         excluded.push({
           sheetName: upgrade.sheetName,
-          reason: 'its prerequisite is not met',
+          reason: `its prerequisite is not met: ${prerequisite.unmet}`,
         })
         continue
       }

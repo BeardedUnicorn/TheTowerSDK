@@ -437,6 +437,40 @@ describe('the two stone gates read off eEcon Stones!DM2:DQ2', () => {
     expect(reasons.get('Coins Mastery')).toMatch(/prerequisite/)
   })
 
+  it('says which perk a hidden perk lab is waiting on', () => {
+    /*
+     * A planner fed a real save, which cannot say which perks are taken, excluded Standard Perks
+     * Bonus as "its prerequisite is not met" on an account that had it at level 8. The reason has
+     * to name the perk setting, or it reads as a missing lab.
+     */
+    const plan = planEffectiveEconomyPath({
+      config: developedConfig(),
+      levels: developedLevels(),
+      variant: 'time',
+      steps: 20,
+    })
+    const reasons = new Map(plan.excluded.map(entry => [entry.sheetName, entry.reason]))
+    expect(reasons.get('Standard Perks Bonus')).toMatch(/neither the Coins nor the Free Upgrades perk/)
+    expect(reasons.get('Improve Trade-off Perks')).toMatch(/coin trade-off perk/)
+    expect(reasons.get('Recovery Package Chance')).toMatch(/Galaxy Compressor/)
+  })
+
+  it('offers the perk labs once the perks they scale are taken', () => {
+    const plan = planEffectiveEconomyPath({
+      config: {
+        ...developedConfig(),
+        perksEquipped: true,
+        perks: { ...developedConfig().perks, coins: true, coinsTradeOff: true },
+      },
+      levels: developedLevels(),
+      variant: 'time',
+      steps: 20,
+    })
+    const excludedNames = new Set(plan.excluded.map(entry => entry.sheetName))
+    expect(excludedNames.has('Standard Perks Bonus')).toBe(false)
+    expect(excludedNames.has('Improve Trade-off Perks')).toBe(false)
+  })
+
   it('gates Gold Bot - Duration on owning the bot', () => {
     // Was misspelled `Gold Bot Duration` and never matched the sheet name.
     const plan = planEffectiveEconomyPath({

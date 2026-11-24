@@ -22,12 +22,18 @@ export interface LabResearchSaveRow {
   /**
    * The game's own finish date, ISO: for a research in the active queue, when the level in
    * progress finishes; otherwise when its last level finished. Null for one never started.
+   *
+   * For a queued level the date is worked out at the slot's normal rate. A speed-up on the slot
+   * is not in it, so while one runs the date moves earlier from one export to the next — by the
+   * extra speed times the time between them, which is how it was measured.
    */
   completeDate: string | null
   /**
    * Seconds left on the next level. For a research in the active queue this is the game's own
-   * finish date measured from `exportedAt`; otherwise an estimate from the catalog and the Labs
-   * Speed research, which does not see relics, the Vault or gem speed-ups.
+   * finish date measured from `exportedAt` — at the slot's normal rate, so a slot with a speed-up
+   * finishes sooner; `LabQueueSaveRow.remainingSecondsWithSpeedUp` applies it. Otherwise an
+   * estimate from the catalog and the Labs Speed research, which does not see relics, the Vault
+   * or speed-ups.
    */
   remainingSeconds: number | null
 }
@@ -38,7 +44,13 @@ export interface LabCompletionSaveRow {
   researchIndex: number
   /** The level that finished. */
   level: number
-  /** When it finished, ISO. */
+  /**
+   * The date the game logged for the level, ISO, as stored.
+   *
+   * Not always when the level finished. A level finished under a speed-up has been logged with a
+   * date later than the export that already held the entry, while the next level was in
+   * progress. Good for ordering one lab's own levels; not a finish time to report.
+   */
   completedAt: string | null
 }
 
@@ -47,14 +59,36 @@ export interface LabQueueSaveRow {
   labLevel: number | null
   researchInt: number | null
   active: boolean
+  /**
+   * The slot's speed-up multiplier — 1.5, 2 and up. Only in force while `speedUpRemainingSeconds`
+   * is above 0; read the two together.
+   */
   speedUp: number | null
+  /** How much longer the speed-up runs, in seconds. */
   speedUpRemainingSeconds: number | null
   research: LabResearchSaveRow | null
+  /**
+   * Real seconds until the level in this slot finishes, with the slot's speed-up applied.
+   *
+   * The speed-up runs for `speedUpRemainingSeconds` and is assumed not to be renewed; after it
+   * the level carries on at the normal rate. Equal to `research.remainingSeconds` with no
+   * speed-up, and null when that is.
+   */
+  remainingSecondsWithSpeedUp: number | null
 }
 
 export interface LabsSaveExtract {
-  /** Every lab level finished, as the game logs them, oldest first. Empty for a save without the log. */
+  /**
+   * Every lab level finished, in the order the game logged them. Empty for a save without the log.
+   *
+   * Not sorted by date, and not sortable into finish order either: `completedAt` is the date the
+   * game logged, which can run ahead of the real finish (see `LabCompletionSaveRow`).
+   */
   completions: LabCompletionSaveRow[]
+  /**
+   * Lab slots bought with gems, as stored. The first slot is free (Tier 1 Wave 30) and is not
+   * counted: an export with all five slots researching stores 4. Slots owned = this + 1.
+   */
   labsUnlocked: number | null
   researchesComplete: number | null
   totalCoinsSpentOnResearch: unknown
