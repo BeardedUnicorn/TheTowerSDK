@@ -5118,7 +5118,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free attack upgrade by 1%',
     'benefit': 0.01,
     'benefitType': 18,
-    'unlockDescription': 'Earn 350 medals during the Interstellar event',
+    'unlockDescription': 'Earn 350 medals during the Meteor Shower event',
     'slug': 'mining-drone',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5132,7 +5132,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase damage / meter by 5%',
     'benefit': 0.05,
     'benefitType': 4,
-    'unlockDescription': 'Earn 700 medals during the Interstellar event',
+    'unlockDescription': 'Earn 700 medals during the Meteor Shower event',
     'slug': 'meteor-impact',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5146,7 +5146,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical factor by 2%',
     'benefit': 0.02,
     'benefitType': 3,
-    'unlockDescription': 'Earn 550 medals during the Interstellar event',
+    'unlockDescription': 'Earn 550 medals during the Meteor Shower event',
     'slug': 'precious-minerals',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5160,7 +5160,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase health regen by 5%',
     'benefit': 0.05,
     'benefitType': 9,
-    'unlockDescription': 'Earn 1100 medals during the Interstellar event',
+    'unlockDescription': 'Earn 1100 medals during the Meteor Shower event',
     'slug': 'asteroid-belt',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5174,7 +5174,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase recovery amount by 2%',
     'benefit': 0.02,
     'benefitType': 21,
-    'unlockDescription': 'Earn 350 medals during the Faster Than Light event',
+    'unlockDescription': 'Earn 350 medals during the Prismatic Lines event',
     'slug': 'prismatic-star',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5188,7 +5188,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase knockback force by 5%',
     'benefit': 0.05,
     'benefitType': 13,
-    'unlockDescription': 'Earn 700 medals during the Faster Than Light event',
+    'unlockDescription': 'Earn 700 medals during the Prismatic Lines event',
     'slug': 'rainbow',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5202,7 +5202,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase thorns by 1%',
     'benefit': 0.01,
     'benefitType': 12,
-    'unlockDescription': 'Earn 550 medals during the Faster Than Light event',
+    'unlockDescription': 'Earn 550 medals during the Prismatic Lines event',
     'slug': 'light-spectrum',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5216,7 +5216,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase attack speed by 2%',
     'benefit': 0.02,
     'benefitType': 1,
-    'unlockDescription': 'Earn 1100 medals during the Faster Than Light event',
+    'unlockDescription': 'Earn 1100 medals during the Prismatic Lines event',
     'slug': 'light-scattering',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5230,7 +5230,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free utility upgrade by 1%',
     'benefit': 0.01,
     'benefitType': 20,
-    'unlockDescription': 'Earn 350 medals during the Gravity event',
+    'unlockDescription': 'Earn 350 medals during the Interstellar event',
     'slug': 'flying-object',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5244,7 +5244,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free defense upgrade by 2%',
     'benefit': 0.02,
     'benefitType': 19,
-    'unlockDescription': 'Earn 700 medals during the Gravity event',
+    'unlockDescription': 'Earn 700 medals during the Interstellar event',
     'slug': 'space-nebula',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5258,7 +5258,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase orb speed by 2%',
     'benefit': 0.02,
     'benefitType': 14,
-    'unlockDescription': 'Earn 550 medals during the Gravity event',
+    'unlockDescription': 'Earn 550 medals during the Interstellar event',
     'slug': 'binary-system',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5272,7 +5272,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical chance by 2%',
     'benefit': 0.02,
     'benefitType': 2,
-    'unlockDescription': 'Earn 1100 medals during the Gravity event',
+    'unlockDescription': 'Earn 1100 medals during the Interstellar event',
     'slug': 'rogue-planet',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5286,7 +5286,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase tower health by 2%',
     'benefit': 0.02,
     'benefitType': 8,
-    'unlockDescription': 'Earn 350 medals during the Sands of Time event',
+    'unlockDescription': 'Earn 350 medals during the Jurassic event',
     'slug': 'ancient-footprint',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5300,7 +5300,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase tower damage by 5%',
     'benefit': 0.05,
     'benefitType': 0,
-    'unlockDescription': 'Earn 700 medals during the Sands of Time event',
+    'unlockDescription': 'Earn 700 medals during the Jurassic event',
     'slug': 'hunter-s-realm',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5314,7 +5314,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase free attack upgrade by 1%',
     'benefit': 0.01,
     'benefitType': 18,
-    'unlockDescription': 'Earn 550 medals during the Sands of Time event',
+    'unlockDescription': 'Earn 550 medals during the Jurassic event',
     'slug': 'spiral-nautilus',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5328,7 +5328,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase lab speed by 4%',
     'benefit': 0.04,
     'benefitType': 25,
-    'unlockDescription': 'Earn 1100 medals during the Sands of Time event',
+    'unlockDescription': 'Earn 1100 medals during the Jurassic event',
     'slug': 'tyrant-s-skull',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5342,7 +5342,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase cash bonus by 2%',
     'benefit': 0.02,
     'benefitType': 16,
-    'unlockDescription': 'Earn 350 medals during the Cthulhu event',
+    'unlockDescription': 'Earn 350 medals during the Sands of Time event',
     'slug': 'ancient-art',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5356,7 +5356,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase critical chance by 2%',
     'benefit': 0.02,
     'benefitType': 2,
-    'unlockDescription': 'Earn 700 medals during the Cthulhu event',
+    'unlockDescription': 'Earn 700 medals during the Sands of Time event',
     'slug': 'ancient-knowledge',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5370,7 +5370,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase attack speed by 1%',
     'benefit': 0.01,
     'benefitType': 1,
-    'unlockDescription': 'Earn 550 medals during the Cthulhu event',
+    'unlockDescription': 'Earn 550 medals during the Sands of Time event',
     'slug': 'ancient-writing',
     'saveFields': {
       'profile': 'profileRelics',
@@ -5384,7 +5384,7 @@ export const RELIC_IMPORT_CATALOG = [
     'description': 'Increase ultimate damage by 5%',
     'benefit': 0.05,
     'benefitType': 24,
-    'unlockDescription': 'Earn 1100 medals during the Cthulhu event',
+    'unlockDescription': 'Earn 1100 medals during the Sands of Time event',
     'slug': 'grand-pyramid',
     'saveFields': {
       'profile': 'profileRelics',

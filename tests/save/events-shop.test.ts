@@ -37,6 +37,51 @@ describe('an event the save names after its tower theme', () => {
   })
 })
 
+/*
+ * Relic slots 276-295 are five sets of four, awarded by five consecutive events in mid-2026. They
+ * were filed one event out of step, under older events' names: the catalog said relic 292 (Ancient
+ * Art) was a Cthulhu relic, where a real save lists 292 among the relics its SANDS_OF_TIME event
+ * unlocked. That save earned 650, 370, 485, 535 and 420 medals in METEOR_SHOWER, PRISMATIC_LINES,
+ * INTERSTELLAR, JURASSIC and SANDS_OF_TIME, and holds exactly the 350-medal relic of each set
+ * (276, 280, 284, 288, 292) and none of the 700-medal ones.
+ */
+describe('the mid-2026 event relics', () => {
+  const labelsOf = (name: string) => findEventRelicSet(name)!.relics.map(relic => relic.label)
+
+  it('files the meteor relics under Meteor Shower', () => {
+    expect(findEventRelicSet('METEOR_SHOWER')?.event).toBe('Meteor Shower')
+    expect(labelsOf('METEOR_SHOWER')).toEqual(['Mining Drone', 'Meteor Impact', 'Precious Minerals', 'Asteroid Belt'])
+  })
+
+  it('files the fossil relics under Jurassic', () => {
+    expect(findEventRelicSet('JURASSIC')?.event).toBe('Jurassic')
+    expect(labelsOf('JURASSIC')).toEqual(['Ancient Footprint', 'Hunter\'s Realm', 'Spiral Nautilus', 'Tyrant\'s Skull'])
+  })
+
+  it('files the pyramid relics under Sands of Time, not Cthulhu', () => {
+    expect(labelsOf('SANDS_OF_TIME')).toEqual(expect.arrayContaining(['Ancient Art', 'Ancient Knowledge', 'Ancient Writing', 'Grand Pyramid']))
+    expect(labelsOf('SANDS_OF_TIME')).not.toContain('Ancient Footprint')
+    expect(labelsOf('Cthulhu')).not.toContain('Ancient Art')
+  })
+
+  it('files the light relics under Prismatic Lines and the space relics under Interstellar', () => {
+    expect(labelsOf('PRISMATIC_LINES')).toEqual(expect.arrayContaining(['Prismatic Star', 'Rainbow', 'Light Spectrum', 'Light Scattering']))
+    expect(labelsOf('INTERSTELLAR')).toEqual(expect.arrayContaining(['Flying Object', 'Space Nebula', 'Binary System', 'Rogue Planet']))
+    expect(labelsOf('INTERSTELLAR')).not.toContain('Mining Drone')
+    expect(findEventRelicSet('Faster Than Light')!.relics.map(relic => relic.label)).not.toContain('Rainbow')
+    expect(findEventRelicSet('Gravity')!.relics.map(relic => relic.label)).not.toContain('Space Nebula')
+  })
+
+  it('names the Jurassic and Meteor Shower shops', () => {
+    const jurassic = readEventShopFromSaveRoot(exportRoot('JURASSIC', [288]))!
+    expect(jurassic.themes.map(theme => [theme.kind, theme.name])).toEqual([['tower', 'Baby Dino'], ['background', 'Jurassic Forest']])
+    expect(jurassic.relics.map(relic => [relic.label, relic.price, relic.owned])).toEqual([['Ancient Footprint', 200, true], ['Hunter\'s Realm', 500, false]])
+    const meteor = readEventShopFromSaveRoot(exportRoot('METEOR_SHOWER'))!
+    expect(meteor.themes.map(theme => theme.name)).toEqual(['Meteorite', 'Meteor Shower'])
+    expect(meteor.relics.map(relic => relic.label)).toEqual(['Mining Drone', 'Meteor Impact'])
+  })
+})
+
 describe('event relic sets', () => {
   it('carry the shop price beside the earn threshold', () => {
     const relics = findEventRelicSet('Full Moon')!.relics
