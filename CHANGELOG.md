@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 (2026-11-24)
+
+
+### Bug Fixes
+
+* **formatting:** format 1e36, 1e111 and the other ladder steps exactly on Node 22 ([ce06448](https://github.com/BeardedUnicorn/TheTowerSDK/commit/ce064482549b184dc1cd4fc411343d1964bd9e0e))
+
+
+### Features
+
+* **mcp:** attach a Claude Desktop extension (.mcpb) to every release ([08d26f9](https://github.com/BeardedUnicorn/TheTowerSDK/commit/08d26f9e3a5f0807bebe19e2fdbe4eec2b417204))
+
 ## 1.3.0 (2026-11-24)
 
 
