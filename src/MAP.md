@@ -39,9 +39,9 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/themes`](data/themes/MAP.md) | 4 | Themes and the bonuses they carry. |
 | [`src/data/tiers`](data/tiers/MAP.md) | 4 | Tiers, and the campaign tiers that run alongside them. |
 | [`src/data/tournaments`](data/tournaments/MAP.md) | 3 | Tournament leagues, brackets, and the heat each tier carries. |
-| [`src/data/ultimate-weapons`](data/ultimate-weapons/MAP.md) | 4 | Ultimate weapons and their stones. |
+| [`src/data/ultimate-weapons`](data/ultimate-weapons/MAP.md) | 5 | Ultimate weapons and their stones. |
 | [`src/data/vault`](data/vault/MAP.md) | 4 | The vault tree and how it is walked. |
-| [`src/data/workshop`](data/workshop/MAP.md) | 9 | Workshop tables: costs, discounts and upgrade definitions. |
+| [`src/data/workshop`](data/workshop/MAP.md) | 10 | Workshop tables: costs, discounts and upgrade definitions. |
 | [`src/formatting`](formatting/MAP.md) | 1 | Numbers, durations and rates in the game’s own notation. |
 | [`src/formatting/duration`](formatting/duration/MAP.md) | 2 | Durations, in the units a run is measured in. |
 | [`src/formatting/numbers`](formatting/numbers/MAP.md) | 4 | Reading and writing numbers in the game’s notation ladder. |
