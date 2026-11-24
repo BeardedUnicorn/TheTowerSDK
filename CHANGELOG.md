@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.6.0 (2026-11-24)
+
+
+### Bug Fixes
+
+* **mcp:** answer the call that was made, or refuse it ([a958164](https://github.com/BeardedUnicorn/TheTowerSDK/commit/a958164940873afdfaba4ee31b803e1345e92eb4))
+
+
+### Features
+
+* **calculators:** register every exported function, and run the one the entry point exports ([3f0b241](https://github.com/BeardedUnicorn/TheTowerSDK/commit/3f0b241522d17ee898f81d56de474291c5ff0d3c))
+
 ## 1.5.0 (2026-11-24)
 
 
