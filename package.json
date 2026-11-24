@@ -1,6 +1,6 @@
 {
   "name": "@beardedunicorn/thetowersdk",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Game data and save-file reading for The Tower — build your own calculators and tools.",
   "license": "MIT",
   "author": "Mike Herold (https://github.com/BeardedUnicorn)",

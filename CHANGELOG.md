@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 (2026-11-24)
+
+
+### Bug Fixes
+
+* **data:** file the mid-2026 event relics under the events that awarded them ([c69af55](https://github.com/BeardedUnicorn/TheTowerSDK/commit/c69af55a568dd802bc87071c172b2db51c3fc956))
+
 ## 1.2.0 (2026-11-24)
 
 
