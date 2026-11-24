@@ -1,5 +1,8 @@
 # Version, publish and release — automatically, on every push to main.
 #
+# First the full CI suite runs (`ci.yml`, called below): the Node 22/24/26 matrix, the site build,
+# the WASM parity suite and the `.mcpb` bundle. Nothing is versioned unless all of it passes.
+#
 # semantic-release reads the commits since the last `v*` tag and decides the next version from
 # their Conventional Commit types:
 #
@@ -15,11 +18,17 @@
 #   3. publishes to npm,
 #   4. creates the GitHub release with the same notes,
 #
-# and then the two jobs below attach `thetowersdk.wasm` to that release and regenerate the GitHub
-# wiki from the released tag. The configuration is `.releaserc.json`.
+# and then the jobs below, each from the released tag: attach `thetowersdk.wasm` and
+# `thetowersdk.mcpb` to that release, regenerate the GitHub wiki, and deploy the documentation site
+# to GitHub Pages. The configuration is `.releaserc.json`.
 #
 # THERE IS NO REVIEW STEP. A `feat` or `fix` commit that reaches main is a published npm version,
-# and a published version can never be changed or reused. `pnpm verify` below is the only gate.
+# and a published version can never be changed or reused. The CI job below is the only gate.
+#
+# This file has to stay the top-level workflow that publishes. npm's trusted publisher is
+# registered against `release.yml`, and the OIDC claim it checks names the workflow a run started
+# from — so CI is called from here, never the other way round. Publishing from a workflow that
+# `ci.yml` called would fail to authenticate.
 #
 # npm authentication is trusted publishing (OIDC): no token is stored anywhere. One-time setup,
 # which cannot be done from a workflow:
@@ -68,7 +77,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # The gate: everything a pull request is checked with, on the commit about to be released.
+  # Release used to run `pnpm verify` on Node 24 alone, so 1.3.0 was published while the Node 22
+  # leg of CI was red — on a package whose `engines` says it supports Node 22.
+  ci:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
   release:
+    needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: write # the release commit, the tag and the GitHub release
@@ -90,10 +108,9 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      # `npm publish` runs `prepublishOnly`, which rebuilds `dist` from this install. The checks
+      # already ran in the `ci` job, on this same commit.
       - run: pnpm install --frozen-lockfile
-
-      # The gate. Nothing below runs unless the full check passes.
-      - run: pnpm verify
 
       # semantic-release is run with `pnpm dlx` at exact versions rather than added to
       # devDependencies: it pulls in the whole npm CLI, which every contributor and every CI job
@@ -134,6 +151,16 @@ jobs:
     with:
       tag: ${{ needs.release.outputs.tag }}
 
+  # The Claude Desktop extension: the MCP server and the package it reads, in one installable file.
+  mcpb:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/mcpb.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+
   # Same reason as the WASM job: called directly, because the release above fires no event.
   # The wiki is generated from the released tag, so its game pages match the published version.
   wiki:
@@ -146,3 +173,16 @@ jobs:
       tag: ${{ needs.release.outputs.tag }}
     secrets:
       WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+
+  # Built from the released tag, so the version the site prints is the one just published. Pages
+  # used to deploy on push, from the commit before the version bump, and was always one behind.
+  pages:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}

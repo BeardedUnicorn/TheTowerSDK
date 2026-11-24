@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatCompact, formatGameNumber } from '../../src/formatting'
+import { formatCompact, formatGameNumber, parseNumberInput, unitMultipliers } from '../../src/formatting'
+import { COMPACT_NUMBER_SUFFIX_ORDER, compactNotationStep } from '../../src/formatting/numbers/game-notation'
 
 /*
  * The edges of the game's notation. The readings themselves are pinned in
@@ -41,5 +42,29 @@ describe('formatGameNumber', () => {
     expect(formatGameNumber(-12_228_041)).toBe('-12.22M')
     expect(formatGameNumber(Number.NaN)).toBe('0')
     expect(formatGameNumber(Number.POSITIVE_INFINITY)).toBe('0')
+  })
+})
+
+/*
+ * Every step of the ladder, not a sample of it. `10 ** n` is one ulp off the literal on Node 22 for
+ * n = 36, 39, 42, 96 and 111 and exact on Node 24, so a spot check passes on one runtime and fails
+ * on the other. These hold on every engine because the steps are parsed, not computed.
+ */
+describe('the notation ladder is exact on every runtime', () => {
+  const steps = COMPACT_NUMBER_SUFFIX_ORDER.map((suffix, tier) => ({ suffix, tier, exponent: 3 * (tier + 1) }))
+
+  it('makes each step the decimal power it names', () => {
+    for (const { tier, exponent } of steps) expect(compactNotationStep(tier)).toBe(Number(`1e${exponent}`))
+  })
+
+  it('prints each step as one of that notation', () => {
+    for (const { suffix, exponent } of steps) expect(formatGameNumber(Number(`1e${exponent}`))).toBe(`1.00${suffix}`)
+  })
+
+  it('reads each doubled-letter notation back as the same power', () => {
+    for (const { suffix, exponent } of steps.filter(step => step.suffix.startsWith('A'))) {
+      expect(unitMultipliers[suffix]).toBe(Number(`1e${exponent}`))
+      expect(parseNumberInput(`1${suffix}`)).toBe(Number(`1e${exponent}`))
+    }
   })
 })

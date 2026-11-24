@@ -19,6 +19,7 @@ The checks and generators. Each is a `package.json` script; none is called from 
 | `build-doc-snippets.mjs` | Extract named code snippets from the canonical sources, for every docs surface to share. | — |
 | `build-lab-categories.mjs` | Emit lab categories from the versioned lab-categories.json fixture. | LAB_CATEGORY_BY_INDEX, LAB_CATEGORY_RESEARCH_COUNT |
 | `build-lab-v29-curves.mjs` | Build the supported v29 lab reference curves at save indices 242-252. | — |
+| `build-mcpb.mjs` | Build `thetowersdk.mcpb`, the MCP server as a one-click Claude Desktop extension. | — |
 | `build-patch-notes.mjs` | Turn the raw patch-notes archive into the dataset that ships. | — |
 | `build-relic-game-table.mjs` | Emit the game's own relic table: | RelicGameRarity, RelicGameUnlockType, RelicGameRow, RELIC_GAME_TABLE (+1 more) |
 | `build-wiki.mjs` | Render the GitHub wiki from this package's own docs. | — |

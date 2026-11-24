@@ -1,0 +1,66 @@
+# Build `thetowersdk.mcpb` and attach it to a release.
+#
+# The MCP server as a Claude Desktop extension: one file that installs the server, the package it
+# reads and its runtime dependencies, with the settings it needs asked for in the app. Without it,
+# using the server from Claude Desktop means installing the package and hand-editing a config file
+# to point at a path inside `node_modules`.
+#
+# It ships as a release asset under a fixed name, so
+# https://github.com/BeardedUnicorn/TheTowerSDK/releases/latest/download/thetowersdk.mcpb is always
+# the newest one. `scripts/build-mcpb.mjs` does the work and says why it is built the way it is.
+name: MCPB
+
+on:
+  # Called by release.yml with the tag it just created. That is the path a normal release takes:
+  # a release made with the Actions token does not fire `on: release` here.
+  workflow_call:
+    inputs:
+      tag:
+        description: The release tag to build from and attach the bundle to.
+        required: true
+        type: string
+  # A release published by hand, from the GitHub UI or `gh release create`.
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The release's own tag when called with one; otherwise whatever triggered the run.
+          ref: ${{ inputs.tag || github.ref }}
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The bundle carries `dist`, so build it here rather than trusting whatever is checked out.
+      - run: pnpm build
+
+      # Packs, validates the manifest, then starts the packed server and lists its tools.
+      - run: pnpm mcpb:build
+
+      - name: Attach to the release
+        if: inputs.tag != '' || github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" .mcpb-build/thetowersdk.mcpb --clobber
+
+      - name: Keep it as a build artifact otherwise
+        if: inputs.tag == '' && github.event_name != 'release'
+        uses: actions/upload-artifact@v7
+        with:
+          name: thetowersdk-mcpb
+          path: .mcpb-build/thetowersdk.mcpb
