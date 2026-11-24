@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.0 (2026-11-24)
+
+
+### Bug Fixes
+
+* **builders:** label the workshop calculator as enhancements only ([820fe31](https://github.com/BeardedUnicorn/TheTowerSDK/commit/820fe3186f6e4584ceadbb9c22c1641fd3b0d865))
+* **data:** price a lab rush under an hour as the game does ([6daf1eb](https://github.com/BeardedUnicorn/TheTowerSDK/commit/6daf1eb0cdff4e884533550e7f581eae366b1574))
+* **mechanics:** say what a hidden eEcon candidate is waiting on ([980fdf5](https://github.com/BeardedUnicorn/TheTowerSDK/commit/980fdf566f51ed954aec9cc859712ec1bab5dfc0))
+* **save:** time a queued lab with its slot's speed-up ([182fd6b](https://github.com/BeardedUnicorn/TheTowerSDK/commit/182fd6b3a114082672b19ec4cc23ab5be91837ed))
+
+
+### Features
+
+* **mcp:** price the next unlocks and the coin bonus, and keep calculators current ([62e13d1](https://github.com/BeardedUnicorn/TheTowerSDK/commit/62e13d1849d1e7d1a3da911b6f368085ded96c8e))
+
 ## 1.4.0 (2026-11-24)
 
 
