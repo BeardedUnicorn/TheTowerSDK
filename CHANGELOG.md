@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.1 (2026-11-24)
+
+
+### Bug Fixes
+
+* **events:** award an event its own relics, apart from the ones its shop sells ([7967206](https://github.com/BeardedUnicorn/TheTowerSDK/commit/79672061e3a57fa34e062f2e1c7aae1a2383f06b))
+
 ## 1.7.0 (2026-11-24)
 
 
