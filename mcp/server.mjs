@@ -820,6 +820,13 @@ const preview = (value, limit = 40) => {
  */
 const oneLine = value => String(value ?? '').replace(/\s*[\r\n]+\s*/g, ' ').trim()
 
+/** The answer when the map or the ledger cannot be written: what failed, and what to set. */
+const unwritable = (file, error) => ({
+  error: `could not write ${file}: ${error instanceof Error ? error.message : String(error)}`,
+  nothingWritten: true,
+  hint: 'Set TOWER_MECHANICS_MAP_DIR to a directory this process can write. Without it the map and ledger go under the server\'s working directory.',
+})
+
 /**
  * One page of a list, with the real total beside it.
  *
@@ -866,8 +873,24 @@ function rowsAnswer(rows, { where, search, fields, offset, limit } = {}, { label
    * A filter on a column no row has is named, not silently applied. It would match nothing,
    * and "no rows" from a misspelt field reads exactly like "no such lab".
    */
-  const unknownFields = [...rules.map(([field]) => field), ...wanted]
-    .filter(field => !rows.some(row => isRecord(row) && Object.hasOwn(row, field)))
+  /*
+   * `where` compares as text, so it can only be asked about a value that has one. An object
+   * became "[object Object]" and matched every row whose cell was also an object: `where:
+   * { levels: {} }` returned twenty labs that had nothing in common but the type of a column.
+   */
+  const compound = rules.filter(([, value]) => value !== null && typeof value === 'object').map(([field]) => field)
+  if (compound.length > 0) {
+    return {
+      error: `where compares a column with a string, number or boolean, and ${compound.map(field => `"${field}"`).join(', ')} was given ${compound.length > 1 ? 'objects or lists' : 'an object or a list'}`,
+      hint: 'To read inside a nested value, follow it with `field` in read_save_field, or filter on another column.',
+      columns,
+    }
+  }
+  // An empty table has no columns to be wrong about: a filter on it matches nothing, correctly.
+  const unknownFields = rows.length === 0
+    ? []
+    : [...rules.map(([field]) => field), ...wanted]
+        .filter(field => !rows.some(row => isRecord(row) && Object.hasOwn(row, field)))
   if (unknownFields.length > 0) {
     const near = [...new Set(unknownFields.flatMap(field => nearestNames(field, columns, 3)))]
     return {
@@ -1197,7 +1220,8 @@ export const TOOLS = {
       if (Array.isArray(value)) rows = value
       else if (value && typeof value === 'object') {
         rows = Object.entries(value).map(([key, row]) =>
-          row && typeof row === 'object' && !Array.isArray(row) ? { _key: key, ...row } : { _key: key, value: row },
+          // `_key` last: a row with a field of that name must not replace the key it is filed under.
+          row && typeof row === 'object' && !Array.isArray(row) ? { ...row, _key: key } : { _key: key, value: row },
         )
       }
       else {
@@ -1268,6 +1292,7 @@ export const TOOLS = {
   },
 
   read_save_field: {
+    checksOwnArguments: true,
     description:
       'Read one field of what a save extractor returns — the data itself, a page at a time. '
       + 'run_extractor shows which fields exist; this returns one. `field` is a dotted path into '
@@ -1395,14 +1420,14 @@ export const TOOLS = {
         },
         offset: {
           type: 'number',
-          description: 'Character to start from — the `next` from a truncated answer, to read the rest of a long page',
+          description: 'Character to start from — the `next` from a truncated answer, to read the rest of a long page or section',
         },
         refresh: { type: 'boolean', description: 'Bypass the cache and refetch' },
         sourceId: {
           type: 'string',
           enum: ['fandom', 'gamevault'],
           description:
-            'Read a specific wiki. Omit to try all of them and take the first hit. '
+            'Read a specific wiki. Omit to ask all of them and take the fullest page. '
             + 'Pin it when a page differs between sites, or when Fandom\'s version is a stub — '
             + 'Bounce Shot, Multishot and Rend Armor are empty on Fandom and complete on gamevault.',
         },
@@ -1484,11 +1509,25 @@ export const TOOLS = {
         const match = lines[i].match(/^(#+) /)
         if (match && match[1].length <= depth) { end = i; break }
       }
+      /*
+       * A section is cut like a page. It was returned whole whatever its length, and `offset` was
+       * ignored once a section was named -- so the one way to read the big table on a long page
+       * was also the one answer with no bound on it.
+       */
+      const text = lines.slice(start, end).join('\n')
+      const at = sampleSize(offset, 0, text.length)
+      const more = at + WIKI_PAGE_CHARS < text.length
       return {
         title: resolvedTitle,
         requestedTitle: title !== resolvedTitle ? title : undefined,
         section: lines[start].replace(/^#+ /, ''),
-        markdown: lines.slice(start, end).join('\n'),
+        markdown: text.slice(at, at + WIKI_PAGE_CHARS),
+        length: text.length,
+        ...(at > 0 ? { offset: at } : {}),
+        truncated: more,
+        ...(more
+          ? { next: at + WIKI_PAGE_CHARS, hint: `Pass \`offset: ${at + WIKI_PAGE_CHARS}\` with the same \`section\` for the rest.` }
+          : {}),
       }
     },
   },
@@ -1744,9 +1783,8 @@ export const TOOLS = {
           nothingWritten: true,
         }
       }
-      fs.mkdirSync(MECHANICS_MAP_DIR, { recursive: true })
-      if (!fs.existsSync(MAP_FILE)) {
-        fs.writeFileSync(MAP_FILE, '# Mechanics relationship map (living)\n\n', 'utf8')
+      if (!oneLine(token)) {
+        return { error: 'a map entry needs the `token` begin_mechanic_task returned; it was blank', nothingWritten: true }
       }
       const date = new Date().toISOString().slice(0, 10)
       const block = [
@@ -1760,7 +1798,21 @@ export const TOOLS = {
         `- **Last verified:** ${date} · token \`${oneLine(token)}\``,
         '',
       ].join('\n')
-      fs.appendFileSync(MAP_FILE, block, 'utf8')
+      /*
+       * A map that cannot be written is the caller's to know about, in the tool's own words. The
+       * directory is the working directory's when nothing sets it, and a client that starts the
+       * server in `/` got "record_mechanic_note failed: EACCES" with no word on what to change.
+       */
+      try {
+        fs.mkdirSync(MECHANICS_MAP_DIR, { recursive: true })
+        if (!fs.existsSync(MAP_FILE)) {
+          fs.writeFileSync(MAP_FILE, '# Mechanics relationship map (living)\n\n', 'utf8')
+        }
+        fs.appendFileSync(MAP_FILE, block, 'utf8')
+      }
+      catch (error) {
+        return unwritable(MAP_FILE, error)
+      }
       return { ok: true, path: MAP_FILE, appendedFor: heading, token }
     },
   },
@@ -1798,9 +1850,9 @@ export const TOOLS = {
       if (!ALLOWED_LEDGER_STATUSES.has(normalised)) {
         return { error: `unknown status "${status}"`, allowed: [...ALLOWED_LEDGER_STATUSES] }
       }
-      fs.mkdirSync(MECHANICS_MAP_DIR, { recursive: true })
-      if (!fs.existsSync(LEDGER_FILE)) {
-        fs.writeFileSync(LEDGER_FILE, '# Agent work ledger (living)\n\n', 'utf8')
+      const blank = [['token', token], ['title', title], ['summary', summary]].filter(([, value]) => !oneLine(value)).map(([name]) => name)
+      if (blank.length > 0) {
+        return { error: `a ledger entry needs ${blank.map(name => `\`${name}\``).join(', ')}; ${blank.length > 1 ? 'they were' : 'it was'} blank`, nothingWritten: true }
       }
       const date = new Date().toISOString().slice(0, 10)
       const entry = [
@@ -1816,17 +1868,33 @@ export const TOOLS = {
           : '- **User approval:** _(pending)_',
         '',
       ].join('\n')
-      const existing = fs.readFileSync(LEDGER_FILE, 'utf8')
-      const insertAt = existing.indexOf('\n## ')
-      if (insertAt === -1) fs.appendFileSync(LEDGER_FILE, entry, 'utf8')
-      else {
-        /*
-         * Written beside the ledger and renamed over it. Newest-first means rewriting the whole
-         * file, and a rewrite interrupted halfway left a ledger with its history cut off.
-         */
-        const draft = `${LEDGER_FILE}.${process.pid}.tmp`
-        fs.writeFileSync(draft, `${existing.slice(0, insertAt)}\n${entry}${existing.slice(insertAt)}`, 'utf8')
-        fs.renameSync(draft, LEDGER_FILE)
+      const draft = `${LEDGER_FILE}.${process.pid}.tmp`
+      try {
+        fs.mkdirSync(MECHANICS_MAP_DIR, { recursive: true })
+        if (!fs.existsSync(LEDGER_FILE)) {
+          fs.writeFileSync(LEDGER_FILE, '# Agent work ledger (living)\n\n', 'utf8')
+        }
+        const existing = fs.readFileSync(LEDGER_FILE, 'utf8')
+        const insertAt = existing.indexOf('\n## ')
+        if (insertAt === -1) fs.appendFileSync(LEDGER_FILE, entry, 'utf8')
+        else {
+          /*
+           * Written beside the ledger and renamed over it. Newest-first means rewriting the whole
+           * file, and a rewrite interrupted halfway left a ledger with its history cut off.
+           */
+          fs.writeFileSync(draft, `${existing.slice(0, insertAt)}\n${entry}${existing.slice(insertAt)}`, 'utf8')
+          fs.renameSync(draft, LEDGER_FILE)
+        }
+      }
+      catch (error) {
+        // The draft is this call's own; left behind, it sits beside the ledger for good.
+        try {
+          fs.rmSync(draft, { force: true })
+        }
+        catch {
+          // Nothing to remove where nothing could be written.
+        }
+        return unwritable(LEDGER_FILE, error)
       }
       return {
         ok: true,
@@ -2318,7 +2386,23 @@ export const TOOLS = {
     },
     run: ({ term, domain }) => {
       const matches = sdk.data.lookupGlossary?.(term) ?? []
-      const filtered = domain ? matches.filter(entry => entry.domain === domain) : matches
+      const wantedDomain = typeof domain === 'string' ? domain.trim().toLowerCase() : ''
+      const filtered = wantedDomain ? matches.filter(entry => String(entry.domain).toLowerCase() === wantedDomain) : matches
+      /*
+       * A term that exists, asked for in a domain it is not in. This fell through to "not in the
+       * glossary", which is false: `ILM` with `domain: "module"` is Inner Land Mines, an ultimate
+       * weapon. The domains it does have are the answer.
+       */
+      if (!filtered.length && matches.length > 0) {
+        const domains = [...new Set(matches.map(entry => entry.domain))]
+        return {
+          term,
+          found: false,
+          domain,
+          foundInDomains: domains,
+          note: `"${term}" is in the glossary, but not under domain "${domain}". It is under: ${domains.join(', ')}. Ask again with one of those, or with no domain.`,
+        }
+      }
       if (!filtered.length) {
         /*
          * The glossary is not the only vocabulary authority, and it is not the larger one.
@@ -2393,7 +2477,7 @@ export const TOOLS = {
         variant: {
           type: 'string',
           description:
-            'The path. damage: lab-time, lab-coins, stone, coin, keys. economy: time, coin, stone. '
+            'The path. damage: lab-time, lab-coins, farm-time, stone, coin, keys. economy: time, coin, stone. '
             + 'health: lab-time, lab-coins, stone, coin. regen: lab-time, lab-coins. '
             + 'A variant a planner does not publish is refused by name rather than planning nothing',
         },
@@ -2424,11 +2508,14 @@ export const TOOLS = {
        * Own, ordinary keys only. `levels` arrives as parsed JSON, where `__proto__` is a plain own
        * key, and assigning it onto the merged object replaced that object's prototype.
        */
+      /* Level names the model has no row for: merged in, read by nothing, and so worth naming. */
+      const unknownLevelKeys = []
       const merge = (zero) => {
         const merged = { ...zero }
         const given = levels && typeof levels === 'object' && !Array.isArray(levels) ? levels : {}
         for (const [key, value] of Object.entries(given)) {
           if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue
+          if (!Object.hasOwn(zero, key)) unknownLevelKeys.push(key)
           merged[key] = merged[key] && typeof merged[key] === 'object' && value && typeof value === 'object'
             ? { ...merged[key], ...value }
             : value
@@ -2538,6 +2625,14 @@ export const TOOLS = {
                 'Planned from a zero config, so the values are shaped rather than real — this is for '
                 + 'reading which candidates a variant offers and why others are out, not for advice.',
             }),
+        ...(unknownLevelKeys.length > 0
+          ? {
+              unknownLevelKeys,
+              unknownLevelNote:
+                'These `levels` keys are not levels of this model, so they changed nothing. '
+                + 'get_export on the family\'s ZERO_EFFECTIVE_*_LEVELS shows the real names.',
+            }
+          : {}),
         steps: plan.steps.map(step => ({
           step: step.step, name: step.name, level: step.level, cost: step.cost, roi: step.roi,
         })),
@@ -2585,11 +2680,12 @@ export const TOOLS = {
       properties: {
         filter: {
           type: 'string',
-          description: 'Substring matched against id, title, concept or sheet name (e.g. "spotlight", "DVT_UW_STAT")',
+          description: 'Substring matched against id, title, function name, module, concept or sheet name (e.g. "spotlight", "DVT_UW_STAT")',
         },
+        offset: { type: 'number', description: 'Where to start, to read on past a truncated answer (default 0).' },
         limit: {
           type: 'number',
-          description: 'How many to return (default 60, max 100). Narrow with `filter` instead of raising this.',
+          description: 'How many to return (default 60, max 100). Narrow with `filter` before paging.',
         },
       },
     },
@@ -2603,29 +2699,45 @@ export const TOOLS = {
      *
      * `total` and `matched` were already reported, so the caller can still see the true size of
      * what they asked for; what was missing was any bound on what came back.
+     *
+     * Paged, because a bound with no way past it hid most of the registry: with a hundred at most
+     * and no `offset`, the calculators after the hundredth could only be reached by guessing a
+     * filter that happened to name them. `limit: 0` read as "none", where every other list here
+     * reads it as "the default".
      */
-    run: ({ filter, limit }) => {
+    run: ({ filter, offset, limit }) => {
       const found = sdk.calculators.listCalculators(filter)
-      const shown = found.slice(0, sampleSize(limit, 60, 100))
+      const page = pageOf(found, { offset, limit }, { fallback: 60, ceiling: 100 })
+      /*
+       * Cut by size as well as by count: a hundred rows came to 27 KB. The generated tier says
+       * the same sentence in every `because`, so it is said once, in `generatedNote`.
+       */
+      const rows = fitRows(page.items.map(c => ({
+        id: c.id,
+        title: c.title,
+        ...(c.tier === 'generated' ? { tier: 'generated' } : { because: c.because }),
+        params: c.params.map(p => `${p.name}${p.optional ? '?' : ''}: ${p.kind}`),
+        returns: c.returns.unit ?? c.returns.kind,
+        sheet: c.sheet,
+      })), { atLeastOne: true })
+      const next = page.offset + rows.length
 
       return {
         total: sdk.calculators.CALCULATORS.length,
         matched: found.length,
-        shown: shown.length,
-        ...(shown.length < found.length
+        offset: page.offset,
+        shown: rows.length,
+        ...(next < found.length
           ? {
               truncated: true,
-              hint: `${found.length - shown.length} more match. Narrow with \`filter\`.`,
+              next,
+              hint: `${found.length - next} more match. Narrow with \`filter\`, or pass \`offset: ${next}\`.`,
             }
           : {}),
-        calculators: shown.map(c => ({
-          id: c.id,
-          title: c.title,
-          because: c.because,
-          params: c.params.map(p => `${p.name}${p.optional ? '?' : ''}: ${p.kind}`),
-          returns: c.returns.unit ?? c.returns.kind,
-          sheet: c.sheet,
-        })),
+        ...(rows.some(row => row.tier === 'generated')
+          ? { generatedNote: 'tier "generated": the signature is derived from the source and is accurate; why the function matters is not yet written. calc_describe has the parameters in full.' }
+          : {}),
+        calculators: rows,
       }
     },
   },
@@ -2683,6 +2795,7 @@ export const TOOLS = {
   },
 
   calc_run: {
+    checksOwnArguments: true,
     description:
       'Run a declared calculator on real arguments and get the value the shipped function returns. '
       + 'Refuses an unknown handle, a missing parameter or a wrong type rather than returning a '
@@ -2744,10 +2857,27 @@ export const TOOLS = {
          * Awaited. The wiki handles are async, and their result went out as an unresolved
          * Promise -- which serialises to `{}`, an answer that looks like an empty page.
          */
-        if (result && typeof result.value?.then === 'function') {
-          return { ...result, value: await result.value }
+        const settled = result && typeof result.value?.then === 'function'
+          ? { ...result, value: await result.value }
+          : result
+        /*
+         * Bounded like every other answer. A calculator that returns a table returned all of it:
+         * `workshop.statDefinitions` came to 2.3 MB and `data.getSharedToolLabs` to 380 KB, from a
+         * tool whose usual answer is one number. A value that fits is sent whole and unchanged.
+         */
+        const size = sizeOf(settled?.value)
+        if (size > PREVIEW_CHARS) {
+          const { value, ...rest } = settled
+          return {
+            ...rest,
+            valueTooLarge: true,
+            valueChars: Number.isFinite(size) ? size : null,
+            valuePreview: preview(value),
+            hint: 'The value is too large to send whole, so this is a preview of it. Pass arguments '
+              + 'that narrow it, or read the table it comes from with find_rows.',
+          }
         }
-        return result
+        return settled
       } catch (error) {
         // The message names the parameter and lists the ones it takes, which is
         // the difference between a fixable call and a plausible wrong answer.
@@ -2758,6 +2888,25 @@ export const TOOLS = {
         // sentence in the error points at something that does not exist here.
         const message = String(error?.message ?? error)
           .replace(/call listCalculators\(\)/, 'call the calc_list tool (with a `filter`)')
+        const spec = sdk.calculators.calculatorSpec(id)
+        if (!spec) {
+          // The same slip `calc_describe` answers with the nearest handles.
+          const near = nearestNames(String(id), sdk.calculators.CALCULATOR_IDS, 10)
+          return { error: message, ...(near.length > 0 ? { didYouMean: near } : {}) }
+        }
+        /*
+         * The library's own refusals name the parameter. Anything else is the function itself
+         * failing on what it was given -- "Cannot read properties of undefined (reading
+         * 'cannon')" -- which says nothing a caller can act on unless it is told that the shape
+         * of an object argument is the likely cause and where that shape is written down.
+         */
+        if (!(error instanceof sdk.calculators.CalculatorError)) {
+          return {
+            error: `${id} could not run on these arguments: ${message}`,
+            hint: 'The function threw on what it was given, usually an object argument without the fields it reads. calc_describe lists each parameter and its fields.',
+            params: spec.params.map(param => `${param.name}${param.optional ? '?' : ''}: ${param.kind}`),
+          }
+        }
         return { error: message }
       }
     },
@@ -2809,23 +2958,49 @@ export const TOOLS = {
       properties: {
         concept: {
           type: 'string',
-          description: 'Narrow to one concept, e.g. "damage.effective" — omit for the whole graph',
+          description: 'Narrow to one concept, e.g. "damage.effective" — omit for the outline of the graph',
         },
+        filter: { type: 'string', description: 'With no `concept`: keep the concept names containing this text, e.g. "lab."' },
+        offset: { type: 'number', description: 'With no `concept`: where to start in the list of concept names (default 0).' },
+        limit: { type: 'number', description: 'With no `concept`: how many concept names to return (default 150, max 300).' },
       },
     },
-    run: ({ concept }) => {
+    /*
+     * An outline, then one concept.
+     *
+     * With no argument this listed every concept name -- 1,533 of them, 52 KB -- and a mistyped
+     * concept listed them all again inside the error. The names are paged and filterable now, and
+     * a wrong name is answered with the nearest real ones.
+     */
+    run: ({ concept, filter, offset, limit }) => {
       const graph = sdk.calculators.calculatorGraph()
+      const names = graph.concepts.map(c => c.name)
       if (!concept) {
+        const wanted = typeof filter === 'string' && filter.trim()
+          ? names.filter(name => name.toLowerCase().includes(filter.trim().toLowerCase()))
+          : names
+        const page = pageOf(wanted, { offset, limit }, { fallback: 150, ceiling: 300 })
         return {
           nodes: graph.nodes.length,
           edges: graph.edges.length,
-          concepts: graph.concepts.map(c => c.name),
+          conceptCount: names.length,
+          matched: wanted.length,
+          offset: page.offset,
+          ...(page.truncated
+            ? { truncated: true, next: page.next, hint: `Pass \`offset: ${page.next}\` for more names, or a \`filter\` such as "lab.".` }
+            : {}),
+          concepts: page.items,
           calls: graph.edges.filter(e => e.kind === 'calls'),
         }
       }
       const entry = graph.concepts.find(c => c.name === concept)
       if (!entry) {
-        return { error: `no concept "${concept}"`, concepts: graph.concepts.map(c => c.name) }
+        const near = nearestNames(String(concept), names, 10)
+        return {
+          error: `no concept "${String(concept).slice(0, 80)}"`,
+          hint: 'Call calc_graph with a `filter` to list concept names.',
+          ...(near.length > 0 ? { didYouMean: near } : {}),
+        }
       }
       return {
         concept,
@@ -2875,12 +3050,23 @@ export const TOOLS = {
           ...(!full && body.length > 600 ? { bodyLength: body.length } : {}),
         }
       }
-      const answer = (asked, notes) => ({
+      /*
+       * One question per call, and the answer says which one it took. Given two, the first in
+       * this order won and the other vanished: `{ query, recent }` searched and ignored `recent`.
+       */
+      const given = Object.entries({ introduced, query, version, range: from || to, recent })
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([name]) => (name === 'range' ? 'from/to' : name))
+      const unused = given.length > 1
+        ? { answered: given[0], notUsed: given.slice(1), note: `Only \`${given[0]}\` was answered; ask the others in separate calls.` }
+        : {}
+      const answer = (asked, notes, shown = count) => ({
         ...asked,
+        ...unused,
         matched: notes.length,
-        returned: Math.min(notes.length, count),
-        ...(notes.length > count ? { truncated: true, hint: 'Raise `limit` (at most 25) or narrow the question.' } : {}),
-        notes: notes.slice(0, count).map(shape),
+        returned: Math.min(notes.length, shown),
+        ...(notes.length > shown ? { truncated: true, hint: 'Raise `limit` (at most 25) or narrow the question.' } : {}),
+        notes: notes.slice(0, shown).map(shape),
         source: k.PATCH_NOTES_SOURCE,
       })
 
@@ -2888,6 +3074,7 @@ export const TOOLS = {
         const first = k.whenIntroduced(introduced)
         return {
           introduced,
+          ...unused,
           found: Boolean(first),
           ...(first
             ? { note: shape(first) }
@@ -2915,10 +3102,20 @@ export const TOOLS = {
         if (Number.isNaN(new Date(from).getTime()) || Number.isNaN(new Date(to).getTime())) {
           return { error: `could not read "${from}" … "${to}" as dates; use ISO, e.g. 2024-10-01` }
         }
+        if (new Date(from).getTime() > new Date(to).getTime()) {
+          return { error: `\`from\` (${from}) is after \`to\` (${to}), so no note can fall between them; swap them.` }
+        }
         return answer({ from, to }, k.patchNotesBetween(from, to))
       }
       if (recent !== undefined && recent !== null) {
-        return answer({ recent: Math.max(1, sampleSize(recent, 5, 25)) }, k.recentPatchNotes(Math.max(1, sampleSize(recent, 5, 25))))
+        /*
+         * `recent` is itself a count. It was then cut to `limit`, whose default is 5, so asking
+         * for the last 20 returned 5 and called the rest truncated. Without a `limit` of its own,
+         * the number asked for is the number returned.
+         */
+        const wanted = Math.max(1, sampleSize(recent, 5, 25))
+        const shown = typeof limit === 'number' && Number.isFinite(limit) ? count : wanted
+        return answer({ recent: wanted }, k.recentPatchNotes(wanted), shown)
       }
 
       const versions = k.patchNoteVersions()
@@ -2952,14 +3149,15 @@ export const TOOLS = {
       },
     },
     run: async ({ path: savePath, kind, detail, offset, limit }) => {
-      const loaded = await readSaveOrExplain(savePath)
-      if (loaded.error) return loaded
-      const { parsedRoot } = loaded
-
+      // Asked first: a wrong `kind` is the caller's slip whether or not a save can be found.
       const wanted = kind ?? 'all'
       if (!['all', 'farming', 'tournament'].includes(wanted)) {
         return { error: `no kind "${kind}"`, kinds: ['all', 'farming', 'tournament'] }
       }
+      const loaded = await readSaveOrExplain(savePath)
+      if (loaded.error) return loaded
+      const { parsedRoot } = loaded
+
       const all = sdk.save.listImportableBattleRuns(parsedRoot)
       const runs = wanted === 'all'
         ? all
@@ -2991,6 +3189,19 @@ export const TOOLS = {
         { offset, limit },
         { fallback: 10, ceiling: 50 },
       )
+      /*
+       * A page is a count of runs, and with `detail` each run is every field the game recorded:
+       * thirty of them came to 41 KB. The page stops where the size budget does, and `next` says
+       * where to carry on.
+       */
+      const fitted = fitRows(shown.items, { atLeastOne: true })
+      const sizeLimited = fitted.length < shown.items.length
+      if (sizeLimited) {
+        shown.items = fitted
+        shown.returned = fitted.length
+        shown.truncated = true
+        shown.next = shown.offset + fitted.length
+      }
 
       const usable = reports.filter(Boolean)
       return {
@@ -3003,6 +3214,7 @@ export const TOOLS = {
         offset: shown.offset,
         returned: shown.returned,
         ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
+        ...(sizeLimited ? { sizeLimited: true, hint: `Runs are large with \`detail\`, so this page stopped at ${fitted.length}. Pass \`offset: ${shown.next}\` for the next.` } : {}),
         items: shown.items,
         ...(all.length === 0 ? { note: 'this save has no battle history' } : {}),
       }
@@ -3010,6 +3222,7 @@ export const TOOLS = {
   },
 
   next_unlocks: {
+    checksOwnArguments: true,
     description:
       'What the account can open next and what each costs, beside the balance that pays for it: '
       + 'the next "Unlock…" button on each workshop tab (coins), the next ultimate weapon and '
@@ -3112,6 +3325,7 @@ export const TOOLS = {
   },
 
   coin_bonus: {
+    checksOwnArguments: true,
     description:
       'The Battle tab\'s Total Coin Bonus, row by row as the All Coins Bonuses panel shows it, '
       + 'from a save: at the tier it has selected, or at `tier`. `overrides` asks a what-if '

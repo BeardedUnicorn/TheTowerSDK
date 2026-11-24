@@ -28,6 +28,35 @@
 
 const PREVIEW_LIMIT = 12
 
+/**
+ * How many characters of values a sample may carry: the figure the server's other previews use.
+ *
+ * Twelve rows is not a size. Twelve labs, each with its whole level ladder, came to 21 KB.
+ */
+const PREVIEW_CHARS = 12_000
+
+const sizeOf = (value) => {
+  try {
+    return (JSON.stringify(value) ?? 'null').length
+  }
+  catch {
+    return Number.POSITIVE_INFINITY
+  }
+}
+
+/** The leading entries that fit the budget, always at least described by `truncated`. */
+function fitting(entries) {
+  const kept = []
+  let spent = 0
+  for (const entry of entries) {
+    const cost = sizeOf(entry) + 1
+    if (spent + cost > PREVIEW_CHARS) break
+    kept.push(entry)
+    spent += cost
+  }
+  return kept
+}
+
 /** Describe a value without printing a 226-entry catalog into the transcript. */
 function preview(value, limit = PREVIEW_LIMIT) {
   if (value === null || value === undefined) return { type: String(value), value: null }
@@ -35,20 +64,26 @@ function preview(value, limit = PREVIEW_LIMIT) {
     return { type: 'function', name: value.name || '(anonymous)', arity: value.length }
   }
   if (Array.isArray(value)) {
+    const wanted = value.slice(0, limit)
+    const sample = fitting(wanted)
     return {
       type: 'array',
       length: value.length,
-      sample: value.slice(0, limit),
-      truncated: value.length > limit,
+      sample,
+      truncated: value.length > sample.length,
+      ...(sample.length < wanted.length ? { sizeLimited: true } : {}),
     }
   }
   if (typeof value === 'object') {
     const keys = Object.keys(value)
+    const wanted = keys.slice(0, limit).map(key => [key, value[key]])
+    const sample = fitting(wanted)
     return {
       type: 'object',
       keys: keys.length,
-      sample: Object.fromEntries(keys.slice(0, limit).map(key => [key, value[key]])),
-      truncated: keys.length > limit,
+      sample: Object.fromEntries(sample),
+      truncated: keys.length > sample.length,
+      ...(sample.length < wanted.length ? { sizeLimited: true } : {}),
     }
   }
   return { type: typeof value, value }
@@ -155,13 +190,22 @@ function createScratchpadRun({ loadSdk, readSave }) {
         }
       }
       if (typeof value === 'string') {
+        /*
+         * Text with no digit in it is not a number in any notation. The parser answers 0 for it,
+         * and "abc" reading as 0 is a value where there should be a refusal.
+         */
+        if (!/\d/.test(value)) {
+          note(`"${value}" has no digits, so it was not read as a number`)
+          return { input: value, parsed: null, recognised: false }
+        }
         return { input: value, parsed: formatting.parseNumberInput(value) }
       }
       throw new Error('format mode needs a `value`: a number to write, or a string to read.')
     },
 
     async decode({ savePath }) {
-      if (!savePath) throw new Error('decode mode needs a `savePath`.')
+      // The server's reader finds the game's own export when no path is given, as decode_save does.
+      if (!savePath && !readSave) throw new Error('decode mode needs a `savePath`.')
       const node = loadSdk('node')
       const save = loadSdk('save')
 

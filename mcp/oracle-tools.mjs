@@ -125,6 +125,26 @@ function missSuggestions(query) {
 }
 
 /**
+ * The entity a plain name means, or null when nothing matches it well enough to say so.
+ *
+ * The tools that take "an id or a plain name" took the best-scoring node whatever its score. A
+ * single letter scores a few points against whichever node mentions it most, so
+ * `oracle_brief({ mechanic: "a" })` answered `found: true` with a brief about the patch notes
+ * archive. A name is taken to mean a node when it is that node's name (the score the library
+ * calls exact), or when it is a strong match that no other node equals. A letter is a strong
+ * match for dozens of nodes at once, which is the opposite of naming one; those are returned as
+ * suggestions.
+ */
+const EXACT_MATCH = 900
+const STRONG_MATCH = 100
+function confidentMatch(query) {
+  const [top, second] = missSuggestions(query)
+  if (!top) return null
+  if (top.score >= EXACT_MATCH) return top.id
+  return top.score >= STRONG_MATCH && (!second || second.score < top.score) ? top.id : null
+}
+
+/**
  * The traps for the mechanic `oracle_footguns` was filtered to.
  *
  * It passed the caller's words straight to `trapsFor`, which takes an entity id. A plain name --
@@ -134,12 +154,14 @@ function missSuggestions(query) {
 function footgunsFor(mechanic, trapsFor) {
   if (!mechanic) return {}
   const direct = knowledge().knowledgeFor(mechanic)
-  const resolved = direct ? mechanic : (missSuggestions(mechanic)[0]?.id ?? null)
+  const resolved = direct ? mechanic : confidentMatch(mechanic)
   if (!resolved) {
+    const near = missSuggestions(mechanic)
     return {
       mechanic,
       trapsForMechanic: [],
       mechanicNote: 'No documented entity matches that. Undocumented is not the same as safe.',
+      ...(near.length > 0 ? { didYouMean: near } : {}),
     }
   }
   return { mechanic, resolvedTo: resolved, matchedExactly: Boolean(direct), trapsForMechanic: trapsFor(resolved) }
@@ -167,12 +189,14 @@ export const TOWER_ORACLE_TOOLS = {
     run: ({ id }) => {
       const { knowledgeFor, trapsFor } = knowledge()
       const direct = knowledgeFor(id)
-      const resolved = direct ? id : (missSuggestions(id)[0]?.id ?? null)
+      const resolved = direct ? id : confidentMatch(id)
       if (!resolved) {
+        const near = missSuggestions(id)
         return {
           found: false,
           query: id,
           traps: [],
+          ...(near.length > 0 ? { didYouMean: near } : {}),
           warning:
             'tower-oracle has no entry for this. That means UNDOCUMENTED, not SAFE — read the '
             + 'wiki via wiki_page and record what you learn with oracle_coverage as your checklist.',
@@ -464,12 +488,14 @@ export const TOWER_ORACLE_TOOLS = {
     run: ({ mechanic }) => {
       const { knowledgeFor, relationsOf } = knowledge()
       const direct = knowledgeFor(mechanic)
-      const rootId = direct ? mechanic : (missSuggestions(mechanic)?.[0]?.id ?? null)
+      const rootId = direct ? mechanic : confidentMatch(mechanic)
 
       if (!rootId) {
+        const near = missSuggestions(mechanic)
         return {
           found: false,
           query: mechanic,
+          ...(near.length > 0 ? { didYouMean: near } : {}),
           guidance:
             'Not documented. Do NOT proceed on assumption — read the wiki via wiki_page, and check '
             + 'oracle_coverage for what is known. An undocumented mechanic is unverified, not simple.',
@@ -633,6 +659,13 @@ export const TOWER_ORACLE_TOOLS = {
       const { GAME_KNOWLEDGE, compartmentMaturity, findContradictions, describeMaturity, allNodes,
         allEdges } = knowledge()
       const when = asOf ?? new Date().toISOString().slice(0, 10)
+      /*
+       * Staleness is measured from this date, so it has to be one. "garbage" was accepted and
+       * every staleness figure in the answer was then a comparison with an invalid date.
+       */
+      if (typeof when !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(when) || Number.isNaN(new Date(when).getTime())) {
+        return { error: `asOf must be an ISO date such as 2026-11-24, and "${String(when).slice(0, 40)}" is not one` }
+      }
       const maturity = compartmentMaturity(when)
 
       /*
