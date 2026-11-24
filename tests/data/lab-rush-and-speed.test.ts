@@ -55,6 +55,27 @@ describe('Gem Rush Efficiency', () => {
     expect(computeLabGems(134.678333)).toBe(807)
   })
 
+  it('prices a lab with under an hour left as the Rush button did', () => {
+    /*
+     * Coins / Wave on 2026-11-24 (v29.2.2, 19 maxed labs), read as it ran down. The old curve gave
+     * 4, 4 and 3: it ran from 0.125 gems at a minute to 7.5 at an hour, where the wiki's points are
+     * 1 and 8. The first and last readings are the ones the two curves disagree on.
+     */
+    const at = (minutes: number, seconds: number) => (minutes * 60 + seconds) / 3600
+    expect(computeLabRushGems(at(42, 48), 19)).toBe(5)
+    expect(computeLabRushGems(at(40, 0), 19)).toBe(4)
+    expect(computeLabRushGems(at(35, 6), 19)).toBe(4)
+  })
+
+  it('lists the wiki\'s prices at its own points: 1 gem under a minute, 8 at an hour', () => {
+    expect(computeLabGems(30 / 3600)).toBe(1)
+    expect(computeLabGems(1 / 60)).toBe(1)
+    expect(computeLabGems(1)).toBe(8)
+    expect(computeLabGems(0)).toBe(0)
+    // A rush of under a minute still costs a gem, whatever the efficiency.
+    expect(computeLabRushGems(30 / 3600, 19)).toBe(1)
+  })
+
   it('prices buildLabProgressRows gems as the Rush button only when the maxed count is given', () => {
     const goldenTower = lab('golden_tower_bonus')
     const modifiers = { labSpeed: 54, labRelic: 3.5, labDiscount: 0, speedUp: 1 }

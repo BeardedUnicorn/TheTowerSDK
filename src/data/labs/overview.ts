@@ -262,7 +262,15 @@ export function computeLabValueAtLevel(lab: ToolLabRecord, level: number): numbe
   return 0
 }
 
-/** The gem curve for `timeHours` of research, before any rounding or Gem Rush Efficiency. */
+/**
+ * The gem curve for `timeHours` of research, before any rounding or Gem Rush Efficiency.
+ *
+ * Straight lines between the wiki's points ("Lab Upgrades", Rushing Labs): 1 gem for under a
+ * minute, 8 at an hour, 163 at a day, 1000 at a week, 3550 at 30 days, 8000 at 90 and 25000 from
+ * 360. Below a day it used to run from 0.125 gems at a minute to 7.5 at an hour, which priced
+ * Coins / Wave with 42m 48s left at 4 gems where v29.2.2 asked 5, and with 35m 6s left at 3
+ * where it asked 4 (19 maxed labs, 2026-11-24). From a day up the two agree.
+ */
 function labRushGemCurve(timeHours: number): number {
   const secs = timeHours * 3600
   return secs > 31104000 ? 25000
@@ -270,9 +278,9 @@ function labRushGemCurve(timeHours: number): number {
       : secs > 2592000 ? (4450 / 5184000) * (secs - 2592000) + 3550
         : secs > 604800 ? (2550 / 1987200) * (secs - 604800) + 1000
           : secs > 86400 ? (837 / 518400) * (secs - 86400) + 163
-            : secs > 3600 ? (155.5 / 82800) * (secs - 3600) + 7.5
-              : secs > 60 ? (7.375 / 3540) * (secs - 60) + 0.125
-                : secs > 1 ? (0.122917 / 59) * (secs - 1) + 0.002083
+            : secs > 3600 ? (155 / 82800) * (secs - 3600) + 8
+              : secs > 60 ? (7 / 3540) * (secs - 60) + 1
+                : secs > 0 ? 1
                   : 0
 }
 
@@ -310,7 +318,8 @@ export function labGemRushEfficiency(maxedLabCount: number): number {
  * `remainingHours` is what the lab screen shows as left on the level. Checked against all five
  * running labs of a v29.2.2 account with 19 maxed labs on 2026-11-24 (674, 324, 627, 832 and 38
  * gems); `computeLabGems` gave 866, 417, 807, 1069 and 49. The game rounds the divided figure, so
- * 806.31 / 1.285 is 627, where rounding the curve up first would give 628.
+ * 806.31 / 1.285 is 627, where rounding the curve up first would give 628. Under an hour, checked
+ * the same day on Coins / Wave as it ran down: 5 gems at 42m 48s, 4 at 40m 0s and at 35m 6s.
  */
 export function computeLabRushGems(remainingHours: number, maxedLabCount: number): number {
   return Math.round(labRushGemCurve(remainingHours) / labGemRushEfficiency(maxedLabCount))
