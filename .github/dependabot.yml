@@ -1,0 +1,18 @@
+# Keeps the actions the workflows use current. npm dependencies are not here: the lockfile is
+# updated by hand, with `pnpm verify` run against it, because a dependency bump that reaches main
+# can change what the next release publishes.
+#
+# The commit prefix is `ci`, which releases nothing. A Dependabot merge must never cut an npm
+# version on its own — see the Releases section of CONTRIBUTING.md.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci
+      include: scope
