@@ -75,7 +75,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/vault`](mechanics/vault/MAP.md) | 4 | Source-qualified v29 Power Vault effect fractions, distinct from legacy identities and costs. |
 | [`src/mechanics/waves`](mechanics/waves/MAP.md) | 20 | Wave scaling and pacing — enemy counts, spawn rates and skips. |
 | [`src/mechanics/waves/reference`](mechanics/waves/reference/MAP.md) | 5 | Earlier public wave formulas, kept as the reference the current ones are checked against. |
-| [`src/mechanics/workshop`](mechanics/workshop/MAP.md) | 11 | Workshop upgrades: their stats, costs and the tables that describe them. |
+| [`src/mechanics/workshop`](mechanics/workshop/MAP.md) | 12 | Workshop upgrades: their stats, costs and the tables that describe them. |
 | [`src/node`](node/MAP.md) | 4 | Decoding playerInfo.dat in Node. |
 | [`src/node/nrbf`](node/nrbf/MAP.md) | 4 | The .NET Binary Format reader, ported to TypeScript. |
 | [`src/save`](save/MAP.md) | 1 | Extractors over a decoded save. |
