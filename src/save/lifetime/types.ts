@@ -61,11 +61,24 @@ export interface LifetimeSaveExtract {
 
 /** Lifetime totals the in-game Lifetime panel does not list, split by source. */
 export interface LifetimeBreakdownSaveExtract {
-  /** Kills by what killed them. */
+  /**
+   * Kills by what killed them, as the game's lifetime counters hold them.
+   *
+   * The game does not keep every one of these counters. Across seven v29.2 runs whose battle
+   * reports credited 491,755 kills to projectiles, `projectiles` stayed at 0, as did
+   * `chainLightning`, `smartMissiles` and `flameBot` against the kills the same reports gave them,
+   * while `orbs`, `thorns` and `droppedLandMines` rose in step with the reports. `deathRay` did not
+   * move either, so a large value there is an old total — not projectile kills under another name.
+   * For a split by source over recent play, sum the runs' `destroyedBy*` fields.
+   */
   killsBySource: Record<string, number | null>
   /** Kills by enemy type. */
   killsByEnemyType: Record<string, number | null>
-  /** Damage dealt by source. */
+  /**
+   * Damage dealt by source, as stored. The save keeps no lifetime damage counter for orbs or
+   * projectiles — only the current run's — so neither appears here; a run's `orbDamage` and
+   * `projectilesDamage` carry them.
+   */
   damageBySource: Record<string, number | null>
   /** Coins earned by source. */
   coinsBySource: Record<string, number | null>
