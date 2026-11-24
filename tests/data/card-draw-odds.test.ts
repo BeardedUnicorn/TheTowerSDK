@@ -43,8 +43,7 @@ describe('milestone-gated cards', () => {
       expect(template?.name, unlock.card).toBe(unlock.name)
       const track = MILESTONE_TIER_DATA.find(row => row.tier === unlock.tier)!.standard.waveRewards
       const reward = track.find(row => row.wave === unlock.wave)?.rewards.join(' ') ?? ''
-      // The track spells Ultimate Crit as "UW Crit".
-      expect(reward, `${unlock.name} at tier ${unlock.tier}`).toMatch(new RegExp(unlock.name === 'Ultimate Crit' ? 'UW Crit' : unlock.name))
+      expect(reward, `${unlock.name} at tier ${unlock.tier}`).toBe(`Card: ${unlock.name}`)
     }
   })
 })

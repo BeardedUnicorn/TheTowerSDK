@@ -1,0 +1,84 @@
+{
+  "gameVersion": "v29.2.2",
+  "build": 1296,
+  "checkedAt": "2026-11-24",
+  "note": "The Milestones screen (Battle tab) of a v29.2.2 account, read tier by tier for both tracks. Each list holds the 23 slots in wave order, as the screen prints them. The tier picker stops at the player's highest tier, 15, so tiers 16-24 are not on it. The screen names a lab group once ('Missiles researches'); from tier 13 it writes 'Unlock research' for one lab or a group (tier 14 wave 60 is four Recharge labs) and 'Unlock new card' for a card. A locked reward opens no detail panel.",
+  "waves": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 2500, 4500],
+  "tiers": [
+    {
+      "tier": 1,
+      "free": ["40 COINS", "10 GEMS", "Unlock Lab", "150 COINS", "15 GEMS", "Unlock Tournament", "Unlock Event", "1.5K COINS", "20 GEMS", "Unlock Tier 2", "Labs Speed", "20 GEMS", "More Round Stats", "25 GEMS", "Presets", "25 GEMS", "30 GEMS", "30 GEMS", "30 GEMS", "5 STONES", "30 GEMS", "Shuriken skin", "T:I Flux"],
+      "premium": ["50 COINS", "10 GEMS", "10 GEMS", "300 COINS", "15 GEMS", "20 GEMS", "600 COINS", "8K COINS", "20 GEMS", "50 GEMS", "2.5K COINS", "25 GEMS", "30K COINS", "25 GEMS", "100K COINS", "30 GEMS", "35 GEMS", "40 GEMS", "40 GEMS", "10 STONES", "40 GEMS", "10 STONES", "15 STONES"]
+    },
+    {
+      "tier": 2,
+      "free": ["250 COINS", "Buy Multiplier", "Range", "Workshop Attack Discount", "Workshop Defense Discount", "Workshop Utility Discount", "20 GEMS", "Interest researches", "Unlock Modules", "Unlock Tier 3", "Unlock Perks", "25 GEMS", "First Perk Choice", "30 GEMS", "Improve Trade-off Perks", "30 GEMS", "Unlock Recovery Package Chance", "Garlic Thorns", "5 STONES", "35 GEMS", "40 GEMS", "10 STONES", "T:II Lumin"],
+      "premium": ["350 COINS", "500 COINS", "25 GEMS", "1K COINS", "30 GEMS", "1K COINS", "30 GEMS", "5K COINS", "25K COINS", "50 GEMS", "100K COINS", "30 GEMS", "200K COINS", "35 GEMS", "3M COINS", "40 GEMS", "5 STONES", "45 GEMS", "10 STONES", "45 GEMS", "50 GEMS", "Donut skin", "20 STONES"]
+    },
+    {
+      "tier": 3,
+      "free": ["Unlock Guilds", "10 GEMS", "Damage / Meter", "10K COINS", "Shockwave Size", "25K COINS", "25 GEMS", "Orbs Speed", "30 GEMS", "Unlock Tier 4", "Second Wind Blast", "Package After Boss", "Death Wave researches", "Double Death Ray", "Spotlight Missiles", "30 GEMS", "35 GEMS", "5 STONES", "35 GEMS", "5 STONES", "40 GEMS", "Yin-Yang skin", "T:III Pulse"],
+      "premium": ["5K COINS", "15 GEMS", "7.5K COINS", "10K COINS", "30 GEMS", "25K COINS", "35 GEMS", "50K COINS", "40 GEMS", "70 GEMS", "300K COINS", "500K COINS", "1M COINS", "2.5M COINS", "5M COINS", "40 GEMS", "45 GEMS", "10 STONES", "50 GEMS", "15 STONES", "60 GEMS", "15 STONES", "20 STONES"]
+    },
+    {
+      "tier": 4,
+      "free": ["50K COINS", "20 GEMS", "Make Good Choices researches", "Unlock Cells", "Auto Pick Perks", "30 GEMS", "Module researches", "Perk Option Quantity", "Unlock Dissonance", "Unlock Tier 5", "Target Priority", "Golden Tower researches", "35 GEMS", "Energy Shield Extra Hit", "40 GEMS", "40 GEMS", "45 GEMS", "5 STONES", "50 GEMS", "5 STONES", "60 GEMS", "Smile skin", "T:IV Harmonic"],
+      "premium": ["100K COINS", "25 GEMS", "150K COINS", "30 GEMS", "200K COINS", "40 GEMS", "250K COINS", "300K COINS", "45 GEMS", "70 GEMS", "1M COINS", "1.5M COINS", "45 GEMS", "8M COINS", "50 GEMS", "10 STONES", "60 GEMS", "10 STONES", "70 GEMS", "10 STONES", "80 GEMS", "15 STONES", "25 STONES"]
+    },
+    {
+      "tier": 5,
+      "free": ["150K COINS", "20 GEMS", "Defense %", "Ban Perks", "500K COINS", "Flame Bot - Cooldown", "Thunder Bot - Cooldown", "Golden Bot - Cooldown", "Amplify Bot - Cooldown", "Unlock Tier 6", "Black Hole researches", "Super Critical researches", "5 STONES", "35 GEMS", "45 GEMS", "Extra Black Hole", "50 GEMS", "5 STONES", "55 GEMS", "10 STONES", "70 GEMS", "20 STONES", "T:V Ether"],
+      "premium": ["300K COINS", "25 GEMS", "500K COINS", "30 GEMS", "750K COINS", "40 GEMS", "1M COINS", "45 GEMS", "2.5M COINS", "80 GEMS", "3M COINS", "5M COINS", "10 STONES", "50 GEMS", "60 GEMS", "14M COINS", "70 GEMS", "10 STONES", "75 GEMS", "15 STONES", "90 GEMS", "Butterfly skin", "25 STONES"]
+    },
+    {
+      "tier": 6,
+      "free": ["Auto Pick Ranking", "20 GEMS", "Land Mines researches", "25 GEMS", "Extra Orb Adjuster", "Bot Bot - Cooldown", "5 STONES", "Extra Extra Orbs", "35 GEMS", "Unlock Tier 7", "Recovery Package researches", "40 GEMS", "5 STONES", "40 GEMS", "45 GEMS", "50 GEMS", "Orbs Boss Hit", "10 STONES", "60 GEMS", "10 STONES", "75 GEMS", "Sheep skin", "T:VI Nova"],
+      "premium": ["600K COINS", "25 GEMS", "900K COINS", "30 GEMS", "1.3M COINS", "2.5M COINS", "10 STONES", "4M COINS", "60 GEMS", "85 GEMS", "7M COINS", "50 GEMS", "10 STONES", "60 GEMS", "10 STONES", "70 GEMS", "20M COINS", "15 STONES", "80 GEMS", "15 STONES", "100 GEMS", "20 STONES", "25 STONES"]
+    },
+    {
+      "tier": 7,
+      "free": ["Light Speed Shots", "25 GEMS", "Missiles researches", "Inner Mine researches", "Swamp researches", "Chain Lightning Shock", "5M COINS", "Spotlight Coin Bonus", "Chrono Field researches", "Unlock Tier 8", "40 GEMS", "45 GEMS", "Unlock Land Mine Stun", "50 GEMS", "5 STONES", "50 GEMS", "10 STONES", "60 GEMS", "10 STONES", "70 GEMS", "10 STONES", "Fried Egg skin", "T:VII Aether"],
+      "premium": ["3M COINS", "30 GEMS", "5M COINS", "30 GEMS", "7M COINS", "10 STONES", "10M COINS", "10 STONES", "15M COINS", "100 GEMS", "50 GEMS", "60 GEMS", "10 STONES", "70 GEMS", "15 STONES", "75 GEMS", "15 STONES", "85 GEMS", "15 STONES", "100 GEMS", "20 STONES", "20 STONES", "25 STONES"]
+    },
+    {
+      "tier": 8,
+      "free": ["Wall Defense researches", "Unmerge Module", "5 STONES", "30 GEMS", "Missile Barrage", "35 GEMS", "10M COINS", "5 STONES", "40 GEMS", "Unlock Tier 9", "45 GEMS", "5 STONES", "50 GEMS", "Super Tower Bonus", "60 GEMS", "10 STONES", "70 GEMS", "10 STONES", "75 GEMS", "10 STONES", "85 GEMS", "25 STONES", "T:VIII Graviton"],
+      "premium": ["6M COINS", "30 GEMS", "5 STONES", "40 GEMS", "12M COINS", "50 GEMS", "20M COINS", "10 STONES", "60 GEMS", "110 GEMS", "50 GEMS", "15 STONES", "60 GEMS", "15 STONES", "75 GEMS", "15 STONES", "85 GEMS", "20 STONES", "100 GEMS", "20 STONES", "110 GEMS", "Mush-mush skin", "30 STONES"]
+    },
+    {
+      "tier": 9,
+      "free": ["Basic Enemy researches", "Fast Enemy researches", "Tank Enemy researches", "Ranged Enemy researches", "Boss Enemy researches", "Protector Enemy researches", "40 GEMS", "70 GEMS", "5 STONES", "Unlock Tier 10", "50 GEMS", "5 STONES", "55 GEMS", "Fast Enemy Speed", "Protector Damage Reduction", "10 STONES", "75 GEMS", "10 STONES", "75 GEMS", "10 STONES", "85 GEMS", "Turtle skin", "T:IX Fusion"],
+      "premium": ["15M COINS", "35 GEMS", "45 GEMS", "10 STONES", "50 GEMS", "3.5M COINS", "50 GEMS", "80 GEMS", "10 STONES", "130 GEMS", "50 GEMS", "10 STONES", "60 GEMS", "15 STONES", "80 GEMS", "15 STONES", "90 GEMS", "20 STONES", "100 GEMS", "20 STONES", "120 GEMS", "25 STONES", "30 STONES"]
+    },
+    {
+      "tier": 10,
+      "free": ["20M COINS", "40 GEMS", "5 STONES", "Module researches", "Bot researches", "5 STONES", "Wall Improvement researches", "60 GEMS", "5 STONES", "Unlock Tier 11", "60 GEMS", "5 STONES", "60 GEMS", "10 STONES", "65 GEMS", "10 STONES", "80 GEMS", "10 STONES", "80 GEMS", "10 STONES", "90 GEMS", "Cheese skin", "T:X Plasma"],
+      "premium": ["40M COINS", "40 GEMS", "10 STONES", "50 GEMS", "60 GEMS", "10 STONES", "65M COINS", "70 GEMS", "10 STONES", "140 GEMS", "60 GEMS", "15 STONES", "70 GEMS", "15 STONES", "85 GEMS", "15 STONES", "100 GEMS", "20 STONES", "115 GEMS", "20 STONES", "130 GEMS", "25 STONES", "30 STONES"]
+    },
+    {
+      "tier": 11,
+      "free": ["Unlock Nuke", "45 GEMS", "5 STONES", "50 GEMS", "5 STONES", "Global Presets", "5 STONES", "60 GEMS", "5 STONES", "Unlock Tier 12", "60 GEMS", "Enemy Level Skip researches", "70 GEMS", "10 STONES", "75 GEMS", "10 STONES", "80 GEMS", "10 STONES", "80 GEMS", "15 STONES", "90 GEMS", "25 STONES", "T:XI Resonance"],
+      "premium": ["100M COINS", "45 GEMS", "10 STONES", "60 GEMS", "10 STONES", "150M COINS", "10 STONES", "80 GEMS", "15 STONES", "150 GEMS", "70 GEMS", "15 STONES", "80 GEMS", "15 STONES", "90 GEMS", "15 STONES", "100 GEMS", "20 STONES", "120 GEMS", "20 STONES", "140 GEMS", "Cat skin", "35 STONES"]
+    },
+    {
+      "tier": 12,
+      "free": ["Wall Invincibility", "45 GEMS", "10 STONES", "50 GEMS", "10 STONES", "Workshop Enhancements", "10 STONES", "90 GEMS", "10 STONES", "Unlock Tier 13", "15 STONES", "70 GEMS", "15 STONES", "90 GEMS", "15 STONES", "100 GEMS", "15 STONES", "100 GEMS", "15 STONES", "100 GEMS", "20 STONES", "Skull skin", "T:XII Chrono"],
+      "premium": ["150M COINS", "45 GEMS", "15 STONES", "60 GEMS", "15 STONES", "300M COINS", "15 STONES", "90 GEMS", "15 STONES", "160 GEMS", "20 STONES", "80 GEMS", "20 STONES", "105 GEMS", "20 STONES", "125 GEMS", "20 STONES", "145 GEMS", "20 STONES", "160 GEMS", "25 STONES", "30 STONES", "40 STONES"]
+    },
+    {
+      "tier": 13,
+      "free": ["Max Rend Armor Multiplier", "50 GEMS", "15 STONES", "60 GEMS", "15 STONES", "300M COINS", "15 STONES", "Unlock research", "15 STONES", "Unlock Tier 14", "20 STONES", "100 GEMS", "20 STONES", "100 GEMS", "20 STONES", "115 GEMS", "20 STONES", "130 GEMS", "20 STONES", "150 GEMS", "25 STONES", "Creepy Clown skin", "T:XIII Hyper"],
+      "premium": ["300M COINS", "50 GEMS", "20 STONES", "60 GEMS", "20 STONES", "600M COINS", "20 STONES", "100 GEMS", "20 STONES", "180 GEMS", "25 STONES", "100 GEMS", "25 STONES", "130 GEMS", "25 STONES", "150 GEMS", "25 STONES", "180 GEMS", "25 STONES", "200 GEMS", "30 STONES", "30 STONES", "45 STONES"]
+    },
+    {
+      "tier": 14,
+      "free": ["1.5B COINS", "Unlock research", "20 STONES", "Unlock research", "Unlock new card", "Unlock research", "20 STONES", "150 GEMS", "20 STONES", "Unlock Tier 15", "30 STONES", "150 GEMS", "30 STONES", "200 GEMS", "30 STONES", "150 GEMS", "30 STONES", "200 GEMS", "30 STONES", "200 GEMS", "40 STONES", "50 STONES", "T:XIV Arcane"],
+      "premium": ["3B COINS", "75 GEMS", "30 STONES", "90 GEMS", "30 STONES", "6B COINS", "30 STONES", "150 GEMS", "30 STONES", "200 GEMS", "40 STONES", "150 GEMS", "40 STONES", "300 GEMS", "40 STONES", "200 GEMS", "40 STONES", "250 GEMS", "40 STONES", "300 GEMS", "50 STONES", "Panda skin", "60 STONES"]
+    },
+    {
+      "tier": 15,
+      "free": ["15B COINS", "100 GEMS", "30 STONES", "120 GEMS", "30 STONES", "30B COINS", "30 STONES", "200 GEMS", "30 STONES", "300 GEMS", "40 STONES", "200 GEMS", "40 STONES", "Unlock Tier 16", "40 STONES", "200 GEMS", "40 STONES", "250 GEMS", "40 STONES", "250 GEMS", "50 STONES", "Tech Tree skin", "T:XV Celestial"],
+      "premium": ["30B COINS", "100 GEMS", "40 STONES", "120 GEMS", "40 STONES", "60B COINS", "40 STONES", "200 GEMS", "40 STONES", "250 GEMS", "50 STONES", "200 GEMS", "50 STONES", "400 GEMS", "50 STONES", "250 GEMS", "50 STONES", "300 GEMS", "50 STONES", "350 GEMS", "70 STONES", "75 STONES", "100 STONES"]
+    }
+  ]
+}
