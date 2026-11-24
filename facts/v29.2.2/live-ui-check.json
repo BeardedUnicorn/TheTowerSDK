@@ -178,6 +178,310 @@
       "shown": "x2.85"
     }
   ],
+  "workshopScreen": {
+    "note": "What the Workshop screen showed beside each upgrade whose number is more than the table value, with the inputs behind it. Lab levels and the 15 active cards (card preset Farm) are from the same 09:18:35Z export; each lab level gives the labValues entry through computeLabValueAtLevel, and cardValues are the five active cards the screen adds. The Coins and Extra Orb cards were active too and the screen does not add them to Coins / Kill Bonus or Orbs. Modules, relics and dissonance are the entries above: the module effects listed there are the substats in effect (the Cannon's save holds six effect ids, of which its level opens three). formula is how the shown number was rebuilt; the Attack Speed order is the only one of the two that fits. Knockback Force is kept apart because its fit needs the dissonant attack boost on a defense stat, which this account (defense boost 1.00) cannot confirm.",
+    "labLevels": {
+      "damage": 40,
+      "attack_speed": 52,
+      "critical_factor": 37,
+      "damage_meter": 38,
+      "super_crit_chance": 2,
+      "super_crit_mult": 3,
+      "health": 38,
+      "defense": 18,
+      "orbs_speed": 20,
+      "land_mine_damage": 2,
+      "shockwave_size": 2,
+      "cash_bonus": 44,
+      "cash_wave": 23,
+      "coins_kill_bonus": 63,
+      "coins_wave": 57,
+      "interest": 8,
+      "range": 28
+    },
+    "labValues": {
+      "damage": 1.8,
+      "attack_speed": 2.04,
+      "critical_factor": 2.11,
+      "damage_meter": 1.76,
+      "super_crit_chance": 0.2,
+      "super_crit_mult": 1.06,
+      "health": 2.14,
+      "defense": 3.6,
+      "orbs_speed": 2,
+      "land_mine_damage": 20,
+      "shockwave_size": 0.1,
+      "cash_bonus": 1.88,
+      "cash_wave": 1.46,
+      "coins_kill_bonus": 2.26,
+      "coins_wave": 2.14,
+      "interest": 1.16,
+      "range": 1.56
+    },
+    "activeCards": [
+      {
+        "slug": "as",
+        "name": "Attack Speed",
+        "level": 7
+      },
+      {
+        "slug": "hp",
+        "name": "Health",
+        "level": 7
+      },
+      {
+        "slug": "coins",
+        "name": "Coins",
+        "level": 7
+      },
+      {
+        "slug": "crit-chance",
+        "name": "Critical Chance",
+        "level": 7
+      },
+      {
+        "slug": "eb",
+        "name": "Enemy Balance",
+        "level": 7
+      },
+      {
+        "slug": "def",
+        "name": "Extra Defense",
+        "level": 7
+      },
+      {
+        "slug": "fort",
+        "name": "Fortress",
+        "level": 7
+      },
+      {
+        "slug": "x-orb",
+        "name": "Extra Orb",
+        "level": 6
+      },
+      {
+        "slug": "pc",
+        "name": "Plasma Cannon",
+        "level": 6
+      },
+      {
+        "slug": "crit-coin",
+        "name": "Critical Coin",
+        "level": 6
+      },
+      {
+        "slug": "ws",
+        "name": "Wave Skip",
+        "level": 6
+      },
+      {
+        "slug": "rpc",
+        "name": "Recovery Package Chance",
+        "level": 6
+      },
+      {
+        "slug": "wa",
+        "name": "Wave Accelerator",
+        "level": 2
+      },
+      {
+        "slug": "zerk",
+        "name": "Berserker",
+        "level": 1
+      },
+      {
+        "slug": "cells",
+        "name": "Cells",
+        "level": 5
+      }
+    ],
+    "cardValues": {
+      "as": 2.15,
+      "hp": 4,
+      "crit-chance": 11,
+      "def": 11,
+      "rpc": 30
+    },
+    "composed": [
+      {
+        "stat": "Damage",
+        "level": 805,
+        "shown": "189.91K",
+        "formula": "table × Damage lab × (1 + TowerDamage relics) × Cannon main stat × dissonant attack boost"
+      },
+      {
+        "stat": "Attack Speed",
+        "level": 99,
+        "shown": "27.87",
+        "formula": "(table × Attack Speed lab × Attack Speed card + Cannon Attack Speed substat) × (1 + AttackSpeed relics)"
+      },
+      {
+        "stat": "Critical Chance",
+        "level": 79,
+        "shown": "91.00%",
+        "formula": "table + Critical Chance card"
+      },
+      {
+        "stat": "Critical Factor",
+        "level": 130,
+        "shown": "x32.96",
+        "formula": "table × Critical Factor lab × (1 + TowerCritFactor relics)"
+      },
+      {
+        "stat": "Range",
+        "level": 79,
+        "shown": "69.50m",
+        "formula": "table × 10"
+      },
+      {
+        "stat": "Damage / Meter",
+        "level": 118,
+        "shown": "x1.0877 / m",
+        "formula": "1 + table × Damage / Meter lab × (1 + DamagePerMeter relics) ÷ 1000"
+      },
+      {
+        "stat": "Multishot Targets",
+        "level": 7,
+        "shown": "10",
+        "formula": "table + Cannon Multishot Targets substat"
+      },
+      {
+        "stat": "Bounce Shot Targets",
+        "level": 7,
+        "shown": "9",
+        "formula": "table + Cannon Bounce Shot Targets substat"
+      },
+      {
+        "stat": "Super Crit Chance",
+        "level": 9,
+        "shown": "2.00%",
+        "formula": "table + Super Crit Chance lab"
+      },
+      {
+        "stat": "Super Crit Mult",
+        "level": 0,
+        "shown": "x1.27",
+        "formula": "table × Super Crit Mult lab"
+      },
+      {
+        "stat": "Health",
+        "level": 1142,
+        "shown": "269.89M",
+        "formula": "table × Health lab × Health card × (1 + TowerHealth relics) × Armor main stat × dissonant defense boost"
+      },
+      {
+        "stat": "Defense Percent",
+        "level": 99,
+        "shown": "68.10%",
+        "formula": "table + Defense lab + DefensePercent relics as points + Armor Defense % substat + Extra Defense card"
+      },
+      {
+        "stat": "Thorns",
+        "level": 99,
+        "shown": "101%",
+        "formula": "table + Thorns relics as points"
+      },
+      {
+        "stat": "Orb Speed",
+        "level": 38,
+        "shown": "8.51",
+        "formula": "(table × 10 + Orb Speed lab) × (1 + OrbSpeed relics)"
+      },
+      {
+        "stat": "Shockwave Size",
+        "level": 35,
+        "shown": "2.55",
+        "formula": "table + Shockwave Size lab + Armor Shockwave Size substat"
+      },
+      {
+        "stat": "Land Mine Damage",
+        "level": 70,
+        "shown": "x8.2",
+        "formula": "(table + Land Mine Damage lab) ÷ 100"
+      },
+      {
+        "stat": "Cash Bonus",
+        "level": 149,
+        "shown": "x5.43",
+        "formula": "table × Cash Bonus lab × (1 + CashBonus relics)"
+      },
+      {
+        "stat": "Cash / Wave",
+        "level": 149,
+        "shown": "870",
+        "formula": "table × Cash / Wave lab"
+      },
+      {
+        "stat": "Coins / Kill Bonus",
+        "level": 149,
+        "shown": "x5.93",
+        "formula": "table × Coins / Kill Bonus lab + Generator Coins / Kill Bonus substat"
+      },
+      {
+        "stat": "Coins / Wave",
+        "level": 149,
+        "shown": "321",
+        "formula": "table × Coins / Wave lab"
+      },
+      {
+        "stat": "Interest / Wave",
+        "level": 99,
+        "shown": "6.89%",
+        "formula": "table × Interest lab"
+      },
+      {
+        "stat": "Free Attack Upgrade",
+        "level": 99,
+        "shown": "53.46%",
+        "formula": "table × (1 + FreeAttackUpgrade relics)"
+      },
+      {
+        "stat": "Free Defense Upgrade",
+        "level": 99,
+        "shown": "59.80%",
+        "formula": "(table + Generator Free Defense Upgrade substat) × (1 + FreeDefenseUpgrade relics)"
+      },
+      {
+        "stat": "Free Utility Upgrade",
+        "level": 99,
+        "shown": "58.65%",
+        "formula": "(table + Generator Free Utility Upgrade substat) × (1 + FreeUtilityUpgrade relics)"
+      },
+      {
+        "stat": "Recovery Amount",
+        "level": 35,
+        "shown": "30.24%",
+        "formula": "table × 100 × (1 + RecoveryAmount relics)"
+      },
+      {
+        "stat": "Package Chance",
+        "level": 60,
+        "shown": "60.00%",
+        "formula": "table × 100 + Recovery Package Chance card"
+      },
+      {
+        "stat": "Enemy Attack Level Skip",
+        "level": 0,
+        "shown": "0.05%",
+        "formula": "table × 100"
+      },
+      {
+        "stat": "Enemy Health Level Skip",
+        "level": 0,
+        "shown": "0.05%",
+        "formula": "table × 100"
+      }
+    ],
+    "unconfirmed": [
+      {
+        "stat": "Knockback Force",
+        "level": 40,
+        "shown": "6.25",
+        "fits": "table × (1 + KnockbackForce relics) × dissonant attack boost",
+        "withoutBoost": "table × (1 + KnockbackForce relics) = 6.20"
+      }
+    ]
+  },
   "ultimateWeapons": [
     {
       "weapon": "Chain Lightning",

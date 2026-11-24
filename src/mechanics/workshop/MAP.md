@@ -13,9 +13,10 @@ Workshop upgrades: their stats, costs and the tables that describe them.
 | `lab-workshop-calculations.ts` | Lab workshop values for research-cost and enemy-stat calculations. | f32Pow, labWorkshopSlotFloat, labWorkshopDivisorS13, labWorkshopMetaSlots (+3 more) |
 | `lab-workshop-constants.ts` | The constants shared by the lab-workshop calculations: | LAB_WORKSHOP_SCALE, LAB_WORKSHOP_MAIN_LOOP_POW_EXP, LAB_WORKSHOP_FALLBACK_DIVISOR_S13, LAB_WORKSHOP_COIN_DISCOUNT_POW_EXP (+7 more) |
 | `overcap.ts` | In-run workshop growth above level 6000 in the 29.1. | WORKSHOP_NORMAL_IN_RUN_CAP, workshopOvercapMultiplier, applyWorkshopOvercapMultiplier |
+| `screen-value.ts` | The number the Workshop screen shows beside each upgrade, built from the parts the SDK already has: | WORKSHOP_SCREEN_FORMULA_BY_STAT, totalRelicBenefitByStat, computeWorkshopScreenValue |
 | `stats.ts` | — | combineWorkshopPreviewStat, shockwaveFrequencyPreview |
 | `table-build.ts` | Builds workshop lab values keyed by research slug. | computeMainWorkshopLabFactor, mergeWorkshopLabLevels, buildWorkshopTableFloats, workshopTableFloatFromBuild |
-| `types.ts` | The types `mechanics/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopDamageTier, WorkshopDamagePreviewInput, CriticalMultiplierPreviewInput, HealthRegenPreviewInput (+12 more) |
+| `types.ts` | The types `mechanics/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopDamageTier, WorkshopDamagePreviewInput, CriticalMultiplierPreviewInput, HealthRegenPreviewInput (+18 more) |
 | `utility-stats.ts` | — | getOutOfRoundAttackSpeedPreview, getOutOfRoundLifestealPreview, getOutOfRoundFreeUpgradeChancePreview, getWorkshopUtilityLevelSkipChance |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)
