@@ -928,6 +928,10 @@ restarted at `0.x`, so a version comparison reports a working bridge as too old.
 There's an MCP server in [`mcp/`](mcp/README.md). Point your agent at it and it can read the real
 API and the real game data instead of guessing at both.
 
+In Claude Desktop, install
+[`thetowersdk.mcpb`](https://github.com/BeardedUnicorn/TheTowerSDK/releases/latest/download/thetowersdk.mcpb)
+from the latest release. It carries the server and the package, so nothing else needs installing.
+
 ```bash
 claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 ```

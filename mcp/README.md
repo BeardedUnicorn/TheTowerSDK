@@ -13,6 +13,19 @@ node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs
 It speaks MCP over stdio, so register it as a stdio server. Working on the package itself,
 `pnpm build` first — the server reads `dist/` — then `pnpm mcp`.
 
+### Claude Desktop
+
+Every release carries `thetowersdk.mcpb`, a Claude Desktop extension holding the server, the built
+package and its one runtime dependency. Download it from
+<https://github.com/BeardedUnicorn/TheTowerSDK/releases/latest/download/thetowersdk.mcpb> and open
+it, or drag it onto Settings → Extensions.
+
+It has one setting, **Tool Export**, the game's `tool_export.json` (`TOWER_TOOL_EXPORT`). On a Mac
+leave it empty: the server finds the export in the game's own folder. The map and ledger tools
+write to `~/Documents/TheTowerSDK/mechanics-map` (`TOWER_MECHANICS_MAP_DIR`).
+
+`pnpm build && pnpm mcpb:build` builds it locally, into `.mcpb-build/`.
+
 By config file:
 
 ```json

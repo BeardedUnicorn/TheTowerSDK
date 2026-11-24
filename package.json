@@ -81,6 +81,7 @@
     "wasm:build": "node wasm/build.mjs",
     "wasm:check": "node wasm/build.mjs --check",
     "wasm:call": "node wasm/run.mjs",
+    "mcpb:build": "node scripts/build-mcpb.mjs",
     "lint:package": "node scripts/audit-package-contents.mjs",
     "epaths:refresh-reference": "node scripts/refresh-effective-paths-reference.mjs"
   },
