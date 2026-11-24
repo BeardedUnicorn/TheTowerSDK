@@ -14,16 +14,15 @@ import { calculatorGraph, calculatorsProducing, calculatorsReading, upstreamOf }
 import { getSharedToolLabs } from '../../../src/data/labs/overview'
 import { buildGuardianDefinitions } from '../../../src/data/guardians/definitions'
 import { BOT_UPGRADES_DATA, normalizeBotStats } from '../../../src/data/bots/data'
-import { isMonorepoCheckout } from '../../../tooling/repo-root'
+import { SCREEN_CALCULATOR_SAMPLES } from '../../helpers/screen-calculator-samples'
 
 /*
- * Monorepo only. The registry and the graph tooling name files by their monorepo path
- * (`packages/sdk/src/...`) and read them from a repo root found by walking up to
- * `scripts/mechanics-trust/`. In the published repository this package is the root, so those
- * reads resolve above the checkout and the whole file fails to collect. Skipping keeps the
- * enforcement here, where the paths mean something.
+ * Every spec names its module relative to the package root (`src/...`), so these checks read the
+ * files from here in any checkout. They were monorepo-only while the registry wrote monorepo paths
+ * (`packages/sdk/src/...`), which in this repository resolved above the checkout — and so the
+ * registry's own checks never ran where the package is developed.
  */
-const MONOREPO = isMonorepoCheckout()
+const PACKAGE_ROOT = path.join(__dirname, '..', '..', '..')
 
 /**
  * The calculator registry, checked against the functions it points at.
@@ -294,6 +293,9 @@ SAMPLES['bot.statMaxLevel'] = {
   args: { stat: botRows[0] },
   moved: { stat: botRows[1] ?? botRows[0] },
 }
+// The numbers the game shows on a screen: one set of samples, shared with the suite that runs
+// them outside the monorepo.
+Object.assign(SAMPLES, SCREEN_CALCULATOR_SAMPLES)
 
 /**
  * Calculators that take nothing.
@@ -321,7 +323,7 @@ const CONSTANT_OVER_REAL_DATA = ['bot.statMinLevel']
 
 
 
-describe.skipIf(!MONOREPO)('the two tiers', () => {
+describe('the two tiers', () => {
   it('keeps the curated set small enough to read, and covers the rest', () => {
     expect(CURATED.length).toBeGreaterThanOrEqual(65)
     expect(GENERATED.length).toBeGreaterThan(800)
@@ -343,7 +345,7 @@ describe.skipIf(!MONOREPO)('the two tiers', () => {
   })
 })
 
-describe.skipIf(!MONOREPO)('the registry is a registry', () => {
+describe('the registry is a registry', () => {
   it('gives every calculator a unique handle and a reason', () => {
     expect(CALCULATORS.length).toBeGreaterThanOrEqual(900)
     expect(new Set(CALCULATORS.map(c => c.id)).size).toBe(CALCULATORS.length)
@@ -362,7 +364,7 @@ describe.skipIf(!MONOREPO)('the registry is a registry', () => {
   })
 
   it('points every declaration at a module that exists and exports the symbol', () => {
-    const root = path.join(__dirname, '..', '..', '..', '..', '..')
+    const root = PACKAGE_ROOT
     for (const spec of CALCULATORS) {
       const absolute = path.join(root, spec.module)
       expect(fs.existsSync(absolute), spec.module).toBe(true)
@@ -379,7 +381,7 @@ describe.skipIf(!MONOREPO)('the registry is a registry', () => {
   })
 })
 
-describe.skipIf(!MONOREPO)('every curated calculator runs', () => {
+describe('every curated calculator runs', () => {
   for (const spec of CURATED) {
     // `epaths.effectiveDamage` needs a whole config; it has its own suites and
     // is exercised there rather than with a token sample here. Saying so beats
@@ -402,7 +404,7 @@ describe.skipIf(!MONOREPO)('every curated calculator runs', () => {
   }
 })
 
-describe.skipIf(!MONOREPO)('every curated calculator moves', () => {
+describe('every curated calculator moves', () => {
   /*
    * The check the whole registry is worth something for.
    *
@@ -463,7 +465,7 @@ describe.skipIf(!MONOREPO)('every curated calculator moves', () => {
   }
 })
 
-describe.skipIf(!MONOREPO)('calling one wrong says so, rather than answering', () => {
+describe('calling one wrong says so, rather than answering', () => {
   it('refuses an unknown handle and points at the list', () => {
     expect(() => runCalculator('lab.durationDay')).toThrow(CalculatorError)
     expect(() => runCalculator('lab.durationDay')).toThrow(/no calculator/)
@@ -567,7 +569,7 @@ describe('an options parameter is held to the fields it declares', () => {
   })
 })
 
-describe.skipIf(!MONOREPO)('the generated tier is reachable', () => {
+describe('the generated tier is reachable', () => {
   it('wires an implementation for every generated handle', () => {
     for (const spec of GENERATED) {
       expect(IMPLEMENTED_CALCULATOR_IDS.includes(spec.id), spec.id).toBe(true)
@@ -615,14 +617,14 @@ describe.skipIf(!MONOREPO)('the generated tier is reachable', () => {
   })
 })
 
-describe.skipIf(!MONOREPO)('the dependency graph', () => {
+describe('the dependency graph', () => {
   it('declares only dependencies the source really has', () => {
     /*
      * VERIFIED, not believed. Each `dependsOn` says the caller's module
      * references the callee's exported symbol. A graph nobody checks drifts
      * into a diagram of what someone once intended.
      */
-    const root = path.join(__dirname, '..', '..', '..', '..', '..')
+    const root = PACKAGE_ROOT
     for (const spec of CURATED) {
       const text = fs.readFileSync(path.join(root, spec.module), 'utf8')
       for (const dependencyId of spec.dependsOn) {
@@ -674,7 +676,7 @@ describe.skipIf(!MONOREPO)('the dependency graph', () => {
   })
 })
 
-describe.skipIf(!MONOREPO)('finding a calculator without knowing its handle', () => {
+describe('finding a calculator without knowing its handle', () => {
   it('matches on id, title, concept and sheet name', () => {
     expect(listCalculators('spotlight').map(c => c.id)).toContain('spotlight.coverage')
     expect(listCalculators('lab.researchDays').map(c => c.id)).toContain('lab.durationDays')

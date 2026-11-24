@@ -958,6 +958,8 @@ Or by config file:
 | `describe_schema` | A table's declared shape, not one guessed from a sample row |
 | `decode_save` · `run_extractor` · `read_save_field` | What is in a `tool_export.json`, one reader's fields, and one field's data a page at a time |
 | `battle_history` | Every run in a save's history, with coins per hour and an average |
+| `next_unlocks` | The next workshop unlock, ultimate weapon and ultimate weapon plus, and each running lab's rush price, beside the balance that pays for each |
+| `coin_bonus` | The Battle tab's Total Coin Bonus row by row, at any tier, and what a change to one input does to it |
 | `define_term` | What an acronym means, and whether it is ambiguous |
 | `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, see which chart it draws and what feeds it |
 | `chart_rows` | The published rows behind a chart |

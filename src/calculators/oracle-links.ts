@@ -96,6 +96,21 @@ export const CALCULATOR_ORACLE_LINKS: Readonly<Record<string, readonly string[]>
   'guardian.definitions': ['guardian', 'guardian.slot', 'guardian.upgradeTrack'],
   'guardian.statNames': ['guardian', 'guardian.upgradeTrack'],
 
+  // --- numbers the game shows on a screen ----------------------------------
+  'coinBonus.total': ['coinsBonusTotal'],
+  'coinBonus.themesAndSongs': ['theme.unpricedGroups', 'coinsBonusTotal'],
+  'coinBonus.fromSave': ['coinsBonusTotal'],
+  'card.drawOdds': ['card.rarity', 'card.rarityGrouping'],
+  'workshop.screenValue': ['workshop', 'workshop.upgradeTable'],
+  'workshop.relicBenefitByStat': ['relic', 'workshop'],
+  'workshop.nextUnlock': ['workshop'],
+  'uw.nextUnlockStoneCost': ['ultimateWeapon', 'currency'],
+  'uw.nextPlusUnlockStoneCost': ['ultimateWeaponPlus', 'currency'],
+  'lab.rushGems': ['lab.rush'],
+  'lab.gemRushEfficiency': ['lab.rush'],
+  'event.shopPrice': ['eventShop'],
+  'event.relicSet': ['eventShop', 'relic'],
+
   /*
    * The formatting layer has no entries, deliberately.
    *

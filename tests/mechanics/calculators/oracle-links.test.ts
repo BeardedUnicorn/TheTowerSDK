@@ -109,7 +109,10 @@ describe('what the link is for', () => {
     // workshop-level lists) and a run-record helper (`run.firstMeaningfulValue`) left for the
     // platform layer. The dropdowns had oracle links because the game values they list are real;
     // the controls built from them were not the SDK's to register.
-    expect(curated).toHaveLength(75)
-    expect(linked).toBe(48)
+    //
+    // Now 61 of 89: fourteen calculators for numbers the game shows on a screen (`specs-screens`),
+    // thirteen of them linked. `format.gameNumber` is the one left out, as formatting is.
+    expect(curated).toHaveLength(89)
+    expect(linked).toBe(61)
   })
 })

@@ -32,6 +32,7 @@ The checks and generators. Each is a `package.json` script; none is called from 
 | `consumer-vocabulary.mjs` | — | CONSUMER_WORDS |
 | `copy-assets.mjs` | — | — |
 | `emit-knowledge-graph.mjs` | Emit the knowledge graph as portable artifacts. | — |
+| `generate-calculator-specs.mjs` | Declare every exported function the hand-written calculator lists do not, so `calc_run` can call it by name, and fail `pnpm verify` when that list falls behind the source. | — |
 | `generate-glossary.mjs` | Regenerates `src/data/generated/glossary-names.generated.ts` from the catalogs. | GLOSSARY_NAME_ROWS |
 | `ingest-patch-notes.mjs` | Ingest the official patch-notes channel into a local archive. | — |
 | `link-coverage-inventories.mjs` | Regenerate the file-based coverage inventories. | — |

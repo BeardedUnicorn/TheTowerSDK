@@ -17,8 +17,8 @@ import type { CalculatorSpec } from './types'
  * old shape as a valid new one.
  */
 
-const DATA = 'packages/sdk/src/data'
-const MECH = 'packages/sdk/src/mechanics'
+const DATA = 'src/data'
+const MECH = 'src/mechanics'
 
 export const PROGRESS_CALCULATORS: readonly CalculatorSpec[] = [
   {

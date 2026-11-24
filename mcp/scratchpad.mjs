@@ -150,6 +150,8 @@ function createScratchpadRun({ loadSdk, readSave }) {
           input: value,
           display: formatting.formatNumberForDisplay(value),
           grouped: formatting.formatGroupedNumber(value),
+          // What the game prints: cut to two decimals and kept, 12.22M where `display` says 12.228M.
+          game: formatting.formatGameNumber(value),
         }
       }
       if (typeof value === 'string') {

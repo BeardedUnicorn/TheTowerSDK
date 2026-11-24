@@ -111,7 +111,7 @@ export interface ToolEntry {
  * one wins by default.
  */
 const REVIEWED = new Set([
-  'battle_history', 'begin_mechanic_task', 'calc_chart', 'calc_describe',
+  'battle_history', 'begin_mechanic_task', 'calc_chart', 'calc_describe', 'coin_bonus',
   'chart_rows', 'find_rows', 'form_calc', 'patch_notes',
   'calc_graph', 'calc_list', 'calc_run',
   'compliance_contract', 'decode_save', 'define_term',
@@ -119,7 +119,7 @@ const REVIEWED = new Set([
   'ep_graph_render', 'ep_graph_validate', 'eval_formula',
   'get_export', 'input_ranges', 'inspect_tab_ui',
   'list_exports', 'list_lambdas', 'mcp_contract',
-  'mirror_map', 'oracle_brief', 'oracle_contradictions',
+  'mirror_map', 'next_unlocks', 'oracle_brief', 'oracle_contradictions',
   'oracle_coverage', 'oracle_expand', 'oracle_footguns',
   'oracle_get', 'oracle_map', 'oracle_search',
   'oracle_traps', 'plan_effective_path', 'read_ids',

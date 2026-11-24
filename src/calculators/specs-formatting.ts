@@ -30,8 +30,8 @@ import type { CalculatorSpec } from './types'
  * parse-then-format returns what you started with, and nothing returns `NaN`.
  */
 
-const NUM = 'packages/sdk/src/formatting/numbers/compute.ts'
-const DUR = 'packages/sdk/src/formatting/duration/compute.ts'
+const NUM = 'src/formatting/numbers/compute.ts'
+const DUR = 'src/formatting/duration/compute.ts'
 
 export const FORMATTING_CALCULATORS: readonly CalculatorSpec[] = [
   {

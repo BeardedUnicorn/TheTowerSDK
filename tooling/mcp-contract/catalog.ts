@@ -187,6 +187,8 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
   { name: 'get_export', category: 'save', module: 'sdk', guarantees: ['deterministic', 'structured', 'noHallucinatedExports'] },
   { name: 'find_rows', category: 'save', module: 'sdk', guarantees: ['deterministic', 'structured', 'noHallucinatedExports'] },
   { name: 'battle_history', category: 'save', module: 'sdk', guarantees: ['structured'] },
+  { name: 'next_unlocks', category: 'save', module: 'sdk', guarantees: ['structured'] },
+  { name: 'coin_bonus', category: 'save', module: 'sdk', guarantees: ['structured'] },
 
   // wiki
   // calculators -- the canonical formulas, callable by handle. Deterministic

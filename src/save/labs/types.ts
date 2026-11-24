@@ -75,6 +75,13 @@ export interface LabQueueSaveRow {
    * speed-up, and null when that is.
    */
   remainingSecondsWithSpeedUp: number | null
+  /**
+   * Gems the slot's Rush button asks for at the moment of the export: the whole of
+   * `research.remainingSeconds`, since a rush cannot buy part of it, divided by the account's
+   * Gem Rush Efficiency. Null for an idle or finished slot, and when the game's date is missing.
+   * The price falls while the level runs, so it is the export's price, not today's.
+   */
+  rushGems: number | null
 }
 
 export interface LabsSaveExtract {
@@ -100,7 +107,10 @@ export interface LabsSaveExtract {
   hasActiveQueueData?: boolean
   researches: LabResearchSaveRow[]
   researchedCount: number
+  /** Labs researched to their last level — the count Gem Rush Efficiency is built from. */
   maxedCount: number
+  /** The Labs info panel's Gem Rush Efficiency: 1 + 0.015 per maxed lab, 1.285 at 19. */
+  gemRushEfficiency: number
   namedResearchCount: number
   hiddenUnnamedCount: number
   /** Slugs the player starred in game, from the save's `favoriteLabs` indices. */

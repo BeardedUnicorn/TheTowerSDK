@@ -64,6 +64,8 @@
     "lint:organization": "node scripts/check-organization.mjs",
     "map": "node scripts/map-the-repo.mjs",
     "lint:map": "node scripts/map-the-repo.mjs --check",
+    "lint:calculators": "node scripts/generate-calculator-specs.mjs --check",
+    "calculators:generate": "node scripts/generate-calculator-specs.mjs --write",
     "lint:acronyms": "tsx scripts/check-acronym-expansions.ts",
     "test:schema": "vitest run tests/data/schemas.test.ts tests/data/schemas-cover-what-they-claim.test.ts",
     "verify": "node scripts/verify.mjs",

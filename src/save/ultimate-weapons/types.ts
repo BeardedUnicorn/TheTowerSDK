@@ -46,6 +46,22 @@ export interface UltimateWeaponsSaveMeta {
 }
 
 export interface UltimateWeaponsSaveExtract {
+  /** Weapons unlocked, counted from `ultimateWeaponUnlocked`; null when the save has no such list. */
+  ownedCount: number | null
+  /**
+   * Stones for the next weapon, which the game prices by how many are owned rather than by which
+   * one is bought. Null once all nine are owned, or when `ownedCount` is.
+   */
+  nextUnlockStoneCost: number | null
+  /** Whether all nine weapons are owned; pluses can be bought only once they are (wiki, UW+). */
+  allWeaponsOwned: boolean | null
+  /** Pluses unlocked, counted from `ultimateWeaponPlusUnlocked`; null when the save has no such list. */
+  plusOwnedCount: number | null
+  /**
+   * Stones for the next plus, priced by how many are owned. The price only: it does not check
+   * the all-nine gate, which `allWeaponsOwned` reports. Null once all nine are owned.
+   */
+  nextPlusUnlockStoneCost: number | null
   meta: UltimateWeaponsSaveMeta
   slots: UltimateWeaponsSaveSlot[]
   rawWeaponLevels: number[]

@@ -1979,7 +1979,11 @@ export const TOOLS = {
         entry: { type: 'string', description: 'export mode: which entry point (default data)' },
         id: { type: 'string', description: 'calc mode: the calculator id' },
         input: { type: 'object', description: 'calc mode: the values to compute with' },
-        value: { description: 'format mode: a number to write, or a string to read' },
+        value: {
+          description:
+            'format mode: a number to write (as `display`, `grouped` and `game` — the game\'s own '
+            + 'on-screen text, cut to two decimals), or a string to read',
+        },
         savePath: { type: 'string', description: 'decode mode: a tool_export.json or JSON fixture' },
         family: { type: 'string', description: 'Planner family when mode includes planner/vm' },
       },
@@ -3001,6 +3005,206 @@ export const TOOLS = {
         ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
         items: shown.items,
         ...(all.length === 0 ? { note: 'this save has no battle history' } : {}),
+      }
+    },
+  },
+
+  next_unlocks: {
+    description:
+      'What the account can open next and what each costs, beside the balance that pays for it: '
+      + 'the next "Unlock…" button on each workshop tab (coins), the next ultimate weapon and '
+      + 'ultimate weapon plus (stones), and the Rush button on each running lab (gems). Workshop '
+      + 'unlocks are full prices, which the discount labs do not reduce; rush gems are the price '
+      + 'at the moment of the export, and fall while the lab runs. Built from the save readers, '
+      + 'so read_save_field on them gives the same numbers.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
+      },
+    },
+    run: async (input = {}) => {
+      const refused = unreadArguments('next_unlocks', input)
+      if (refused) return refused
+      const loaded = await readSaveOrExplain(input.path)
+      if (loaded.error) return loaded
+      const { parsedRoot, savePath } = loaded
+
+      /* Each reader on its own: one that throws costs its own section, not the answer. */
+      const warnings = []
+      const read = (name) => {
+        try {
+          const result = sdk.save[name](parsedRoot) ?? null
+          for (const warning of result?.warnings ?? []) warnings.push(`${name}: ${warning}`)
+          return result
+        }
+        catch (error) {
+          warnings.push(`${name} threw: ${reasonOf(error)}`)
+          return null
+        }
+      }
+      const exportInfo = read('readExportInfoFromSaveRoot')
+      const balances = read('readCurrenciesFromSaveRoot')?.balances ?? {}
+      const workshop = read('readWorkshopUnlocksFromSaveRoot')
+      const weapons = read('readUltimateWeaponsFromSaveRoot')
+      const labs = read('readLabsFromSaveRoot')
+
+      /* Null, not false, when either side is unknown: "cannot tell" is not "cannot pay". */
+      const affordable = (have, cost) =>
+        typeof have === 'number' && typeof cost === 'number' ? have >= cost : null
+
+      const tabs = ['attack', 'defense', 'utility']
+      return {
+        path: savePath,
+        exportedAt: exportInfo?.exportedAt ?? null,
+        balances: { coins: balances.coins ?? null, stones: balances.stones ?? null, gems: balances.gems ?? null },
+        workshop: workshop
+          ? Object.fromEntries(tabs.map((tab) => {
+              const next = workshop.nextUnlock?.[tab] ?? null
+              return [tab, {
+                unlocked: workshop.upgradeTiersUnlocked?.[tab] ?? null,
+                next: next ? { opens: next.stats, coins: next.coins } : null,
+                affordable: next ? affordable(balances.coins, next.coins) : null,
+              }]
+            }))
+          : null,
+        ultimateWeapon: weapons
+          ? {
+              owned: weapons.ownedCount,
+              stones: weapons.nextUnlockStoneCost,
+              affordable: affordable(balances.stones, weapons.nextUnlockStoneCost),
+            }
+          : null,
+        ultimateWeaponPlus: weapons
+          ? {
+              owned: weapons.plusOwnedCount,
+              stones: weapons.nextPlusUnlockStoneCost,
+              allWeaponsOwned: weapons.allWeaponsOwned,
+              affordable: affordable(balances.stones, weapons.nextPlusUnlockStoneCost),
+              ...(weapons.allWeaponsOwned === false
+                ? { note: 'A plus can be bought only once all nine weapons are owned.' }
+                : {}),
+            }
+          : null,
+        labs: labs
+          ? {
+              gemRushEfficiency: labs.gemRushEfficiency,
+              maxedLabs: labs.maxedCount,
+              running: labs.activeQueue
+                .filter(slot => slot.rushGems !== null)
+                .map(slot => ({
+                  slot: slot.slotIndex,
+                  lab: slot.research?.displayName ?? slot.research?.slug ?? null,
+                  completedLevel: slot.research?.level ?? null,
+                  remainingSeconds: slot.research?.remainingSeconds ?? null,
+                  rushGems: slot.rushGems,
+                  affordable: affordable(balances.gems, slot.rushGems),
+                })),
+            }
+          : null,
+        notes: [
+          'null in `next` or `stones`: nothing left to unlock there.',
+          'A rush buys the whole time left on a level; there is no partial rush.',
+        ],
+        ...(warnings.length > 0 ? { warnings: warnings.slice(0, WARNINGS_SHOWN) } : {}),
+      }
+    },
+  },
+
+  coin_bonus: {
+    description:
+      'The Battle tab\'s Total Coin Bonus, row by row as the All Coins Bonuses panel shows it, '
+      + 'from a save: at the tier it has selected, or at `tier`. `overrides` asks a what-if '
+      + '(equip the Coins card, buy a pack, another Generator) by changing fields of the inputs '
+      + 'the save gave, and returns the new rows beside the old. Every row is a multiplier.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
+        tier: { type: 'number', description: 'The tier to price. Omit it for the tier the save has selected' },
+        overrides: {
+          type: 'object',
+          description:
+            'Fields of the answer\'s `input` to change, merged one level deep: '
+            + '{ "coinsCard": { "equipped": true } } or { "relicCoinBonus": 0.2 }. A field the input '
+            + 'does not have is refused',
+        },
+      },
+    },
+    run: async (input = {}) => {
+      const refused = unreadArguments('coin_bonus', input)
+      if (refused) return refused
+      const { tier, overrides } = input
+      const loaded = await readSaveOrExplain(input.path)
+      if (loaded.error) return loaded
+      const { parsedRoot, savePath } = loaded
+
+      let extract
+      try {
+        extract = sdk.save.readTotalCoinBonusFromSaveRoot(parsedRoot, tier)
+      }
+      catch (error) {
+        return { error: `the Total Coin Bonus could not be priced${tier === undefined ? '' : ` at tier ${tier}`}: ${reasonOf(error)}` }
+      }
+      if (!extract) {
+        return { error: 'this save has none of the inputs the Total Coin Bonus is built from.', path: savePath }
+      }
+      const answer = {
+        path: savePath,
+        tier: extract.input.tier,
+        bonus: extract.bonus,
+        input: extract.input,
+        ...(extract.warnings.length > 0 ? { warnings: extract.warnings.slice(0, WARNINGS_SHOWN) } : {}),
+      }
+      if (overrides === undefined) return answer
+
+      const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value)
+      if (!isRecord(overrides)) {
+        return { error: 'overrides must be an object of input fields, such as { "relicCoinBonus": 0.2 }.' }
+      }
+      /*
+       * Refused by name rather than merged: a misspelt field would be added beside the real one,
+       * the formula would never read it, and the what-if would come back equal to the save.
+       */
+      const merged = { ...extract.input }
+      for (const [key, value] of Object.entries(overrides)) {
+        if (!Object.hasOwn(extract.input, key)) {
+          const known = Object.keys(extract.input)
+          const near = nearestNames(key, known, 3)
+          return {
+            error: `the coin bonus input has no field "${key}". It has: ${known.join(', ')}.`,
+            ...(near.length > 0 ? { didYouMean: near } : {}),
+          }
+        }
+        const base = extract.input[key]
+        if (isRecord(base) && isRecord(value)) {
+          const unknown = Object.keys(value).filter(field => !Object.hasOwn(base, field))
+          if (unknown.length > 0) {
+            return {
+              error: `"${key}" has no field ${unknown.map(field => `"${field}"`).join(', ')}. It has: ${Object.keys(base).join(', ')}.`,
+            }
+          }
+          merged[key] = { ...base, ...value }
+        }
+        else {
+          merged[key] = value
+        }
+      }
+      let whatIf
+      try {
+        whatIf = sdk.mechanics.computeTotalCoinBonus(merged)
+      }
+      catch (error) {
+        return { error: `the what-if could not be priced: ${reasonOf(error)}`, input: merged }
+      }
+      return {
+        ...answer,
+        whatIf: {
+          overrides,
+          input: merged,
+          bonus: whatIf,
+          totalRatio: extract.bonus.total > 0 ? whatIf.total / extract.bonus.total : null,
+        },
       }
     },
   },

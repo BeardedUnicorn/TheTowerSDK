@@ -41,6 +41,7 @@ const PARALLEL = [
   'lint:specifiers',
   'lint:organization',
   'lint:map',
+  'lint:calculators',
   'lint:acronyms',
   'lint:docs',
   'wiki:check',

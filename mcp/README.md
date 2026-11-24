@@ -54,6 +54,8 @@ Claude Code: `claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/
 | `run_extractor` | Run one `read*FromSaveRoot` against a save: every field it returns, small ones in full and large ones as a count and columns, with its warnings. |
 | `read_save_field` | One field of an extractor's result, in full and paged: a dotted `field`, `pick` for columns, `where`/`search`, and a negative `offset` for the newest rows. |
 | `battle_history` | Every run in a save's history, paged, with coins per hour and an average. |
+| `next_unlocks` | What the account can open next and what it costs: each workshop tab's next "Unlock…" button (coins), the next ultimate weapon and ultimate weapon plus (stones), and each running lab's Rush button (gems), beside the balance that pays for it. |
+| `coin_bonus` | The Battle tab's Total Coin Bonus row by row, at the save's tier or any `tier`, and with `overrides` the same rows after a what-if. |
 | `calc_list` · `calc_describe` · `calc_run` | Find a calculator, read its inputs, and run it. |
 | `calc_chart` · `calc_graph` | Which calculators produce a chart's numbers, and which calculators feed which. |
 | `chart_rows` | The published rows behind a chart, paged. |
@@ -87,11 +89,25 @@ a client with a small catalog.
 `docs/mechanics-map/` under the directory the server was started in (override with
 `TOWER_MECHANICS_MAP_DIR`).
 
-`decode_save`, `run_extractor`, `read_save_field` and `battle_history` take the export's `path`, and
+`decode_save`, `run_extractor`, `read_save_field`, `battle_history`, `next_unlocks` and `coin_bonus`
+take the export's `path`, and
 find it themselves when it is left out: the file `TOWER_TOOL_EXPORT` names, or on a Mac the game's
 own container, `~/Library/Containers/<id>/Data/Documents/tool_export.json`. `decode_save` reports
 the path it read. For the current event's shop and its prices, run the
 `readEventShopFromSaveRoot` extractor.
+
+### The game screens, and the call that reaches each
+
+| What the game shows | Ask for it with |
+|---|---|
+| Battle tab → All Coins Bonuses | `coin_bonus`, or `calc_run coinBonus.fromSave` with `savePath` and `args.tier` |
+| Workshop → the next "Unlock…" button | `next_unlocks`, or `read_save_field readWorkshopUnlocksFromSaveRoot field=nextUnlock` |
+| Workshop → "New Ultimate Weapon" price, and the next plus | `next_unlocks`, or `run_extractor readUltimateWeaponsFromSaveRoot` (`nextUnlockStoneCost`, `nextPlusUnlockStoneCost`) |
+| Labs → a running lab's Rush button | `next_unlocks`, or `read_save_field readLabsFromSaveRoot field=activeQueue pick=["research","rushGems"]` |
+| Cards → Card Chances | `run_extractor readCardDrawOddsFromSaveRoot`; a what-if with `calc_run card.drawOdds` |
+| Event shop | `run_extractor readEventShopFromSaveRoot`; one price with `calc_run event.shopPrice` |
+| A Workshop row's number | `calc_run workshop.screenValue`, with the inputs given by hand (a save's module substats include slots not yet opened) |
+| Any amount, as the game writes it | `sdk_sandbox_run mode=format` (`game`), or `calc_run format.gameNumber` |
 
 `calc_run` and `plan_effective_path` take a `savePath` too: a calculator that reads a save gets the
 decoded save, and an economy path is planned from the account's real levels.

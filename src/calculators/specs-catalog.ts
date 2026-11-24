@@ -30,7 +30,7 @@ import type { CalculatorSpec } from './types'
  * point of the registry is that the list is short enough to read.
  */
 
-const DATA = 'packages/sdk/src/data'
+const DATA = 'src/data'
 
 export const CATALOG_CALCULATORS: readonly CalculatorSpec[] = [
   // ----------------------------------------------------------------- bots ---

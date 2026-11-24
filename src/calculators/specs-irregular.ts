@@ -26,16 +26,16 @@ import type { CalculatorSpec } from './types'
  * it is the one place a caller's arguments do NOT match the signature.
  */
 
-const DATA = 'packages/sdk/src/data'
-const MECH = 'packages/sdk/src/mechanics'
-const INT = 'packages/sdk/src/internal'
+const DATA = 'src/data'
+const MECH = 'src/mechanics'
+const INT = 'src/internal'
 
 export const IRREGULAR_CALCULATORS: readonly CalculatorSpec[] = [
   {
     id: 'damage.ability',
     title: 'Damage an ability deals',
     entry: 'mechanics',
-    module: 'packages/sdk/src/mechanics/combat/damage.ts',
+    module: 'src/mechanics/combat/damage.ts',
     symbol: 'abilityDamage',
     because:
       'What an ability hits for, shown wherever an ability is costed against its damage. Takes a '
@@ -185,7 +185,7 @@ export const IRREGULAR_CALCULATORS: readonly CalculatorSpec[] = [
     id: 'run.collectScalarFields',
     title: 'Collect the scalar fields of a stored run',
     entry: 'mechanics',
-    module: 'packages/sdk/src/save/runs/fields.ts',
+    module: 'src/save/runs/fields.ts',
     symbol: 'collectRunScalarFields',
     because: 'The scalar fields of a run, gathered from several partial sources.',
     params: [{

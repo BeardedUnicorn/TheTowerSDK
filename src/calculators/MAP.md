@@ -16,6 +16,7 @@ Calculator specs and the registry over them.
 | `specs-formatting.ts` | — | FORMATTING_CALCULATORS |
 | `specs-irregular.ts` | — | IRREGULAR_CALCULATORS |
 | `specs-progress.ts` | — | PROGRESS_CALCULATORS |
+| `specs-screens.ts` | — | SCREEN_CALCULATORS |
 | `specs.generated.ts` | — | GENERATED_CALCULATORS, GENERATED_IMPLEMENTATIONS |
 | `types.ts` | The shape of a declared calculator. | CalculatorParam, CalculatorParamField, CalculatorSpec, CalculatorEdge (+2 more) |
 

@@ -85,6 +85,13 @@ describe('the MCP scratchpad', () => {
     expect((await sandbox.run({ mode: 'format', value: '4.77T' })).parsed).toBe(4_770_000_000_000)
   })
 
+  it('writes a number as the game prints it, cut rather than rounded', async () => {
+    // 12,228,041 coins showed as 12.22M on the v29.2.2 workshop screen; `display` writes 12.228M.
+    const written = await sandbox.run({ mode: 'format', value: 12_228_041 })
+    expect(written.game).toBe('12.22M')
+    expect(written.display).not.toBe(written.game)
+  })
+
   it('names the modes it has when asked for one it does not', async () => {
     const result = await sandbox.run({ mode: 'definitely-not-a-mode' })
     expect(result.ok).toBe(false)

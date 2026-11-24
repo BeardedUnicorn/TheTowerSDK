@@ -431,6 +431,12 @@ schema in `src/data/schemas.ts` so `pnpm test:schema` validates it. If it introd
 **A new formula** — put it in `src/mechanics/`, export it from `src/mechanics/index.ts`, and say in
 the doc comment whether it is exact or fitted.
 
+**Any new exported function** — run `pnpm calculators:generate`, so `calc_run` can call it by name.
+It rewrites `src/calculators/specs.generated.ts` from the source, and `pnpm lint:calculators`
+(inside `verify`) fails until you do. One worth explaining gets a curated entry in a
+`src/calculators/specs-*.ts` file instead, with a real `because`, invariants and a sample; the
+generator then leaves it out.
+
 **A test for any of it** — three rules, each of which has already caught a real fault here and each
 of which was learned by shipping the opposite:
 

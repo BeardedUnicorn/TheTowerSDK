@@ -7,9 +7,9 @@
 <h1 class="text-3xl font-semibold">MCP &amp; AI</h1>
 <p class="mt-3 text-muted">
 	The package ships an MCP server, so there is nothing extra to install. Register it and your
-	editor's assistant gains forty-three tools: it can run the shipped calculators and get real
-	numbers back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and
-	validate what it produced — rather than writing game maths from memory and hoping.
+	editor's assistant gains forty-five tools: it can run the shipped calculators and get real numbers
+	back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and validate what
+	it produced — rather than writing game maths from memory and hoping.
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Register It</h2>
@@ -41,7 +41,7 @@
 	them, the server is registered.
 </p>
 
-<h2 class="mt-10 text-xl font-semibold">Forty-Three Tools</h2>
+<h2 class="mt-10 text-xl font-semibold">Forty-Five Tools</h2>
 <p class="mt-3 text-muted">
 	Enough that an assistant can compute, run and check its work rather than only look things up. The
 	groups below are what it gets.
@@ -113,6 +113,13 @@
 	</li>
 	<li>
 		<code>battle_history</code> — every run in a save's history, with coins per hour and an average
+	</li>
+	<li>
+		<code>next_unlocks</code> — the next workshop unlock, ultimate weapon and ultimate weapon plus, and
+		the gems to rush each running lab, beside the balance that pays for each
+	</li>
+	<li>
+		<code>coin_bonus</code> — the Battle tab's Total Coin Bonus row by row, at any tier, with a what-if
 	</li>
 	<li>
 		<code>patch_notes</code> — the developers' patch notes: search them, or find when something was first
