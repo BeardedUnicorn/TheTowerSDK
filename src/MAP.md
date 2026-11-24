@@ -55,6 +55,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/battle-conditions`](mechanics/battle-conditions/MAP.md) | 6 | Battle conditions, their counters, and the tournament heat index. |
 | [`src/mechanics/bots`](mechanics/bots/MAP.md) | 20 | The three bots: their upgrades, movement, hit behaviour, and medal planning. |
 | [`src/mechanics/cards`](mechanics/cards/MAP.md) | 3 | Card costs and the lookup from a card to the effect it applies. |
+| [`src/mechanics/coin-bonus`](mechanics/coin-bonus/MAP.md) | 3 | The account-wide coin multiplier, row by row as the game lists it under Total Coin Bonus. |
 | [`src/mechanics/combat`](mechanics/combat/MAP.md) | 29 | What the tower does to enemies — damage, its multipliers, and every on-hit effect. |
 | [`src/mechanics/effective-paths`](mechanics/effective-paths/MAP.md) | 51 | Effective Paths: the cheapest route to a damage, economy or survivability target. |
 | [`src/mechanics/effective-paths/common`](mechanics/effective-paths/common/MAP.md) | 2 | The shapes every path shares — a step, an exclusion, the lab and workshop discounts it prices with. |
@@ -86,6 +87,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/cards`](save/cards/MAP.md) | 3 | What a save says about cards. |
 | [`src/save/catalogs`](save/catalogs/MAP.md) | 11 | The index maps that turn a save’s numbers into named things. |
 | [`src/save/catalogs/vault`](save/catalogs/vault/MAP.md) | 4 | Which save slot each vault node reads, the corrections to that order, and how a mapping is chosen. |
+| [`src/save/coin-bonus`](save/coin-bonus/MAP.md) | 3 | The Total Coin Bonus a save shows on the Battle tab, read row by row. |
 | [`src/save/currencies`](save/currencies/MAP.md) | 3 | The currencies a player holds, and this cycle's earning and spending. |
 | [`src/save/current-run`](save/current-run/MAP.md) | 3 | Saved current-run upgrade arrays and position, distinct from purchased workshop. |
 | [`src/save/dissonance`](save/dissonance/MAP.md) | 3 | What a save says about dissonance. |
