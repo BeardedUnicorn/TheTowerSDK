@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2026-11-24)
+
+
+### Features
+
+* **mcp:** find tool_export.json on a Mac when no path is given ([84e89a8](https://github.com/BeardedUnicorn/TheTowerSDK/commit/84e89a8c7b2a4ff6f4e3c8066c436e152b327ed0))
+* **save:** give the event shop's real prices and resolve an event named after its theme ([ce56c66](https://github.com/BeardedUnicorn/TheTowerSDK/commit/ce56c66c4100bfe5a35aec22ab8bfec3d5f89a34))
+
 ## 1.1.0 (2026-11-23)
 
 
