@@ -15,23 +15,37 @@ name: github-pages
 #   Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 #   Until that is set, this workflow runs green and publishes nothing.
 
+# Runs after every release, and on demand. Not on push.
+#
+# The site prints the SDK's version and is built from the SDK in this checkout, so it has to be
+# built from the release tag. Building on push did two wrong things at once: it built the commit
+# *before* the `chore(release): … [skip ci]` commit that bumps the version, so the site always
+# advertised the previous release; and it shipped every unreleased change to `src/`, so between
+# releases the site described code that was not on npm.
+#
+# `release.yml` calls this with the tag it just created. It is not triggered by `on: release`: a
+# release made with the Actions token does not fire that event in another workflow, and a
+# release-triggered run would be on the tag's ref, which the `github-pages` environment's
+# deployment rule (default branch only) rejects. Every run stays on `main`; only the checkout
+# moves to the tag.
+#
+# A site-only commit (`docs(site): …`) does not release, so it reaches Pages with the next
+# release — or sooner by running this by hand with `tag` set to `main`. Left empty, a manual run
+# rebuilds the latest release.
 on:
-  push:
-    branches: [main]
-    # Examples and catalog pages consume the SDK in this checkout.
-    paths:
-      - 'site/**'
-      - 'src/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'scripts/copy-assets.mjs'
-      - '.github/workflows/pages.yml'
+  workflow_call:
+    inputs:
+      tag:
+        description: The release tag to build the site from.
+        required: true
+        type: string
   workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+    inputs:
+      tag:
+        description: Tag or branch to build. Empty builds the latest release; `main` ships unreleased site changes.
+        required: false
+        type: string
+        default: ''
 
 concurrency:
   group: pages
@@ -44,14 +58,33 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
+      # Runs before checkout, so there is no `site/` to stand in yet.
+      - name: Pick the ref to build
+        id: ref
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if [ -z "$TAG" ]; then
+            TAG=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)
+          fi
+          echo "Building the site from $TAG"
+          echo "ref=$TAG" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
       # Installs the pnpm version pinned by `packageManager` in the root package.json. An
       # action's inputs are resolved against the repository root, not `working-directory`.
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          # The release job's version. The site is prerendered by running the SDK, so the
+          # runtime that builds it is the runtime whose numbers end up in the HTML.
+          node-version: 24
           cache: pnpm
           # Two projects, two lockfiles: the SDK at the root and the site in `site/`.
           cache-dependency-path: |
@@ -77,6 +110,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

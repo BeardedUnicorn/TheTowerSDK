@@ -1,9 +1,26 @@
 name: CI
 
+# Every check a change has to pass, in one place: on each pull request, and — called by
+# `release.yml` — on every push to main, where it gates the release. It does not also run on push
+# itself; that would run the whole suite twice for each commit to main.
+#
+# Beside the package checks it builds the three things that otherwise only get built after npm
+# has published: the documentation site, the WASM module and the Claude Desktop extension. A
+# failure in any of them after a publish would leave a release with a broken site or a missing
+# asset, and a published version cannot be taken back.
 on:
-  push:
-    branches: [main]
   pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+# A new push to a pull request supersedes the run already going. Runs on main are never cancelled:
+# the release waits on them. The `ci-` prefix is literal because in a called workflow
+# `github.workflow` is the caller's name.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   check:
@@ -37,3 +54,70 @@ jobs:
             echo "package.json references a workspace or private dependency"
             exit 1
           fi
+
+  # The same build `pages.yml` deploys, so a change that breaks the site fails here and not after
+  # the release it shipped in. The site has its own toolchain, which `pnpm verify` skips.
+  site:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            site/pnpm-lock.yaml
+      - name: Install SDK dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: .
+      # The site depends on the SDK as `link:..`, so it reads this build.
+      - name: Build the SDK used by the site
+        run: pnpm build
+        working-directory: .
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm lint
+      - run: pnpm build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+
+  # The parity suite from `wasm.yml`, run before the release rather than after it. Repeated here
+  # rather than called: `wasm.yml` needs `contents: write` to attach the module, and a pull request
+  # can only grant `read`.
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm wasm:build
+      - run: pnpm exec vitest run wasm/
+
+  # Packs, validates and starts the Claude Desktop extension. The bundle is kept as an artifact,
+  # so a pull request's version can be installed and tried before it is released.
+  mcpb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm mcpb:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: thetowersdk-mcpb
+          path: .mcpb-build/thetowersdk.mcpb

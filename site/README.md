@@ -37,7 +37,9 @@ pnpm serve:status   # confirm mode=hmr on 4173
 ```
 
 The site links to the SDK in its parent directory. Rebuild the SDK after changing its source;
-the site and GitHub Pages then use that checkout's catalogs and exports.
+the site then uses that checkout's catalogs and exports. GitHub Pages is built the same way, from
+the checkout of the release tag, so the published site always matches the published package. It
+deploys with each release (`.github/workflows/pages.yml`), not on push.
 
 Open **http://127.0.0.1:4173/** — edits hot-reload. **Do not restart** the server unless `serve:status` says `DOWN`.
 
@@ -48,7 +50,7 @@ Agents must never:
 - run `vite preview` against this port while working locally
 - delete `.svelte-kit` while HMR is up
 
-Production / GitHub Pages builds set `BASE_PATH=/TheTowerSDK`, derived from the repository name by the workflow. Local HMR always uses empty `BASE_PATH`. Verify deploys in **GitHub Actions**, not by reinstalling locally.
+Production / GitHub Pages builds set `BASE_PATH=/TheTowerSDK`, derived from the repository name by the workflow. Pull requests run the same `check`, `lint` and base-path build in CI. Local HMR always uses empty `BASE_PATH`. Verify deploys in **GitHub Actions**, not by reinstalling locally.
 
 > ⚠ **On Windows, do not reproduce a base-path build from Git Bash without `MSYS_NO_PATHCONV=1`.**
 > MSYS rewrites any argument that looks like a POSIX path, so `BASE_PATH=/TheTowerSDK pnpm build`
