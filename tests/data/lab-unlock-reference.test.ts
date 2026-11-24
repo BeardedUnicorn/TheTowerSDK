@@ -24,20 +24,20 @@ const reference = JSON.parse(
 ) as UnlockReference
 
 /**
- * Our milestone rewards use a third lab vocabulary, distinct from both the
- * research catalog slugs and the labs-static display names -- "Orb Speed" for
- * "Orbs Speed", "Super Crit Multiplier" for "Super Crit Multi", "Missile
- * Explosion" for "Missiles Explosion". Fold the plural and that one suffix so
- * the comparison is about tiers and waves rather than spelling.
+ * Our milestone rewards use the game's own lab names (the research table's display names), and
+ * the sheet mostly does too, with small spellings of its own -- "Super Crit Multi" for "Super
+ * Crit Mult", "Missile Despawn Time" for "Missiles Despawn Time". Fold case, punctuation, the
+ * plural s ending any word and Mult / Multi / Multiplier so the comparison is about tiers and
+ * waves rather than spelling.
  */
 /** The sheet still uses names the game has since changed. */
 const SHEET_NAME_RENAMES: Record<string, string> = { 'Card Presets': 'Presets' }
 
 const matchKey = (value: string): string => String(SHEET_NAME_RENAMES[value] ?? value)
   .toLowerCase()
+  .replace(/\bmult(?:iplier|i)?\b/g, 'multi')
+  .replace(/s\b/g, '')
   .replace(/[^a-z0-9]+/g, '')
-  .replace(/multiplier$/, 'multi')
-  .replace(/s$/, '')
 
 /** A reward can appear on both tracks and at more than one tier, so keep them all. */
 const oursByReward = new Map<string, Array<{ tier: number; wave: number; track: string }>>()
@@ -78,6 +78,12 @@ const GAME_OVERRULES_SHEET: Record<string, string> = {
   'Flame Bot - Burn Stack': 'T10 W50 (game: tier 10 slot 4, ResearchGroup 24)',
   'Thunder Bot - Linger Time': 'T10 W50 (game: tier 10 slot 4, ResearchGroup 24)',
   'Swamp Rend - Additional Enemies': 'T16 W50 (game: tier 16 slot 4, ResearchGroup 25)',
+  // The sheet opens the effect bans with the buy multiplier; the game's research table gates all
+  // four with the module labs, and the wiki's "Substat Effect Bans" row agrees.
+  'Cannon Effect Bans': 'T10 W40 (game: tier 10 slot 3, ResearchGroup 21)',
+  'Armor Effect Bans': 'T10 W40 (game: tier 10 slot 3, ResearchGroup 21)',
+  'Generator Effect Bans': 'T10 W40 (game: tier 10 slot 3, ResearchGroup 21)',
+  'Core Effect Bans': 'T10 W40 (game: tier 10 slot 3, ResearchGroup 21)',
 }
 
 describe('lab unlocks against the Effective Paths reference', () => {
@@ -104,17 +110,16 @@ describe('lab unlocks against the Effective Paths reference', () => {
     }
 
     expect(disagreements.sort()).toEqual([])
-    // 97 after the v29.2 milestone corrections added the Dissonant Echo and Bot Bot rows.
-    expect(matched).toBeGreaterThanOrEqual(97)
+    // 149 since the lab groups were read from the game's research table and names folded by word.
+    expect(matched).toBeGreaterThanOrEqual(149)
   })
 
   it('records how much of the reference our milestone rows cover', () => {
-    // 203 labs in the reference against 140 rewards in our milestone rows, and
-    // the shortfall is real: Dissonant Echo, the Enhancement coin discounts and
-    // the Death Wave labs have no milestone entry at all. Ratchet this up as
-    // they are filled in; a drop means rows were lost.
+    // 158 of the 203 labs in the reference since every lab group was read from the game's research
+    // table (2026-11-24). Most of the rest are labs no milestone gates, which is right; a drop
+    // means rows were lost.
     const covered = reference.unlocks.filter(entry => oursByReward.has(matchKey(entry.name))).length
-    expect(covered).toBeGreaterThanOrEqual(94)
+    expect(covered).toBeGreaterThanOrEqual(158)
     expect(reference.unlocks.length).toBeGreaterThanOrEqual(203)
   })
 })

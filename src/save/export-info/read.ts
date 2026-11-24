@@ -38,6 +38,7 @@ const DECODER_RENAMED_KEYS: ReadonlySet<string> = new Set(['inventory'])
  * On 2026-11-24 the running build 1296 game was read screen by screen against a paired export
  * (facts/v29.2.2/live-ui-check.json): workshop costs, ultimate weapon costs and values, running
  * labs, card copies, equipped modules, perks, bots, relic totals, dissonant boosts and tier records.
+ * The milestone tracks of tiers 1-15 were read the same day (facts/v29.2.2/milestone-screen.json).
  */
 export const NEWEST_CHECKED_EXPORT = {
   exportVersion: 1,

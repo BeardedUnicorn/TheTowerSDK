@@ -335,7 +335,7 @@ describe('the oracle agrees with the catalogs', () => {
      */
     const gates: [string, number, number][] = [
       ['Modules', 2, 90],
-      ['Workshop Enhancement', 12, 60],
+      ['Workshop Enhancements', 12, 60],
       ['Card Mastery Unlock', 16, 100],
       ['Assist Module', 19, 40],
       ['Unlock Perks', 2, 150],
@@ -386,9 +386,10 @@ describe('the oracle agrees with the catalogs', () => {
     // being true and the milestone disambiguation is wrong.
     const premiumUnlocks = MILESTONE_KEY_UNLOCK_ROWS.filter(row => row.track !== 'standard')
     expect(premiumUnlocks, 'premium track should gate nothing').toEqual([])
-    // 161 since the v29.2 milestone table: Cells card, Dissonance, Bot Bot Cooldown, Global Presets,
-    // the Echo, fleet and Primary Module Bonus lab groups and the split T10/T16 groups.
-    expect(MILESTONE_KEY_UNLOCK_ROWS.length).toBe(161)
+    // 190 since the labs of each group were read from the game's research table (2026-11-24):
+    // placeholders such as "Death Wave Labs" and "Group 1 BC Labs" became the labs they stand for,
+    // and six labs the wiki lists but the game does not gate at any milestone came out.
+    expect(MILESTONE_KEY_UNLOCK_ROWS.length).toBe(190)
   })
 
   it('keeps the four lab counts distinct, and the one-shot labs visible', () => {

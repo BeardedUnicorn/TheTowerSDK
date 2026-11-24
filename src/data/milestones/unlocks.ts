@@ -1,14 +1,14 @@
 /**
  * Which milestone first makes each system available.
  *
- * `MILESTONE_KEY_UNLOCK_ROWS` holds every unlock reward (161 at v29.2), but it is a flat
+ * `MILESTONE_KEY_UNLOCK_ROWS` holds every unlock reward (190 at v29.2), but it is a flat
  * list of reward strings — good for "what does tier 12 give me", useless for
  * "when do I get modules". This is the other direction.
  *
  * ## Why only ten entries for all those rows
  *
- * Most unlock rewards are individual LABS — Swamp Radius, Shock Chance, Missile
- * Despawn Time. The knowledge graph models `lab` as one system rather than as
+ * Most unlock rewards are individual LABS — Swamp Radius, Chain Lightning Shock,
+ * Missiles Despawn Time. The knowledge graph models `lab` as one system rather than as
  * 227 entities, so mapping each of those to a node would mean inventing 100+
  * thin nodes whose only content is a name. What matters for planning is when a
  * SYSTEM opens, and that is what this answers.
@@ -42,7 +42,7 @@ const SYSTEM_PATTERNS: readonly (readonly [string, RegExp])[] = [
   ['dissonance', /^Unlock Dissonance$/],
   ['perk', /^Unlock Perks$/],
   ['guild', /^Guilds$/],
-  ['workshopEnhancement', /^Workshop Enhancement$/],
+  ['workshopEnhancement', /^Workshop Enhancements$/],
   ['cardMastery', /^Card Mastery Unlock$/],
   ['assistModule', /^Assist Module$/],
 ]
