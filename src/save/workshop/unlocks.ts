@@ -2,8 +2,10 @@
  * Which workshop rows a save has unlocked, and which stats are locked against free upgrades.
  *
  * The row lists are flags, one per row, counted here: a v29.2 export has 5 attack, 8 defense and
- * 6 utility rows unlocked. How many stats a row holds is not established, so rows are not mapped
- * onto stats. The free-upgrade locks run parallel to the per-category level lists, so they are.
+ * 6 utility rows unlocked. Which stats each row opens, and its coin price, is `WORKSHOP_UNLOCK_ROWS`
+ * in `data/workshop/unlocks` — slot N there is flag N here, and a count is the `unlocked`
+ * argument of `getNextWorkshopUnlock`. The free-upgrade locks run parallel to the per-category
+ * level lists, so they are mapped onto stats here.
  */
 /* ── file map ─────────────────────────────────────────────────────────────────
  * exports    readWorkshopUnlocksFromSaveRoot

@@ -3,7 +3,7 @@
   "build": 1296,
   "dataVersion": 35,
   "checkedAt": "2026-11-24",
-  "note": "What The Tower v29.2.2 (build 1296, macOS) showed on screen on 2026-11-24, with the levels behind each reading taken from the tool_export.json the game wrote at 09:18:35Z. Every currency and level was unchanged between that export and the last one taken after the screens were read. Only the active presets were read (workshop Farm, cards Farm, module preset 1). \"shown\" is the on-screen text exactly. Lab levelHours is the full length of the level in progress, derived from the game: the on-screen remaining time, moved back to the export by the elapsed time times the active gem speed-up, divided by (1 - researchPercentComplete). Lab speed inputs: Labs Speed research 54, lab-speed relics +3.5%, Labs Coin Discount 43, 19 fully researched labs (the Labs info panel showed Gem Rush Efficiency 1.285x). Perk labs: Standard Perks Bonus 8, Improve Trade-off Perks 1. Relics: the 54 unlocked relic slots below; none mailed. Dissonance boost waves are per tier (index = tier), with no Dissonant Echo research.",
+  "note": "What The Tower v29.2.2 (build 1296, macOS) showed on screen on 2026-11-24, with the levels behind each reading taken from the tool_export.json the game wrote at 09:18:35Z. Every currency and level was unchanged between that export and the last one taken after the screens were read. Only the active presets were read (workshop Farm, cards Farm, module preset 1). \"shown\" is the on-screen text exactly. Lab levelHours is the full length of the level in progress, derived from the game: the on-screen remaining time, moved back to the export by the elapsed time times the active gem speed-up, divided by (1 - researchPercentComplete). Lab speed inputs: Labs Speed research 54, lab-speed relics +3.5%, Labs Coin Discount 43, 19 fully researched labs (the Labs info panel showed Gem Rush Efficiency 1.285x). Perk labs: Standard Perks Bonus 8, Improve Trade-off Perks 1. Relics: the 54 unlocked relic slots below; none mailed. Dissonance boost waves are per tier (index = tier), with no Dissonant Echo research. Workshop unlock counts and ultimate weapons owned are the set flags in UpgradeTierUnlocked, UpgradeDefenseTierUnlocked and UltimateWeaponUnlocked in the export the game wrote at 10:08:36Z; the workshop discount labs (attack 32, defense 30) were active and the unlock buttons were not discounted.",
   "workshopCosts": [
     {
       "stat": "Damage",
@@ -1345,9 +1345,25 @@
       "shown": "4.34K"
     }
   ],
+  "workshopUnlocks": [
+    {
+      "category": "attack",
+      "saveFlags": "UpgradeTierUnlocked",
+      "unlockedGroups": 5,
+      "shown": "Unlock Rend Armor 500.00B"
+    },
+    {
+      "category": "defense",
+      "saveFlags": "UpgradeDefenseTierUnlocked",
+      "unlockedGroups": 8,
+      "shown": "Unlock The Wall 500.00M"
+    }
+  ],
+  "ultimateWeaponUnlock": {
+    "owned": 6,
+    "shown": "New Ultimate Weapon 1750"
+  },
   "notModelled": [
-    "Workshop unlock prices: Unlock Rend Armor 500.00B, Unlock The Wall 500.00M",
-    "New Ultimate Weapon: 1750 stones (the 7th weapon)",
     "Total Coin Bonus x30.07",
     "Tournament Ticket balance 0 (the export has no field for it)"
   ],

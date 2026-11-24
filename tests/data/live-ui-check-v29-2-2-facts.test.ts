@@ -15,6 +15,8 @@ import {
   getBotStatNames,
   getModuleCoinUpgradeCost,
   getModuleShardUpgradeCost,
+  getNextUltimateWeaponStoneCost,
+  getNextWorkshopUnlock,
   getTierData,
   labGemRushEfficiency,
   MODULE_RARITY_LEVEL_CAPS,
@@ -24,7 +26,7 @@ import {
   WORKSHOP_DATA,
   workshopLabLevelToSectionDiscountPercent,
 } from '../../src/data'
-import type { ModuleCalcType, ToolLabRecord } from '../../src/data'
+import type { ModuleCalcType, ToolLabRecord, WorkshopCategory } from '../../src/data'
 import { formatGameNumber, parseDurationToHours } from '../../src/formatting'
 import { cardLevelCopiesRequired, computePerkBenefitUp, dissonantBoostOfType } from '../../src/mechanics'
 import { buildModuleSaveSubstatSlotPreviews } from '../../src/save'
@@ -70,6 +72,8 @@ interface Facts {
   tierCoinBonus: { tier: number, shown: string }
   tierRecords: { tier: number, coins: number, shownCoins: string, cells: number, shownCells: string }[]
   gameNumbers: { value: number, shown: string }[]
+  workshopUnlocks: { category: WorkshopCategory, saveFlags: string, unlockedGroups: number, shown: string }[]
+  ultimateWeaponUnlock: { owned: number, shown: string }
   unexplained: string[]
 }
 
@@ -143,6 +147,25 @@ describe('ultimate weapons', () => {
   it('keeps the readings the SDK cannot explain on record', () => {
     expect(facts.unexplained.some(line => line.startsWith('Chain Lightning Quantity'))).toBe(true)
     expect(facts.unexplained.some(line => line.startsWith('Spotlight Bonus'))).toBe(true)
+  })
+})
+
+describe('unlock buttons', () => {
+  /*
+   * The button names a group, not a stat: "Rend Armor" opens Rend Armor Chance and Mult, "The
+   * Wall" opens Wall Health and Rebuild. So the name is matched against the group's first stat.
+   */
+  it.each(facts.workshopUnlocks)('$category with $unlockedGroups unlocked shows "$shown"', ({ category, unlockedGroups, shown }) => {
+    const [, name, price] = /^Unlock (?:The )?(.+) (\S+)$/.exec(shown)!
+    const next = getNextWorkshopUnlock(category, unlockedGroups)!
+    expect(next.stats[0].startsWith(name)).toBe(true)
+    // The discount labs were active and the button was not discounted, so the raw price is shown.
+    expect(formatGameNumber(next.coins)).toBe(price)
+  })
+
+  it(`with ${facts.ultimateWeaponUnlock.owned} weapons owned shows "${facts.ultimateWeaponUnlock.shown}"`, () => {
+    const { owned, shown } = facts.ultimateWeaponUnlock
+    expect(getNextUltimateWeaponStoneCost(owned)).toBe(lastNumber(shown))
   })
 })
 
