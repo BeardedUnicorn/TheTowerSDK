@@ -17,6 +17,14 @@
  */
 import { formatNumberForDisplay } from '../numbers'
 
+/**
+ * A number on the game's suffix ladder, ROUNDED to two decimals with trailing zeros dropped:
+ * 12,228,041 is `12.23M` and 25,200 is `25.2K`.
+ *
+ * Fine for figures read side by side; not what the game shows. The game cuts to two decimals and
+ * keeps them (`12.22M`, `25.20K`), so anything printed beside an in-game value should use
+ * `formatGameNumber`.
+ */
 export function formatCompact(n: number): string {
   try {
     if (!Number.isFinite(n)) return '0'

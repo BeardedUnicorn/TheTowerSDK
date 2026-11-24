@@ -12,7 +12,7 @@ Lab catalogs: categories, unlocks, research and display names.
 | `display-overrides.ts` | — | LAB_RESEARCH_DISPLAY_NAME_OVERRIDES, LAB_RESEARCH_LAB_BY_LEGACY_LEVEL_KEY, findLabResearchImportRow, labResearchImportRowCount (+3 more) |
 | `index.ts` | Labs as data: | — |
 | `normalize-category.ts` | — | normalizeToolLabCategory |
-| `overview.ts` | — | LAB_CATEGORY_NAMES, isLabCategoryName, isLabsResearchLabName, normalizeToolLabLookupKey (+13 more) |
+| `overview.ts` | — | LAB_CATEGORY_NAMES, isLabCategoryName, isLabsResearchLabName, normalizeToolLabLookupKey (+16 more) |
 | `primary-module-bonus.ts` | Primary-module lab levels with neutral cost/time modifiers, as game data v29.2.1 has them. | PRIMARY_MODULE_BONUS_LABS |
 | `research-level.ts` | — | computeResearchLabLevel, coerceLabsLabLevel, findCanonicalLabResearchSlug, normalizeLabsLabLevelMap |
 | `research.ts` | Lab research identity: | findLabResearchByIndex, findLabResearchBySlug, findLabResearchByDisplayName, findLabResearchRecord (+6 more) |

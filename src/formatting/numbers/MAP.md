@@ -7,7 +7,8 @@ Reading and writing numbers in the game’s notation ladder.
 | File | Purpose | Exports |
 |---|---|---|
 | `compute.ts` | — | unitMultipliers, MAX_DISPLAY_DECIMALS, roundToDisplayPrecision, stripInsignificantDecimalZeros (+23 more) |
-| `index.ts` | Reading and writing numbers the way the game writes them. | — |
+| `game-notation.ts` | The game's suffix ladder, and a number written exactly as the game writes it on screen. | COMPACT_NUMBER_SUFFIX_ORDER, compactNotationStep, formatGameNumber |
+| `index.ts` | Reading and writing numbers the way the game writes them. | formatGameNumber |
 | `types.ts` | The vocabulary of number formatting. | DecimalPreference, FormatMode, SmallNumberStrategy, FormatNumberForDisplayOptions (+5 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

@@ -135,15 +135,8 @@ export function inferSubstatRarityFromDisplayedValue(
     const canonical = parseCanonicalSubstatValue(canonicalRaw)
     if (canonical === null) continue
 
-    let canonicalMagnitude = Math.abs(canonical) * scale
-    if (
-      label === 'Health Regen'
-      && canonicalRaw.includes('x')
-      && displayedValue.includes('%')
-    ) {
-      canonicalMagnitude *= 100
-    }
-
+    // The chart is in the game's own notation, so a value read off the screen compares directly.
+    const canonicalMagnitude = Math.abs(canonical) * scale
     const delta = Math.abs(scaled - canonicalMagnitude)
     if (!best || delta < best.delta) {
       best = { rarity, delta }

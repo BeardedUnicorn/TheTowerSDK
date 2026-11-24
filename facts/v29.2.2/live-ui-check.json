@@ -1,0 +1,1056 @@
+{
+  "gameVersion": "v29.2.2",
+  "build": 1296,
+  "dataVersion": 35,
+  "checkedAt": "2026-11-24",
+  "note": "What The Tower v29.2.2 (build 1296, macOS) showed on screen on 2026-11-24, with the levels behind each reading taken from the tool_export.json the game wrote at 09:18:35Z. Every currency and level was unchanged between that export and the last one taken after the screens were read. Only the active presets were read (workshop Farm, cards Farm, module preset 1). \"shown\" is the on-screen text exactly. Lab levelHours is the full length of the level in progress, derived from the game: the on-screen remaining time, moved back to the export by the elapsed time times the active gem speed-up, divided by (1 - researchPercentComplete). Lab speed inputs: Labs Speed research 54, lab-speed relics +3.5%, Labs Coin Discount 43, 19 fully researched labs (the Labs info panel showed Gem Rush Efficiency 1.285x). Perk labs: Standard Perks Bonus 8, Improve Trade-off Perks 1. Relics: the 54 unlocked relic slots below; none mailed. Dissonance boost waves are per tier (index = tier), with no Dissonant Echo research.",
+  "workshopCosts": [
+    {
+      "stat": "Damage",
+      "level": 805,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "12.22M"
+    },
+    {
+      "stat": "Critical Factor",
+      "level": 130,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "1.01B"
+    },
+    {
+      "stat": "Damage / Meter",
+      "level": 118,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "2.79M"
+    },
+    {
+      "stat": "Bounce Shot Range",
+      "level": 52,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "5.01B"
+    },
+    {
+      "stat": "Super Crit Chance",
+      "level": 9,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "1.26M"
+    },
+    {
+      "stat": "Super Crit Mult",
+      "level": 0,
+      "section": "attack",
+      "discountLabLevel": 32,
+      "shown": "25.20K"
+    },
+    {
+      "stat": "Health",
+      "level": 1142,
+      "section": "defense",
+      "discountLabLevel": 30,
+      "shown": "25.22M"
+    },
+    {
+      "stat": "Health Regen",
+      "level": 0,
+      "section": "defense",
+      "discountLabLevel": 30,
+      "shown": "26"
+    },
+    {
+      "stat": "Defense Absolute",
+      "level": 0,
+      "section": "defense",
+      "discountLabLevel": 30,
+      "shown": "43"
+    },
+    {
+      "stat": "Land Mine Damage",
+      "level": 70,
+      "section": "defense",
+      "discountLabLevel": 30,
+      "shown": "3.42M"
+    },
+    {
+      "stat": "Land Mine Radius",
+      "level": 40,
+      "section": "defense",
+      "discountLabLevel": 30,
+      "shown": "86.61M"
+    },
+    {
+      "stat": "Recovery Amount",
+      "level": 35,
+      "section": "utility",
+      "discountLabLevel": 30,
+      "shown": "2.88M"
+    },
+    {
+      "stat": "Max Recovery",
+      "level": 45,
+      "section": "utility",
+      "discountLabLevel": 30,
+      "shown": "7.49M"
+    },
+    {
+      "stat": "Enemy Attack Level Skip",
+      "level": 0,
+      "section": "utility",
+      "discountLabLevel": 30,
+      "shown": "255.00M"
+    },
+    {
+      "stat": "Enemy Health Level Skip",
+      "level": 0,
+      "section": "utility",
+      "discountLabLevel": 30,
+      "shown": "255.00M"
+    }
+  ],
+  "workshopValues": [
+    {
+      "stat": "Multishot Chance",
+      "level": 99,
+      "shown": "49.50%"
+    },
+    {
+      "stat": "Rapid Fire Chance",
+      "level": 85,
+      "shown": "34.00%"
+    },
+    {
+      "stat": "Rapid Fire Duration",
+      "level": 99,
+      "shown": "5.55 sec"
+    },
+    {
+      "stat": "Bounce Shot Chance",
+      "level": 85,
+      "shown": "68.00%"
+    },
+    {
+      "stat": "Bounce Shot Range",
+      "level": 52,
+      "shown": "7.20m"
+    },
+    {
+      "stat": "Lifesteal",
+      "level": 80,
+      "shown": "4.46%"
+    },
+    {
+      "stat": "Knockback Chance",
+      "level": 80,
+      "shown": "80.00%"
+    },
+    {
+      "stat": "Orbs",
+      "level": 4,
+      "shown": "4"
+    },
+    {
+      "stat": "Shockwave Frequency",
+      "level": 40,
+      "shown": "14.00s"
+    },
+    {
+      "stat": "Land Mine Chance",
+      "level": 50,
+      "shown": "30.00%"
+    },
+    {
+      "stat": "Land Mine Radius",
+      "level": 40,
+      "shown": "1.30"
+    },
+    {
+      "stat": "Death Defy",
+      "level": 75,
+      "shown": "30.00%"
+    },
+    {
+      "stat": "Max Recovery",
+      "level": 45,
+      "shown": "x2.85"
+    }
+  ],
+  "ultimateWeapons": [
+    {
+      "weapon": "Chain Lightning",
+      "stat": "Damage",
+      "level": 0,
+      "shownValue": "x2",
+      "shownCost": "5"
+    },
+    {
+      "weapon": "Chain Lightning",
+      "stat": "Quantity",
+      "level": 0,
+      "shownValue": "2",
+      "shownCost": "30"
+    },
+    {
+      "weapon": "Chain Lightning",
+      "stat": "Chance",
+      "level": 0,
+      "shownValue": "5.00%",
+      "shownCost": "8"
+    },
+    {
+      "weapon": "Smart Missiles",
+      "stat": "Damage",
+      "level": 0,
+      "shownValue": "x10",
+      "shownCost": "5"
+    },
+    {
+      "weapon": "Smart Missiles",
+      "stat": "Quantity",
+      "level": 0,
+      "shownValue": "5",
+      "shownCost": "4"
+    },
+    {
+      "weapon": "Smart Missiles",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "3m 0s",
+      "shownCost": "8"
+    },
+    {
+      "weapon": "Death Wave",
+      "stat": "Damage",
+      "level": 0,
+      "shownValue": "x27",
+      "shownCost": "5"
+    },
+    {
+      "weapon": "Death Wave",
+      "stat": "Quantity",
+      "level": 0,
+      "shownValue": "1",
+      "shownCost": "200"
+    },
+    {
+      "weapon": "Death Wave",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "5m 0s",
+      "shownCost": "8"
+    },
+    {
+      "weapon": "Inner Land Mines",
+      "stat": "Damage",
+      "level": 0,
+      "shownValue": "x10",
+      "shownCost": "5"
+    },
+    {
+      "weapon": "Inner Land Mines",
+      "stat": "Quantity",
+      "level": 0,
+      "shownValue": "3",
+      "shownCost": "50"
+    },
+    {
+      "weapon": "Inner Land Mines",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "3m 20s",
+      "shownCost": "8"
+    },
+    {
+      "weapon": "Golden Tower",
+      "stat": "Multiplier",
+      "level": 10,
+      "shownValue": "x15.9",
+      "shownCost": "138"
+    },
+    {
+      "weapon": "Golden Tower",
+      "stat": "Duration",
+      "level": 6,
+      "shownValue": "37s",
+      "shownCost": "59"
+    },
+    {
+      "weapon": "Golden Tower",
+      "stat": "Cooldown",
+      "level": 3,
+      "shownValue": "4m 30s",
+      "shownCost": "64"
+    },
+    {
+      "weapon": "Spotlight",
+      "stat": "Multiplier",
+      "level": 5,
+      "shownValue": "x18.6",
+      "shownCost": "52"
+    },
+    {
+      "weapon": "Spotlight",
+      "stat": "Angle",
+      "level": 0,
+      "shownValue": "30°",
+      "shownCost": "5"
+    },
+    {
+      "weapon": "Spotlight",
+      "stat": "Quantity",
+      "level": 0,
+      "shownValue": "1",
+      "shownCost": "375"
+    }
+  ],
+  "labs": {
+    "labsSpeedLevel": 54,
+    "labSpeedRelicPct": 3.5,
+    "labsCoinDiscountLevel": 43,
+    "maxedLabCount": 19,
+    "gemRushEfficiency": "1.285x",
+    "active": [
+      {
+        "slug": "labs_speed",
+        "completedLevel": 54,
+        "shownValues": "x2.08 » x2.10",
+        "levelHours": 239.75,
+        "shownRemaining": "6d 0h 56m 45s",
+        "shownRush": "674"
+      },
+      {
+        "slug": "spotlight_coin_bonus",
+        "completedLevel": 11,
+        "shownValues": "x2.10 » x2.20",
+        "levelHours": 101.03,
+        "shownRemaining": "2d 19h 40m 1s",
+        "shownRush": "324"
+      },
+      {
+        "slug": "golden_tower_bonus",
+        "completedLevel": 13,
+        "shownValues": "+1.95 » +2.10",
+        "levelHours": 140.45,
+        "shownRemaining": "5d 14h 40m 42s",
+        "shownRush": "627"
+      },
+      {
+        "slug": "coins_kill_bonus",
+        "completedLevel": 63,
+        "shownValues": "x2.26 » x2.28",
+        "levelHours": 190.46,
+        "shownRemaining": "7d 14h 54m 47s",
+        "shownRush": "832"
+      },
+      {
+        "slug": "coins_wave",
+        "completedLevel": 57,
+        "shownValues": "x2.14 » x2.16",
+        "levelHours": 150.08,
+        "shownRemaining": "7h 3m 14s",
+        "shownRush": "38"
+      }
+    ]
+  },
+  "cardCopies": [
+    {
+      "card": "Free Upgrades",
+      "level": 6,
+      "copies": 15,
+      "shown": "15/32"
+    },
+    {
+      "card": "Extra Orb",
+      "level": 6,
+      "copies": 19,
+      "shown": "19/32"
+    },
+    {
+      "card": "Plasma Cannon",
+      "level": 6,
+      "copies": 20,
+      "shown": "20/32"
+    },
+    {
+      "card": "Cells",
+      "level": 5,
+      "copies": 5,
+      "shown": "5/20"
+    },
+    {
+      "card": "Death Ray",
+      "level": 2,
+      "copies": 3,
+      "shown": "3/5"
+    },
+    {
+      "card": "Energy Net",
+      "level": 2,
+      "copies": 4,
+      "shown": "4/5"
+    },
+    {
+      "card": "Super Tower",
+      "level": 2,
+      "copies": 3,
+      "shown": "3/5"
+    },
+    {
+      "card": "Second Wind",
+      "level": 2,
+      "copies": 4,
+      "shown": "4/5"
+    },
+    {
+      "card": "Demon Mode",
+      "level": 1,
+      "copies": 2,
+      "shown": "2/3"
+    },
+    {
+      "card": "Energy Shield",
+      "level": 2,
+      "copies": 3,
+      "shown": "3/5"
+    },
+    {
+      "card": "Wave Accelerator",
+      "level": 2,
+      "copies": 1,
+      "shown": "1/5"
+    },
+    {
+      "card": "Berserker",
+      "level": 1,
+      "copies": 2,
+      "shown": "2/3"
+    },
+    {
+      "card": "Nuke",
+      "level": 2,
+      "copies": 0,
+      "shown": "0/5"
+    }
+  ],
+  "modules": [
+    {
+      "type": "Cannon",
+      "rarity": "Legendary +",
+      "level": 80,
+      "shownMain": "x1.700 Tower Damage",
+      "shownLevel": "Lv. 80 /120",
+      "nextLevel": {
+        "shards": "500",
+        "coins": "350.00M"
+      },
+      "effects": [
+        {
+          "effectId": 3,
+          "shown": "Epic +0.7 Attack Speed"
+        },
+        {
+          "effectId": 36,
+          "shown": "Epic +1 Multishot Targets"
+        },
+        {
+          "effectId": 55,
+          "shown": "Epic +1 Bounce Shot Targets"
+        }
+      ]
+    },
+    {
+      "type": "Armor",
+      "rarity": "Legendary",
+      "level": 80,
+      "shownMain": "x1.670 Tower Health",
+      "shownLevel": "Lv. 80 /100",
+      "nextLevel": {
+        "shards": "500",
+        "coins": "350.00M"
+      },
+      "effects": [
+        {
+          "effectId": 121,
+          "shown": "Epic +0.1 Shockwave Size"
+        },
+        {
+          "effectId": 83,
+          "shown": "Epic +60% Health Regen"
+        },
+        {
+          "effectId": 89,
+          "shown": "Epic +3% Defense %"
+        }
+      ]
+    },
+    {
+      "type": "Generator",
+      "rarity": "Legendary",
+      "level": 93,
+      "shownMain": "x1.247 Coin Bonus",
+      "shownLevel": "Lv. 93 /100",
+      "nextLevel": {
+        "shards": "700",
+        "coins": "350.00M"
+      },
+      "effects": [
+        {
+          "effectId": 194,
+          "shown": "Legendary +8% Free Utility Upgrade"
+        },
+        {
+          "effectId": 169,
+          "shown": "Epic +0.3x Coins / Kill Bonus"
+        },
+        {
+          "effectId": 188,
+          "shown": "Legendary +8% Free Defense Upgrade"
+        }
+      ]
+    },
+    {
+      "type": "Core",
+      "rarity": "Legendary",
+      "level": 70,
+      "shownMain": "x2.550 Ultimate Weapon Damage",
+      "shownLevel": "Lv. 70 /100",
+      "nextLevel": {
+        "shards": "350",
+        "coins": "100.00M"
+      },
+      "effects": [
+        {
+          "effectId": 281,
+          "shown": "Epic +1x Golden Tower - Bonus"
+        },
+        {
+          "effectId": 248,
+          "shown": "Epic +25x Death Wave - Damage"
+        },
+        {
+          "effectId": 319,
+          "shown": "Epic +3.5x Spotlight - Bonus"
+        }
+      ]
+    }
+  ],
+  "perks": {
+    "standardPerksBonusLevel": 8,
+    "improveTradeOffPerksLevel": 1,
+    "shown": [
+      {
+        "index": 0,
+        "shown": "x1.30 max health"
+      },
+      {
+        "index": 1,
+        "shown": "x1.24 Damage"
+      },
+      {
+        "index": 2,
+        "shown": "x1.89 Health Regen"
+      },
+      {
+        "index": 3,
+        "shown": "x1.24 all coins bonuses"
+      },
+      {
+        "index": 4,
+        "shown": "Bounce Shot +2"
+      },
+      {
+        "index": 5,
+        "shown": "Interest x1.62"
+      },
+      {
+        "index": 6,
+        "shown": "Land Mine Damage x3.78"
+      },
+      {
+        "index": 7,
+        "shown": "Orbs +1"
+      },
+      {
+        "index": 8,
+        "shown": "Free upgrade chance for all +5.40%"
+      },
+      {
+        "index": 9,
+        "shown": "Defense percent +4.32%"
+      },
+      {
+        "index": 10,
+        "shown": "Perk wave requirement -21.60%"
+      },
+      {
+        "index": 11,
+        "shown": "Unlock a random ultimate weapon"
+      },
+      {
+        "index": 12,
+        "shown": "Increase max game speed by +1.08"
+      },
+      {
+        "index": 13,
+        "shown": "x1.24 Cash Bonus"
+      },
+      {
+        "index": 14,
+        "shown": "x1.24 Defense Absolute"
+      }
+    ]
+  },
+  "bots": [
+    {
+      "bot": "Flame Bot",
+      "stat": "Damage Reduction",
+      "level": 0,
+      "shownValue": "20%",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Flame Bot",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "75s",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Flame Bot",
+      "stat": "Damage",
+      "level": 0,
+      "shownValue": "x50.00",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Flame Bot",
+      "stat": "Range",
+      "level": 0,
+      "shownValue": "30.00m",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Thunder Bot",
+      "stat": "Duration",
+      "level": 0,
+      "shownValue": "5.0s",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Thunder Bot",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "120s",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Thunder Bot",
+      "stat": "Linger",
+      "level": 0,
+      "shownValue": "20%",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Thunder Bot",
+      "stat": "Range",
+      "level": 0,
+      "shownValue": "25.00m",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Golden Bot",
+      "stat": "Duration",
+      "level": 2,
+      "shownValue": "21.0s",
+      "shownCost": "180"
+    },
+    {
+      "bot": "Golden Bot",
+      "stat": "Cooldown",
+      "level": 1,
+      "shownValue": "117s",
+      "shownCost": "140"
+    },
+    {
+      "bot": "Golden Bot",
+      "stat": "Bonus",
+      "level": 0,
+      "shownValue": "x2.00",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Golden Bot",
+      "stat": "Range",
+      "level": 2,
+      "shownValue": "24.00m",
+      "shownCost": "180"
+    },
+    {
+      "bot": "Amplify Bot",
+      "stat": "Duration",
+      "level": 0,
+      "shownValue": "20.0s",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Amplify Bot",
+      "stat": "Cooldown",
+      "level": 0,
+      "shownValue": "120s",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Amplify Bot",
+      "stat": "Bonus",
+      "level": 0,
+      "shownValue": "x3.50",
+      "shownCost": "100"
+    },
+    {
+      "bot": "Amplify Bot",
+      "stat": "Range",
+      "level": 0,
+      "shownValue": "25.00m",
+      "shownCost": "100"
+    }
+  ],
+  "relics": {
+    "unlockedIndices": [
+      2,
+      3,
+      34,
+      35,
+      38,
+      52,
+      62,
+      63,
+      73,
+      74,
+      75,
+      77,
+      91,
+      101,
+      120,
+      193,
+      200,
+      204,
+      215,
+      224,
+      228,
+      240,
+      253,
+      255,
+      256,
+      260,
+      264,
+      265,
+      268,
+      269,
+      272,
+      273,
+      274,
+      275,
+      276,
+      280,
+      284,
+      288,
+      292,
+      296,
+      303,
+      304,
+      307,
+      308,
+      309,
+      310,
+      313,
+      314,
+      317,
+      318,
+      321,
+      322,
+      326,
+      327
+    ],
+    "totals": {
+      "TowerDamage": "18%",
+      "AttackSpeed": "4%",
+      "TowerCritFactor": "10%",
+      "DamagePerMeter": "17%",
+      "TowerHealth": "15%",
+      "HealthRegen": "4%",
+      "DefensePercent": "+1%",
+      "TowerDefenseAbs": "19%",
+      "Thorns": "2%",
+      "KnockbackForce": "2%",
+      "OrbSpeed": "5%",
+      "CashBonus": "16%",
+      "CoinBonus": "12%",
+      "FreeAttackUpgrade": "8%",
+      "FreeDefenseUpgrade": "4%",
+      "FreeUtilityUpgrade": "2%",
+      "RecoveryAmount": "8%",
+      "LabSpeed": "3.5%"
+    }
+  },
+  "dissonance": {
+    "tier": 7,
+    "boostWaves": {
+      "attack": [
+        0,
+        2113,
+        0,
+        0,
+        0,
+        0,
+        0,
+        97,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "defense": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "utility": [
+        0,
+        3051,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1667,
+        0,
+        681,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uw": [
+        0,
+        2763,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "shown": {
+      "attack": "x1.01",
+      "defense": "x1.00",
+      "utility": "x1.30",
+      "uw": "x1.01"
+    }
+  },
+  "tierCoinBonus": {
+    "tier": 7,
+    "shown": "x5.8"
+  },
+  "tierRecords": [
+    {
+      "tier": 1,
+      "coins": 35157152.63374219,
+      "shownCoins": "35.15M",
+      "cells": 404.3001708984375,
+      "shownCells": "404"
+    },
+    {
+      "tier": 2,
+      "coins": 117971494.28583124,
+      "shownCoins": "117.97M",
+      "cells": 2394.2998046875,
+      "shownCells": "2.39K"
+    },
+    {
+      "tier": 3,
+      "coins": 95956909.14334074,
+      "shownCoins": "95.95M",
+      "cells": 2308.49951171875,
+      "shownCells": "2.30K"
+    },
+    {
+      "tier": 4,
+      "coins": 87404029.08166336,
+      "shownCoins": "87.40M",
+      "cells": 1458.7000732421875,
+      "shownCells": "1.45K"
+    },
+    {
+      "tier": 5,
+      "coins": 384918400.9626179,
+      "shownCoins": "384.91M",
+      "cells": 3457.299560546875,
+      "shownCells": "3.45K"
+    },
+    {
+      "tier": 6,
+      "coins": 362800923.08675617,
+      "shownCoins": "362.80M",
+      "cells": 3496.89990234375,
+      "shownCells": "3.49K"
+    },
+    {
+      "tier": 7,
+      "coins": 1062626216.2405185,
+      "shownCoins": "1.06B",
+      "cells": 5880.30224609375,
+      "shownCells": "5.88K"
+    },
+    {
+      "tier": 8,
+      "coins": 249484464.91195554,
+      "shownCoins": "249.48M",
+      "cells": 3943.91015625,
+      "shownCells": "3.94K"
+    },
+    {
+      "tier": 9,
+      "coins": 146816128.81324437,
+      "shownCoins": "146.81M",
+      "cells": 1810.989990234375,
+      "shownCells": "1.81K"
+    },
+    {
+      "tier": 10,
+      "coins": 55835238.08552613,
+      "shownCoins": "55.83M",
+      "cells": 778.5999145507812,
+      "shownCells": "779"
+    },
+    {
+      "tier": 11,
+      "coins": 19636397.143694084,
+      "shownCoins": "19.63M",
+      "cells": 52.099998474121094,
+      "shownCells": "52"
+    },
+    {
+      "tier": 12,
+      "coins": 3187674.8182692695,
+      "shownCoins": "3.18M",
+      "cells": 0,
+      "shownCells": "0"
+    },
+    {
+      "tier": 13,
+      "coins": 1020823.7029918031,
+      "shownCoins": "1.02M",
+      "cells": 0,
+      "shownCells": "0"
+    }
+  ],
+  "gameNumbers": [
+    {
+      "value": 63800347839.51968,
+      "shown": "63.80B"
+    },
+    {
+      "value": 124354616236.29387,
+      "shown": "124.35B"
+    },
+    {
+      "value": 281239.27184289694,
+      "shown": "281.23K"
+    },
+    {
+      "value": 148062,
+      "shown": "148.06K"
+    },
+    {
+      "value": 1.999462061110789e+22,
+      "shown": "19.99s"
+    },
+    {
+      "value": 54756650,
+      "shown": "54.75M"
+    },
+    {
+      "value": 500639,
+      "shown": "500.63K"
+    },
+    {
+      "value": 465407,
+      "shown": "465.40K"
+    },
+    {
+      "value": 24660,
+      "shown": "24.66K"
+    },
+    {
+      "value": 17185435931.329895,
+      "shown": "17.18B"
+    },
+    {
+      "value": 28143895393.861164,
+      "shown": "28.14B"
+    },
+    {
+      "value": 927149,
+      "shown": "927.14K"
+    },
+    {
+      "value": 1930503264.6999772,
+      "shown": "1.93B"
+    },
+    {
+      "value": 17012145,
+      "shown": "17.01M"
+    },
+    {
+      "value": 15354451,
+      "shown": "15.35M"
+    },
+    {
+      "value": 606369524124622800000,
+      "shown": "606.36Q"
+    },
+    {
+      "value": 1593881011.5310862,
+      "shown": "1.59B"
+    },
+    {
+      "value": 4348,
+      "shown": "4.34K"
+    }
+  ],
+  "notModelled": [
+    "Workshop unlock prices: Unlock Rend Armor 500.00B, Unlock The Wall 500.00M",
+    "New Ultimate Weapon: 1750 stones (the 7th weapon)",
+    "Card draw odds once every common is maxed: Common 0%, Rare 97% (10.78% each of 9), Epic 3% (0.33% each of 9)",
+    "Total Coin Bonus x30.07",
+    "Tournament Ticket balance 0 (the export has no field for it)"
+  ],
+  "unexplained": [
+    "Chain Lightning Quantity shows 2 at level 0; uwStoneChartData says x1 (next cost 30 matches).",
+    "Spotlight Bonus shows x18.6 at level 5 with a +3.5x Core substat; the chart gives x15.0, so 18.5 (next cost 52 matches).",
+    "Knockback Force shows 6.25 at level 40; 6.08 x 1.02 relic = 6.20, and 6.25 only if the dissonant attack boost (x1.00846) also applies."
+  ]
+}

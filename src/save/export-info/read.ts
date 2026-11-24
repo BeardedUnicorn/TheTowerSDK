@@ -34,6 +34,10 @@ const DECODER_RENAMED_KEYS: ReadonlySet<string> = new Set(['inventory'])
  * build 1296 export has the same 456 fields at data version 35, every reader returns without a
  * warning, and the game still defines the same 350 relics. Of the game tables, the vault upgrades
  * and card values were read again from build 1296 and match; the others were not read again.
+ *
+ * On 2026-11-24 the running build 1296 game was read screen by screen against a paired export
+ * (facts/v29.2.2/live-ui-check.json): workshop costs, ultimate weapon costs and values, running
+ * labs, card copies, equipped modules, perks, bots, relic totals, dissonant boosts and tier records.
  */
 export const NEWEST_CHECKED_EXPORT = {
   exportVersion: 1,
