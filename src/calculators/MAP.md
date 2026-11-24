@@ -9,6 +9,7 @@ Calculator specs and the registry over them.
 | `fields.ts` | — | fieldsOf, LAB_COST_MODIFIER_FIELDS, NUMBER_OPTIONS, UNKNOWN_NUMBER_OPTIONS (+4 more) |
 | `graph.ts` | How the calculators relate, so "what feeds this number?" is a lookup. | calculatorGraph, upstreamOf, calculatorsProducing, calculatorsReading |
 | `index.ts` | The calculator registry: | — |
+| `not-calculators.ts` | — | NOT_CALCULATORS |
 | `oracle-links.ts` | — | CALCULATOR_ORACLE_LINKS |
 | `registry.ts` | The calculators this repository reasons with, declared natively. | EPATHS_CALCULATORS, CALCULATORS, CALCULATOR_IDS, calculatorSpec |
 | `run.ts` | Calling a declared calculator by its handle. | IMPLEMENTED_CALCULATOR_IDS, CalculatorError, runCalculator, listCalculators |

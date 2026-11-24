@@ -12,9 +12,11 @@
  * The generated tier was written by a script that stayed behind in the monorepo, so in this
  * repository nothing refreshed it and every function added since was out of reach of the MCP
  * server. This rebuilds `src/calculators/specs.generated.ts` from the source with the TypeScript
- * compiler: each `export function` in a module under `src/<entry>/` (not an `index.ts`), unless a
- * curated spec already names it. Parameters and kinds come from the declared types, so a string
- * union is a string and an optional parameter is optional; the prose stays a placeholder.
+ * compiler: each exported function in a module under `src/<entry>/` — a `function` statement, a
+ * function held in an exported const, or a renamed re-export of one — unless a curated spec
+ * already names it or `src/calculators/not-calculators.ts` says why it is not one. Parameters and
+ * kinds come from the declared types, so a string union is a string and an optional parameter is
+ * optional; the prose stays a placeholder.
  *
  *     node scripts/generate-calculator-specs.mjs           # print what would change
  *     node scripts/generate-calculator-specs.mjs --write   # rewrite the file
@@ -30,8 +32,19 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const OUTPUT = path.join(root, 'src', 'calculators', 'specs.generated.ts')
 const CALCULATORS_DIR = path.join(root, 'src', 'calculators')
 
-/** The entry points the generated tier covers, in the order it lists them. */
-const ENTRIES = ['formatting', 'mechanics', 'data', 'charts', 'save', 'wiki', 'node']
+/**
+ * The entry points the generated tier covers, in the order it lists them.
+ *
+ * Every entry point that exports a function, bar two: `calculators` itself, and `knowledge`,
+ * which nothing may import (docs/ORGANIZATION_CONTRACT.md, rule 2). The first seven were the only
+ * ones scanned, so nothing in the others could be called by name. What is exported and is not a
+ * calculator is named, with its reason, in `src/calculators/not-calculators.ts`.
+ */
+const ENTRIES = [
+  'formatting', 'mechanics', 'data', 'charts', 'save', 'wiki', 'node',
+  'builders', 'sheets', 'bot', 'save-decoder', 'assets',
+]
+const NOT_CALCULATORS_FILE = path.join(root, 'src', 'calculators', 'not-calculators.ts')
 
 const PLACEHOLDER_INVARIANT = 'not yet checked — this entry is generated, not curated'
 
@@ -58,9 +71,21 @@ function curatedSymbols() {
   return symbols
 }
 
+/** Handles declared as not calculators; the generated tier leaves those out. */
+function notCalculators() {
+  const text = fs.readFileSync(NOT_CALCULATORS_FILE, 'utf8')
+  return new Set([...text.matchAll(/^\s+'([A-Za-z0-9_$.-]+)':/gm)].map(match => match[1]))
+}
+
+/*
+ * `index.ts` files are read too. They were skipped as barrels, and most are, but a barrel that
+ * also declares functions kept them out of the registry: the nine `ep*` control readers in
+ * `mechanics/ep-controls/index.ts` and two wiki fetchers. A file of re-exports declares nothing,
+ * so reading it costs nothing.
+ */
 function sourceFiles() {
   return ENTRIES.flatMap(entry => walk(path.join(root, 'src', entry))
-    .filter(file => file.endsWith('.ts') && !file.endsWith('.d.ts') && path.basename(file) !== 'index.ts')
+    .filter(file => file.endsWith('.ts') && !file.endsWith('.d.ts'))
     .map(file => ({ entry, file, relative: posix(path.relative(root, file)) }))
     .sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0)))
 }
@@ -132,16 +157,96 @@ function describeParameter(checker, parameter, index) {
 function describeReturn(checker, declaration) {
   const signature = checker.getSignatureFromDeclaration(declaration)
   const returned = signature ? checker.getReturnTypeOfSignature(signature) : null
-  const describes = declaration.type
-    ? typeText(declaration.type)
+  return describeReturned(checker, returned, declaration.type, isAsyncDeclaration(declaration))
+}
+
+/**
+ * `nullable` is what the type says: a `T | null` or `T | undefined` return. It was never set on a
+ * generated entry, so `calc_describe` presented "returns object" for a lookup that returns null
+ * when nothing matches, and a null answer read as a fault rather than as "not found".
+ */
+function describeReturned(checker, returned, typeNode, declaredAsync) {
+  const describes = typeNode
+    ? typeText(typeNode)
     : returned ? oneLine(checker.typeToString(returned)) : 'unknown'
   const isPromise = returned?.getSymbol()?.getName() === 'Promise'
   const category = returned && !isPromise ? categoryOf(checker, returned) : 'object'
   return {
     kind: ['number', 'string', 'boolean'].includes(category) ? category : 'object',
     describes,
-    isAsync: isAsyncDeclaration(declaration) || isPromise,
+    nullable: Boolean(returned && !isPromise && acceptsAbsent(returned)),
+    isAsync: declaredAsync || isPromise,
   }
+}
+
+/**
+ * A function reached through a name that is not its declaration: `export const a = b`, an arrow
+ * function held in a const, or `export { b as a }`. Each is an export a caller can import, and
+ * none is a `function` statement, so the walk below never saw them.
+ *
+ * Returns null for anything that is not plainly a function: no call signature, more than one, or
+ * a class.
+ */
+function describeCallable(checker, symbol, location) {
+  const type = checker.getTypeOfSymbolAtLocation(symbol, location)
+  const signatures = type.getCallSignatures()
+  if (signatures.length !== 1 || type.getConstructSignatures().length > 0) return null
+  const [signature] = signatures
+  const params = signature.getParameters().map((parameter, index) => {
+    const declared = parameter.valueDeclaration
+    return declared && ts.isParameter(declared)
+      ? describeParameter(checker, declared, index)
+      : { name: parameter.getName(), kind: 'unknown', optional: false, describes: 'unknown', rest: false }
+  })
+  const returned = checker.getReturnTypeOfSignature(signature)
+  const declared = signature.getDeclaration()
+  return {
+    params,
+    returns: describeReturned(checker, returned, declared?.type, Boolean(declared && isAsyncDeclaration(declared))),
+  }
+}
+
+/** The exported names a statement introduces that are functions without being `function` statements. */
+function aliasedFunctions(checker, statement) {
+  const found = []
+  if (ts.isVariableStatement(statement) && isExported(statement)) {
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name)) continue
+      const symbol = checker.getSymbolAtLocation(declaration.name)
+      const described = symbol && describeCallable(checker, symbol, declaration.name)
+      if (described) found.push({ symbol: declaration.name.text, target: symbol, ...described })
+    }
+  }
+  // Only a renamed re-export: an unrenamed one is the declaration's own name, registered there.
+  if (ts.isExportDeclaration(statement) && !statement.isTypeOnly
+    && statement.exportClause && ts.isNamedExports(statement.exportClause)) {
+    for (const element of statement.exportClause.elements) {
+      if (!element.propertyName || element.isTypeOnly) continue
+      const alias = checker.getSymbolAtLocation(element.name)
+      const target = alias && (alias.flags & ts.SymbolFlags.Alias) ? checker.getAliasedSymbol(alias) : alias
+      const described = target && describeCallable(checker, target, element.name)
+      if (described) found.push({ symbol: element.name.text, target, ...described })
+    }
+  }
+  return found
+}
+
+/**
+ * What each entry point really exports, by name.
+ *
+ * Two modules under one entry can declare the same function name -- a current formula and the
+ * legacy one it replaced -- and the entry exports one of them. The walk took whichever file sorted
+ * first, so `calc_run` could run a function that importing the same name from the package does
+ * not give you. Where the entry exports the name, only that declaration is registered under it.
+ */
+function publicExports(program, checker) {
+  const resolve = symbol => (symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol)
+  return new Map(ENTRIES.map((entry) => {
+    const source = program.getSourceFile(path.join(root, 'src', entry, 'index.ts'))
+    const module = source && checker.getSymbolAtLocation(source)
+    const exported = module ? checker.getExportsOfModule(module) : []
+    return [entry, new Map(exported.map(symbol => [symbol.getName(), resolve(symbol)]))]
+  }))
 }
 
 function collect() {
@@ -149,17 +254,20 @@ function collect() {
   const program = createProgram(files)
   const checker = program.getTypeChecker()
   const curated = curatedSymbols()
+  const excluded = notCalculators()
+  const exportedBy = publicExports(program, checker)
   const specs = []
   const seen = new Set()
   for (const { entry, file, relative } of files) {
     const source = program.getSourceFile(file)
     if (!source) throw new Error(`the compiler did not load ${relative}`)
-    for (const statement of source.statements) {
-      if (!ts.isFunctionDeclaration(statement) || !statement.name || !isExported(statement)) continue
-      const symbol = statement.name.text
+    const add = (symbol, target, params, returns) => {
       const id = `${entry}.${symbol}`
       // An overloaded function declares its name once per signature; the first one stands for it.
-      if (curated.has(symbol) || seen.has(id)) continue
+      if (curated.has(symbol) || seen.has(id) || excluded.has(id)) return
+      // The entry exports this name from another declaration: that one is the calculator.
+      const exported = exportedBy.get(entry)?.get(symbol)
+      if (exported && target && exported !== target) return
       seen.add(id)
       specs.push({
         id,
@@ -167,9 +275,21 @@ function collect() {
         module: relative,
         importPath: `../${posix(path.relative(path.join(root, 'src'), file)).replace(/\.ts$/, '')}`,
         symbol,
-        params: statement.parameters.map((parameter, index) => describeParameter(checker, parameter, index)),
-        returns: describeReturn(checker, statement),
+        params,
+        returns,
       })
+    }
+    for (const statement of source.statements) {
+      if (ts.isFunctionDeclaration(statement) && statement.name && isExported(statement)) {
+        add(
+          statement.name.text,
+          checker.getSymbolAtLocation(statement.name),
+          statement.parameters.map((parameter, index) => describeParameter(checker, parameter, index)),
+          describeReturn(checker, statement),
+        )
+        continue
+      }
+      for (const alias of aliasedFunctions(checker, statement)) add(alias.symbol, alias.target, alias.params, alias.returns)
     }
   }
   return specs
@@ -201,7 +321,7 @@ function render(specs) {
       ...(spec.returns.isAsync ? ['    isAsync: true,'] : []),
       `    because: ${quote(`Exported from ${spec.entry} and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.`)},`,
       params,
-      `    returns: { kind: ${quote(spec.returns.kind)}, describes: ${quote(spec.returns.describes)} },`,
+      `    returns: { kind: ${quote(spec.returns.kind)}, ${spec.returns.nullable ? 'nullable: true, ' : ''}describes: ${quote(spec.returns.describes)} },`,
       `    invariants: [${quote(PLACEHOLDER_INVARIANT)}],`,
       '    reads: [],',
       `    produces: [${quote(spec.id)}],`,
@@ -209,7 +329,7 @@ function render(specs) {
       '  },',
     ].join('\n')
   }
-  const listName = entry => `GENERATED_${entry.toUpperCase()}`
+  const listName = entry => `GENERATED_${entry.toUpperCase().replace(/[^A-Z0-9]/g, '_')}`
   const groups = ENTRIES
     .map(entry => ({ entry, rows: specs.filter(spec => spec.entry === entry).map(declaration) }))
     .filter(group => group.rows.length > 0)

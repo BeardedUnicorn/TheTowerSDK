@@ -61,6 +61,7 @@ export interface CalculatorSpec {
   title: string
   /** Which SDK entry point exports it, for `list_exports` to agree with. */
   entry: 'mechanics' | 'data' | 'formatting' | 'save' | 'charts' | 'wiki' | 'node'
+    | 'builders' | 'sheets' | 'bot' | 'save-decoder' | 'assets'
   /** Source module, relative to the package root (`src/...`), so a reader can go and look. */
   module: string
   symbol: string
