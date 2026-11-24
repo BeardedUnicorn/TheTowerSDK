@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.0 (2026-11-24)
+
+
+### Features
+
+* **calculators:** run the thorns, elite chart, level reduction and Guardian cost formulas by name ([ae54b3f](https://github.com/BeardedUnicorn/TheTowerSDK/commit/ae54b3f8535dce49fc995f3028bf13ec56203ca7))
+
 ## 1.6.0 (2026-11-24)
 
 
