@@ -50,6 +50,14 @@ export const ACCOUNT_CURRENCIES: readonly string[] = CURRENCIES
 
 const GAME_COIN_BONUS = { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' } as const
 
+/** The game's own breakdown of the Battle tab's Total Coin Bonus, read at two tiers. */
+const GAME_ALL_COINS_BONUSES_PANEL = {
+  origin: 'game',
+  ref: 'All Coins Bonuses panel (tap Total Coin Bonus on the Battle tab), tiers 7 and 6: facts/v29.2.2/live-ui-check.json totalCoinBonus',
+  sourceVersion: 'v29.2.2',
+  verifiedAt: '2026-11-24',
+} as const
+
 
 const GAME_KILL_AWARD = { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' } as const
 
@@ -332,11 +340,14 @@ disambiguation:
 id: 'coinsBonusTotal',
 label: 'The coin multiplier the game actually builds',
 kind: 'stat',
-summary: "Applicable account coin bonuses multiply together. Coin bonuses do not increase cash income.",
+summary: "Applicable account coin bonuses multiply together. Coin bonuses do not increase cash income. "
+      + 'The Battle tab shows the product as Total Coin Bonus; tapping it lists every factor.',
 claimType: 'objective',
-verification: 'unverified',
-sources: [{ origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }],
-traps: ['TWO PAID PACKS MULTIPLY COINS PERMANENTLY, AND THEY STACK. The starter pack is '
+verification: 'verified_here',
+sources: [{ origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, GAME_ALL_COINS_BONUSES_PANEL],
+traps: ['THE TIER COIN BONUS IS ONE OF THE FACTORS. The Total Coin Bonus on the Battle tab includes '
+      + 'the selected tier\'s coin bonus, so it changes with the tier picked: x30.07 at tier 7 and '
+      + 'x20.11 at tier 6 on the same account. A model without it reads x5.18 for the x30.07.', 'TWO PAID PACKS MULTIPLY COINS PERMANENTLY, AND THEY STACK. The starter pack is '
       + `x${STARTER_PACK_COIN_MULTIPLIER} and the epic pack x${EPIC_PACK_COIN_MULTIPLIER}, applied `
       + `as separate multiplies, so owning both is x${BOTH_PACKS_COIN_MULTIPLIER} on everything. `
       + 'No coin model that ignores account purchases can be compared between two players, and '
@@ -349,8 +360,9 @@ traps: ['TWO PAID PACKS MULTIPLY COINS PERMANENTLY, AND THEY STACK. The starter 
       + 'bonus to be added.', 'FOUR OTHER SYSTEMS FEED THIS ONE FIELD — relics, themes, modules and dissonance. A coin '
       + 'model that treats any of them as a separate additive line rather than a factor here will '
       + 'not reproduce the game.'],
-implementedBy: ['STARTER_PACK_COIN_MULTIPLIER', 'EPIC_PACK_COIN_MULTIPLIER', 'BOTH_PACKS_COIN_MULTIPLIER', 'AD_COIN_BONUS_MULTIPLIER'],
-assertions: [{ subject: 'coinsBonusTotal', predicate: 'allFactorsMultiplicative', value: true, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },
+implementedBy: ['STARTER_PACK_COIN_MULTIPLIER', 'EPIC_PACK_COIN_MULTIPLIER', 'BOTH_PACKS_COIN_MULTIPLIER', 'AD_COIN_BONUS_MULTIPLIER', 'computeTotalCoinBonus', 'readTotalCoinBonusFromSaveRoot'],
+assertions: [{ subject: 'coinsBonusTotal', predicate: 'allFactorsMultiplicative', value: true, provenance: GAME_ALL_COINS_BONUSES_PANEL, verification: 'verified_here' as const },
+{ subject: 'coinsBonusTotal', predicate: 'includesTierCoinBonus', value: true, provenance: GAME_ALL_COINS_BONUSES_PANEL, verification: 'verified_here' as const },
 { subject: 'coinsBonusTotal', predicate: 'adBonusMultiplier', value: AD_COIN_BONUS_MULTIPLIER, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },
 { subject: 'coinsBonusTotal', predicate: 'starterPackMultiplier', value: STARTER_PACK_COIN_MULTIPLIER, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },
 { subject: 'coinsBonusTotal', predicate: 'epicPackMultiplier', value: EPIC_PACK_COIN_MULTIPLIER, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },

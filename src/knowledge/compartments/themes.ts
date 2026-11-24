@@ -47,6 +47,15 @@ const GAME_THEME_SLOTS_V29_2_1 = {
   verifiedAt: '2026-11-19',
 } as const
 
+/** What the game printed for themes on 2026-11-24: store rates, and the Themes screen total. */
+const GAME_THEME_COIN_BONUS_V29_2_2 = {
+  origin: 'game',
+  ref: 'guild and event store item labels and the Themes screen "Theme & Song Coin Bonus x1.316": '
+    + 'facts/v29.2.2/live-ui-check.json totalCoinBonus',
+  sourceVersion: 'v29.2.2',
+  verifiedAt: '2026-11-24',
+} as const
+
 const WIKI_MILESTONE_THEMES = {
   origin: 'wiki',
   ref: 'Themes/Milestones',
@@ -71,9 +80,10 @@ export const THEME_FORMULA_CATEGORIES: readonly string[] = THEME_CATEGORY_DEFINI
  * `MILESTONE` is explained — those themes pay the tower rate and are counted as
  * tower. `SONGS` and `PROFILE_BANNER` are not: each carries a stated rate in
  * `THEME_CATEGORY_BONUS` and there is no corresponding coefficient anywhere in
- * `computeThemePassiveCoinBonus`. Either the formula is short two terms or the
- * catalog prices things that do not pay, and the two shipped tables cannot both
- * be right.
+ * `computeThemePassiveCoinBonus`. The game settles which table is right: the
+ * formula is short two terms. Its stores print +0.6% beside banners and event
+ * songs and its Themes screen total counts them, which
+ * `computeThemeAndSongCoinBonus` reproduces.
  */
 export const THEME_GROUPS_WITHOUT_FORMULA_TERM: readonly string[] = Object.keys(THEMES)
   .filter(group => !THEME_FORMULA_CATEGORIES.includes(group.toLowerCase()))
@@ -259,27 +269,35 @@ export const THEME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     label: 'Theme groups the coin formula ignores',
     kind: 'rule',
     claimType: 'objective',
-    verification: 'unverified',
+    verification: 'verified_here',
     summary:
       `${THEME_GROUPS_UNRECONCILED.join(' and ')} carry a stated coin rate in the bonus catalog `
-      + 'and have no term in the coin formula. The two shipped tables disagree and this is not '
-      + 'resolved.',
+      + 'and have no term in `computeThemePassiveCoinBonus`. The game pays both: its stores print '
+      + '+0.6% beside each profile banner and event song, and the Themes screen total matches only '
+      + 'with them counted. `computeThemeAndSongCoinBonus` prices them.',
     units: 'percentage points of coin bonus',
     disambiguation:
       'Distinct from MILESTONE, which is also absent from the formula but has a documented home: '
       + 'those themes pay the tower rate and count as tower. These two have no such account.',
     traps: [
-      `UNRESOLVED, NOT SETTLED. ${THEME_GROUPS_UNRECONCILED.join(' and ')} together are `
-      + `${THEME_GROUPS_UNRECONCILED.reduce((sum, group) => sum + (THEME_GROUP_SIZE[group] ?? 0), 0)} `
-      + `items at 0.6 points each — up to ${THEME_UNRECONCILED_BONUS_POINTS} points of coin bonus `
-      + 'either missing from the formula or wrongly priced in the catalog. Do not quietly pick a '
-      + 'side; a tool that adds them overstates by that much if the catalog is wrong, and one '
-      + 'that omits them understates by the same if the formula is.',
-      'Settling it needs the game or a save with a known song count and an observed coin '
-      + 'multiplier. The wiki does not carry theme coin rates at all, so it cannot decide this.',
+      'SETTLED BY THE GAME, NOT BY THE FORMULA. The four-term formula the wiki carries leaves out '
+      + `${THEME_GROUPS_UNRECONCILED.join(' and ')}, and the game counts both: the screen is titled `
+      + '"Theme & Song Coin Bonus". A tool built on the four terms alone understates by 0.6 points '
+      + 'per banner and per event song.',
+      'NOT EVERY OWNED SLOT PAYS. Slot 0 of tower, background, menu, profile banner and guardian '
+      + 'skin (Orbie) is the default every account has and pays nothing, and of the nine songs only '
+      + 'the three event-store tracks (4, 5 and 8) pay. Counting every owned slot read x1.352 on an '
+      + 'account the game showed at x1.316.',
     ],
-    implementedBy: ['THEME_GROUPS_UNRECONCILED', 'THEME_UNRECONCILED_BONUS_POINTS'],
+    implementedBy: ['THEME_GROUPS_UNRECONCILED', 'THEME_UNRECONCILED_BONUS_POINTS', 'computeThemeAndSongCoinBonus'],
     assertions: [
+      {
+        subject: 'theme.unpricedGroups',
+        predicate: 'paysCoinBonus',
+        value: true,
+        provenance: GAME_THEME_COIN_BONUS_V29_2_2,
+        verification: 'verified_here',
+      },
       {
         subject: 'theme.unpricedGroups',
         predicate: 'unreconciledGroupCount',
@@ -295,7 +313,7 @@ export const THEME_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
         verification: 'unverified',
       },
     ],
-    sources: [CATALOG_THEME_BONUS, CATALOG_THEME_FORMULA],
+    sources: [CATALOG_THEME_BONUS, CATALOG_THEME_FORMULA, GAME_THEME_COIN_BONUS_V29_2_2],
   },
 ]
 

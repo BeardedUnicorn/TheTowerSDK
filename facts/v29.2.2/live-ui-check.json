@@ -1178,6 +1178,160 @@
     "tier": 7,
     "shown": "x5.8"
   },
+  "totalCoinBonus": {
+    "note": "The All Coins Bonuses panel the game opens when Total Coin Bonus on the Battle tab is tapped, read with tier 7 and then tier 6 selected, beside the export the game wrote at 10:03:36Z (relics, dissonance waves and the Generator are unchanged from the sections above). storeLabels is the coin bonus each store prints beside an item: the event store for towers, backgrounds and songs, the guild store for menus, profile banners and guardian skins. themeScreen is the total the Themes screen prints. owned is every slot the export marks unlocked, slot 0 included: towerUnlocked, backgroundUnlocked, menuUnlocked, profileBannerUnlocked, guardianSkinUnlocked and trackAvailable. currentTier is the export's own field, written with tier 7 selected. coinsCard.index is the card's slot in cardLevel; generator is moduleEquipped[2] and slotLevels[2]. No Coins Mastery, Dissonant Echo - Utility or Primary Module Bonus - Generator research and no Coin Bonus enhancement.",
+    "currentTier": 7,
+    "purchases": {
+      "hasDisableAds": true,
+      "hasStarterPack": false,
+      "hasEpicPack": false
+    },
+    "coinsCard": {
+      "index": 6,
+      "level": 7,
+      "active": true,
+      "masteryUnlocked": false
+    },
+    "generator": {
+      "infoIndex": 25,
+      "currentRarity": 6,
+      "effects": [
+        194,
+        169,
+        188,
+        180,
+        161,
+        155,
+        0,
+        0
+      ],
+      "slotLevel": 93
+    },
+    "owned": {
+      "tower": [
+        0,
+        2,
+        6,
+        9,
+        11,
+        14,
+        15,
+        24,
+        31,
+        36,
+        42,
+        47,
+        49,
+        66,
+        72,
+        75,
+        76,
+        77,
+        81,
+        82,
+        83,
+        84
+      ],
+      "background": [
+        0,
+        2,
+        6,
+        11,
+        16,
+        21,
+        27,
+        29,
+        31,
+        44,
+        50,
+        53,
+        54,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "menu": [
+        0,
+        6,
+        10,
+        11,
+        12
+      ],
+      "profileBanner": [
+        0,
+        7,
+        11,
+        12
+      ],
+      "guardian": [
+        0,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "song": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "storeLabels": {
+      "tower": "+0.4%",
+      "background": "+0.8%",
+      "menu": "+0.6%",
+      "profileBanner": "+0.6%",
+      "guardian": "+0.6%",
+      "song": "+0.6%"
+    },
+    "themeScreen": "Theme & Song Coin Bonus x1.316",
+    "panels": [
+      {
+        "tier": 7,
+        "battleTab": "x30.07",
+        "shown": {
+          "Disable ads": "x1.50",
+          "Starter pack": "Inactive",
+          "Epic pack": "Inactive",
+          "Active cards": "x1.45",
+          "Modules": "x1.247",
+          "Difficulty Tier": "x5.80",
+          "Themes Bonus": "x1.316",
+          "Relics Bonus": "x1.12",
+          "Enhancement Bonus": "Inactive",
+          "Dissonant Coin Bonus": "x1.30",
+          "Total bonus": "x30.07"
+        }
+      },
+      {
+        "tier": 6,
+        "battleTab": "x20.11",
+        "shown": {
+          "Disable ads": "x1.50",
+          "Starter pack": "Inactive",
+          "Epic pack": "Inactive",
+          "Active cards": "x1.45",
+          "Modules": "x1.247",
+          "Difficulty Tier": "x5.00",
+          "Themes Bonus": "x1.316",
+          "Relics Bonus": "x1.12",
+          "Enhancement Bonus": "Inactive",
+          "Dissonant Coin Bonus": "x1.01",
+          "Total bonus": "x20.11"
+        }
+      }
+    ]
+  },
   "tierRecords": [
     {
       "tier": 1,
@@ -1364,7 +1518,6 @@
     "shown": "New Ultimate Weapon 1750"
   },
   "notModelled": [
-    "Total Coin Bonus x30.07",
     "Tournament Ticket balance 0 (the export has no field for it)"
   ],
   "unexplained": [
