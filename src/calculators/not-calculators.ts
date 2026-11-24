@@ -31,10 +31,13 @@ export const NOT_CALCULATORS: Readonly<Record<string, string>> = {
   'calculators.calculatorsReading': 'the registry graph; calc_graph answers it per concept',
 
   /*
-   * All of `knowledge/`. docs/ORGANIZATION_CONTRACT.md rule 2: nothing may import `knowledge/`, and
-   * the registry would have to. The graph is reached through the oracle_* tools and the patch
-   * notes through patch_notes, so nothing here is out of an agent's reach — except the six small
-   * formulas at the end, which sit in knowledge compartments and have no tool of their own.
+   * Everything declared in `knowledge/`. docs/ORGANIZATION_CONTRACT.md rule 2: nothing may import
+   * `knowledge/`, and the registry would have to. The graph is reached through the oracle_* tools
+   * and the patch notes through patch_notes, so nothing here is out of an agent's reach.
+   *
+   * Six formulas used to sit in knowledge compartments with no tool of their own (thorns hits and
+   * Protector multiplier, the elite chart rows, the level reduction curve, the Guardian cost
+   * column). They are declared in mechanics/ now, registered there, and re-exported by knowledge.
    */
   'knowledge.knowledgeFor': 'knowledge/ may not be imported; oracle_get answers it',
   'knowledge.relationsOf': 'knowledge/ may not be imported; oracle_get returns relations both ways',
@@ -66,12 +69,6 @@ export const NOT_CALCULATORS: Readonly<Record<string, string>> = {
   'knowledge.patchNotesBetween': 'knowledge/ may not be imported; patch_notes `from` and `to` answer it',
   'knowledge.recentPatchNotes': 'knowledge/ may not be imported; patch_notes `recent` answers it',
   'knowledge.patchNoteVersions': 'knowledge/ may not be imported; patch_notes with no argument lists them',
-  'knowledge.thornsHitsToKill': 'knowledge/ may not be imported; a formula that would have to move to mechanics/ to be registered',
-  'knowledge.thornsProtectorMultiplier': 'knowledge/ may not be imported; a formula that would have to move to mechanics/ to be registered',
-  'knowledge.eliteSpawnSinglePercentAtRow': 'knowledge/ may not be imported; enemy.eliteSpawnChance is the registered formula',
-  'knowledge.eliteSpawnDoublePercentAtRow': 'knowledge/ may not be imported; enemy.eliteSpawnChance is the registered formula',
-  'knowledge.diminishedLevelReductions': 'knowledge/ may not be imported; a formula that would have to move to mechanics/ to be registered',
-  'knowledge.guardianCostColumn': 'knowledge/ may not be imported; a lookup that would have to move to data/ to be registered',
 
   // A builder is an object of functions, which JSON cannot carry in or out.
   'builders.findCalculatorBuilder': 'returns an object of functions; form_calc runs a builder by id',

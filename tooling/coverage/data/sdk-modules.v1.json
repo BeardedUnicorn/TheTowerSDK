@@ -569,12 +569,14 @@
       "id": "sdk-module:combat/thorns",
       "surface": "sdk-module",
       "label": "combat/thorns",
-      "graphNodeIds": [],
-      "coverageStatus": "unmodeled",
+      "graphNodeIds": [
+        "oracle.thorns"
+      ],
+      "coverageStatus": "modeled",
       "sources": [
         "src/mechanics/combat/thorns.ts"
       ],
-      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
     },
     {
       "id": "sdk-module:combat/thorns-calculator",
@@ -1349,6 +1351,19 @@
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
     {
+      "id": "sdk-module:enemies/level-reduction-curve",
+      "surface": "sdk-module",
+      "label": "enemies/level-reduction-curve",
+      "graphNodeIds": [
+        "oracle.enemy.levelReductionCurve"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/mechanics/enemies/level-reduction-curve.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
       "id": "sdk-module:enemies/level-skip",
       "surface": "sdk-module",
       "label": "enemies/level-skip",
@@ -1649,6 +1664,19 @@
         "src/mechanics/guardians/compute.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "sdk-module:guardians/cost-column",
+      "surface": "sdk-module",
+      "label": "guardians/cost-column",
+      "graphNodeIds": [
+        "oracle.guardian.upgradeTrack"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/mechanics/guardians/cost-column.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
     },
     {
       "id": "sdk-module:guardians/types",

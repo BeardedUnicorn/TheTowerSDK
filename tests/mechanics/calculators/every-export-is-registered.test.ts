@@ -102,7 +102,43 @@ describe('every exported function is registered', () => {
     // docs/ORGANIZATION_CONTRACT.md rule 2. Every knowledge export is listed with the tool that answers it.
     expect(calculators.CALCULATORS.filter(spec => spec.module.startsWith('src/knowledge/'))).toEqual([])
     const listed = Object.keys(NOT_CALCULATORS).filter(handle => handle.startsWith('knowledge.'))
-    expect(listed.length).toBe(exportedFunctions.filter(fn => fn.entry === 'knowledge').length)
+    const reExported = exportedFunctions.filter(fn => fn.entry === 'knowledge' && registered.has(fn.name))
+    expect(listed.length + reExported.length).toBe(exportedFunctions.filter(fn => fn.entry === 'knowledge').length)
+  })
+
+  it('runs the formulas knowledge re-exports from mechanics, as the same functions', () => {
+    /*
+     * These six were declared in knowledge compartments, where the registry could not reach them.
+     * They moved to mechanics/ unchanged; knowledge still exports each, and it is the same function.
+     */
+    const moved = [
+      'thornsHitsToKill',
+      'thornsProtectorMultiplier',
+      'eliteSpawnSinglePercentAtRow',
+      'eliteSpawnDoublePercentAtRow',
+      'diminishedLevelReductions',
+      'guardianCostColumn',
+    ] as const
+    for (const name of moved) {
+      expect(knowledge[name], name).toBe(mechanics[name])
+      expect(calculators.calculatorSpec(`mechanics.${name}`)?.module, name).toMatch(/^src\/mechanics\//)
+      expect(Object.hasOwn(NOT_CALCULATORS, `knowledge.${name}`), name).toBe(false)
+    }
+
+    const run = (id: string, args: Record<string, unknown>) => calculators.runCalculator(id, args).value
+    // 34% kills on the third hit; a boss takes half, so 17% a hit and the sixth hit.
+    expect(run('mechanics.thornsHitsToKill', { percentOfMaxHealth: 34 })).toBe(3)
+    expect(run('mechanics.thornsHitsToKill', { percentOfMaxHealth: 34, isBoss: true })).toBe(6)
+    expect(run('mechanics.thornsHitsToKill', { percentOfMaxHealth: 0 })).toBeNull()
+    expect(run('mechanics.thornsProtectorMultiplier', {})).toBe(0.7)
+    expect(run('mechanics.thornsProtectorMultiplier', { labBenefit: 6 })).toBe(0.76)
+    // The same square series, nine rows apart.
+    expect([0, 1, 5, 10, 19].map(row => run('mechanics.eliteSpawnSinglePercentAtRow', { row }))).toEqual([0, 1, 25, 100, 100])
+    expect([9, 10, 14, 19].map(row => run('mechanics.eliteSpawnDoublePercentAtRow', { row }))).toEqual([0, 1, 25, 100])
+    // Nothing lost to 100, flat at 100 from 101 to 1599, then a step.
+    expect([50, 100, 101, 1599, 1600].map(raw => run('mechanics.diminishedLevelReductions', { raw }))).toEqual([50, 100, 100, 100, 289])
+    expect(run('mechanics.guardianCostColumn', { track: 'percentage' })).toBe('attackCost')
+    expect(run('mechanics.guardianCostColumn', { track: 'cooldown' })).toBe('cooldownCost')
   })
 })
 

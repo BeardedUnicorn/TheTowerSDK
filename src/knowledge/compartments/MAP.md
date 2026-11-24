@@ -14,7 +14,7 @@ One file per subject area; each owns its nodes and edges.
 | `daily-missions.ts` | Daily missions, as an income source rather than a checklist. | DAILY_MISSION_TIER_COUNT, DAILY_MISSION_TIERS_ON_WIKI, DAILY_MISSION_TIERS_BEYOND_WIKI, DAILY_MISSION_WEEKLY_REWARDS_ARE_CUMULATIVE (+7 more) |
 | `dissonance.ts` | — | DISSONANCE_TYPES, DISSONANCE_TYPE_ENUM, DISSONANCE_TRADE, DISSONANCE_ECHO_RESEARCH_INDEX (+11 more) |
 | `economy.ts` | Coins, cash and the currencies — as the game defines them. | RUN_ONLY_CURRENCIES, ACCOUNT_CURRENCIES, COINS_PER_KILL_FORMULA, WAVE_SKIP_INCOME_MULTIPLIER (+22 more) |
-| `enemies.ts` | Enemies, as the game defines them. | ELITE_SPAWN_CHANCE_TIER_RATIO, ELITE_SPAWN_CHANCE_TIER_BLOCKS, eliteSpawnSinglePercentAtRow, eliteSpawnDoublePercentAtRow (+28 more) |
+| `enemies.ts` | Enemies, as the game defines them. | ELITE_SPAWN_CHANCE_TIER_RATIO, ELITE_SPAWN_CHANCE_TIER_BLOCKS, ELITE_SPAWN_CHANCE_MISSING_CELLS, ENEMY_SPAWN_CAP (+28 more) |
 | `footguns.ts` | Footguns — permanence rules, and the community's advice about them. | IRREVERSIBLE_UPGRADES, REVERSIBLE_UPGRADES, COOLDOWN_SYNC_TARGETS, BOT_COOLDOWN_FLOOR_SECONDS (+3 more) |
 | `guardian.ts` | The Guardian, as the game defines it. | GUARDIAN_AMBIGUOUS_CHIP_LABELS, GUARDIAN_CHIP_LOOKUP_KEY, GUARDIAN_UNLOCK_BIT_COST, GUARDIAN_SLOT_BIT_COST (+18 more) |
 | `guild.ts` | Guilds — the missing link between "the Guardian costs 200 bits" and "this account can never buy one". | GUILD_MEMBER_ROLES, GUILD_ACTIVE_ROLES, GUILD_DEPARTED_ROLES, GUILD_MEMBER_FIELDS (+5 more) |

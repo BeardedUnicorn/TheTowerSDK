@@ -609,6 +609,8 @@ import {
 import {
   thornAccumulatorNext,
   thornDamageOnHit,
+  thornsHitsToKill,
+  thornsProtectorMultiplier,
   towerThornsFraction,
 } from '../mechanics/combat/thorns'
 import {
@@ -1004,6 +1006,8 @@ import {
 } from '../mechanics/enemies/drops-wave-context'
 import {
   computeWaveInfoBossWaveInterval,
+  eliteSpawnDoublePercentAtRow,
+  eliteSpawnSinglePercentAtRow,
   expectedEliteKillsPerWave,
   fleetSpawnSchedule,
   isBossSpawnWave,
@@ -1031,6 +1035,9 @@ import {
 import {
   getResistanceLevel,
 } from '../mechanics/enemies/get-resistance-level'
+import {
+  diminishedLevelReductions,
+} from '../mechanics/enemies/level-reduction-curve'
 import {
   applyTierBattleConditionsToSkipChance,
   buildLevelSkipChanceRaw,
@@ -1207,6 +1214,9 @@ import {
   guardianTickDamage,
   normalizedGuardianLevelToSource,
 } from '../mechanics/guardians/compute'
+import {
+  guardianCostColumn,
+} from '../mechanics/guardians/cost-column'
 import {
   bcCounterLabBenefitIncreaseAtLevel,
   buildTierSkipChanceAdjustments,
@@ -5924,6 +5934,41 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.thornAccumulatorNext'],
+    dependsOn: [],
+  },
+  {
+    id: 'mechanics.thornsProtectorMultiplier',
+    title: 'thornsProtectorMultiplier',
+    entry: 'mechanics',
+    module: 'src/mechanics/combat/thorns.ts',
+    symbol: 'thornsProtectorMultiplier',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'labBenefit', kind: 'number', optional: true, describes: 'number' },
+    ],
+    returns: { kind: 'number', describes: 'number' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.thornsProtectorMultiplier'],
+    dependsOn: [],
+  },
+  {
+    id: 'mechanics.thornsHitsToKill',
+    title: 'thornsHitsToKill',
+    entry: 'mechanics',
+    module: 'src/mechanics/combat/thorns.ts',
+    symbol: 'thornsHitsToKill',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'percentOfMaxHealth', kind: 'number', describes: 'number' },
+      { name: 'isBoss', kind: 'boolean', optional: true, describes: 'boolean' },
+    ],
+    returns: { kind: 'number', nullable: true, describes: 'number | null' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.thornsHitsToKill'],
     dependsOn: [],
   },
   {
@@ -11135,6 +11180,40 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     dependsOn: [],
   },
   {
+    id: 'mechanics.eliteSpawnSinglePercentAtRow',
+    title: 'eliteSpawnSinglePercentAtRow',
+    entry: 'mechanics',
+    module: 'src/mechanics/enemies/elite-spawn-chance.ts',
+    symbol: 'eliteSpawnSinglePercentAtRow',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'row', kind: 'number', describes: 'number' },
+    ],
+    returns: { kind: 'number', describes: 'number' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.eliteSpawnSinglePercentAtRow'],
+    dependsOn: [],
+  },
+  {
+    id: 'mechanics.eliteSpawnDoublePercentAtRow',
+    title: 'eliteSpawnDoublePercentAtRow',
+    entry: 'mechanics',
+    module: 'src/mechanics/enemies/elite-spawn-chance.ts',
+    symbol: 'eliteSpawnDoublePercentAtRow',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'row', kind: 'number', describes: 'number' },
+    ],
+    returns: { kind: 'number', describes: 'number' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.eliteSpawnDoublePercentAtRow'],
+    dependsOn: [],
+  },
+  {
     id: 'mechanics.overchargeExponentReducerBenefitPct',
     title: 'overchargeExponentReducerBenefitPct',
     entry: 'mechanics',
@@ -11251,6 +11330,23 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.getResistanceLevel'],
+    dependsOn: [],
+  },
+  {
+    id: 'mechanics.diminishedLevelReductions',
+    title: 'diminishedLevelReductions',
+    entry: 'mechanics',
+    module: 'src/mechanics/enemies/level-reduction-curve.ts',
+    symbol: 'diminishedLevelReductions',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'raw', kind: 'number', describes: 'number' },
+    ],
+    returns: { kind: 'number', describes: 'number' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.diminishedLevelReductions'],
     dependsOn: [],
   },
   {
@@ -13420,6 +13516,23 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.guardianSourceLevelToNormalized'],
+    dependsOn: [],
+  },
+  {
+    id: 'mechanics.guardianCostColumn',
+    title: 'guardianCostColumn',
+    entry: 'mechanics',
+    module: 'src/mechanics/guardians/cost-column.ts',
+    symbol: 'guardianCostColumn',
+    tier: 'generated',
+    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'track', kind: 'string', describes: 'string' },
+    ],
+    returns: { kind: 'string', describes: 'string' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['mechanics.guardianCostColumn'],
     dependsOn: [],
   },
   {
@@ -27873,6 +27986,8 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.towerThornsFraction': a => towerThornsFraction(a.workshopFraction as never, a.moduleFraction as never, a.relicFraction as never, a.vaultFraction as never),
   'mechanics.thornDamageOnHit': a => thornDamageOnHit(a.input as never),
   'mechanics.thornAccumulatorNext': a => thornAccumulatorNext(a.existing as never, a.thornMultiplier as never),
+  'mechanics.thornsProtectorMultiplier': a => thornsProtectorMultiplier(a.labBenefit as never),
+  'mechanics.thornsHitsToKill': a => thornsHitsToKill(a.percentOfMaxHealth as never, a.isBoss as never),
   'mechanics.towerFireInRange': a => towerFireInRange(a.input as never),
   'mechanics.towerFireRapidFireEligible': a => towerFireRapidFireEligible(a.gate as never),
   'mechanics.rangeSoftCap': a => rangeSoftCap(a.raw as never),
@@ -28169,6 +28284,8 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.wavesUntilNextEliteSpawnTier': a => wavesUntilNextEliteSpawnTier(a.tier as never, a.wave as never),
   'mechanics.waveInfoBossSpawnColumn': a => waveInfoBossSpawnColumn(a.wave as never, a.bossInterval as never),
   'mechanics.waveInfoFleetSpawnColumn': a => waveInfoFleetSpawnColumn(a.tier as never, a.wave as never),
+  'mechanics.eliteSpawnSinglePercentAtRow': a => eliteSpawnSinglePercentAtRow(a.row as never),
+  'mechanics.eliteSpawnDoublePercentAtRow': a => eliteSpawnDoublePercentAtRow(a.row as never),
   'mechanics.overchargeExponentReducerBenefitPct': a => overchargeExponentReducerBenefitPct(a.reducerLabLevel as never),
   'mechanics.overchargeAttackExponentAfterLab': a => overchargeAttackExponentAfterLab(a.reducerLabLevel as never),
   'mechanics.commanderRadiusBenefitPct': a => commanderRadiusBenefitPct(a.radiusLabLevel as never),
@@ -28176,6 +28293,7 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.saboteurAttackSpeedBenefitPct': a => saboteurAttackSpeedBenefitPct(a.attackSpeedLabLevel as never),
   'mechanics.saboteurSpeedMultAfterLab': a => saboteurSpeedMultAfterLab(a.attackSpeedLabLevel as never),
   'mechanics.getResistanceLevel': a => getResistanceLevel(a.input as never),
+  'mechanics.diminishedLevelReductions': a => diminishedLevelReductions(a.raw as never),
   'mechanics.levelSkipWorkshopBase': a => levelSkipWorkshopBase(a.utilityLevel as never, a.kind as never),
   'mechanics.levelSkipLabBenefitIncreaseActive': a => levelSkipLabBenefitIncreaseActive(a.labLevel as never, a.rate as never),
   'mechanics.levelSkipLabBenefitIncrease': a => levelSkipLabBenefitIncrease(a.cumulativeLabBenefit as never),
@@ -28302,6 +28420,7 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.getGuardianSourceMinLevel': a => getGuardianSourceMinLevel(a.guardianKey as never),
   'mechanics.normalizedGuardianLevelToSource': a => normalizedGuardianLevelToSource(a.normalizedLevel as never, a.guardianKey as never),
   'mechanics.guardianSourceLevelToNormalized': a => guardianSourceLevelToNormalized(a.sourceLevel as never, a.guardianKey as never),
+  'mechanics.guardianCostColumn': a => guardianCostColumn(a.track as never),
   'mechanics.mergeWorkshopBcLabLevels': a => mergeWorkshopBcLabLevels(a.bcCounterLabLevels as never, a.researchLabLevels as never),
   'mechanics.bcCounterLabBenefitIncreaseAtLevel': a => bcCounterLabBenefitIncreaseAtLevel(a.slug as never, a.level as never),
   'mechanics.globalBcReductionBenefitFraction': a => globalBcReductionBenefitFraction(a.bcCounterLabLevels as never),

@@ -28,7 +28,7 @@ What the tower does to enemies — damage, its multipliers, and every on-hit eff
 | `rend-armor.ts` | Rend Armor: | REND_WORKSHOP_SLOT_PRIMARY, REND_WORKSHOP_SLOT_SECONDARY, REND_MODULE_SLOT, rendArmorMultiplier (+1 more) |
 | `shockwave.ts` | — | SHOCKWAVE_MIN_FREQUENCY_SECONDS, SHOCKWAVE_ENHANCEMENT_BASE, SHOCKWAVE_ENHANCEMENT_STEP, SHOCKWAVE_MODULE_STAT_INDEX (+6 more) |
 | `thorns-calculator.ts` | Thorns: | ThornsCalculatorInput, normalizeThornsInput, buildThornsWallChart, buildThornsBaseChart |
-| `thorns.ts` | — | towerThornsFraction, THORN_DAMAGE_SCALE, THORN_LAB_INDEX, THORN_MODULE_BENEFIT_SLOT (+2 more) |
+| `thorns.ts` | — | towerThornsFraction, THORN_DAMAGE_SCALE, THORN_LAB_INDEX, THORN_MODULE_BENEFIT_SLOT (+6 more) |
 | `tower-fire.ts` | Tower fire: | towerFireInRange, towerFireRapidFireEligible |
 | `tower-range.ts` | Tower range stat — `CalculateMaxRangeAndSetRadius`. | rangeSoftCap, computeMaxDistance, getOutOfRoundMaxDistance, RANGE_INDICES (+1 more) |
 | `types.ts` | The types `mechanics/combat/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | EnemyCcTimers, DamageReductionStatDelta, DamageReductionStatAccumulator, DamageReductionInput (+49 more) |

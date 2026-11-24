@@ -11,10 +11,11 @@ Enemy stats, types, resistances, elite spawns and drops.
 | `drops-shared.ts` | Leaf module for symbols shared across the enemy-drops modules (`drops-simulation`, `drops-wave-context`) and by anyone assembling an `EnemyDropsSimulationInput`. | clampCardGameLevel, clampCardMasteryLevel, computeBossWaveIntervalFromTier, computeTierNumber (+1 more) |
 | `drops-simulation.ts` | Enemy drops: | computeBossWaveInterval, BOSS_WAVE_INTERVAL_BY_TIER, computeEnemyDropsNormalizedRoiPct, fetchUpgradeAtLevel (+15 more) |
 | `drops-wave-context.ts` | Wave-level drop context — card levels, skip EV, boss counts. | WAVE_SKIP_SKIPPED_WAVE_MULT, waveSkipExpectedSkipsPerProc, averageEliteCellsPerKill, avgEliteKillsPerWaveFromMastery (+3 more) |
-| `elite-spawn-chance.ts` | Elite spawn chance lookup — same table as the site Elite Spawn Chance chart (`chart-data.ts` / `ELITE_SPAWN_CHANCE_ROWS`). | eliteSpawnChanceAtWave, waveInfoEliteSpawnChancePct, waveInfoEliteChartDoubleSpawnPct, waveInfoEliteEffectiveDoubleSpawnPct (+13 more) |
+| `elite-spawn-chance.ts` | Elite spawn chance lookup — same table as the site Elite Spawn Chance chart (`chart-data.ts` / `ELITE_SPAWN_CHANCE_ROWS`). | eliteSpawnChanceAtWave, waveInfoEliteSpawnChancePct, waveInfoEliteChartDoubleSpawnPct, waveInfoEliteEffectiveDoubleSpawnPct (+15 more) |
 | `fleet-lab-effects.ts` | v29 fleet research labs - effects on wave/econ simulation inputs. | OVERCHARGE_EXPONENT_REDUCER_BASE_PCT, OVERCHARGE_EXPONENT_REDUCER_PER_LEVEL_PCT, COMMANDER_RADIUS_BASE_PCT, COMMANDER_RADIUS_PER_LEVEL_PCT (+9 more) |
 | `get-resistance-level.ts` | Combine condition heat with condition-specific and global resistance reductions. | getResistanceLevel |
 | `index.ts` | Enemies: | — |
+| `level-reduction-curve.ts` | How many enemy level reductions still count once there are a lot of them. | LEVEL_REDUCTION_FREE_THRESHOLD, LEVEL_REDUCTION_STEP_SIZE, LEVEL_REDUCTION_ASYMPTOTE, LEVEL_REDUCTION_AMPLITUDE (+1 more) |
 | `level-skip.ts` | Enemy level skip: | ATTACK_LEVEL_SKIP_UTILITY_INDEX, HEALTH_LEVEL_SKIP_UTILITY_INDEX, ATTACK_LEVEL_SKIP_MODULE_CLUSTER_INDEX, HEALTH_LEVEL_SKIP_MODULE_CLUSTER_INDEX (+46 more) |
 | `overcharge-hit-scaling.ts` | Overcharge tower hit scaling. | ENEMY_HEAT_UP_MULTIPLIER_PER_HIT, overchargeVolleyIndex, overchargeVolleyDamageMultiplier, enemyHeatUpMultiplierThroughHit (+1 more) |
 | `ray-attack.ts` | Ray charged shots are distinct from the wave panel's plain base-damage number. | RAY_ATTACK_PROFILE, rayAttackPayloadDamage |

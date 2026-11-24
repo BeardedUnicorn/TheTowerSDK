@@ -7,6 +7,7 @@ Guardian damage and the chips that shape it.
 | File | Purpose | Exports |
 |---|---|---|
 | `compute.ts` | — | GUARDIAN_TYPE_HALF_DAMAGE, guardianTickDamage, depleteGuardianPool, getGuardianSourceMinLevel (+3 more) |
+| `cost-column.ts` | Which column of a Guardian chip's upgrade table holds the cost of a track. | GUARDIAN_IRREGULAR_COST_COLUMNS, guardianCostColumn |
 | `index.ts` | Guardian damage and the chips that shape it. | — |
 | `types.ts` | The types `mechanics/guardians/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | GuardianTickDamageInput, GuardianDamagePool |
 

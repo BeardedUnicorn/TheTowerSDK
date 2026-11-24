@@ -62,10 +62,10 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/effective-paths/edamage`](mechanics/effective-paths/edamage/MAP.md) | 2 | The types the damage paths export, re-exported by the folder above. |
 | [`src/mechanics/effective-paths/eecon`](mechanics/effective-paths/eecon/MAP.md) | 2 | The types the economy paths export, re-exported by the folder above. |
 | [`src/mechanics/effective-paths/firing`](mechanics/effective-paths/firing/MAP.md) | 3 | Firing rates, rapid-fire uptime and frame caps used by the damage model. |
-| [`src/mechanics/enemies`](mechanics/enemies/MAP.md) | 22 | Enemy stats, types, resistances, elite spawns and drops. |
+| [`src/mechanics/enemies`](mechanics/enemies/MAP.md) | 23 | Enemy stats, types, resistances, elite spawns and drops. |
 | [`src/mechanics/ep-controls`](mechanics/ep-controls/MAP.md) | 7 | Which Effective Paths controls exist, and how much of the surface is wired. |
 | [`src/mechanics/ep-graph`](mechanics/ep-graph/MAP.md) | 8 | The Effective Paths workbook as a graph of cells and their dependencies. |
-| [`src/mechanics/guardians`](mechanics/guardians/MAP.md) | 3 | Guardian damage and the chips that shape it. |
+| [`src/mechanics/guardians`](mechanics/guardians/MAP.md) | 4 | Guardian damage and the chips that shape it. |
 | [`src/mechanics/labs`](mechanics/labs/MAP.md) | 6 | Lab research: what a level costs and what it unlocks. |
 | [`src/mechanics/modules`](mechanics/modules/MAP.md) | 11 | Module effects, cluster grouping and upgrade paths. |
 | [`src/mechanics/perks`](mechanics/perks/MAP.md) | 3 | What a perk is worth. |
