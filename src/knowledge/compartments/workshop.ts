@@ -349,12 +349,15 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       + 'currencies and they behave completely differently across runs.',
       'Upgrades unlock in a chain — each is gated behind specific earlier purchases, so a stat is '
       + 'not available merely because it is affordable.',
+      'UNLOCK BUTTONS ARE NOT DISCOUNTED. With the attack discount lab at 32 and the defense one at 30, '
+      + 'v29.2.2 showed "Unlock Rend Armor 500.00B" and "Unlock The Wall 500.00M" — the full prices. '
+      + 'Running an unlock price through the section discount understates it by up to half.',
       `NOT EVERY UPGRADE CURVE RISES. ${WORKSHOP_DECREASING_UPGRADES.length} decrease with level `
       + `and ${WORKSHOP_NON_MONOTONIC_UPGRADES.length} are not monotonic at all. A planner that `
       + 'assumes "higher level is a bigger number" misreads those, and the error looks like a small '
       + 'number rather than a wrong one.',
     ],
-    implementedBy: ['WORKSHOP_UPGRADE_NAMES', 'WORKSHOP_CATEGORIES'],
+    implementedBy: ['WORKSHOP_UPGRADE_NAMES', 'WORKSHOP_CATEGORIES', 'WORKSHOP_UNLOCK_ROWS', 'getNextWorkshopUnlock'],
     assertions: [
       { subject: 'workshop', predicate: 'categoryCount', value: WORKSHOP_CATEGORIES.length, provenance: { origin: 'wiki', ref: 'Workshop Upgrades', verifiedAt: '2026-08-16' } },
       // Derived from the shipped upgrade table, so a catalog change moves these
