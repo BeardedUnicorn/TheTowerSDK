@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.0 (2026-11-24)
+
+
+### Bug Fixes
+
+* **milestones:** list the labs each milestone opens as the game does ([ea95040](https://github.com/BeardedUnicorn/TheTowerSDK/commit/ea950400d345f5d5aa5f870037b63e8c2e8f2ff6))
+
+
+### Features
+
+* **cards:** give the chance of drawing each card, as the Card Chances panel shows it ([17a6412](https://github.com/BeardedUnicorn/TheTowerSDK/commit/17a6412129103d92d833a1df24f4c18536e4957e))
+* **data:** match labs, workshop, modules and numbers to the live v29.2.2 game ([325a6e3](https://github.com/BeardedUnicorn/TheTowerSDK/commit/325a6e392df8eb4a51d516ecb81f1f6d97d01934))
+* **data:** price workshop unlocks and the next ultimate weapon ([6d17ab6](https://github.com/BeardedUnicorn/TheTowerSDK/commit/6d17ab61b49e46c3cfa0ae1066f9f0d3618f060b))
+* **mechanics:** build the Battle tab's Total Coin Bonus row by row ([56902dd](https://github.com/BeardedUnicorn/TheTowerSDK/commit/56902dd9f174d125d756ce95e7c7fa8c14852407))
+* **mechanics:** computeWorkshopScreenValue — the number the Workshop screen shows ([8c0f9f7](https://github.com/BeardedUnicorn/TheTowerSDK/commit/8c0f9f7827221233053680201aa3be65a33ac983))
+
 ## 1.2.1 (2026-11-24)
 
 
