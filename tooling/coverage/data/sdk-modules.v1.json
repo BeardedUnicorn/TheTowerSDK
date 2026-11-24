@@ -283,6 +283,20 @@
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
     {
+      "id": "sdk-module:cards/draw-odds",
+      "surface": "sdk-module",
+      "label": "cards/draw-odds",
+      "graphNodeIds": [
+        "oracle.card.rarity",
+        "oracle.card.rarityGrouping"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/mechanics/cards/draw-odds.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
       "id": "sdk-module:cards/effect-lookup",
       "surface": "sdk-module",
       "label": "cards/effect-lookup",
@@ -290,6 +304,17 @@
       "coverageStatus": "unmodeled",
       "sources": [
         "src/mechanics/cards/effect-lookup.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "sdk-module:cards/types",
+      "surface": "sdk-module",
+      "label": "cards/types",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/mechanics/cards/types.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
@@ -2491,6 +2516,17 @@
       "coverageStatus": "unmodeled",
       "sources": [
         "src/mechanics/workshop/overcap.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "sdk-module:workshop/screen-value",
+      "surface": "sdk-module",
+      "label": "workshop/screen-value",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/mechanics/workshop/screen-value.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },

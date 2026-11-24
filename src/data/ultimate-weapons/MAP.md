@@ -10,5 +10,6 @@ Ultimate weapons and their stones.
 | `stats.ts` | Ultimate weapon stat lookups: | findUwWeaponByName, findUwStatByName, getUwStatMaxLevel, sumUwStatCostsBetween (+3 more) |
 | `stones.data.ts` | The ultimate weapon upgrade ladders, by weapon and stat: | uwStoneChartData |
 | `types.ts` | The types `data/ultimate-weapons/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | UwLevelValue, UwStatValue, UwWeaponValue, UwStatCostRow (+5 more) |
+| `unlocks.ts` | What the next ultimate weapon, and the next ultimate weapon plus, costs to unlock, so a calculator can price it. | ULTIMATE_WEAPON_UNLOCK_STONE_COSTS_BY_OWNED, getNextUltimateWeaponStoneCost, UW_PLUS_UNLOCK_STONE_COSTS_BY_OWNED, getNextUltimateWeaponPlusStoneCost |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

@@ -7,7 +7,9 @@ Card costs and the lookup from a card to the effect it applies.
 | File | Purpose | Exports |
 |---|---|---|
 | `costs.ts` | Card level upgrade costs in gems. | CARD_LEVEL_COPY_REQUIREMENTS, cardLevelUpgradeGemCost, cardLevelCopiesRequired |
+| `draw-odds.ts` | The chance a card pull lands on each rarity and on each card. | computeCardDrawOdds |
 | `effect-lookup.ts` | Card level / mastery effect lookup — values from `card-data.ts`. | cardLevelMultiplier, cardLevelPercentFraction, cardMasteryPercentFraction, superTowerActiveDamageMultiplier (+4 more) |
 | `index.ts` | Cards: | — |
+| `types.ts` | The types `mechanics/cards/` exports, in one place. | CardDrawCandidate, CardDrawOdds |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)
