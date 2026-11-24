@@ -34,7 +34,7 @@ One file per subject area; each owns its nodes and edges.
 | `tower.ts` | Tower stats and defensive abilities, as the game defines them. | EHP_FORMULA, EHP_FORMULA_WITH_CHRONO_FIELD, ATTACK_SPEED_FORMULA, TOWER_HARD_CAPS (+14 more) |
 | `types.ts` | The types `knowledge/compartments/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | BotPlusAbility, GuardianTrack, AcronymExpansion |
 | `ultimate-weapons.ts` | Ultimate weapons, as the game defines them. | ULTIMATE_WEAPON_TOTAL_STONE_COST, ULTIMATE_WEAPON_STATS, ULTIMATE_WEAPONS_WITHOUT_COOLDOWN, ULTIMATE_WEAPON_STAT_NAME_MAP (+9 more) |
-| `uw-plus.ts` | Ultimate Weapon Enhancements (UW+). | UW_PLUS_ABILITIES, UW_PLUS_SHORTHAND, UW_PLUS_UNLOCK_STONE_COST, UW_PLUS_UNLOCK_TOTAL_STONES (+3 more) |
+| `uw-plus.ts` | Ultimate Weapon Enhancements (UW+). | UW_PLUS_ABILITIES, UW_PLUS_SHORTHAND, UW_PLUS_UNLOCK_TOTAL_STONES, UW_PLUS_MAX_TIER (+3 more) |
 | `vault.ts` | The Vault and its tech trees, as the game defines them. | VAULT_POWER_TIER1_KEY_COST, VAULT_POWER_ALL_TIERS_KEY_COST, VAULT_POWER_TIER_KEY_MULTIPLE, VAULT_POWER_TIER_UNLOCK_REQUIREMENTS (+3 more) |
 | `workshop.ts` | The workshop and its enhancements, as the game defines them. | WORKSHOP_UPGRADE_NAMES, WORKSHOP_DECREASING_UPGRADES, WORKSHOP_NON_MONOTONIC_UPGRADES, WORKSHOP_CATEGORIES (+12 more) |
 
