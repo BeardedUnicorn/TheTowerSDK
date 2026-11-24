@@ -22,6 +22,6 @@ The calculators, each declaring its own inputs.
 | `types.ts` | The shape every calculator builder shares. | CalculatorField, CalculatorResultBase, CalculatorBuilder, MAX_INPUT_MAGNITUDE (+47 more) |
 | `ultimate-weapon.ts` | Ultimate weapons: | ultimateWeaponCalculator |
 | `uptime.ts` | Ultimate weapon uptime: | uptimeCalculator |
-| `workshop-upgrade.ts` | Workshop upgrades: | workshopUpgradeCalculator |
+| `workshop-upgrade.ts` | Workshop enhancements: | workshopUpgradeCalculator |
 
 [← src](../MAP.md) · [← the package](../../MAP.md)

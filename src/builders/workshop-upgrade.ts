@@ -1,5 +1,8 @@
 /**
- * Workshop upgrades: coins to take one stat from where it is to where you want it.
+ * Workshop enhancements: coins to take one enhancement from where it is to where you want it.
+ *
+ * Enhancements only — the regular workshop upgrades (Coins / Kill Bonus and the rest) have their
+ * own costs in `WORKSHOP_DATA`, and this calculator does not read them.
  *
  * The discount is a single percentage applied per level and rounded per level, not once at
  * the end — rounding the total instead drifts by a coin per level, which is invisible on a
@@ -50,20 +53,32 @@ const defaults: WorkshopUpgradeInput = {
 
 export const workshopUpgradeCalculator: CalculatorBuilder<WorkshopUpgradeInput, WorkshopUpgradeResult> = {
   id: 'workshop.upgrade',
-  title: 'Workshop upgrade',
-  summary: 'Coins to move one workshop stat between two levels, with discounts applied.',
+  // Enhancements only: every curve it offers is an enhancement ladder. It was titled "Workshop
+  // upgrade" and read as pricing Coins / Kill Bonus and the other regular stats, which it cannot.
+  title: 'Workshop enhancement',
+  summary: 'Coins to move one workshop enhancement between two levels, with discounts applied. Regular workshop upgrades are not priced here.',
 
   fields: [
     {
       key: 'costKey',
-      label: 'Workshop Upgrade',
+      label: 'Workshop Enhancements',
       kind: 'select',
       options: COST_KEYS.map(key => ({ value: key, label: labelForCostKey(key) })),
-      help: 'Several stats share a cost curve, so more than one upgrade can carry the same name.',
+      help: 'Several enhancements share a cost curve, so more than one can carry the same name.',
     },
     { key: 'currentLevel', label: 'Current Level', kind: 'number', min: 0 },
     { key: 'targetLevel', label: 'Target Level', kind: 'number', min: 0 },
-    { key: 'sectionDiscountPercent', label: 'Workshop Discount (%)', kind: 'number', unit: 'percent', min: 0, max: 100 },
+    {
+      key: 'sectionDiscountPercent',
+      label: 'Coin Discount (%)',
+      kind: 'number',
+      unit: 'percent',
+      min: 0,
+      max: 100,
+      // Not the Workshop Attack / Defense / Utility Discount labs: those reach 49.5% and price
+      // regular upgrades. Entering one of them here overstates the saving by up to ~20 points.
+      help: 'From the Enhancement Attack / Defense / Utility - Coin Discount lab, not the Workshop Discount labs.',
+    },
     { key: 'vaultDiscountPercent', label: 'Vault Discount (%)', kind: 'number', unit: 'percent', min: 0, max: 100 },
   ],
 
