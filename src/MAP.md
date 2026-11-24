@@ -44,7 +44,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/workshop`](data/workshop/MAP.md) | 9 | Workshop tables: costs, discounts and upgrade definitions. |
 | [`src/formatting`](formatting/MAP.md) | 1 | Numbers, durations and rates in the game’s own notation. |
 | [`src/formatting/duration`](formatting/duration/MAP.md) | 2 | Durations, in the units a run is measured in. |
-| [`src/formatting/numbers`](formatting/numbers/MAP.md) | 3 | Reading and writing numbers in the game’s notation ladder. |
+| [`src/formatting/numbers`](formatting/numbers/MAP.md) | 4 | Reading and writing numbers in the game’s notation ladder. |
 | [`src/formatting/tools`](formatting/tools/MAP.md) | 2 | Grouped and abbreviated forms for numbers shown beside each other. |
 | [`src/knowledge`](knowledge/MAP.md) | 1 | The mechanics graph: what a number MEANS, and how it is misread. |
 | [`src/knowledge/compartments`](knowledge/compartments/MAP.md) | 31 | One file per subject area; each owns its nodes and edges. |

@@ -47,6 +47,9 @@ const CATEGORY_STATS: Record<WorkshopCategory, Array<{ label: string; key: strin
     { label: 'Land Mine Chance', key: 'Land Mine Chance' },
     { label: 'Land Mine Damage', key: 'Land Mine Damage' },
     { label: 'Land Mine Radius', key: 'Land Mine Radius' },
+    // Where the defense screen lists it. Missing until 2026-11-24, so every value lookup for
+    // Death Defy returned 0 while the game showed 30.00% at level 75.
+    { label: 'Death Defy', key: 'Death Defy' },
     { label: 'Wall Health', key: 'Wall Health' },
     { label: 'Wall Rebuild', key: 'Wall Rebuild' },
   ],

@@ -82,7 +82,12 @@ export function formatModuleSaveEffectDisplayValue(
     if (!canonicalRaw) continue
     const canonical = parseCanonicalSubstatValue(canonicalRaw)
     if (canonical === null) continue
-    const delta = Math.abs(Math.abs(benefitValue) - Math.abs(canonical))
+    // A percentage is stored either as the percent (Defense %: 3 for "+3%") or as a fraction
+    // (Health Regen: 0.6 for "+60%"), so a "%" entry is compared both ways.
+    const delta = Math.min(
+      Math.abs(Math.abs(benefitValue) - Math.abs(canonical)),
+      canonicalRaw.includes('%') ? Math.abs(Math.abs(benefitValue) - Math.abs(canonical) / 100) : Number.POSITIVE_INFINITY,
+    )
     if (!best || delta < best.delta) {
       best = { value: canonicalRaw, delta }
     }

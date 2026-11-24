@@ -54,9 +54,13 @@ export const MODULE_SUBSTAT_CANONICAL_DATA: Record<ModuleSubstatCanonicalCategor
   Defense: {
     title: 'Defense Module Substat Values',
     substats: [
-      substat('Health Regen', { Common: '+0.2x', Rare: '+0.4x', Epic: '+0.6x', Legendary: '+1x', Mythic: '+2x', Ancestral: '+4x' }),
+      // Health Regen and Defense Absolute store a fraction (0.6) and the game prints it as a
+      // percentage (+60%), like every other substat of the game's benefit type 5: Recovery Amount,
+      // Package Chance, the level skips. Epic Health Regen read as "+60%" off a v29.2.2 Armor
+      // module on 2026-11-24; these two rows used to say "+0.6x".
+      substat('Health Regen', { Common: '+20%', Rare: '+40%', Epic: '+60%', Legendary: '+100%', Mythic: '+200%', Ancestral: '+400%' }),
       substat('Defense %', { Common: '+1%', Rare: '+2%', Epic: '+3%', Legendary: '+5%', Mythic: '+6%', Ancestral: '+8%' }),
-      substat('Defense Absolute', { Common: '0.15x', Rare: '0.25x', Epic: '+0.4x', Legendary: '+1x', Mythic: '+5x', Ancestral: '+10x' }),
+      substat('Defense Absolute', { Common: '+15%', Rare: '+25%', Epic: '+40%', Legendary: '+100%', Mythic: '+500%', Ancestral: '+1000%' }),
       substat('Thorns Damage', { Common: '', Rare: '', Epic: '+2%', Legendary: '+4%', Mythic: '+7%', Ancestral: '+10%' }),
       substat('Lifesteal', { Common: '', Rare: '', Epic: '+0.3%', Legendary: '+0.5%', Mythic: '+1.5%', Ancestral: '+2%' }),
       substat('Knockback Chance', { Common: '', Rare: '', Epic: '+2%', Legendary: '+4%', Mythic: '+6%', Ancestral: '+9%' }),

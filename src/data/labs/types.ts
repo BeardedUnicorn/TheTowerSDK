@@ -67,11 +67,17 @@ export interface ToolLabRecord {
 }
 
 export interface LabProgressModifiers {
+  /** Labs Speed research level. Ignored for the Labs Speed lab itself, which runs at its own level. */
   labSpeed: number
   labRelic: number
   labDiscount: number
   speedUp: number
   gemDiscount?: number
+  /**
+   * Labs researched to their last level. When given, `gems` is the Rush price after Gem Rush
+   * Efficiency (`computeLabRushGems`); left out, it is the list price (`computeLabGems`).
+   */
+  maxedLabCount?: number
 }
 
 export interface LabProgressRow {
