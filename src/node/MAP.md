@@ -7,7 +7,8 @@ Decoding playerInfo.dat in Node.
 | File | Purpose | Exports |
 |---|---|---|
 | `decode-save.ts` | Reads official in-game JSON exports in Node. | decodePlayerInfoSaveBytes, decodePlayerInfoSaveBytesAsync |
+| `find-export.ts` | Finds the player's `tool_export.json` on this machine, so a caller does not have to know where the game put it. | TOWER_TOOL_EXPORT_ENV, findToolExport |
 | `index.ts` | This domain is flat: | — |
-| `types.ts` | The types `node/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | PlayerInfoSaveDecodeResult |
+| `types.ts` | The types `node/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | PlayerInfoSaveDecodeResult, FindToolExportFs, FindToolExportOptions, FoundToolExport |
 
 [← src](../MAP.md) · [← the package](../../MAP.md)

@@ -121,6 +121,8 @@ First tap your **Player ID five times** in The Tower to create your first export
 
 On Android and emulators the export is in `Android/data/com.TechTreeGames.TheTower/files/tool_export.json`. Copy it to a folder your browser can access, or use [adb-bridge](https://github.com/TmRxJD/adb-bridge) to pull the official export.
 
+On a Mac the game writes it to `~/Library/Containers/<id>/Data/Documents/tool_export.json`, where `<id>` is a UUID that differs per install. `findToolExport()` from `@beardedunicorn/thetowersdk/node` scans for it, and the MCP save tools use it when no path is given. Set `TOWER_TOOL_EXPORT` to the file's path to name it outright on any platform.
+
 Private saves such as `playerInfo.dat`, encrypted containers and legacy binary save files are unsupported. The SDK accepts no decryption keys and provides no decryption service.
 
 **Attempting to bypass save-file encryption violates The Tower Terms of Service.**

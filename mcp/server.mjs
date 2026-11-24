@@ -566,9 +566,35 @@ const sampleSize = (limit, fallback = 40, ceiling = MAX_PREVIEW) => {
  * A path is the one argument here that comes from a person typing, so wrong paths are the ordinary
  * case rather than the exotic one, and "not a file" deserves a sentence rather than an errno.
  */
-async function readSaveOrExplain(givenPath) {
-  if (typeof givenPath !== 'string' || givenPath.trim().length === 0) {
-    return { error: 'decode needs an absolute path to a tool_export.json.' }
+const SAVE_PATH_DESCRIPTION
+  = 'Absolute path to tool_export.json. Omit it to use the export found on this machine: the file '
+    + 'TOWER_TOOL_EXPORT names, or on a Mac the game\'s own container under ~/Library/Containers'
+
+async function readSaveOrExplain(requestedPath) {
+  let givenPath = requestedPath
+  const omitted = givenPath === undefined || givenPath === null
+    || (typeof givenPath === 'string' && givenPath.trim().length === 0)
+  if (!omitted && typeof givenPath !== 'string') {
+    return { error: 'the path must be text: the absolute path to a tool_export.json.' }
+  }
+  if (omitted) {
+    /*
+     * No path is the ordinary case for a person who has just exported: they do not know where the
+     * game put the file, and on a Mac it sits in a container named after a per-install UUID. Look
+     * where the game writes it before asking them for a path they would have to hunt for.
+     */
+    const found = typeof sdk.node.findToolExport === 'function'
+      ? sdk.node.findToolExport()
+      : { path: null, searched: [] }
+    if (!found.path) {
+      return {
+        error: 'no path was given and no tool_export.json was found. Give the absolute path to the export.',
+        searched: found.searched,
+        hint: 'On a Mac the game writes it to ~/Library/Containers/<id>/Data/Documents/tool_export.json. '
+          + 'Setting TOWER_TOOL_EXPORT to the file\'s path makes every save tool find it.',
+      }
+    }
+    givenPath = found.path
   }
 
   /*
@@ -607,7 +633,8 @@ async function readSaveOrExplain(givenPath) {
   }
 
   try {
-    return await sdk.node.decodePlayerInfoSaveBytesAsync(bytes)
+    // `savePath` says which file was read, which matters once the server chose it.
+    return { ...(await sdk.node.decodePlayerInfoSaveBytesAsync(bytes)), savePath }
   }
   catch (error) {
     return {
@@ -1188,14 +1215,14 @@ export const TOOLS = {
       + 'extractor finds. Only official tool_export.json exports are supported. Read-only.',
     inputSchema: {
       type: 'object',
-      properties: { path: { type: 'string', description: 'Absolute path to tool_export.json' } },
-      required: ['path'],
+      properties: { path: { type: 'string', description: SAVE_PATH_DESCRIPTION } },
     },
     run: async ({ path: savePath }) => {
       const loaded = await readSaveOrExplain(savePath)
       if (loaded.error) return loaded
       const { parsedRoot, wasGzip, battleRunCount } = loaded
       return {
+        path: loaded.savePath,
         gzip: wasGzip,
         rootKeys: Object.keys(parsedRoot).length,
         battleRuns: battleRunCount,
@@ -1216,9 +1243,9 @@ export const TOOLS = {
       type: 'object',
       properties: {
         extractor: { type: 'string', description: 'e.g. readLabsFromSaveRoot' },
-        path: { type: 'string', description: 'Absolute path to tool_export.json' },
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
       },
-      required: ['extractor', 'path'],
+      required: ['extractor'],
     },
     run: async ({ extractor, path: savePath }) => {
       const { failure, result } = await extractFromSave(extractor, savePath)
@@ -1253,7 +1280,7 @@ export const TOOLS = {
       type: 'object',
       properties: {
         extractor: { type: 'string', description: 'e.g. readLabsFromSaveRoot, or listImportableBattleRuns' },
-        path: { type: 'string', description: 'Absolute path to tool_export.json' },
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
         field: {
           type: 'string',
           description: 'Dotted path into the result, e.g. "researches" or "active.levels". Omit for the result itself',
@@ -1274,7 +1301,7 @@ export const TOOLS = {
         },
         limit: { type: 'number', description: 'How many rows to return (default 20, at most 100), or keys of an object (default 100)' },
       },
-      required: ['extractor', 'path'],
+      required: ['extractor'],
     },
     run: async (given) => {
       const unread = unreadArguments('read_save_field', given)
@@ -2913,13 +2940,12 @@ export const TOOLS = {
     inputSchema: {
       type: 'object',
       properties: {
-        path: { type: 'string', description: 'Absolute path to tool_export.json' },
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
         kind: { type: 'string', enum: ['all', 'farming', 'tournament'], description: 'Which runs (default all)' },
         detail: { type: 'boolean', description: 'Return every recorded field per run instead of the compact row' },
         offset: { type: 'number', description: 'Skip this many runs — the `next` from a truncated answer' },
         limit: { type: 'number', description: 'How many runs to return (default 10, at most 50)' },
       },
-      required: ['path'],
     },
     run: async ({ path: savePath, kind, detail, offset, limit }) => {
       const loaded = await readSaveOrExplain(savePath)

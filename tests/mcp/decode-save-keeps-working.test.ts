@@ -178,10 +178,37 @@ describe('decode_save explains a file it cannot read', () => {
     expect(answer.error).not.toMatch(/is not a function|Cannot read prop|undefined/)
   })
 
-  it('refuses a missing or non-text path without touching the disk', async () => {
-    for (const bad of [undefined, null, '', '   ', 42, {}, []]) {
+  it('refuses a non-text path without touching the disk', async () => {
+    for (const bad of [42, {}, [], true]) {
       const answer = await decode({ path: bad })
-      expect(answer.error, String(bad)).toEqual(expect.any(String))
+      expect(answer.error, String(bad)).toMatch(/must be text/)
+      expect(answer.searched, String(bad)).toBeUndefined()
+    }
+  })
+
+  /*
+   * A missing path used to be refused outright. It now means "find my export", so the answer on a
+   * machine with no export is still an error, but one that says where it looked. The home folder
+   * and TOWER_TOOL_EXPORT are pointed away for the call, or this would read the developer's own
+   * export on a Mac that has the game installed.
+   */
+  it('looks for the export when no path is given, and says where it looked', async () => {
+    const saved = { HOME: process.env.HOME, USERPROFILE: process.env.USERPROFILE, TOWER_TOOL_EXPORT: process.env.TOWER_TOOL_EXPORT }
+    process.env.HOME = scratch
+    process.env.USERPROFILE = scratch
+    delete process.env.TOWER_TOOL_EXPORT
+    try {
+      for (const missing of [undefined, null, '', '   ']) {
+        const answer = await decode({ path: missing })
+        expect(answer.error, String(missing)).toMatch(/no tool_export\.json was found/)
+        expect(answer.searched, String(missing)).toEqual(expect.any(Array))
+      }
+    }
+    finally {
+      for (const [key, value] of Object.entries(saved)) {
+        if (value === undefined) delete process.env[key]
+        else process.env[key] = value
+      }
     }
   })
 

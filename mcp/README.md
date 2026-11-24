@@ -74,6 +74,12 @@ a client with a small catalog.
 `docs/mechanics-map/` under the directory the server was started in (override with
 `TOWER_MECHANICS_MAP_DIR`).
 
+`decode_save`, `run_extractor`, `read_save_field` and `battle_history` take the export's `path`, and
+find it themselves when it is left out: the file `TOWER_TOOL_EXPORT` names, or on a Mac the game's
+own container, `~/Library/Containers/<id>/Data/Documents/tool_export.json`. `decode_save` reports
+the path it read. For the current event's shop and its prices, run the
+`readEventShopFromSaveRoot` extractor.
+
 `calc_run` and `plan_effective_path` take a `savePath` too: a calculator that reads a save gets the
 decoded save, and an economy path is planned from the account's real levels.
 
