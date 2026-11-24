@@ -8,6 +8,7 @@ Cards, their level values and their mastery values.
 |---|---|---|
 | `data.ts` | — | CARD_MAX_COPIES, RARITY_CHANCES, CARD_LEVELS, CARD_MASTERY_LEVELS (+5 more) |
 | `index.ts` | Cards, their level values, and their mastery values. | — |
-| `types.ts` | The types `data/cards/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | CardTemplate |
+| `milestone-unlocks.ts` | The cards a milestone has to add to the pool before they can be drawn. | CARD_MILESTONE_UNLOCK_REWARDS |
+| `types.ts` | The types `data/cards/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | CardTemplate, CardMilestoneUnlock |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

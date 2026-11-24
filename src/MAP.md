@@ -19,7 +19,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/assets`](data/assets/MAP.md) | 3 | Which sprite belongs to which module, card, bot or theme. Names only. |
 | [`src/data/battle-conditions`](data/battle-conditions/MAP.md) | 2 | The names battle conditions carry, as the game writes them. |
 | [`src/data/bots`](data/bots/MAP.md) | 3 | The five bots: unlock costs, upgrade stats, and the levels each stat reaches. |
-| [`src/data/cards`](data/cards/MAP.md) | 3 | Cards, their level values and their mastery values. |
+| [`src/data/cards`](data/cards/MAP.md) | 4 | Cards, their level values and their mastery values. |
 | [`src/data/charts`](data/charts/MAP.md) | 3 | Tables the game publishes as tables rather than formulas. |
 | [`src/data/currency`](data/currency/MAP.md) | 3 | The game’s currencies, and what each is spent on. |
 | [`src/data/daily-missions`](data/daily-missions/MAP.md) | 3 | Daily missions and their rewards. |
@@ -54,7 +54,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics`](mechanics/MAP.md) | 1 | The formulas the game runs. |
 | [`src/mechanics/battle-conditions`](mechanics/battle-conditions/MAP.md) | 6 | Battle conditions, their counters, and the tournament heat index. |
 | [`src/mechanics/bots`](mechanics/bots/MAP.md) | 20 | The three bots: their upgrades, movement, hit behaviour, and medal planning. |
-| [`src/mechanics/cards`](mechanics/cards/MAP.md) | 3 | Card costs and the lookup from a card to the effect it applies. |
+| [`src/mechanics/cards`](mechanics/cards/MAP.md) | 5 | Card costs and the lookup from a card to the effect it applies. |
 | [`src/mechanics/combat`](mechanics/combat/MAP.md) | 29 | What the tower does to enemies — damage, its multipliers, and every on-hit effect. |
 | [`src/mechanics/effective-paths`](mechanics/effective-paths/MAP.md) | 51 | Effective Paths: the cheapest route to a damage, economy or survivability target. |
 | [`src/mechanics/effective-paths/common`](mechanics/effective-paths/common/MAP.md) | 2 | The shapes every path shares — a step, an exclusion, the lab and workshop discounts it prices with. |
@@ -83,7 +83,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/access`](save/access/MAP.md) | 4 | How you get at a save — typed reads and where the file lives. |
 | [`src/save/battle`](save/battle/MAP.md) | 7 | Battle reports and history as the save stores them. |
 | [`src/save/bots`](save/bots/MAP.md) | 3 | What a save says about bots. |
-| [`src/save/cards`](save/cards/MAP.md) | 3 | What a save says about cards. |
+| [`src/save/cards`](save/cards/MAP.md) | 4 | What a save says about cards. |
 | [`src/save/catalogs`](save/catalogs/MAP.md) | 11 | The index maps that turn a save’s numbers into named things. |
 | [`src/save/catalogs/vault`](save/catalogs/vault/MAP.md) | 4 | Which save slot each vault node reads, the corrections to that order, and how a mapping is chosen. |
 | [`src/save/currencies`](save/currencies/MAP.md) | 3 | The currencies a player holds, and this cycle's earning and spending. |
