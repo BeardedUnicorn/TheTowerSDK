@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.2 (2026-11-25)
+
+
+### Bug Fixes
+
+* **save:** read game v29.2.3 (build 1301) exports as checked ([5363ebc](https://github.com/BeardedUnicorn/TheTowerSDK/commit/5363ebc6ef5d0be8e7aedc3d2fce5821e8dc6921))
+
 ## 1.7.1 (2026-11-24)
 
 
