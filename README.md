@@ -1135,7 +1135,7 @@ to this package.
 **A note mentioning a mechanic is not evidence the mechanic changed.** `searchPatchNotes` is a
 text search over announcements: it finds leads, and the note still has to be read.
 
-**`version` is `null` on 68 of the 259 notes**, because those notes state no version. It is not
+**`version` is `null` on 68 of the 261 notes**, because those notes state no version. It is not
 inferred from the notes around it — a wrong version attached to a real change reads as fact.
 
 ### Keeping it current

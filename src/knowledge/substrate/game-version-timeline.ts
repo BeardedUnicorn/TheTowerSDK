@@ -78,9 +78,11 @@ export const GAME_VERSION_TIMELINE: readonly GameVersionWindow[] = [
     basis:
       'v29.2 rolled out 2026-11-16 (patch note 1571908549376872459); build 1286 confirmed in an '
       + 'official export written 2026-11-18. Covers hotfix 29.2.1 (1572999340027420755, build 1294, '
-      + '2026-11-19), which fixed ads and a tutorial soft-lock and changed no game data, and hotfix '
-      + '29.2.2 (build 1296, note dated 2026-11-21), announced as a fix to tournament reward '
-      + 'validation only; build 1296 confirmed in an official export written 2026-11-23.',
+      + '2026-11-19), which fixed ads and a tutorial soft-lock and changed no game data, hotfix '
+      + '29.2.2 (1573850127008014367, build 1296, 2026-11-21), announced as a fix to tournament reward '
+      + 'validation only; build 1296 confirmed in an official export written 2026-11-23, and hotfix '
+      + '29.2.3 (1574821572844200137, build 1301, 2026-11-24), announced as a fix to new players being '
+      + 'shown the login screen only; build 1301 confirmed in an official export written 2026-11-25.',
   },
 ]
 

@@ -39,12 +39,19 @@ const DECODER_RENAMED_KEYS: ReadonlySet<string> = new Set(['inventory'])
  * (facts/v29.2.2/live-ui-check.json): workshop costs, ultimate weapon costs and values, running
  * labs, card copies, equipped modules, perks, bots, relic totals, dissonant boosts and tier records.
  * The milestone tracks of tiers 1-15 were read the same day (facts/v29.2.2/milestone-screen.json).
+ *
+ * v29.2.3 (build 1301, patch note 1574821572844200137) was announced as a fix to new players being
+ * shown the login screen, and nothing else. A build 1301 export written 2026-11-25 has the same 456
+ * fields at data version 35, none the catalog does not name, the same 350 relics, and every reader
+ * returns as it did for build 1296. The game's English text table is unchanged, all 4,515 entries.
+ * Of the game tables, the vault upgrades, card values, daily mission goals and bot formulas were
+ * read again from build 1301 and match; the others were not read again, and no screen was.
  */
 export const NEWEST_CHECKED_EXPORT = {
   exportVersion: 1,
-  versionNumber: 1296,
+  versionNumber: 1301,
   dataVersion: 35,
-  gameVersion: 'v29.2.2',
+  gameVersion: 'v29.2.3',
 } as const
 
 const EXPORT_INFO_KEYS = ['exportVersion', 'exportedAt', 'versionNumber', 'dataVersion'] as const

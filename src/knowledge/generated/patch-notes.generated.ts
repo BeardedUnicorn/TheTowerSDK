@@ -27,7 +27,7 @@ export interface PatchNote {
   readonly forwarded: boolean
 }
 
-/** 259 notes, 2021-07-15 .. 2026-11-19, oldest first. */
+/** 261 notes, 2021-07-15 .. 2026-11-24, oldest first. */
 export const PATCH_NOTES: readonly PatchNote[] = [
   {
     id: "1437891479186964540",
@@ -2360,6 +2360,24 @@ export const PATCH_NOTES: readonly PatchNote[] = [
     body: "# v29.2.1 Patch Notes - November 19, 2026 <@&1492782348205428766> \n\nHi Defenders! We have a quick patch coming to your device shortly, and we are hoping to roll it out to all users in the next two days. This has some fixes from our our latest v29.2 update:\n\n* Ads now appear as expected for European users\n* Fixed an issue where the new Workshop tutorial arrows would appear for existing accounts and causing a soft-lock requiring an app restart\n\nWe are also aware of a delay in receiving tournament rewards from a number of players. We’re working on a fix to prevent similar issues from happening in the future. These players have found success from closing and re-opening their game, so if you have not received your rewards make sure to restart your app.\n\nIn the meantime, we wanted to release this update to remove the existing gameplay soft-lock. Thanks for your patience, and happy defending!",
     forwarded: false,
   },
+  {
+    id: "1573850127008014367",
+    postedAt: "2026-11-21T23:58:31.000000+00:00",
+    version: "29.2.2",
+    kind: "update",
+    title: "v29.2.2 Patch Notes - November 21, 2026",
+    body: "# v29.2.2 Patch Notes - November 21, 2026\n<@&1492782348205428766> \nHi Defenders! We have another small fix coming your way shortly.\n\nThis patch includes a fix to tournament reward validation. We’ll be releasing this update shortly, and hope to be fully rolled out by the end of the day. Please let us know if you are experiencing any other issues when receiving tournament rewards. \n\nThank you very much, and happy defending!",
+    forwarded: false,
+  },
+  {
+    id: "1574821572844200137",
+    postedAt: "2026-11-24T16:18:41.736000+00:00",
+    version: "29.2.3",
+    kind: "update",
+    title: "v29.2.3 Patch Notes - November 24, 2026",
+    body: "# v29.2.3 Patch Notes - November 24, 2026\n<@&1492782348205428766> \nHello Tower Defenders! One more patch is coming your way from v29.2. This patch affects some new users and returning users who have not played in a very long time. As such, this should not affect our existing players:\n\n* Fixed a bug that was showing the login screen to new players instead of immediately start the first game instance\n* This should reduce confusion when a new player wants to play The Tower, and is misled into thinking they need to log into an existing account.\n\nWe look forward to sharing more information about our last update of the year in the next few weeks. Thanks for your patience!",
+    forwarded: false,
+  },
 ]
 
 /** Where this came from, so a claim can be traced back to the post. */
@@ -2367,8 +2385,8 @@ export const PATCH_NOTES_SOURCE = {
   channel: "patch-notes",
   channelId: "1437789871396880585",
   guildId: "850137217828388904",
-  notes: 259,
-  withVersion: 191,
+  notes: 261,
+  withVersion: 193,
   earliest: "2021-07-15T13:33:33.422000+00:00",
-  latest: "2026-11-19T15:37:47.577000+00:00",
+  latest: "2026-11-24T16:18:41.736000+00:00",
 } as const
