@@ -168,6 +168,7 @@ const DIRECTORY_PURPOSE = {
   'src/charts/registry': 'Which charts exist, and what calculator or mechanic each belongs to.',
   'src/charts/tables': 'The column-and-row machinery every chart renders through.',
   'src/charts/datasets': 'The charts that compute their own rows rather than reading a catalog.',
+  'src/charts/series': 'Every series the catalogs\' level tables hold, each with an id to ask for it by.',
   'src/formatting/numbers': 'Reading and writing numbers in the game’s notation ladder.',
   'src/formatting/duration': 'Durations, in the units a run is measured in.',
   'src/formatting/tools': 'Grouped and abbreviated forms for numbers shown beside each other.',

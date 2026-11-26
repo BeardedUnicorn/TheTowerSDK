@@ -8,6 +8,6 @@ Tables the game publishes as tables rather than formulas.
 |---|---|---|
 | `data.ts` | — | WAVE_ACCELERATOR_SPAWN_RATE_ROWS, ENEMY_BALANCE_MASTERY_ROWS, ELITE_SPAWN_CHANCE_ROWS |
 | `index.ts` | Tables that exist to be charted. | — |
-| `types.ts` | The types `data/charts/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WaveAcceleratorSpawnRatesRow, EnemyBalanceMasteryRow |
+| `types.ts` | The types `data/charts/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WaveAcceleratorSpawnRatesRow, EnemyBalanceMasteryRow, ChartSeriesFamily, ChartSeriesPoint (+3 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

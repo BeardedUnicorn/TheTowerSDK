@@ -16,6 +16,7 @@ import {
 	getWorkshopStatDefinitions,
 	uwStoneChartData
 } from '@beardedunicorn/thetowersdk/data';
+import { listChartSeries } from '@beardedunicorn/thetowersdk/charts';
 import * as mechanics from '@beardedunicorn/thetowersdk/mechanics';
 
 function countUwStats(): number {
@@ -49,88 +50,16 @@ function countMechanicsFormulas(): number {
 	return Object.values(mechanics).filter((value) => typeof value === 'function').length;
 }
 
-/** A value that can be plotted on an axis — number, or a number wearing a unit. */
-function isPlottable(value: unknown): boolean {
-	if (typeof value === 'number') return Number.isFinite(value);
-	if (typeof value !== 'string') return false;
-	// "x8.0", "50%", "38:53:00" — a leading number is enough to plot against level.
-	return /^[x×]?\s*-?\d/.test(value.trim());
-}
-
-/** Keys that identify a row rather than measure anything. */
-const AXIS_KEYS = new Set(['level', 'name', 'key', 'label', 'id', 'category']);
-
-/**
- * How many distinct series a single level-progression yields.
- *
- * A lab's `levels[]` carries both `cost` and `duration`, and those are two
- * different charts, not one. A bot stat's levels are bare scalars, so one.
- * Counting the shape rather than hardcoding a multiplier means this tracks the
- * data if a field is added, instead of quietly under-reporting.
- */
-function seriesInProgression(levels: unknown): number {
-	const rows = Array.isArray(levels)
-		? levels
-		: levels && typeof levels === 'object'
-			? Object.values(levels as Record<string, unknown>)
-			: [];
-
-	const sample = rows[0];
-	if (sample === undefined) return 0;
-	if (typeof sample !== 'object' || sample === null) return isPlottable(sample) ? 1 : 0;
-
-	/*
-	 * Union the plottable keys across several rows rather than trusting the
-	 * first. Ultimate weapon stats read `cost: "Unlock"` at level 0 and a real
-	 * number from level 1 on — sampling only row 0 silently dropped the entire
-	 * cost curve for every UW stat in the package.
-	 */
-	const plottable = new Set<string>();
-	for (const row of rows.slice(0, 8)) {
-		if (typeof row !== 'object' || row === null) continue;
-		for (const [key, value] of Object.entries(row as Record<string, unknown>)) {
-			if (!AXIS_KEYS.has(key) && isPlottable(value)) plottable.add(key);
-		}
-	}
-	return plottable.size;
-}
-
 /**
  * Every chart the shipped game data can produce, not the handful anyone has
  * hand-authored. One chart = one measurable field plotted across a level range.
  *
- * Deliberately excludes catalogs with no progression to plot: relics carry a
- * single flat `value`, module substats are cluster metadata, vault nodes are
- * id/name pairs, and workshop enhancements declare only a level *range* with no
- * per-level values. Counting those would have added several hundred charts that
- * cannot be drawn.
+ * Read from the package's own listing, so the number here is the number of series
+ * `getChartSeries` can return. It used to be recounted in this file by a copy of the walk, and the
+ * two copies had already drifted on how a bot stat counts.
  */
 export function countChartableSeries(): number {
-	let total = 0;
-
-	for (const lab of LAB_CATALOG) total += seriesInProgression(lab.levels);
-	for (const stat of getWorkshopStatDefinitions()) total += seriesInProgression(stat.levels);
-
-	for (const card of CARD_TEMPLATES) {
-		if (card.levelValues?.length) total += 1;
-		if (card.masteryValues?.length) total += 1;
-	}
-
-	for (const weapon of Object.values(uwStoneChartData)) {
-		for (const stat of weapon.stats ?? []) total += seriesInProgression(stat.levels);
-	}
-
-	// A bot stat is a formula over levels 0..maxLevel, so each one is exactly one series.
-	for (const bot of BOT_UPGRADES_DATA) {
-		total += Object.keys(bot.stats ?? {}).length + Object.keys(bot.plus?.stats ?? {}).length;
-	}
-
-	for (const guardian of buildGuardianDefinitions()) {
-		for (const stat of Object.values(guardian.stats ?? {}))
-			total += seriesInProgression(stat?.levels);
-	}
-
-	return total;
+	return listChartSeries().length;
 }
 
 /**
