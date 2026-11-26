@@ -27,7 +27,7 @@ import { enhancementCoinCost, enhancementStats } from '../../src/mechanics/effec
  * is published is the number of series that can actually be asked for.
  */
 
-const PUBLISHED_TOTAL = 818
+const PUBLISHED_TOTAL = 909
 
 describe('chartable series count published in the docs', () => {
   it('still matches the shipped catalogs', () => {
@@ -42,6 +42,7 @@ describe('chartable series count published in the docs', () => {
       'module': 2,
       'enhancement': 18,
       'vault': 33,
+      'vault-v29': 91,
       'unlock-ladder': 2,
     })
     const total = listChartableSeries().length
@@ -181,6 +182,16 @@ describe('the cost ladders that are not a field of a level table', () => {
     // `defabs` is priced 5, 10, 20; `discount1` is bought once.
     expect(getChartSeries('vault:defabs:keys')?.data).toEqual([{ x: 1, y: 5 }, { x: 2, y: 10 }, { x: 3, y: 20 }])
     expect(getChartSeries('vault:discount1:keys')).toBeNull()
+  })
+
+  it('labels the old trees\' series as pre-v29 and prices the v29 vault beside them', () => {
+    expect(getChartSeries('vault:defabs:keys')?.title).toBe('5% Defense Absolute: Keys (pre-v29)')
+    const current = getChartSeries('vault-v29:power:defense-defense-absolute:keys')
+    expect(current?.data.map(point => point.y)).toEqual([10, 20, 40, 70, 110])
+    expect(current?.family).toBe('vault-v29')
+    expect(current?.entity).toBe('v29:power:Defense:Defense Absolute')
+    // Bought once, so no curve.
+    expect(getChartSeries('vault-v29:harmony:gameplay-auto-restart-run:keys')).toBeNull()
   })
 
   it('prices an unlock by how many are already owned', () => {

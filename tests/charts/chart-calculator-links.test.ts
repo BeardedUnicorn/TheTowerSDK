@@ -24,11 +24,11 @@ describe('every chart the site publishes is linked', () => {
     expect(linked).toEqual(rendered)
   })
 
-  it('names 69 charts across 37 renderers', () => {
+  it('names 72 charts across 40 renderers', () => {
     // Counted from the array, never grepped for `pathId:` — an earlier count
     // did that and caught two occurrences outside it.
-    expect(SHARED_CHART_REGISTRY.length).toBe(69)
-    expect(Object.keys(CHART_CALCULATOR_LINKS)).toHaveLength(37)
+    expect(SHARED_CHART_REGISTRY.length).toBe(72)
+    expect(Object.keys(CHART_CALCULATOR_LINKS)).toHaveLength(40)
   })
 })
 
@@ -90,10 +90,10 @@ describe('the gaps are stated rather than implied', () => {
   it('reports how much of the chart surface is computable', () => {
     const links = Object.values(CHART_CALCULATOR_LINKS)
     const withFormula = links.filter(link => link.calculators.length > 0)
-    // Sixteen of thirty-seven renderers have a formula behind them. The rest are
+    // Twenty-one of forty renderers have a calculator behind them. The rest are
     // measured or published tables. Pinned so the number has to be updated
     // deliberately when a formula is added — which is the point of tracking it at all.
-    expect(withFormula).toHaveLength(16)
+    expect(withFormula).toHaveLength(21)
     expect(links.filter(link => link.data)).toHaveLength(26)
   })
 })

@@ -95,7 +95,8 @@ Catalogs are the entry into game data. Each is an array of typed rows.
 | `MODULE_TEMPLATES` · `MODULE_SUBSTAT_CANONICAL_DATA` | Modules, rarities, substat definitions |
 | `ULTIMATE_WEAPON_IMPORT_CATALOG` | The nine weapons, their stats and plus-levels |
 | `BOT_IMPORT_CATALOG` · `GUARDIAN_CHIP_IMPORT_CATALOG` | Bots and guardian chips |
-| `VAULT_POWER_IMPORT_CATALOG` · `VAULT_HARMONY_IMPORT_CATALOG` | The two vault trees |
+| `VAULT_V29_HARMONY` · `VAULT_V29_POWER` · `VAULT_V29_ENEMY` | The vault since v29: categories, upgrades, key cost and value per level |
+| `VAULT_POWER_IMPORT_CATALOG` · `VAULT_HARMONY_IMPORT_CATALOG` | The two vault trees as they were before v29 |
 | `RELIC_IMPORT_CATALOG` | Relics and their bonus types — **read the note on units below** |
 | `LAB_RESEARCH_IMPORT_CATALOG` | Research entries as the save stores them |
 | `PLAYER_DATA_FIELD_CATALOG` | Named save fields |

@@ -3491,7 +3491,8 @@ export const TOOLS = {
   chart_series: {
     description:
       'A series the catalogs already hold — a lab\'s cost by level, a bot stat by level, a vault '
-      + 'node\'s keys by tier — as plain {x, y} points, by id. Omit `series` to list the ids, '
+      + 'upgrade\'s keys by level — as plain {x, y} points, by id. The `vault-v29` family is the '
+      + 'current vault; `vault` is the Power and Harmony trees as they were before v29. Omit `series` to list the ids, '
       + 'narrowed by `family` or `entity`; give a `series` for its points, paged. chart_rows returns '
       + 'a curated chart as a formatted table; this returns one curve as numbers. `y` is a number '
       + 'where the catalog stores one and its own text (x9.4, 119:26:00) where it does not.',
@@ -3499,7 +3500,7 @@ export const TOOLS = {
       type: 'object',
       properties: {
         series: { type: 'string', description: 'A series id from the listing, e.g. "lab:damage:cost"' },
-        family: { type: 'string', description: 'List only one family: lab, workshop, card, ultimate-weapon, bot, guardian, module, enhancement, vault or unlock-ladder' },
+        family: { type: 'string', description: 'List only one family: lab, workshop, card, ultimate-weapon, bot, guardian, module, enhancement, vault-v29 (the current vault), vault (the pre-v29 trees) or unlock-ladder' },
         entity: { type: 'string', description: 'List only one entity, spelled as the listing spells it — a lab slug such as "damage", a bot name' },
         offset: { type: 'number', description: 'Skip this many ids or points — the `next` from a truncated answer' },
         limit: { type: 'number', description: 'How many ids or points to return (default 40, at most 100)' },

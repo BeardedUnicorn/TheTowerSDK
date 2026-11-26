@@ -192,7 +192,8 @@ export const KEYS_CANDIDATE_NODES: Readonly<Record<string, KeysCandidateNode>> =
 }
 
 /**
- * Keys to take a vault node to `level`.
+ * Keys to take a pre-v29 vault node to `level`. The current vault is priced by
+ * `vaultV29UpgradeKeysCost`.
  *
  * A node's cost is either a single number — one level and that is it — or a
  * list, one entry a level. Returns `null` past what the tree prices.
@@ -205,7 +206,7 @@ export function vaultNodeKeysCost(nodeId: string, level: number): number | null 
   return node.cost[level - 1] ?? null
 }
 
-/** The highest level a vault node can be taken to. */
+/** The highest level a pre-v29 vault node can be taken to. */
 export function vaultNodeMaxLevel(nodeId: string): number | null {
   const node = VAULT_NODES.find(entry => entry.id === nodeId)
   if (!node) return null
@@ -276,7 +277,7 @@ export function ultimateWeaponStoneCostBetween(
 }
 
 /**
- * Keys to take a vault node from `fromLevel` to `toLevel`: {@link vaultNodeKeysCost} summed over
+ * Keys to take a pre-v29 vault node from `fromLevel` to `toLevel`: {@link vaultNodeKeysCost} summed over
  * the levels bought. Most nodes have one level, so `(id, 0, 1)` is the node's price.
  *
  * `0` when the two levels are equal; `null` for an unknown node, a level that is not a whole
@@ -298,7 +299,8 @@ export function vaultNodeKeysBetween(nodeId: string, fromLevel: number, toLevel:
 }
 
 /**
- * Keys still to spend to finish a vault tree, given the level each node is at.
+ * Keys still to spend to finish a pre-v29 vault tree, given the level each node is at. The current
+ * vault is totalled by `vaultV29TreeKeysRemaining`.
  *
  * `levels` maps a node id to its current level; a node left out is at level 0, so calling this
  * with no levels gives the whole tree's price. `null` for a tree other than `power` or

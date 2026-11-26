@@ -20,7 +20,7 @@ npm install @beardedunicorn/thetowersdk
 - **Formulas** — enemy scaling, damage, ultimate weapons, drops and workshop stats, as functions you
   call with a tier, a wave or a level.
 - **Charts** — every level progression is already a plot-ready series, so the shipped catalogs cover
-  [818 chartable series](#charts), each with an id to fetch it by, without you authoring one.
+  [909 chartable series](#charts), each with an id to fetch it by, without you authoring one.
 
 TypeScript, MIT licensed, one runtime dependency (`zod`).
 
@@ -499,7 +499,7 @@ every chart over the same array update together — which is the point of
 Markdown, so documentation tables regenerate instead of rotting.
 See [`examples/05-generate-a-cost-table.ts`](examples/05-generate-a-cost-table.ts).
 
-**How much is chartable.** The shipped catalogs support **818 distinct series** — one per measurable
+**How much is chartable.** The shipped catalogs support **909 distinct series** — one per measurable
 field that varies across a level range:
 
 | Source | Series | What varies |
@@ -509,7 +509,8 @@ field that varies across a level range:
 | Cards | 64 | Level values and mastery values |
 | Ultimate weapons | 72 | Stat value and stone cost, per stat |
 | Guardians | 36 | Chip stat value and cost |
-| Vault | 33 | Key cost per tier, for nodes with more than one |
+| Vault (v29) | 91 | Key cost per level, for upgrades with more than one |
+| Vault (pre-v29 trees) | 33 | Key cost per tier, for nodes with more than one |
 | Bots | 25 | Per-stat progressions, including plus variants |
 | Workshop enhancements | 18 | Coin cost per level |
 | Modules | 2 | Coin cost and shard cost per level |

@@ -23,7 +23,7 @@ for (const chart of SHARED_CHART_REGISTRY) {
   console.log(chart.pathId, '—', chart.title)
 }
 
-// vault:upgrades-and-cost:harmony-tree     — Harmony Tree Upgrades & Costs
+// vault:upgrades-and-cost:harmony-tree     — Harmony Tree Upgrades & Costs (pre-v29)
 // bots:upgrades-and-costs:golden-bot       — Bot Upgrades: Golden Bot
 // ultimate-weapons:death-wave:gold-bot-vs-death-wave-uptime
 //                                          — Golden Bot vs Death Wave Uptime

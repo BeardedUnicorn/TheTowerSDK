@@ -35,6 +35,9 @@ export const CHART_MECHANIC_LINKS: Readonly<
 > = {
   'harmony-tree-upgrades': ['vault.harmonyTree', 'vault', 'currency.key'],
   'power-tree-upgrades': ['vault.powerTree', 'vault', 'currency.key'],
+  'vault-v29-harmony': ['vault.v29', 'vault', 'currency.key'],
+  'vault-v29-power': ['vault.v29', 'vault', 'currency.key'],
+  'vault-v29-enemy': ['vault.v29', 'vault', 'currency.key'],
 
   'uw-plus-upgrades': ['ultimateWeaponPlus', 'ultimateWeapon'],
   'uw-stone-costs': ['ultimateWeapon', 'ultimateWeaponPlus'],

@@ -9,7 +9,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/assets`](assets/MAP.md) | 1 | Naming rules for artwork you supply yourself. |
 | [`src/bot`](bot/MAP.md) | 4 | Every calculator as a chat command, transport-agnostic. |
 | [`src/builders`](builders/MAP.md) | 17 | The calculators, each declaring its own inputs. |
-| [`src/calculators`](calculators/MAP.md) | 16 | Calculator specs and the registry over them. |
+| [`src/calculators`](calculators/MAP.md) | 17 | Calculator specs and the registry over them. |
 | [`src/charts`](charts/MAP.md) | 1 | Curated chart datasets and their resolution. |
 | [`src/charts/datasets`](charts/datasets/MAP.md) | 10 | The charts that compute their own rows rather than reading a catalog. |
 | [`src/charts/registry`](charts/registry/MAP.md) | 6 | Which charts exist, and what calculator or mechanic each belongs to. |
@@ -74,7 +74,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/primitives`](mechanics/primitives/MAP.md) | 6 | The arithmetic and fixed values every other mechanic is built on. |
 | [`src/mechanics/resource-drops`](mechanics/resource-drops/MAP.md) | 20 | Coin and cell income: where it comes from and how it is simulated. |
 | [`src/mechanics/uptime`](mechanics/uptime/MAP.md) | 4 | How long a thing is active, and how often it comes back. |
-| [`src/mechanics/vault`](mechanics/vault/MAP.md) | 4 | Source-qualified v29 Power Vault effect fractions, distinct from legacy identities and costs. |
+| [`src/mechanics/vault`](mechanics/vault/MAP.md) | 5 | Source-qualified v29 Power Vault effect fractions, distinct from legacy identities and costs. |
 | [`src/mechanics/waves`](mechanics/waves/MAP.md) | 20 | Wave scaling and pacing — enemy counts, spawn rates and skips. |
 | [`src/mechanics/waves/reference`](mechanics/waves/reference/MAP.md) | 5 | Earlier public wave formulas, kept as the reference the current ones are checked against. |
 | [`src/mechanics/workshop`](mechanics/workshop/MAP.md) | 12 | Workshop upgrades: their stats, costs and the tables that describe them. |

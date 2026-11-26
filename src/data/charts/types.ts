@@ -41,7 +41,7 @@ export interface EnemyBalanceMasteryRow {
 /** Which catalog a series is drawn from. */
 export type ChartSeriesFamily =
   | 'lab' | 'workshop' | 'card' | 'ultimate-weapon' | 'bot' | 'guardian'
-  | 'module' | 'enhancement' | 'vault' | 'unlock-ladder'
+  | 'module' | 'enhancement' | 'vault' | 'vault-v29' | 'unlock-ladder'
   | 'save'
 
 /** One point of a series: a level, and the value the catalog holds at it. */

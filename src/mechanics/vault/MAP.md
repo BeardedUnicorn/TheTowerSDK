@@ -8,7 +8,8 @@ Source-qualified v29 Power Vault effect fractions, distinct from legacy identiti
 |---|---|---|
 | `compute.ts` | Keep three evidenced v29 benefits distinct from legacy Vault identities/costs. | computeV29VaultDamageBonus, computeV29VaultFreeUpgradeBonus |
 | `constants.ts` | — | V29_VAULT_DAMAGE_POLICY, V29_VAULT_DAMAGE_FRACTION_PER_LEVEL, V29_VAULT_DAMAGE_SOURCE_URLS, V29_VAULT_FREE_UPGRADE_POLICY (+2 more) |
-| `index.ts` | Source-qualified current Power Vault effects; legacy cost/identity APIs stay separate. | computeV29VaultDamageBonus, V29_VAULT_DAMAGE_POLICY, V29_VAULT_DAMAGE_FRACTION_PER_LEVEL, V29_VAULT_DAMAGE_SOURCE_URLS (+4 more) |
-| `types.ts` | — | V29VaultDamageNode, V29VaultDamagePolicy, V29VaultDamageBonus, V29VaultFreeUpgradeNode (+2 more) |
+| `index.ts` | Source-qualified current Power Vault effects; legacy cost/identity APIs stay separate. | computeV29VaultDamageBonus, V29_VAULT_DAMAGE_POLICY, V29_VAULT_DAMAGE_FRACTION_PER_LEVEL, V29_VAULT_DAMAGE_SOURCE_URLS (+11 more) |
+| `keys.ts` | Key prices of the v29 vault: | vaultV29KeyRows, vaultV29CategoryUnlockKey, vaultV29UpgradeKeysCost, vaultV29UpgradeMaxLevel (+3 more) |
+| `types.ts` | — | V29VaultDamageNode, V29VaultDamagePolicy, V29VaultDamageBonus, V29VaultFreeUpgradeNode (+4 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

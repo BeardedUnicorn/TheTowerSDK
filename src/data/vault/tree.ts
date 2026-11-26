@@ -203,13 +203,13 @@ export const VAULT_TREE_DEFINITIONS = [
   buildVaultTreeDefinition(
     'power',
     'Power Tree',
-    'Power Tree focuses on tower-related combat and economy buffs.',
+    'The Power Tree as it was before v29: tower-related combat and economy buffs.',
     DEFAULT_POWER_VAULT_NODES,
   ),
   buildVaultTreeDefinition(
     'harmony',
     'Harmony Tree',
-    'Harmony Tree focuses on utility, automation, discounts, and quality-of-life unlocks.',
+    'The Harmony Tree as it was before v29: utility, automation, discounts, and quality-of-life unlocks.',
     DEFAULT_HARMONY_VAULT_NODES,
   ),
 ] as const satisfies readonly VaultTreeDefinition[]

@@ -195,12 +195,24 @@ export const CHART_CALCULATOR_LINKS: Readonly<
     note: 'milestone unlock table',
   },
   'harmony-tree-upgrades': {
-    calculators: [],
-    note: 'vault tech tree costs; the chart is the catalog',
+    calculators: ['vault.nodeKeysCost', 'vault.treeKeysRemaining'],
+    note: 'pre-v29 Harmony tree costs; the v29 tree is vault-v29-harmony',
   },
   'power-tree-upgrades': {
-    calculators: [],
-    note: 'vault tech tree costs; the chart is the catalog',
+    calculators: ['vault.nodeKeysCost', 'vault.treeKeysRemaining'],
+    note: 'pre-v29 Power tree costs; the v29 tree is vault-v29-power',
+  },
+  'vault-v29-harmony': {
+    calculators: ['vault.v29.upgradeKeysCost', 'vault.v29.categoryUnlockKeys', 'vault.v29.treeKeysRemaining'],
+    note: 'v29 Harmony upgrades and category unlocks, in keys',
+  },
+  'vault-v29-power': {
+    calculators: ['vault.v29.upgradeKeysCost', 'vault.v29.categoryUnlockKeys', 'vault.v29.treeKeysRemaining'],
+    note: 'v29 Power upgrades and category unlocks, in keys',
+  },
+  'vault-v29-enemy': {
+    calculators: ['vault.v29.upgradeKeysCost', 'vault.v29.categoryUnlockKeys', 'vault.v29.treeKeysRemaining'],
+    note: 'v29 Enemy upgrades and category unlocks, in keys',
   },
   'elite-cells-by-tier': {
     data: 'eliteCellsByTierData',
