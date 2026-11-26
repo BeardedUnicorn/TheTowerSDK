@@ -31,7 +31,7 @@ import { TOWER_ORACLE_INSTRUCTIONS, TOWER_ORACLE_TOOLS } from './oracle-tools.mj
 import { nearestNames } from './nearest-names.mjs'
 import { PROMPTS } from './prompts.mjs'
 import { withAnnotations } from './tool-traits.mjs'
-import { withOutputSchemas } from './output-schemas.mjs'
+import { attachOutputSchemas } from './output-schemas.mjs'
 
 export { TOWER_ORACLE_INSTRUCTIONS, TOWER_ORACLE_TOOLS }
 
@@ -3742,6 +3742,9 @@ function describeField(schema, depth = 0) {
   }
 }
 
+/* Each tool's `outputSchema`, attached here so every server that mounts `TOOLS` advertises it. */
+attachOutputSchemas(TOOLS)
+
 /**
  * The tools that need the development monorepo.
  *
@@ -3801,7 +3804,7 @@ export const COMPLIANCE_INSTRUCTIONS = buildComplianceInstructions()
 if (isDirectRun(import.meta.url)) {
   // Standalone consumers get the oracle too; in the monorepo tower-mcp mounts
   // it as its own module, so it is kept out of TOOLS to avoid a name clash.
-  const tools = withOutputSchemas(withAnnotations({ ...availableTools(), ...TOWER_ORACLE_TOOLS }))
+  const tools = withAnnotations({ ...availableTools(), ...TOWER_ORACLE_TOOLS })
   runStdioMcp({
     name: 'thetowersdk',
     version: VERSION,

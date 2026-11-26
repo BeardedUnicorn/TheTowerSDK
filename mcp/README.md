@@ -111,18 +111,28 @@ as `structuredContent`, and `tools/list` gives each tool an `outputSchema` descr
 ```
 
 - **A schema describes a success.** A failed call is `isError` and its text block, with no
-  `structuredContent`, so nothing sent as structured content ever fails its tool's schema. Read
-  the reason from the text.
+  `structuredContent`. The specification does not say how the two combine; the official TypeScript
+  and Python clients validate only a result that is not an error, and this follows them. Read the
+  reason from the text.
 - **"Not found" can be a success.** `define_term`, `oracle_get` and `oracle_brief` answer
   `found: false` without `isError`; that answer is structured and fits the schema.
 - **The schemas are open.** They name the fields that are always present and type the ones that
   may be; a tool that answers differently by argument (one chart, or the list of charts) lists both
-  sets of fields. Expect fields a schema does not name.
+  sets of fields. Expect fields a schema does not name. A number that comes from a save or a
+  formula is `number | null`, because JSON carries NaN as `null`.
 - **Older revisions get text only.** `2025-03-26` and `2024-11-05` define neither field, so a
-  client on one of them — or one that never sent `initialize` — receives exactly what it did before.
+  client on one of them — or one that never sent `initialize` — receives exactly what it did
+  before. A client that asks for a revision newer than `2025-06-18` is answered in `2025-06-18`
+  and gets structured output.
+- **The server checks its own answers.** Those same clients reject a successful result that does
+  not fit its schema, so each one is checked before it leaves. One that does not fit is still
+  sent, and reported on stderr as `<tool> answered outside its outputSchema: …` — that line is a
+  bug in this package worth reporting. `TOWER_MCP_STRICT=1` refuses such an answer with a JSON-RPC
+  error instead, which is how the test suites run the server.
 - The tools that need the development monorepo have no `outputSchema`.
 
-The schemas live in [`output-schemas.mjs`](output-schemas.mjs).
+The schemas live in [`output-schemas.mjs`](output-schemas.mjs) and are attached where `TOOLS` and
+`TOWER_ORACLE_TOOLS` are defined, so a server that mounts those registries advertises them too.
 
 `tools/list` sends descriptions in full. Set `TOWER_MCP_COMPACT=1` to cut them to 180 characters for
 a client with a small catalog.

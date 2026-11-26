@@ -21,8 +21,12 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { TOOLS, TOWER_ORACLE_TOOLS } from '../../mcp/server.mjs'
 // @ts-expect-error — as above.
 import { OUTPUT_SCHEMAS, WITHOUT_OUTPUT_SCHEMA } from '../../mcp/output-schemas.mjs'
+// @ts-expect-error — as above.
+import { schemaProblems as untypedSchemaProblems } from '../../mcp/schema-problems.mjs'
 import { DIST, FIXTURES, MCP, PACKAGE_ROOT } from '../helpers/paths'
-import { schemaProblems, type JsonSchema } from '../helpers/schema-problems'
+
+interface JsonSchema { type?: string | string[], properties?: Record<string, JsonSchema>, required?: string[], items?: JsonSchema }
+const schemaProblems = untypedSchemaProblems as (schema: JsonSchema, value: unknown) => string[]
 
 const BUILT = existsSync(path.join(DIST, 'index.js'))
 const schemas = OUTPUT_SCHEMAS as Record<string, JsonSchema>
@@ -35,7 +39,12 @@ const ABSENT = path.join(FIXTURES, 'save', 'absent.json')
 
 const flags = (length: number, set: number) => Array.from({ length }, (_, index) => index < set)
 
-/** An export with balances and unlock flags, so `next_unlocks` answers with numbers and not nulls. */
+/**
+ * An export with balances, unlock flags and a history of runs.
+ *
+ * The shipped fixtures hold no runs, so with them alone `battle_history` and `save_series` only
+ * ever answered with an empty list, and the fields a real account fills were never checked.
+ */
 const EXPORT = {
   ExportVersion: 1,
   ExportedAt: '2026-11-24T09:30:00.000Z',
@@ -60,6 +69,18 @@ const EXPORT = {
   LabActiveBool: [true],
   LabSpeedUpSpeed: [2],
   LabSpeedUpRemainingSeconds: [0],
+  BattleHistory: [
+    { Tier: 5, Wave: 1500, BattleDate: '2026-11-03T10:00:00.000Z', CoinsEarnedThisRound: 9000, RealTimeThisRound: 3600, CellsEarnedThisRound: 55 },
+    { Tier: 5, Wave: 1200, BattleDate: '2026-11-01T10:00:00.000Z', CoinsEarnedThisRound: 5000, RealTimeThisRound: 1800, CellsEarnedThisRound: 40 },
+    { Tier: 6, Wave: 800, BattleDate: '2026-11-02T10:00:00.000Z', CoinsEarnedThisRound: 3000, RealTimeThisRound: 3600 },
+  ],
+  LeagueID: 2,
+  TournamentRecords: [
+    { TournamentNumber: 317, Date: '2026-11-14T00:00:00.000Z', LeagueID: 2, Wave: 450, Rank: 7 },
+    { TournamentNumber: 316, Date: '2026-11-11T00:00:00.000Z', LeagueID: 2, Wave: 430, Rank: 12 },
+  ],
+  HighestWaveThisTier: [0, 4500, 3200, 0, 1800],
+  HighestCoinsEarnedThisTier: [0, 9e9, 4e9, 0, 1e9],
 }
 
 type Args = Record<string, unknown>
@@ -101,6 +122,7 @@ const SUCCEEDS: Record<string, Args[]> = {
     { family: 'economy', variant: 'coin', steps: 2 },
     { family: 'health', variant: 'coin', steps: 2 },
     { family: 'regen', variant: 'lab-time', steps: 2 },
+    { family: 'economy', variant: 'coin', steps: 2, savePath: SAVE },
   ],
   describe_schema: [{}, { table: 'LAB_CATALOG' }],
   calc_list: [{}, { filter: 'coin' }, { filter: 'zzzzq' }],
@@ -109,16 +131,17 @@ const SUCCEEDS: Record<string, Args[]> = {
     { id: 'format.gameNumber', args: { value: 1e15 } },
     { id: 'lab.durationDays', args: { labKey: 'damage', level: 5 } },
     { id: 'coinBonus.fromSave', savePath: LABS },
+    { id: 'coinBonus.fromSave', savePath: SAVE },
   ],
   calc_chart: [{}, { chart: 'uw-stone-costs' }],
   calc_graph: [{}, { filter: 'crit' }, { limit: 2 }],
   patch_notes: [{}, { query: 'death wave' }, { introduced: 'vault' }, { introduced: 'zzzzqq' }, { recent: 2 }],
-  battle_history: [{ path: LABS }, { path: WORKSHOP, kind: 'tournament' }],
+  battle_history: [{ path: LABS }, { path: WORKSHOP, kind: 'tournament' }, { path: SAVE, limit: 2 }, { path: SAVE, detail: true }],
   next_unlocks: [{ path: LABS }, { path: SAVE }],
   coin_bonus: [{ path: WORKSHOP, tier: 5 }, { path: SAVE }, { path: SAVE, overrides: { tier: 9 } }],
   chart_rows: [{}, { chart: 'vault:upgrades-and-cost:harmony-tree', limit: 2 }],
   chart_series: [{}, { family: 'lab' }, { series: 'lab:primary-module-bonus-cannon:cost', limit: 2 }],
-  save_series: [{ path: LABS }],
+  save_series: [{ path: LABS }, { path: SAVE }, { path: SAVE, series: 'save:battle:coins-per-hour', limit: 2 }],
   form_calc: [{}, { id: 'bot.upgrade' }, { id: 'bot.upgrade', input: {} }],
   oracle_traps: [{ id: 'workshop' }, { id: 'nope' }],
   oracle_get: [{ id: 'workshop' }, { id: 'nope' }],
@@ -135,6 +158,9 @@ const SUCCEEDS: Record<string, Args[]> = {
   record_mechanic_note: [{ token: 'tok', mechanic: 'Coin Bonus', facts: ['a fact'], sources: ['wiki "Coins"'] }],
   record_work_status: [{ token: 'tok', title: 'Coin Bonus', status: 'awaiting_user', summary: 'ready to test' }],
 }
+
+/** Tools whose answer names the moment or a fresh token, so two calls never give the same text. */
+const WRITES = new Set(['begin_mechanic_task', 'record_mechanic_note', 'record_work_status'])
 
 /** Calls that fail, each a different way a tool says so. */
 const FAILS: [string, Args][] = [
@@ -171,6 +197,12 @@ describe('the output schemas', () => {
     expect(schemaProblems(schema, { error: 'no entry "nope"' }).length).toBeGreaterThan(0)
   })
 
+  it('travels with the tool, so a server that mounts the registry advertises it', () => {
+    const registries = { ...(TOOLS as object), ...(TOWER_ORACLE_TOOLS as object) } as Record<string, { outputSchema?: JsonSchema }>
+    for (const name of Object.keys(schemas)) expect(registries[name]!.outputSchema, name).toBe(schemas[name])
+    for (const name of unschemaed) expect(registries[name]!.outputSchema, name).toBeUndefined()
+  })
+
   it('has a call here for every tool that has a schema', () => {
     expect(Object.keys(schemas).filter(name => !SUCCEEDS[name]?.length)).toEqual([])
   })
@@ -201,6 +233,8 @@ describe.skipIf(!BUILT)('structured output over stdio', () => {
         TOWER_WIKI_DIR: path.join(scratch, 'wiki'),
         TOWER_WIKI_OFFLINE: '1',
         TOWER_TOOL_EXPORT: '',
+        /* An answer outside its schema is refused, so every call in this file checks one. */
+        TOWER_MCP_STRICT: '1',
       },
     })
     servers.push(child)
@@ -270,10 +304,17 @@ describe.skipIf(!BUILT)('structured output over stdio', () => {
     for (const args of calls) {
       const at = `${name} ${JSON.stringify(args)}`
       const result = await current.call(name, args)
+      expect(result, at).toBeDefined()
       expect(result.isError, `${at}: ${result.content?.[0]?.text.slice(0, 300)}`).toBeUndefined()
       expect(schemaProblems(schemas[name]!, result.structuredContent), at).toEqual([])
       /* The text block is the same answer, serialised: a client reading either gets one result. */
       expect(result.structuredContent, at).toEqual(JSON.parse(result.content![0]!.text))
+      /* And a client that negotiated an older revision, or none, reads the very same text. */
+      for (const client of [older, unnegotiated]) {
+        const plain = await client.call(name, args)
+        expect(plain, at).not.toHaveProperty('structuredContent')
+        if (!WRITES.has(name)) expect(plain.content, at).toEqual(result.content)
+      }
     }
   })
 
@@ -284,17 +325,12 @@ describe.skipIf(!BUILT)('structured output over stdio', () => {
     expect(result).not.toHaveProperty('structuredContent')
   })
 
-  it('sends a client on an older revision what that revision defines, and the same text', async () => {
+  it('lists no schema for a client on an older revision, or one that never negotiated', async () => {
     for (const client of [older, unnegotiated]) {
       for (const tool of (await client.rpc('tools/list')).result!.tools!) {
         expect(tool, tool.name).not.toHaveProperty('outputSchema')
       }
-      const plain = await client.call('get_export', { name: 'LAB_CATALOG', limit: 1 })
-      expect(plain).not.toHaveProperty('structuredContent')
-
-      const structured = await current.call('get_export', { name: 'LAB_CATALOG', limit: 1 })
-      expect(structured.content).toEqual(plain.content)
-      expect(Object.keys(plain)).toEqual(['content'])
+      expect(Object.keys(await client.call('get_export', { name: 'LAB_CATALOG', limit: 1 }))).toEqual(['content'])
     }
   })
 })

@@ -8,10 +8,11 @@ The MCP server, so an agent can query the package instead of guessing at it.
 |---|---|---|
 | `nearest-names.mjs` | The closest known names to what someone typed. | editDistance, nearestNames |
 | `oracle-tools.mjs` | tower-oracle — the game-knowledge MCP surface. | TOWER_ORACLE_TOOLS, TOWER_ORACLE_INSTRUCTIONS |
-| `output-schemas.mjs` | — | OUTPUT_SCHEMAS, WITHOUT_OUTPUT_SCHEMA, withOutputSchemas |
+| `output-schemas.mjs` | — | OUTPUT_SCHEMAS, WITHOUT_OUTPUT_SCHEMA, attachOutputSchemas |
 | `prompts.mjs` | — | PROMPTS |
 | `run-repo-tsx.mjs` | Spawn a repo `.mjs` script via local `tsx` without going through `pnpm.cmd` (Windows Node spawnSync EINVAL on .cmd without shell). | resolveTsxCli, REPO_SCRIPT_TIMEOUT_MS, runRepoTsx, parseCliJson |
 | `run-stdio.mjs` | Shared MCP JSON-RPC stdio loop (shipped with thetowersdk; reused by monorepo tower-mcp). | argumentProblems, unreadKeys, runStdioMcp, isDirectRun |
+| `schema-problems.mjs` | — | schemaProblems |
 | `scratchpad.mjs` | — | createScratchpad |
 | `server.mjs` | MCP server for thetowersdk. | buildComplianceInstructions, TOOLS, availableTools, COMPLIANCE_INSTRUCTIONS (+2 more) |
 | `tool-traits.mjs` | What each tool does to the world, in one place. | MUTATES, REACHES_NETWORK, TITLES, annotationsFor (+1 more) |

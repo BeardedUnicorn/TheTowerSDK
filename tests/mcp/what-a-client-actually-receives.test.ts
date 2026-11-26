@@ -70,6 +70,8 @@ describe.skipIf(!BUILT)('the server over stdio', () => {
         TOWER_WIKI_DIR: path.join(scratch, 'wiki'),
         TOWER_WIKI_OFFLINE: '1',
         TOWER_MCP_COMPACT: '',
+        /* Refuse an answer outside its tool's output schema, so every call here checks one. */
+        TOWER_MCP_STRICT: '1',
       },
     })
     let buffer = ''
