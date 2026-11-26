@@ -13,7 +13,7 @@
  */
 import type { ChartSeries, ChartSeriesDescriptor, ChartSeriesFamily, ChartSeriesFilter } from '../../data/charts/types'
 import { botSeries, cardSeries, guardianSeries, labSeries, ultimateWeaponSeries, workshopSeries } from './catalog-families'
-import { enhancementCostSeries, moduleCostSeries, unlockLadderSeries, vaultCostSeries } from './cost-families'
+import { enhancementCostSeries, moduleCostSeries, unlockLadderSeries, vaultCostSeries, vaultV29CostSeries } from './cost-families'
 import type { ChartSeriesSource } from './types'
 
 interface IndexedSeries {
@@ -37,6 +37,7 @@ function seriesIndex() {
     ...moduleCostSeries(),
     ...enhancementCostSeries(),
     ...vaultCostSeries(),
+    ...vaultV29CostSeries(),
     ...unlockLadderSeries(),
   ]
   const list = sources.map((source): IndexedSeries => {

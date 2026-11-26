@@ -73,6 +73,19 @@ const SAMPLES: Record<string, { args: Record<string, unknown>, moved: Record<str
   'vault.nodeKeysCost': { args: { nodeId: 'defabs', level: 1 }, moved: { nodeId: 'defabs', level: 3 } },
   'vault.nodeKeysBetween': { args: { nodeId: 'defabs', fromLevel: 0, toLevel: 1 }, moved: { nodeId: 'defabs', fromLevel: 0, toLevel: 3 } },
   'vault.treeKeysRemaining': { args: { tree: 'power' }, moved: { tree: 'power', levels: { defabs: 3 } } },
+  'vault.v29.upgradeKeysCost': {
+    args: { upgrade: 'v29:power:Defense:Defense Absolute', level: 1 },
+    moved: { upgrade: 'v29:power:Defense:Defense Absolute', level: 5 },
+  },
+  'vault.v29.upgradeKeysBetween': {
+    args: { upgrade: 'v29:power:Defense:Defense Absolute', fromLevel: 0, toLevel: 1 },
+    moved: { upgrade: 'v29:power:Defense:Defense Absolute', fromLevel: 0, toLevel: 5 },
+  },
+  'vault.v29.categoryUnlockKeys': { args: { tree: 'power', category: 'Defense' }, moved: { tree: 'harmony', category: 'Cards' } },
+  'vault.v29.treeKeysRemaining': {
+    args: { tree: 'power' },
+    moved: { tree: 'power', levels: { 'v29:power:Defense:Defense Absolute': 5 } },
+  },
   'uw.unlockStonesBetween': { args: { ownedFrom: 0, ownedTo: 3 }, moved: { ownedFrom: 0, ownedTo: 9 } },
   'uw.plusUnlockStonesBetween': { args: { ownedFrom: 0, ownedTo: 3 }, moved: { ownedFrom: 0, ownedTo: 9 } },
   'uw.stoneCostBetween': {

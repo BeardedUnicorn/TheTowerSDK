@@ -119,7 +119,10 @@ describe('what the link is for', () => {
     //
     // Now 87 of 116: five more for the workshop, all linked. What an upgrade gives in the game's
     // unit, the table's raw number, the price of several levels, and the enemy level skip pair.
-    expect(curated).toHaveLength(116)
-    expect(linked).toBe(87)
+    //
+    // Now 91 of 120: four for the v29 vault's key prices, all linked. The three that price the
+    // pre-v29 trees stay, labelled as that.
+    expect(curated).toHaveLength(120)
+    expect(linked).toBe(91)
   })
 })

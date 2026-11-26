@@ -216,6 +216,12 @@ export const VAULT_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       'Harmony presets now ADD to presets the Presets lab opens: the Bots, Workshop and Guardians '
       + 'Presets steps each add 3. They no longer grant presets on their own.',
     ],
+    implementedBy: [
+      'vaultV29UpgradeKeysCost',
+      'vaultV29UpgradeKeysBetween',
+      'vaultV29CategoryUnlockKeys',
+      'vaultV29TreeKeysRemaining',
+    ],
     assertions: [
       { subject: 'vault.v29', predicate: 'tabCount', value: 3, provenance: NOTE_V29_VAULT_REWORK },
       { subject: 'vault.v29.harmony', predicate: 'categoryCount', value: VAULT_V29_HARMONY.categories.length, provenance: CATALOG_VAULT_V29 },
@@ -239,7 +245,9 @@ export const VAULT_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     traps: [
       'This tree and its tier rules are gone since v29: Power is now four Workshop-like '
       + 'categories, each unlocked for keys, with per-level key costs. Do not plan a v29 account '
-      + 'with these numbers.',
+      + 'with these numbers, nor with `vaultNodeKeysCost`, `vaultNodeKeysBetween` or '
+      + '`vaultTreeKeysRemaining`, which price this tree; `vaultV29TreeKeysRemaining` and its '
+      + 'siblings price the current vault.',
       'Tier cost is 1× / 2× / 4×, and the higher tiers are gated on node COUNT, not on any single '
       + 'node. Buying a third tier early is impossible however many keys are held.',
       'Five nodes have only ONE level — Ultimate Weapon Damage (All), Bot Range (All), Wall '
