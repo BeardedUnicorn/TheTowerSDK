@@ -95,6 +95,35 @@ A call that fails sets `isError`, including a wrong name or a missing file, and 
 JSON with the reason and any suggestions. Arguments are checked against each tool's schema before
 it runs. Every tool carries MCP annotations (`title`, `readOnlyHint`, `openWorldHint`).
 
+### What a result looks like
+
+Every result has one text block holding the tool's answer as JSON. A second text block follows only
+when the answer held a number JSON cannot carry (NaN, Infinity), naming where.
+
+To a client that negotiated protocol revision `2025-06-18`, a result also carries the same answer
+as `structuredContent`, and `tools/list` gives each tool an `outputSchema` describing it:
+
+```json
+{
+  "content": [{ "type": "text", "text": "{\"term\":\"zzzz\",\"found\":false,\"note\":\"…\"}" }],
+  "structuredContent": { "term": "zzzz", "found": false, "note": "…" }
+}
+```
+
+- **A schema describes a success.** A failed call is `isError` and its text block, with no
+  `structuredContent`, so nothing sent as structured content ever fails its tool's schema. Read
+  the reason from the text.
+- **"Not found" can be a success.** `define_term`, `oracle_get` and `oracle_brief` answer
+  `found: false` without `isError`; that answer is structured and fits the schema.
+- **The schemas are open.** They name the fields that are always present and type the ones that
+  may be; a tool that answers differently by argument (one chart, or the list of charts) lists both
+  sets of fields. Expect fields a schema does not name.
+- **Older revisions get text only.** `2025-03-26` and `2024-11-05` define neither field, so a
+  client on one of them — or one that never sent `initialize` — receives exactly what it did before.
+- The tools that need the development monorepo have no `outputSchema`.
+
+The schemas live in [`output-schemas.mjs`](output-schemas.mjs).
+
 `tools/list` sends descriptions in full. Set `TOWER_MCP_COMPACT=1` to cut them to 180 characters for
 a client with a small catalog.
 

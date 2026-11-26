@@ -23,6 +23,16 @@ import { fileURLToPath } from 'node:url'
 const PROTOCOL_VERSIONS = ['2025-06-18', '2025-03-26', '2024-11-05']
 
 /**
+ * The first revision whose `Tool` has an `outputSchema` and whose result has `structuredContent`.
+ *
+ * Neither field exists in the two older revisions, and the specification does not say what a
+ * server should do for a client that negotiated one of them. This loop answers in the revision
+ * that was agreed, so such a client is sent what that revision defines and nothing else. Revisions
+ * are dates, so they compare as strings.
+ */
+const STRUCTURED_OUTPUT_SINCE = '2025-06-18'
+
+/**
  * How much of a description `tools/list` carries.
  *
  * It was 180 characters for everyone, to fit one client's catalog -- and 28 of 46 descriptions are
@@ -168,6 +178,18 @@ function reportsFailure(result) {
 }
 
 /**
+ * Whether a result can travel as `structuredContent`, which the specification types as an object.
+ *
+ * An array, a string or `null` cannot, and is not wrapped in one to make it fit: `{ result: [...] }`
+ * would be a second shape for the same answer, disagreeing with the text block beside it. Such a
+ * result is sent as text alone, as it always was. No tool that declares an `outputSchema` returns
+ * one, and `structured-output.test.ts` is what holds that.
+ */
+function isPlainObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+/**
  * One prompt's messages, with the caller's arguments filled in.
  *
  * A required argument left out is the caller's mistake and is answered as invalid params, which
@@ -191,15 +213,26 @@ export function runStdioMcp({ name, version, instructions, tools, prompts = {} }
   const own = (record, key) => Object.prototype.hasOwnProperty.call(record, key) ? record[key] : undefined
   const fail = (id, code, message) => send({ jsonrpc: '2.0', id, error: { code, message } })
 
+  /*
+   * The revision this connection agreed on. Until `initialize` it is the oldest, which is also
+   * what a client that names none is given, so a caller that never negotiated is sent the plain
+   * text results this server always sent.
+   */
+  let negotiated = PROTOCOL_VERSIONS.at(-1)
+  const speaksStructuredOutput = () => negotiated >= STRUCTURED_OUTPUT_SINCE
+
   const handlers = {
-    initialize: ({ protocolVersion } = {}) => ({
-      protocolVersion: protocolVersion === undefined
+    initialize: ({ protocolVersion } = {}) => {
+      negotiated = protocolVersion === undefined
         ? PROTOCOL_VERSIONS.at(-1)
-        : PROTOCOL_VERSIONS.includes(protocolVersion) ? protocolVersion : PROTOCOL_VERSIONS[0],
-      capabilities: { tools: {}, ...(Object.keys(prompts).length > 0 ? { prompts: {} } : {}) },
-      serverInfo: { name, version },
-      instructions,
-    }),
+        : PROTOCOL_VERSIONS.includes(protocolVersion) ? protocolVersion : PROTOCOL_VERSIONS[0]
+      return {
+        protocolVersion: negotiated,
+        capabilities: { tools: {}, ...(Object.keys(prompts).length > 0 ? { prompts: {} } : {}) },
+        serverInfo: { name, version },
+        instructions,
+      }
+    },
     /* A liveness check. Unanswered, a client that pings on a timer concludes the server died. */
     ping: () => ({}),
     'prompts/list': () => ({
@@ -223,6 +256,7 @@ export function runStdioMcp({ name, version, instructions, tools, prompts = {} }
           description: desc.length > DESCRIPTION_LIMIT ? `${desc.slice(0, DESCRIPTION_LIMIT - 3)}...` : desc,
           inputSchema: t.inputSchema ?? { type: 'object', properties: {} },
           ...(t.annotations ? { annotations: t.annotations } : {}),
+          ...(t.outputSchema && speaksStructuredOutput() ? { outputSchema: t.outputSchema } : {}),
         }
       }),
     }),
@@ -281,7 +315,17 @@ export function runStdioMcp({ name, version, instructions, tools, prompts = {} }
             text: `warning: these numbers are not representable in JSON and appear above as null: ${lost.join('; ')}`,
           })
         }
-        return reportsFailure(result) ? { isError: true, content } : { content }
+        if (reportsFailure(result)) return { isError: true, content }
+        /*
+         * The same object the text block serialises, so the two cannot disagree: a NaN is `null`
+         * in both. A failure carries none. The specification requires structured content to
+         * conform to the tool's `outputSchema` and makes no exception for `isError`, and a schema
+         * that also admitted `{ error }` would describe nothing; so a schema describes a success,
+         * and an error is the text block and the flag, as before.
+         */
+        return speaksStructuredOutput() && isPlainObject(result)
+          ? { content, structuredContent: result }
+          : { content }
       } catch (error) {
         return {
           isError: true,
