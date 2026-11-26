@@ -31,7 +31,13 @@ import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '../dist/builders/ind
 import * as data from '../dist/data/index.js'
 import * as formatting from '../dist/formatting/index.js'
 import * as mechanics from '../dist/mechanics/index.js'
-import { SHARED_CHART_REGISTRY, resolveCanonicalToolDataset } from '../dist/charts/index.js'
+import {
+  SHARED_CHART_REGISTRY,
+  countChartSeriesByFamily,
+  getChartSeries,
+  listChartSeries,
+  resolveCanonicalToolDataset,
+} from '../dist/charts/index.js'
 import { CONTRIBUTIONS, ATTRIBUTION_LINES } from '../dist/contributions/index.js'
 
 /*
@@ -244,6 +250,25 @@ const OPS = {
     if (!dataset) return { error: `no chart dataset named ${id}` }
     const rows = Array.isArray(dataset.rows) ? dataset.rows : []
     return { id, columns: dataset.columns ?? [], ...page(rows, { offset, limit }) }
+  },
+
+  // ---- series -------------------------------------------------------------
+
+  // Every series the catalogs hold, by id. `family` and `entity` narrow the listing.
+  'charts.seriesList': ({ family, entity, offset, limit }) => {
+    const listed = listChartSeries({
+      ...(family === undefined ? {} : { family: String(family) }),
+      ...(entity === undefined ? {} : { entity: String(entity) }),
+    })
+    return { families: countChartSeriesByFamily(), ...page(listed, { offset, limit }) }
+  },
+
+  // One series as {x, y} points. `id` is what `charts.seriesList` returned.
+  'charts.series': ({ id, offset, limit }) => {
+    const found = getChartSeries(String(id ?? ''))
+    if (!found) return { error: `no series named ${id}` }
+    const { data, ...described } = found
+    return { ...described, ...page(data, { offset, limit }) }
   },
 
   // ---- attribution --------------------------------------------------------

@@ -39,7 +39,9 @@ export interface EnemyBalanceMasteryRow {
 // from the chart series listing (charts/series)
 
 /** Which catalog a series is drawn from. */
-export type ChartSeriesFamily = 'lab' | 'workshop' | 'card' | 'ultimate-weapon' | 'bot' | 'guardian'
+export type ChartSeriesFamily =
+  | 'lab' | 'workshop' | 'card' | 'ultimate-weapon' | 'bot' | 'guardian'
+  | 'module' | 'enhancement' | 'vault' | 'unlock-ladder'
 
 /** One point of a series: a level, and the value the catalog holds at it. */
 export interface ChartSeriesPoint {

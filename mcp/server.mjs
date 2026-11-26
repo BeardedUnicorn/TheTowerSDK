@@ -3467,6 +3467,8 @@ export const TOOLS = {
           ...(known
             ? { ids: registry.filter(entry => entry.rendererKey === rendererKey).map(entry => entry.pathId) }
             : { didYouMean: nearestNames(String(chart), [...new Set(registry.flatMap(entry => [entry.pathId, entry.rendererKey]))], 5) }),
+          // A series id asked of the wrong tool: say where it lives, rather than only "no chart".
+          ...(!known && sdk.charts.getChartSeries(String(chart)) ? { hint: 'that is a series id; ask chart_series for it' } : {}),
         }
       }
 
@@ -3478,6 +3480,68 @@ export const TOOLS = {
         title: dataset.title ?? listed?.title,
         columns: dataset.columns ?? [],
         rows: rows.length,
+        offset: shown.offset,
+        returned: shown.returned,
+        ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
+        items: shown.items,
+      }
+    },
+  },
+
+  chart_series: {
+    description:
+      'A series the catalogs already hold — a lab\'s cost by level, a bot stat by level, a vault '
+      + 'node\'s keys by tier — as plain {x, y} points, by id. Omit `series` to list the ids, '
+      + 'narrowed by `family` or `entity`; give a `series` for its points, paged. chart_rows returns '
+      + 'a curated chart as a formatted table; this returns one curve as numbers. `y` is a number '
+      + 'where the catalog stores one and its own text (x9.4, 119:26:00) where it does not.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        series: { type: 'string', description: 'A series id from the listing, e.g. "lab:damage:cost"' },
+        family: { type: 'string', description: 'List only one family: lab, workshop, card, ultimate-weapon, bot, guardian, module, enhancement, vault or unlock-ladder' },
+        entity: { type: 'string', description: 'List only one entity, spelled as the listing spells it — a lab slug such as "damage", a bot name' },
+        offset: { type: 'number', description: 'Skip this many ids or points — the `next` from a truncated answer' },
+        limit: { type: 'number', description: 'How many ids or points to return (default 40, at most 100)' },
+      },
+    },
+    run: ({ series, family, entity, offset, limit }) => {
+      const charts = sdk.charts
+      const families = charts.countChartSeriesByFamily()
+
+      if (!series) {
+        if (family !== undefined && !Object.prototype.hasOwnProperty.call(families, String(family))) {
+          return { error: `no series family "${family}"`, families: Object.keys(families) }
+        }
+        const listed = charts.listChartSeries({
+          ...(family === undefined ? {} : { family: String(family) }),
+          ...(entity === undefined ? {} : { entity: String(entity) }),
+        })
+        const shown = pageOf(listed, { offset, limit })
+        return {
+          series: listed.length,
+          // Every series with an id; `chartable` leaves out those with a single point.
+          chartable: listed.filter(item => item.points >= charts.CHARTABLE_SERIES_MIN_POINTS).length,
+          families,
+          offset: shown.offset,
+          returned: shown.returned,
+          ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
+          items: shown.items.map(item => ({ id: item.id, title: item.title, points: item.points, ...(item.unit ? { unit: item.unit } : {}) })),
+        }
+      }
+
+      const found = charts.getChartSeries(String(series))
+      if (!found) {
+        return {
+          error: `no series "${series}"`,
+          didYouMean: nearestNames(String(series), charts.listChartSeries().map(item => item.id), 5),
+        }
+      }
+
+      const { data, ...described } = found
+      const shown = pageOf(data, { offset, limit })
+      return {
+        ...described,
         offset: shown.offset,
         returned: shown.returned,
         ...(shown.truncated ? { truncated: true, next: shown.next } : {}),

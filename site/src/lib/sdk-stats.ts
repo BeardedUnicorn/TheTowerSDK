@@ -16,7 +16,7 @@ import {
 	getWorkshopStatDefinitions,
 	uwStoneChartData
 } from '@beardedunicorn/thetowersdk/data';
-import { listChartSeries } from '@beardedunicorn/thetowersdk/charts';
+import { listChartableSeries } from '@beardedunicorn/thetowersdk/charts';
 import * as mechanics from '@beardedunicorn/thetowersdk/mechanics';
 
 function countUwStats(): number {
@@ -54,12 +54,12 @@ function countMechanicsFormulas(): number {
  * Every chart the shipped game data can produce, not the handful anyone has
  * hand-authored. One chart = one measurable field plotted across a level range.
  *
- * Read from the package's own listing, so the number here is the number of series
- * `getChartSeries` can return. It used to be recounted in this file by a copy of the walk, and the
+ * Read from the package's own listing of series with at least two points, so the number here is
+ * the number of curves `getChartSeries` can return. It used to be recounted in this file by a copy of the walk, and the
  * two copies had already drifted on how a bot stat counts.
  */
 export function countChartableSeries(): number {
-	return listChartSeries().length;
+	return listChartableSeries().length;
 }
 
 /**

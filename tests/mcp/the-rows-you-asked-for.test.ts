@@ -170,6 +170,61 @@ describe('chart_rows', () => {
   })
 })
 
+describe('chart_series', () => {
+  it('lists every series with an id that can be asked for', async () => {
+    const first = await run('chart_series', { limit: 100 })
+    expect(first.series).toBeGreaterThan(first.returned)
+    expect(first.chartable).toBeLessThanOrEqual(first.series)
+    expect(Object.values(first.families as Record<string, number>).reduce((sum, count) => sum + count, 0)).toBe(first.series)
+
+    /* Walk every page: an id that cannot be read back is a title, not an address. */
+    let offset: number | undefined = 0
+    let seen = 0
+    while (offset !== undefined) {
+      const page = await run('chart_series', { limit: 100, offset })
+      for (const item of page.items) {
+        const series = await run('chart_series', { series: item.id, limit: 1 })
+        expect(series.error, item.id).toBeUndefined()
+        expect(series.points, item.id).toBe(item.points)
+      }
+      seen += page.returned
+      offset = page.next
+    }
+    expect(seen).toBe(first.series)
+  })
+
+  it('returns a series as numbers, paged', async () => {
+    const cost = await run('chart_series', { series: 'lab:damage:cost', limit: 3 })
+    expect(cost).toMatchObject({ id: 'lab:damage:cost', family: 'lab', entity: 'damage', returned: 3, truncated: true })
+    // Damage levels 1-3 cost 30, 71 and 178 coins.
+    expect(cost.items).toEqual([{ x: 1, y: 30 }, { x: 2, y: 71 }, { x: 3, y: 178 }])
+    const next = await run('chart_series', { series: 'lab:damage:cost', limit: 3, offset: cost.next })
+    expect(next.items[0].x).toBe(4)
+  })
+
+  it('narrows the listing by family and entity', async () => {
+    const guardians = await run('chart_series', { family: 'guardian', limit: 100 })
+    expect(guardians.series).toBe(36)
+    expect(guardians.items.every((item: { id: string }) => item.id.startsWith('guardian:'))).toBe(true)
+    const damage = await run('chart_series', { family: 'lab', entity: 'damage' })
+    expect(damage.items.map((item: { id: string }) => item.id).sort()).toEqual(['lab:damage:cost', 'lab:damage:duration'])
+  })
+
+  it('refuses an unknown series or family, and suggests a near one', async () => {
+    const miss = await run('chart_series', { series: 'lab:damage:costs' })
+    expect(miss.error).toContain('no series')
+    expect(miss.didYouMean).toContain('lab:damage:cost')
+    expect((await run('chart_series', { family: 'labs' })).error).toContain('no series family')
+  })
+
+  it('is pointed to by chart_rows when given a series id', async () => {
+    const wrongTool = await run('chart_rows', { chart: 'lab:damage:cost' })
+    expect(wrongTool.error).toContain('no chart')
+    expect(wrongTool.hint).toContain('chart_series')
+    expect((await run('chart_rows', { chart: 'nothing-at-all' })).hint).toBeUndefined()
+  })
+})
+
 describe('form_calc', () => {
   it('lists, describes and runs', async () => {
     const list = await run('form_calc')

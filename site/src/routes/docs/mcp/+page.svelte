@@ -7,7 +7,7 @@
 <h1 class="text-3xl font-semibold">MCP &amp; AI</h1>
 <p class="mt-3 text-muted">
 	The package ships an MCP server, so there is nothing extra to install. Register it and your
-	editor's assistant gains forty-five tools: it can run the shipped calculators and get real numbers
+	editor's assistant gains forty-six tools: it can run the shipped calculators and get real numbers
 	back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and validate what
 	it produced — rather than writing game maths from memory and hoping.
 </p>
@@ -41,7 +41,7 @@
 	them, the server is registered.
 </p>
 
-<h2 class="mt-10 text-xl font-semibold">Forty-Five Tools</h2>
+<h2 class="mt-10 text-xl font-semibold">Forty-Six Tools</h2>
 <p class="mt-3 text-muted">
 	Enough that an assistant can compute, run and check its work rather than only look things up. The
 	groups below are what it gets.
@@ -81,6 +81,10 @@
 	<li>
 		<code>chart_rows</code> — the published rows behind a chart, paged, so a value can be checked against
 		what players see
+	</li>
+	<li>
+		<code>chart_series</code> — one series the catalogs hold, as plain points by id: a lab's cost by level,
+		a bot stat, a vault node's keys. Leave the id out to list them
 	</li>
 </ul>
 

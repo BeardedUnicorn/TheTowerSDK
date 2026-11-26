@@ -117,7 +117,7 @@
 			 * their editor does not have.
 			 */
 			action: 'Register once — Claude Code',
-			body: 'Already inside the package, so there is nothing extra to install. Once registered, your assistant gains forty-five tools — running the shipped calculators for real numbers, an instrumented sandbox to work in, save decoding, wiki lookup, and tracing to check its own output. Using Cursor or Copilot? The MCP docs have the JSON config.',
+			body: 'Already inside the package, so there is nothing extra to install. Once registered, your assistant gains forty-six tools — running the shipped calculators for real numbers, an instrumented sandbox to work in, save decoding, wiki lookup, and tracing to check its own output. Using Cursor or Copilot? The MCP docs have the JSON config.',
 			command:
 				'claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/thetowersdk/mcp/server.mjs',
 			docsHref: href('/docs/mcp/'),
@@ -526,7 +526,7 @@
 				<GlassPanel>
 					<h3 class="text-lg font-medium">MCP Server</h3>
 					<p class="mt-2 text-sm text-muted">
-						Forty-five tools for Cursor, Claude or Copilot. It can run the shipped calculators and
+						Forty-six tools for Cursor, Claude or Copilot. It can run the shipped calculators and
 						get the real number, work in an instrumented sandbox, and trace what it produced.
 						<code>list_exports</code> and <code>describe_schema</code> for the API,
 						<code>decode_save</code> for a real account, <code>wiki_page</code> for mechanics, and

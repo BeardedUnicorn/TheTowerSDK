@@ -200,6 +200,7 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
   { name: 'calc_graph', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured', 'noProseSoT'] },
   { name: 'calc_chart', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured', 'noProseSoT'] },
   { name: 'chart_rows', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
+  { name: 'chart_series', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
   { name: 'form_calc', category: 'calculator', module: 'sdk', guarantees: ['deterministic', 'structured'] },
 
   { name: 'wiki_search', category: 'wiki', module: 'sdk', guarantees: ['structured'] },

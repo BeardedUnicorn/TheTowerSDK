@@ -59,6 +59,7 @@ Claude Code: `claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/
 | `calc_list` · `calc_describe` · `calc_run` | Find a calculator, read its inputs, and run it. |
 | `calc_chart` · `calc_graph` | Which calculators produce a chart's numbers, and which calculators feed which. |
 | `chart_rows` | The published rows behind a chart, paged. |
+| `chart_series` | One series the catalogs hold, as `{x, y}` points by id: a lab's cost by level, a bot stat, a vault node's keys. Omit the id to list them. |
 | `form_calc` | The site's form calculators: list them, read one's fields and defaults, run it. |
 | `plan_effective_path` | Plan an Effective Paths route, with the candidates it left out and why. The economy family can start from a save. |
 | `patch_notes` | Search the developers' patch notes, or find when something was first mentioned. |

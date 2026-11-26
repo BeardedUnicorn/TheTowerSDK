@@ -7,8 +7,9 @@ Every series the catalogs' level tables hold, each with an id to ask for it by.
 | File | Purpose | Exports |
 |---|---|---|
 | `catalog-families.ts` | The series each catalog holds: | labSeries, workshopSeries, cardSeries, ultimateWeaponSeries (+2 more) |
-| `index.ts` | Series from the catalogs' own level tables, each with a stable id: | countChartSeriesByFamily, getChartSeries, listChartSeries |
-| `lookup.ts` | Every series the catalogs hold, by id: | listChartSeries, getChartSeries, countChartSeriesByFamily |
+| `cost-families.ts` | The cost ladders that are not a field of a level table: | moduleCostSeries, enhancementCostSeries, vaultCostSeries, unlockLadderSeries |
+| `index.ts` | Series from the catalogs' own level tables, each with a stable id: | CHARTABLE_SERIES_MIN_POINTS, countChartSeriesByFamily, getChartSeries, listChartSeries (+1 more) |
+| `lookup.ts` | Every series the catalogs hold, by id: | listChartSeries, getChartSeries, CHARTABLE_SERIES_MIN_POINTS, listChartableSeries (+1 more) |
 | `types.ts` | The types `charts/series/` shares between its modules. | ChartSeriesSource |
 | `walk.ts` | How a catalog's level table becomes series: | isPlottableValue, plottableFields, pointsOfField, pointsOfList (+3 more) |
 

@@ -1,11 +1,19 @@
 import { describe, expect, it } from 'vitest'
 
-import { countChartSeriesByFamily, getChartSeries, listChartSeries } from '../../src/charts'
+import {
+  CHARTABLE_SERIES_MIN_POINTS,
+  countChartSeriesByFamily,
+  getChartSeries,
+  listChartSeries,
+  listChartableSeries,
+} from '../../src/charts'
 import { LAB_CATALOG } from '../../src/data/labs/catalog.data'
 import { uwStoneChartData } from '../../src/data/ultimate-weapons/stones.data'
 import { CARD_TEMPLATES } from '../../src/data/cards/data'
 import { guardianUpgrades } from '../../src/data/guardians/upgrades.data'
 import { getWorkshopStatDefinitions } from '../../src/data/workshop/progress-definitions'
+import { DEFAULT_HARMONY_VAULT_NODES, DEFAULT_POWER_VAULT_NODES } from '../../src/data/vault/tree'
+import { enhancementCoinCost, enhancementStats } from '../../src/mechanics/effective-paths/enhancement-costs'
 
 /**
  * The README and the SDK site both publish a chartable-series count.
@@ -19,13 +27,24 @@ import { getWorkshopStatDefinitions } from '../../src/data/workshop/progress-def
  * is published is the number of series that can actually be asked for.
  */
 
-const PUBLISHED_TOTAL = 803
+const PUBLISHED_TOTAL = 818
 
 describe('chartable series count published in the docs', () => {
   it('still matches the shipped catalogs', () => {
-    const parts = countChartSeriesByFamily()
-    expect(parts).toEqual({ 'lab': 462, 'workshop': 144, 'card': 64, 'ultimate-weapon': 72, 'bot': 25, 'guardian': 36 })
-    const total = listChartSeries().length
+    const parts = countChartSeriesByFamily({ minPoints: CHARTABLE_SERIES_MIN_POINTS })
+    expect(parts).toEqual({
+      'lab': 422,
+      'workshop': 144,
+      'card': 64,
+      'ultimate-weapon': 72,
+      'bot': 25,
+      'guardian': 36,
+      'module': 2,
+      'enhancement': 18,
+      'vault': 33,
+      'unlock-ladder': 2,
+    })
+    const total = listChartableSeries().length
 
     expect(
       total,
@@ -35,6 +54,18 @@ describe('chartable series count published in the docs', () => {
     ).toBe(PUBLISHED_TOTAL)
   })
 
+  it('counts a curve, not a single value', () => {
+    // A lab with one level has a cost and a duration, but one point is not a chart. It keeps its
+    // id and can still be fetched; it is left out of the published count.
+    const oneLevelLabs = LAB_CATALOG.filter(lab => lab.levels.length === 1)
+    expect(oneLevelLabs.length).toBeGreaterThan(0)
+    const single = `lab:${oneLevelLabs[0]?.slug.replace(/_/g, '-')}:cost`
+    expect(getChartSeries(single)?.points).toBe(1)
+    expect(listChartableSeries().some(series => series.id === single)).toBe(false)
+    expect(listChartSeries().length - listChartableSeries().length).toBe(oneLevelLabs.length * 2)
+    expect(listChartableSeries().every(series => series.points >= 2)).toBe(true)
+  })
+
   it('counts what the catalogs hold, not what the walk happens to find', () => {
     // Read from the catalogs directly, so a walk that silently skipped a source cannot pass.
     expect(countChartSeriesByFamily().lab).toBe(LAB_CATALOG.length * 2)
@@ -42,6 +73,10 @@ describe('chartable series count published in the docs', () => {
     expect(countChartSeriesByFamily().card).toBe(CARD_TEMPLATES.length * 2)
     const uwStats = Object.values(uwStoneChartData).reduce((sum, weapon) => sum + (weapon.stats?.length ?? 0), 0)
     expect(countChartSeriesByFamily()['ultimate-weapon']).toBe(uwStats * 2)
+    expect(countChartSeriesByFamily().enhancement).toBe(enhancementStats().length)
+    const multiTierNodes = [...DEFAULT_POWER_VAULT_NODES, ...DEFAULT_HARMONY_VAULT_NODES]
+      .filter(node => Array.isArray(node.cost) && node.cost.length > 1)
+    expect(countChartSeriesByFamily().vault).toBe(multiTierNodes.length)
   })
 
   it('counts something from every source it claims to cover', () => {
@@ -123,6 +158,36 @@ describe('a series holds the catalog\'s own values', () => {
     expect(guardianUpgrades.attack.filter(row => row.targets !== null)).toHaveLength(10)
     expect(getChartSeries('guardian:attack:percentage:cost')?.data.slice(0, 3))
       .toEqual([{ x: 0, y: 0 }, { x: 1, y: 25 }, { x: 2, y: 50 }])
+  })
+})
+
+describe('the cost ladders that are not a field of a level table', () => {
+  it('prices module levels from level 2', () => {
+    // Levels 2-4 cost 10,000 coins and 7 shards each.
+    expect(getChartSeries('module:upgrade:coin-cost')?.data.slice(0, 3))
+      .toEqual([{ x: 2, y: 10000 }, { x: 3, y: 10000 }, { x: 4, y: 10000 }])
+    expect(getChartSeries('module:upgrade:shard-cost')?.data[0]).toEqual({ x: 2, y: 7 })
+    expect(getChartSeries('module:upgrade:coin-cost')?.data.at(-1)?.x).toBe(300)
+    expect(getChartSeries('module:upgrade:coin-cost')?.unit).toBe('coins')
+  })
+
+  it('prices a workshop enhancement at list price', () => {
+    const health = getChartSeries('enhancement:health:coin-cost')
+    expect(health?.data.slice(0, 3)).toEqual([{ x: 1, y: 5_000_000_000 }, { x: 2, y: 5_040_000_000 }, { x: 3, y: 5_110_000_000 }])
+    expect(health?.data[41]?.y).toBe(enhancementCoinCost('Health', 42))
+  })
+
+  it('prices a multi-tier vault node, and leaves a single-purchase node out', () => {
+    // `defabs` is priced 5, 10, 20; `discount1` is bought once.
+    expect(getChartSeries('vault:defabs:keys')?.data).toEqual([{ x: 1, y: 5 }, { x: 2, y: 10 }, { x: 3, y: 20 }])
+    expect(getChartSeries('vault:discount1:keys')).toBeNull()
+  })
+
+  it('prices an unlock by how many are already owned', () => {
+    expect(getChartSeries('unlock-ladder:ultimate-weapon:stones')?.data.map(point => point.y))
+      .toEqual([5, 50, 150, 300, 800, 1250, 1750, 2400, 3000])
+    expect(getChartSeries('unlock-ladder:ultimate-weapon-plus:stones')?.data.at(-1)).toEqual({ x: 8, y: 3800 })
+    expect(getChartSeries('unlock-ladder:ultimate-weapon:stones')?.xLabel).toBe('Already Owned')
   })
 })
 

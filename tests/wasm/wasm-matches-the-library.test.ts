@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { PACKAGE_ROOT } from '../helpers/paths'
 
 import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '../../src/builders'
-import { resolveCanonicalToolDataset } from '../../src/charts'
+import { getChartSeries, listChartSeries, resolveCanonicalToolDataset } from '../../src/charts'
 import { LAB_CATALOG } from '../../src/data'
 import { formatGroupedNumber, formatNumberForDisplay } from '../../src/formatting'
 
@@ -146,6 +146,21 @@ describe.skipIf(!built)('the WASM module answers as the library does', () => {
       expect(answer.columns, id).toEqual(expected?.columns)
       expect(answer.items, id).toEqual(expected?.rows.slice(0, 3))
     }
+  })
+
+  it('returns the same series the library does', async () => {
+    const call = await loadCaller()
+    const expected = getChartSeries('lab:damage:cost')
+
+    const series = await call({ op: 'charts.series', id: 'lab:damage:cost', limit: 3 })
+    expect(series.ok).toBe(true)
+    expect(series.points).toBe(expected?.points)
+    expect(series.items).toEqual(expected?.data.slice(0, 3))
+
+    const listing = await call({ op: 'charts.seriesList', family: 'guardian', limit: 100 })
+    expect(listing.total).toBe(listChartSeries({ family: 'guardian' }).length)
+
+    expect((await call({ op: 'charts.series', id: 'constructor' })).ok).toBe(false)
   })
 
   it('will not read the prototype for a catalog name', async () => {

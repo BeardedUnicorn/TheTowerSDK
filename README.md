@@ -20,7 +20,7 @@ npm install @beardedunicorn/thetowersdk
 - **Formulas** — enemy scaling, damage, ultimate weapons, drops and workshop stats, as functions you
   call with a tier, a wave or a level.
 - **Charts** — every level progression is already a plot-ready series, so the shipped catalogs cover
-  [803 chartable series](#charts) without you authoring one.
+  [818 chartable series](#charts), each with an id to fetch it by, without you authoring one.
 
 TypeScript, MIT licensed, one runtime dependency (`zod`).
 
@@ -405,9 +405,23 @@ of a curve is excluded rather than priced at zero.
 Charts are built on [the formulas above](#formulas) and the catalogs — which is the whole reason
 this section follows that one. You need the numbers before you can plot them.
 
-There is no chart API here, and that is deliberate: **a level progression already is a series.** The
-level is your x-axis and each measured field on it is a line, so generating a chart is a `map`, not
-an integration. A helper would only wrap `Array.map` while forcing an opinion about rendering on you.
+**A level progression already is a series.** The level is your x-axis and each measured field on
+it is a line, so generating a chart is a `map`, not an integration. What the package adds is a name
+for each one, so you can ask for it instead of finding the catalog and the field yourself:
+
+```ts
+import { getChartSeries, listChartSeries } from '@beardedunicorn/thetowersdk/charts'
+
+listChartSeries({ family: 'lab', entity: 'damage' })
+// [{ id: 'lab:damage:duration', … }, { id: 'lab:damage:cost', points: 100, … }]
+
+getChartSeries('lab:damage:cost')?.data.slice(0, 3)
+// [{ x: 1, y: 30 }, { x: 2, y: 71 }, { x: 3, y: 178 }]
+```
+
+A series is its points and nothing else: `x` is the level, `y` is the catalog's own value — a
+number where the catalog stores one, its text (`x9.4`, `119:26:00`) where it does not. There is
+still no opinion about rendering. `unit` is set only where the catalog states one.
 
 ### Why This Beats Keeping Images
 
@@ -484,22 +498,27 @@ every chart over the same array update together — which is the point of
 Markdown, so documentation tables regenerate instead of rotting.
 See [`examples/05-generate-a-cost-table.ts`](examples/05-generate-a-cost-table.ts).
 
-**How much is chartable.** The shipped catalogs support **803 distinct series** — one per measurable
+**How much is chartable.** The shipped catalogs support **818 distinct series** — one per measurable
 field that varies across a level range:
 
 | Source | Series | What varies |
 |---|---|---|
-| Labs | 462 | Coin cost and research time, per lab |
+| Labs | 422 | Coin cost and research time, per lab |
 | Workshop | 144 | Stat value, cash cost, coin cost |
 | Cards | 64 | Level values and mastery values |
 | Ultimate weapons | 72 | Stat value and stone cost, per stat |
 | Guardians | 36 | Chip stat value and cost |
+| Vault | 33 | Key cost per tier, for nodes with more than one |
 | Bots | 25 | Per-stat progressions, including plus variants |
+| Workshop enhancements | 18 | Coin cost per level |
+| Modules | 2 | Coin cost and shard cost per level |
+| Unlock ladders | 2 | Stones for the next ultimate weapon and the next plus |
 
-That is a floor, not a ceiling. It counts only fields that already vary by level, and excludes
-catalogs with nothing to plot — relics carry a single flat value, module substats are cluster
-metadata, and vault nodes are identifiers. Anything you derive from [the formulas](#formulas) is
-additional.
+That is a floor, not a ceiling. It counts only series with at least two points — a lab with a
+single level has a cost and a research time, and they can be fetched by id, but one point is not a
+chart. It excludes catalogs with nothing to plot: relics carry a single flat value, module
+substats are cluster metadata, and a vault node bought once has no curve. Anything you derive from
+[the formulas](#formulas) is additional.
 
 ### The Curated Catalog
 
@@ -963,6 +982,7 @@ Or by config file:
 | `define_term` | What an acronym means, and whether it is ambiguous |
 | `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, see which chart it draws and what feeds it |
 | `chart_rows` | The published rows behind a chart |
+| `chart_series` | One series the catalogs hold, as `{x, y}` points by id |
 | `form_calc` | The site's form calculators — fields, defaults, and a run |
 | `patch_notes` | The developers' patch notes: search them, or find when something first appeared |
 | `plan_effective_path` | An Effective Path, with the candidates it left out and why — from zero, or from a save for the economy family |

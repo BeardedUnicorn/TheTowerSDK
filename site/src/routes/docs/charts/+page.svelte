@@ -6,8 +6,8 @@
 
 <h1 class="text-3xl font-semibold">Charts</h1>
 <p class="mt-3 text-muted">
-	{sdkFacts.chartDatasets} ready-made chart datasets — cost curves, upgrade ladders, spawn rates, drop tables —
-	each one resolving to a finished table with its own title, columns and formatted cells. Render
+	{sdkFacts.chartDatasets} ready-made chart datasets — cost curves, upgrade ladders, spawn rates, drop
+	tables — each one resolving to a finished table with its own title, columns and formatted cells. Render
 	them however you like: as HTML, as an image, into a spreadsheet, or as a Discord embed.
 </p>
 
@@ -169,7 +169,8 @@ console.log(toHtmlTable(dataset))`}
 
 <h2 class="mt-10 text-xl font-semibold">Every Renderer Key</h2>
 <p class="mt-3 text-muted">
-	<code>listChartRendererKeys</code> gives the {sdkFacts.chartRenderers} distinct renderers behind the {sdkFacts.chartDatasets}
+	<code>listChartRendererKeys</code> gives the {sdkFacts.chartRenderers} distinct renderers behind the
+	{sdkFacts.chartDatasets}
 	charts, and <code>findChartsByRendererKey</code> gives every chart that uses one.
 </p>
 <div class="mt-4">

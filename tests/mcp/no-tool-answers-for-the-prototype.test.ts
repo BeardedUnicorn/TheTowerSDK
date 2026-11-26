@@ -101,6 +101,8 @@ const NAME_TAKING = [
   { tool: 'plan_effective_path', field: 'family', extra: { variant: 'time' }, refused: refusedByError, maxBody: 500 },
   { tool: 'find_rows', field: 'name', extra: {}, refused: refusedByError, maxBody: 500 },
   { tool: 'chart_rows', field: 'chart', extra: {}, refused: refusedByError, maxBody: 2_000 },
+  { tool: 'chart_series', field: 'series', extra: {}, refused: refusedByError, maxBody: 2_000 },
+  { tool: 'chart_series', field: 'family', extra: {}, refused: refusedByError, maxBody: 2_000 },
   { tool: 'form_calc', field: 'id', extra: {}, refused: refusedByError, maxBody: 2_000 },
   { tool: 'oracle_brief', field: 'mechanic', extra: {}, refused: refusedByResolver, maxBody: 20_000 },
 
