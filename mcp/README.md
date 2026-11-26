@@ -72,6 +72,7 @@ Claude Code: `claude mcp add thetowersdk -- node ./node_modules/@beardedunicorn/
 | `chart_rows` | The published rows behind a chart, paged. |
 | `chart_series` | One series the catalogs hold, as `{x, y}` points by id: a lab's cost by level, a bot stat, a vault node's keys. Omit the id to list them. |
 | `save_series` | A save's history as `{x, y}` points: runs by date, tournaments by date, records by tier. Omit the id to list what the save holds. |
+| `survival_rank` | Which workshop upgrade adds the most waves per coin: fits the wave survival model to the save's own runs, simulates the account with each candidate bought, and ranks them, with the fit's leave-one-out error beside the ranking. Give `snapshotsDir` when stored readings of the account exist. |
 | `form_calc` | The site's form calculators: list them, read one's fields and defaults, run it. |
 | `plan_effective_path` | Plan an Effective Paths route, with the candidates it left out and why. The economy family can start from a save. |
 | `patch_notes` | Search the developers' patch notes, or find when something was first mentioned. |
@@ -142,8 +143,8 @@ a client with a small catalog.
 `TOWER_MECHANICS_MAP_DIR`). The Claude Desktop extension writes to
 `~/Documents/TheTowerSDK/mechanics-map` instead, or to its Notes Folder setting.
 
-`decode_save`, `run_extractor`, `read_save_field`, `battle_history`, `save_series`, `next_unlocks` and
-`coin_bonus` take the export's `path`, and
+`decode_save`, `run_extractor`, `read_save_field`, `battle_history`, `save_series`, `next_unlocks`,
+`coin_bonus` and `survival_rank` take the export's `path`, and
 find it themselves when it is left out: the file `TOWER_TOOL_EXPORT` names, or on a Mac the game's
 own container, `~/Library/Containers/<id>/Data/Documents/tool_export.json`. `decode_save` reports
 the path it read. For the current event's shop and its prices, run the

@@ -155,4 +155,11 @@ export const CALCULATOR_ORACLE_LINKS: Readonly<Record<string, readonly string[]>
   'card.levelGemCost': ['card', 'card.level', 'currency.gem'],
   'card.levelCopiesRequired': ['card', 'card.level'],
   'tier.coinMultiplier': ['tier'],
+
+  // --- wave survival -------------------------------------------------------
+  'survival.healingForWave': ['recoveryPackage', 'health'],
+  'survival.incomingDamageForWave': ['defensePercent', 'defenseAbsolute'],
+  'survival.calibrateFromHistory': ['recoveryPackage', 'health', 'defensePercent'],
+  'survival.simulateRun': ['recoveryPackage', 'health', 'deathPrevention'],
+  'survival.rankUpgrades': ['workshop', 'recoveryPackage', 'health'],
 }

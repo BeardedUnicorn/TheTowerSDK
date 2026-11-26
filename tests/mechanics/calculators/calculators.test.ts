@@ -15,6 +15,7 @@ import { getSharedToolLabs } from '../../../src/data/labs/overview'
 import { buildGuardianDefinitions } from '../../../src/data/guardians/definitions'
 import { BOT_UPGRADES_DATA, normalizeBotStats } from '../../../src/data/bots/data'
 import { SCREEN_CALCULATOR_SAMPLES } from '../../helpers/screen-calculator-samples'
+import { SURVIVAL_CALCULATOR_SAMPLES } from '../../helpers/survival-calculator-samples'
 
 /*
  * Every spec names its module relative to the package root (`src/...`), so these checks read the
@@ -347,6 +348,7 @@ SAMPLES['bot.statMaxLevel'] = {
 // The numbers the game shows on a screen: one set of samples, shared with the suite that runs
 // them outside the monorepo.
 Object.assign(SAMPLES, SCREEN_CALCULATOR_SAMPLES)
+Object.assign(SAMPLES, SURVIVAL_CALCULATOR_SAMPLES)
 
 /**
  * Calculators that take nothing.

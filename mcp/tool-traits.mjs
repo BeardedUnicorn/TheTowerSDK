@@ -80,6 +80,7 @@ export const TITLES = {
   next_unlocks: 'Show what unlocks next',
   coin_bonus: 'Break down the coin bonus',
   save_series: 'Read an account\'s history as series',
+  survival_rank: 'Rank upgrades by waves gained per coin',
   calc_list: 'List calculators',
   calc_describe: 'Describe a calculator',
   calc_run: 'Run a calculator',

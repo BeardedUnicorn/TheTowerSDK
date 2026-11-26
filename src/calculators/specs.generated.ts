@@ -1512,7 +1512,6 @@ import {
   fitSurvivalCalibration,
 } from '../mechanics/survival/calibrate'
 import {
-  healingForWave,
   survivalExpectedPackagesForWave,
   survivalHealthAfterCappedHeal,
   survivalHealthAfterPackage,
@@ -1526,7 +1525,6 @@ import {
   survivalStateForCalibration,
 } from '../mechanics/survival/hit-curves'
 import {
-  incomingDamageForWave,
   survivalDamageAfterMitigation,
   survivalHitsForWave,
 } from '../mechanics/survival/incoming-damage'
@@ -1724,6 +1722,9 @@ import {
 import {
   nrbfToJSON,
 } from '../node/nrbf/to-json'
+import {
+  readSurvivalSnapshotDirectory,
+} from '../node/survival-snapshots'
 import {
   looksLikeToolExportJson,
   readToolExportJson,
@@ -2093,9 +2094,6 @@ import {
   readTournamentSeriesFromSaveRoot,
 } from '../save/series/read'
 import {
-  calibrateSurvivalFromHistory,
-  rankSurvivalUpgradesFromSave,
-  simulateSurvivalRunFromSave,
   survivalNearestReadingForRun,
   survivalReadingForRun,
 } from '../save/survival/from-save'
@@ -16959,25 +16957,6 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     dependsOn: [],
   },
   {
-    id: 'mechanics.healingForWave',
-    title: 'healingForWave',
-    entry: 'mechanics',
-    module: 'src/mechanics/survival/healing.ts',
-    symbol: 'healingForWave',
-    tier: 'generated',
-    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
-    params: [
-      { name: 'state', kind: 'object', describes: 'SurvivalState' },
-      { name: 'wave', kind: 'number', describes: 'number' },
-      { name: 'options', kind: 'object', optional: true, describes: 'SurvivalHealingOptions' },
-    ],
-    returns: { kind: 'object', unit: 'amount: health', describes: 'SurvivalWaveHealing' },
-    invariants: ['not yet checked — this entry is generated, not curated'],
-    reads: [],
-    produces: ['mechanics.healingForWave'],
-    dependsOn: [],
-  },
-  {
     id: 'mechanics.survivalRatioAtWave',
     title: 'survivalRatioAtWave',
     entry: 'mechanics',
@@ -17106,26 +17085,6 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.survivalHitsForWave'],
-    dependsOn: [],
-  },
-  {
-    id: 'mechanics.incomingDamageForWave',
-    title: 'incomingDamageForWave',
-    entry: 'mechanics',
-    module: 'src/mechanics/survival/incoming-damage.ts',
-    symbol: 'incomingDamageForWave',
-    tier: 'generated',
-    because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
-    params: [
-      { name: 'state', kind: 'object', describes: 'SurvivalState' },
-      { name: 'wave', kind: 'number', describes: 'number' },
-      { name: 'calibration', kind: 'object', optional: true, describes: 'SurvivalCalibration' },
-      { name: 'context', kind: 'object', optional: true, describes: 'SurvivalWaveContext' },
-    ],
-    returns: { kind: 'object', unit: 'amount: health', describes: 'SurvivalIncomingDamage' },
-    invariants: ['not yet checked — this entry is generated, not curated'],
-    reads: [],
-    produces: ['mechanics.incomingDamageForWave'],
     dependsOn: [],
   },
   {
@@ -27290,57 +27249,6 @@ const GENERATED_SAVE: readonly CalculatorSpec[] = [
     dependsOn: [],
   },
   {
-    id: 'save.calibrateSurvivalFromHistory',
-    title: 'calibrateSurvivalFromHistory',
-    entry: 'save',
-    module: 'src/save/survival/from-save.ts',
-    symbol: 'calibrateSurvivalFromHistory',
-    tier: 'generated',
-    because: 'Exported from save and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
-    params: [
-      { name: 'options', kind: 'object', describes: 'SurvivalHistoryOptions' },
-    ],
-    returns: { kind: 'object', nullable: true, describes: 'SurvivalHistoryFit | null' },
-    invariants: ['not yet checked — this entry is generated, not curated'],
-    reads: [],
-    produces: ['save.calibrateSurvivalFromHistory'],
-    dependsOn: [],
-  },
-  {
-    id: 'save.simulateSurvivalRunFromSave',
-    title: 'simulateSurvivalRunFromSave',
-    entry: 'save',
-    module: 'src/save/survival/from-save.ts',
-    symbol: 'simulateSurvivalRunFromSave',
-    tier: 'generated',
-    because: 'Exported from save and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
-    params: [
-      { name: 'options', kind: 'object', describes: 'SurvivalSaveSimulationOptions' },
-    ],
-    returns: { kind: 'object', nullable: true, describes: 'SurvivalSaveSimulation | null' },
-    invariants: ['not yet checked — this entry is generated, not curated'],
-    reads: [],
-    produces: ['save.simulateSurvivalRunFromSave'],
-    dependsOn: [],
-  },
-  {
-    id: 'save.rankSurvivalUpgradesFromSave',
-    title: 'rankSurvivalUpgradesFromSave',
-    entry: 'save',
-    module: 'src/save/survival/from-save.ts',
-    symbol: 'rankSurvivalUpgradesFromSave',
-    tier: 'generated',
-    because: 'Exported from save and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
-    params: [
-      { name: 'options', kind: 'object', describes: 'SurvivalSaveRankOptions' },
-    ],
-    returns: { kind: 'object', nullable: true, describes: 'SurvivalSaveRank | null' },
-    invariants: ['not yet checked — this entry is generated, not curated'],
-    reads: [],
-    produces: ['save.rankSurvivalUpgradesFromSave'],
-    dependsOn: [],
-  },
-  {
     id: 'save.survivalRunDate',
     title: 'survivalRunDate',
     entry: 'save',
@@ -28711,6 +28619,24 @@ const GENERATED_NODE: readonly CalculatorSpec[] = [
     produces: ['node.nrbfToJSON'],
     dependsOn: [],
   },
+  {
+    id: 'node.readSurvivalSnapshotDirectory',
+    title: 'readSurvivalSnapshotDirectory',
+    entry: 'node',
+    module: 'src/node/survival-snapshots.ts',
+    symbol: 'readSurvivalSnapshotDirectory',
+    tier: 'generated',
+    because: 'Exported from node and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'directory', kind: 'string', describes: 'string' },
+      { name: 'options', kind: 'object', optional: true, describes: 'SurvivalSnapshotDirectoryOptions' },
+    ],
+    returns: { kind: 'object', describes: 'SurvivalSnapshotDirectory' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['node.readSurvivalSnapshotDirectory'],
+    dependsOn: [],
+  },
 ]
 
 const GENERATED_BUILDERS: readonly CalculatorSpec[] = [
@@ -29917,7 +29843,6 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.survivalHealthAfterCappedHeal': a => survivalHealthAfterCappedHeal(a.health as never, a.maxHealth as never, a.amount as never),
   'mechanics.survivalExpectedPackagesForWave': a => survivalExpectedPackagesForWave(a.state as never, a.wave as never, a.packageChance as never),
   'mechanics.survivalProjectileDamageForWave': a => survivalProjectileDamageForWave(a.state as never, a.wave as never, a.healthSkips as never),
-  'mechanics.healingForWave': a => healingForWave(a.state as never, a.wave as never, a.options as never),
   'mechanics.survivalRatioAtWave': a => survivalRatioAtWave(a.state as never, a.wave as never, a.healthSkips as never),
   'mechanics.survivalStateForCalibration': a => survivalStateForCalibration(a.state as never, a.calibration as never),
   'mechanics.survivalReferenceRatio': a => survivalReferenceRatio(a.state as never, a.calibration as never),
@@ -29925,7 +29850,6 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'mechanics.survivalMeleeHeatUpFactor': a => survivalMeleeHeatUpFactor(a.hits as never),
   'mechanics.survivalDamageAfterMitigation': a => survivalDamageAfterMitigation(a.raw as never, a.stats as never, a.otherDamageTakenMultiplier as never),
   'mechanics.survivalHitsForWave': a => survivalHitsForWave(a.account as never, a.wave as never, a.calibration as never, a.context as never, a.spawns as never),
-  'mechanics.incomingDamageForWave': a => incomingDamageForWave(a.state as never, a.wave as never, a.calibration as never, a.context as never),
   'mechanics.rankSurvivalUpgrades': a => rankSurvivalUpgrades(a.input as never),
   'mechanics.survivalStatLevelCap': a => survivalStatLevelCap(a.stat as never),
   'mechanics.resolveSurvivalStats': a => resolveSurvivalStats(a.state as never, a.levels as never, a.deathWaveFraction as never),
@@ -30514,9 +30438,6 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'save.readSaveSeriesFromSaveRoot': a => readSaveSeriesFromSaveRoot(a.root as never),
   'save.survivalReadingForRun': a => survivalReadingForRun(a.run as never, a.readings as never),
   'save.survivalNearestReadingForRun': a => survivalNearestReadingForRun(a.run as never, a.readings as never),
-  'save.calibrateSurvivalFromHistory': a => calibrateSurvivalFromHistory(a.options as never),
-  'save.simulateSurvivalRunFromSave': a => simulateSurvivalRunFromSave(a.options as never),
-  'save.rankSurvivalUpgradesFromSave': a => rankSurvivalUpgradesFromSave(a.options as never),
   'save.survivalRunDate': a => survivalRunDate(a.record as never),
   'save.readSurvivalRunFacts': a => readSurvivalRunFacts(a.record as never),
   'save.listSurvivalRunFacts': a => listSurvivalRunFacts(a.records as never),
@@ -30595,6 +30516,7 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'node.decodePlayerInfoSaveBytesAsync': a => decodePlayerInfoSaveBytesAsync(a.input as never),
   'node.findToolExport': a => findToolExport(a.options as never),
   'node.nrbfToJSON': a => nrbfToJSON(a.obj as never),
+  'node.readSurvivalSnapshotDirectory': a => readSurvivalSnapshotDirectory(a.directory as never, a.options as never),
   'builders.clampLevel': a => clampLevel(a.value as never, a.cap as never, a.fallback as never),
   'builders.clampMagnitude': a => clampMagnitude(a.value as never, a.fallback as never, a.min as never),
   'builders.costIndexForLevel': a => costIndexForLevel(a.level as never),

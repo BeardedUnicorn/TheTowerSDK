@@ -112,7 +112,7 @@ export interface ToolEntry {
  */
 const REVIEWED = new Set([
   'battle_history', 'begin_mechanic_task', 'calc_chart', 'calc_describe', 'coin_bonus',
-  'chart_rows', 'chart_series', 'save_series', 'find_rows', 'form_calc', 'patch_notes',
+  'chart_rows', 'chart_series', 'save_series', 'survival_rank', 'find_rows', 'form_calc', 'patch_notes',
   'calc_graph', 'calc_list', 'calc_run',
   'compliance_contract', 'decode_save', 'define_term',
   'describe_schema', 'ep_graph_get', 'ep_graph_mutate',

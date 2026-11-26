@@ -72,8 +72,17 @@ const EXPORT = {
   BattleHistory: [
     { Tier: 5, Wave: 1500, BattleDate: '2026-11-03T10:00:00.000Z', CoinsEarnedThisRound: 9000, RealTimeThisRound: 3600, CellsEarnedThisRound: 55 },
     { Tier: 5, Wave: 1200, BattleDate: '2026-11-01T10:00:00.000Z', CoinsEarnedThisRound: 5000, RealTimeThisRound: 1800, CellsEarnedThisRound: 40 },
-    { Tier: 6, Wave: 800, BattleDate: '2026-11-02T10:00:00.000Z', CoinsEarnedThisRound: 3000, RealTimeThisRound: 3600 },
+    {
+      Tier: 6, Wave: 800, BattleDate: '2026-11-02T10:00:00.000Z', CoinsEarnedThisRound: 3000, RealTimeThisRound: 3600,
+      /* The one run that took damage, so `survival_rank` has something to fit. */
+      DamageTaken: 4e9, DefensePercentBlocked: 6e9, RecoveryPackagesThisRound: 300, RecoveryPackagesRegen: 3e9,
+      WavesSkippedThisRound: 80, FreeDefenseUpgradesThisRound: 400, FreeUtilityUpgradesThisRound: 400,
+      TotalEnemiesDestroyedThisRound: 50000, TotalBasic: 30000, TotalFast: 8000, TotalTank: 7000, TotalRanged: 5000, TotalBoss: 80,
+    },
   ],
+  UpgradeWorkshopLevel: Array.from({ length: 20 }, (_, index) => (index === 0 ? 300 : 0)),
+  UpgradeWorkshopDefenseLevel: Array.from({ length: 20 }, (_, index) => (index === 0 ? 500 : 0)),
+  UpgradeWorkshopUtilityLevel: Array.from({ length: 20 }, () => 0),
   LeagueID: 2,
   TournamentRecords: [
     { TournamentNumber: 317, Date: '2026-11-14T00:00:00.000Z', LeagueID: 2, Wave: 450, Rank: 7 },
@@ -142,6 +151,7 @@ const SUCCEEDS: Record<string, Args[]> = {
   chart_rows: [{}, { chart: 'vault:upgrades-and-cost:harmony-tree', limit: 2 }],
   chart_series: [{}, { family: 'lab' }, { series: 'lab:primary-module-bonus-cannon:cost', limit: 2 }],
   save_series: [{ path: LABS }, { path: SAVE }, { path: SAVE, series: 'save:battle:coins-per-hour', limit: 2 }],
+  survival_rank: [{ path: SAVE, candidates: [{ stat: 'Health', toLevel: 600 }], fitRuns: 1, fitSeeds: 1, seeds: 4 }],
   form_calc: [{}, { id: 'bot.upgrade' }, { id: 'bot.upgrade', input: {} }],
   oracle_traps: [{ id: 'workshop' }, { id: 'nope' }],
   oracle_get: [{ id: 'workshop' }, { id: 'nope' }],

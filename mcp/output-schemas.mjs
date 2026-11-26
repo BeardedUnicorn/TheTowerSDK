@@ -479,6 +479,32 @@ export const OUTPUT_SCHEMAS = {
   chart_series: seriesAnswer,
   save_series: seriesAnswer,
 
+  survival_rank: obj({
+    path: str,
+    tier: num,
+    mode: str,
+    baseline: said(obj({ p10: num, median: num, p90: num }), 'Death wave of the account as it stands.'),
+    ranked: said(list(obj({
+      stat: str,
+      fromLevel: num,
+      toLevel: num,
+      coins: maybeNum,
+      medianWavesGained: num,
+      wavesPerBillionCoins: maybeNum,
+      deathWave: obj({ p10: num, median: num, p90: num }),
+    }, ['stat', 'fromLevel', 'toLevel', 'medianWavesGained'])), 'Best waves per coin first.'),
+    fit: said(obj({
+      leaveOneOutError: maybeNum,
+      runsUsed: num,
+      perRun: list(obj({ runDate: str, wave: num, predictedWave: num, error: num }, ['runDate', 'wave', 'predictedWave', 'error'])),
+      skipped: list(obj({ runDate: str, wave: num, reason: str }, ['runDate', 'reason'])),
+      calibration: open,
+    }, ['runsUsed', 'perRun', 'skipped']), 'The calibration the ranking rests on, and how well it held out.'),
+    assumptions: open,
+    notes: strings,
+    warnings: strings,
+  }, ['path', 'tier', 'mode', 'baseline', 'ranked', 'fit', 'notes']),
+
   form_calc: obj({
     calculators: said(list(obj({ id: str, title: str, summary: str }, ['id', 'title'])), 'No `id` given: the form calculators.'),
     id: str,

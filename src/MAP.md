@@ -9,7 +9,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/assets`](assets/MAP.md) | 1 | Naming rules for artwork you supply yourself. |
 | [`src/bot`](bot/MAP.md) | 4 | Every calculator as a chat command, transport-agnostic. |
 | [`src/builders`](builders/MAP.md) | 17 | The calculators, each declaring its own inputs. |
-| [`src/calculators`](calculators/MAP.md) | 17 | Calculator specs and the registry over them. |
+| [`src/calculators`](calculators/MAP.md) | 19 | Calculator specs and the registry over them. |
 | [`src/charts`](charts/MAP.md) | 1 | Curated chart datasets and their resolution. |
 | [`src/charts/datasets`](charts/datasets/MAP.md) | 10 | The charts that compute their own rows rather than reading a catalog. |
 | [`src/charts/registry`](charts/registry/MAP.md) | 6 | Which charts exist, and what calculator or mechanic each belongs to. |
@@ -79,7 +79,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/waves`](mechanics/waves/MAP.md) | 20 | Wave scaling and pacing — enemy counts, spawn rates and skips. |
 | [`src/mechanics/waves/reference`](mechanics/waves/reference/MAP.md) | 5 | Earlier public wave formulas, kept as the reference the current ones are checked against. |
 | [`src/mechanics/workshop`](mechanics/workshop/MAP.md) | 12 | Workshop upgrades: their stats, costs and the tables that describe them. |
-| [`src/node`](node/MAP.md) | 4 | Decoding playerInfo.dat in Node. |
+| [`src/node`](node/MAP.md) | 5 | Decoding playerInfo.dat in Node. |
 | [`src/node/nrbf`](node/nrbf/MAP.md) | 4 | The .NET Binary Format reader, ported to TypeScript. |
 | [`src/save`](save/MAP.md) | 1 | Extractors over a decoded save. |
 | [`src/save-decoder`](save-decoder/MAP.md) | 2 | The same save reader with no Node imports, for the browser. |

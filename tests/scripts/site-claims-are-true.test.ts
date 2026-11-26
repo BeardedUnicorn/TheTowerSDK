@@ -28,7 +28,7 @@ const WORDS: Record<number, string> = {
   2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine',
   10: 'ten', 12: 'twelve', 13: 'thirteen', 15: 'fifteen', 27: 'twenty-seven', 29: 'twenty-nine',
   14: 'fourteen', 37: 'thirty-seven', 42: 'forty-two', 43: 'forty-three', 45: 'forty-five',
-  46: 'forty-six', 47: 'forty-seven',
+  46: 'forty-six', 47: 'forty-seven', 48: 'forty-eight',
 }
 
 describe.skipIf(!existsSync(SITE))('the site counts match the package', () => {

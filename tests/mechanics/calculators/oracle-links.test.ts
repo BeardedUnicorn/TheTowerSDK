@@ -122,7 +122,10 @@ describe('what the link is for', () => {
     //
     // Now 91 of 120: four for the v29 vault's key prices, all linked. The three that price the
     // pre-v29 trees stay, labelled as that.
-    expect(curated).toHaveLength(120)
-    expect(linked).toBe(91)
+    //
+    // Now 96 of 125: five for the wave survival model, all linked to the entities they compose:
+    // recovery packages, health, the two defenses and the death-prevention chain.
+    expect(curated).toHaveLength(125)
+    expect(linked).toBe(96)
   })
 })

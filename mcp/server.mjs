@@ -3647,6 +3647,152 @@ export const TOOLS = {
     },
   },
 
+  survival_rank: {
+    checksOwnArguments: true,
+    description:
+      'Which workshop upgrade adds the most waves per coin, for the account in a save. Fits the '
+      + 'wave survival model to the save\'s own recent runs, simulates the account with each '
+      + 'candidate bought, and ranks them by median waves gained per billion coins, priced as the '
+      + 'Workshop screen prices them. The fit is returned beside the ranking with its leave-one-out '
+      + 'error: read the ranking by it. Give `snapshotsDir` when stored readings of the account '
+      + 'exist, so each run is fitted with the state it was played with. Takes about half a minute.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
+        candidates: {
+          type: 'array',
+          description:
+            'Upgrades to rank: [{ "stat": "Recovery Amount", "toLevel": 100 }]. `stat` is one of Health, '
+            + 'Health Regen, Defense Percent, Defense Absolute, Recovery Amount, Max Recovery, Package Chance, '
+            + 'Lifesteal, Death Defy, Enemy Attack Level Skip, Enemy Health Level Skip',
+          items: {
+            type: 'object',
+            properties: { stat: { type: 'string' }, toLevel: { type: 'number' } },
+            required: ['stat', 'toLevel'],
+          },
+        },
+        snapshotsDir: {
+          type: 'string',
+          description:
+            'A folder of earlier readings of the same account, one JSON file each: stored snapshots or '
+            + 'kept exports. Without it every run is fitted against today\'s workshop and cards',
+        },
+        tier: { type: 'number', description: 'The tier to rank for. Omit it for the tier of the most recent farming run' },
+        mode: { type: 'string', enum: ['afk', 'active'], description: 'afk (default): workshop levels plus free upgrades' },
+        fitRuns: { type: 'number', description: 'Fit at most this many of the most recent runs (default 6, at most 12)' },
+        fitSeeds: { type: 'number', description: 'Seeded runs per real run while fitting (default 8, at most 24). Fewer is faster and noisier' },
+        seeds: { type: 'number', description: 'Seeded runs per candidate (default 100, at most 400)' },
+      },
+      required: ['candidates'],
+    },
+    run: async (input = {}) => {
+      const refused = unreadArguments('survival_rank', input)
+      if (refused) return refused
+      const m = sdk.mechanics
+      const given = Array.isArray(input.candidates) ? input.candidates : null
+      if (!given || given.length === 0) {
+        return { error: 'candidates must be a list such as [{ "stat": "Recovery Amount", "toLevel": 100 }].' }
+      }
+      if (given.length > 12) return { error: `at most 12 candidates in one call; ${given.length} were given.` }
+      /* Refused by name: an upgrade the model does not read would simulate as no change at all. */
+      const candidates = []
+      for (const candidate of given) {
+        const stat = candidate?.stat
+        const toLevel = Number(candidate?.toLevel)
+        if (!m.SURVIVAL_STATS.includes(stat)) {
+          return { error: `"${stat}" is not an upgrade the survival model reads.`, stats: [...m.SURVIVAL_STATS] }
+        }
+        if (!Number.isInteger(toLevel) || toLevel < 0) {
+          return { error: `toLevel for ${stat} must be a whole level, got ${JSON.stringify(candidate?.toLevel)}.` }
+        }
+        candidates.push({ stat, toLevel })
+      }
+      const mode = input.mode === undefined ? 'afk' : input.mode
+      if (mode !== 'afk' && mode !== 'active') return { error: 'mode is "afk" or "active".' }
+
+      const loaded = await readSaveOrExplain(input.path)
+      if (loaded.error) return loaded
+      const { parsedRoot, savePath } = loaded
+
+      const warnings = []
+      let snapshots
+      if (input.snapshotsDir !== undefined) {
+        if (typeof input.snapshotsDir !== 'string' || input.snapshotsDir.trim().length === 0) {
+          return { error: 'snapshotsDir must be text: the path of a folder of stored readings.' }
+        }
+        const directory = /^~(?=$|[\\/])/.test(input.snapshotsDir)
+          ? path.join(os.homedir(), input.snapshotsDir.slice(1))
+          : input.snapshotsDir
+        const read = sdk.node.readSurvivalSnapshotDirectory(directory)
+        if (read.snapshots.length === 0) {
+          return { error: `no usable readings in ${directory}`, ...(read.warnings.length > 0 ? { warnings: read.warnings.slice(0, WARNINGS_SHOWN) } : {}) }
+        }
+        snapshots = read.snapshots
+        warnings.push(...read.warnings)
+      }
+
+      let fit
+      let ranking
+      try {
+        fit = sdk.save.calibrateSurvivalFromHistory({
+          save: parsedRoot,
+          snapshots,
+          tier: input.tier,
+          maxRuns: Math.max(1, sampleSize(input.fitRuns, 6, 12)),
+          seeds: Math.max(1, sampleSize(input.fitSeeds, 8, 24)),
+          passes: 2,
+        })
+        if (!fit) return { error: 'this save has no workshop levels to simulate from.', path: savePath }
+        if (fit.runsUsed === 0) {
+          return {
+            error: 'no run in this save could be fitted, so there is nothing to rank against.',
+            path: savePath,
+            skipped: fit.skipped.slice(0, WARNINGS_SHOWN),
+            warnings: [...warnings, ...fit.warnings].slice(0, WARNINGS_SHOWN),
+          }
+        }
+        ranking = sdk.save.rankSurvivalUpgradesFromSave({
+          save: parsedRoot,
+          tier: fit.tier,
+          mode,
+          calibration: fit.calibration,
+          candidates,
+          seeds: Math.max(1, sampleSize(input.seeds, 100, 400)),
+        })
+      }
+      catch (error) {
+        return { error: `the survival model could not be run: ${reasonOf(error)}` }
+      }
+      if (!ranking) return { error: 'this save has no workshop levels to simulate from.', path: savePath }
+      warnings.push(...fit.warnings, ...ranking.warnings)
+
+      return {
+        path: savePath,
+        tier: ranking.tier,
+        mode,
+        baseline: ranking.baseline,
+        ranked: ranking.ranked,
+        fit: {
+          leaveOneOutError: fit.leaveOneOutError,
+          runsUsed: fit.runsUsed,
+          perRun: fit.perRun.map(run => ({ runDate: run.runDate, wave: run.wave, predictedWave: run.predictedWave, error: run.error })),
+          skipped: fit.skipped.slice(0, WARNINGS_SHOWN),
+          calibration: fit.calibration,
+        },
+        assumptions: ranking.assumptions,
+        notes: [
+          'Fitted, not derived: hits landed per enemy and the max-health scale are tuned to this account\'s runs.',
+          fit.leaveOneOutError == null
+            ? 'Only one run was fitted, so there is no leave-one-out error: treat the ranking as a direction only.'
+            : `Leave-one-out, the predicted death wave missed by ${(fit.leaveOneOutError * 100).toFixed(1)}% on average. A gain smaller than that is within the noise.`,
+          'Run records do not say AFK or active: every fitted run was taken as AFK.',
+        ],
+        ...(warnings.length > 0 ? { warnings: [...new Set(warnings)].slice(0, WARNINGS_SHOWN) } : {}),
+      }
+    },
+  },
+
   form_calc: {
     description:
       'The form calculators — the ones behind the site\'s calculator pages: lab research, workshop '

@@ -190,6 +190,7 @@ export const MCP_TOOL_CATALOG: Array<Omit<McpToolCatalogEntry, 'guarantees' | 's
   { name: 'next_unlocks', category: 'save', module: 'sdk', guarantees: ['structured'] },
   { name: 'coin_bonus', category: 'save', module: 'sdk', guarantees: ['structured'] },
   { name: 'save_series', category: 'save', module: 'sdk', guarantees: ['structured'] },
+  { name: 'survival_rank', category: 'save', module: 'sdk', guarantees: ['structured'] },
 
   // wiki
   // calculators -- the canonical formulas, callable by handle. Deterministic
