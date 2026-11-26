@@ -11,8 +11,8 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/builders`](builders/MAP.md) | 17 | The calculators, each declaring its own inputs. |
 | [`src/calculators`](calculators/MAP.md) | 16 | Calculator specs and the registry over them. |
 | [`src/charts`](charts/MAP.md) | 1 | Curated chart datasets and their resolution. |
-| [`src/charts/datasets`](charts/datasets/MAP.md) | 6 | The charts that compute their own rows rather than reading a catalog. |
-| [`src/charts/registry`](charts/registry/MAP.md) | 5 | Which charts exist, and what calculator or mechanic each belongs to. |
+| [`src/charts/datasets`](charts/datasets/MAP.md) | 10 | The charts that compute their own rows rather than reading a catalog. |
+| [`src/charts/registry`](charts/registry/MAP.md) | 6 | Which charts exist, and what calculator or mechanic each belongs to. |
 | [`src/charts/tables`](charts/tables/MAP.md) | 4 | The column-and-row machinery every chart renders through. |
 | [`src/contributions`](contributions/MAP.md) | 1 | Whose work this package carries, as data. |
 | [`src/data`](data/MAP.md) | 1 | The game tables — costs, levels, effects, catalogs. |

@@ -35,11 +35,25 @@ import {
   safeRecord,
 } from '../builders/types'
 import {
+  buildLabRushGemsDataset,
+  buildModuleUpgradeCostsDataset,
+  buildUltimateWeaponUnlockLadderDataset,
+} from '../charts/datasets/cost-ladders'
+import {
+  buildEnemyBaseStatsDataset,
+} from '../charts/datasets/enemy-scaling'
+import {
   computeGoldBotDeathWaveRows,
 } from '../charts/datasets/gold-bot-vs-death-wave'
 import {
+  buildGuardianUpgradesDataset,
+} from '../charts/datasets/guardian-upgrades'
+import {
   projectFundingUtilDissoCash,
 } from '../charts/datasets/project-funding-util-disso'
+import {
+  buildTournamentRewardsDataset,
+} from '../charts/datasets/tier-tables'
 import {
   findChartByPathId,
   findChartsByRendererKey,
@@ -21730,6 +21744,68 @@ const GENERATED_DATA: readonly CalculatorSpec[] = [
 
 const GENERATED_CHARTS: readonly CalculatorSpec[] = [
   {
+    id: 'charts.buildModuleUpgradeCostsDataset',
+    title: 'buildModuleUpgradeCostsDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/cost-ladders.ts',
+    symbol: 'buildModuleUpgradeCostsDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [],
+    returns: { kind: 'object', describes: 'Dataset' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildModuleUpgradeCostsDataset'],
+    dependsOn: [],
+  },
+  {
+    id: 'charts.buildUltimateWeaponUnlockLadderDataset',
+    title: 'buildUltimateWeaponUnlockLadderDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/cost-ladders.ts',
+    symbol: 'buildUltimateWeaponUnlockLadderDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [],
+    returns: { kind: 'object', describes: 'Dataset' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildUltimateWeaponUnlockLadderDataset'],
+    dependsOn: [],
+  },
+  {
+    id: 'charts.buildLabRushGemsDataset',
+    title: 'buildLabRushGemsDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/cost-ladders.ts',
+    symbol: 'buildLabRushGemsDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [],
+    returns: { kind: 'object', describes: 'Dataset' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildLabRushGemsDataset'],
+    dependsOn: [],
+  },
+  {
+    id: 'charts.buildEnemyBaseStatsDataset',
+    title: 'buildEnemyBaseStatsDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/enemy-scaling.ts',
+    symbol: 'buildEnemyBaseStatsDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'stat', kind: 'string', describes: 'string' },
+    ],
+    returns: { kind: 'object', nullable: true, describes: 'SharedChartTableDataset<Record<string, unknown>> | null' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildEnemyBaseStatsDataset'],
+    dependsOn: [],
+  },
+  {
     id: 'charts.computeGoldBotDeathWaveRows',
     title: 'computeGoldBotDeathWaveRows',
     entry: 'charts',
@@ -21742,6 +21818,23 @@ const GENERATED_CHARTS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['charts.computeGoldBotDeathWaveRows'],
+    dependsOn: [],
+  },
+  {
+    id: 'charts.buildGuardianUpgradesDataset',
+    title: 'buildGuardianUpgradesDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/guardian-upgrades.ts',
+    symbol: 'buildGuardianUpgradesDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'guardianKey', kind: 'string', describes: 'string' },
+    ],
+    returns: { kind: 'object', nullable: true, describes: 'SharedChartTableDataset<Record<string, unknown>> | null' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildGuardianUpgradesDataset'],
     dependsOn: [],
   },
   {
@@ -21759,6 +21852,23 @@ const GENERATED_CHARTS: readonly CalculatorSpec[] = [
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['charts.projectFundingUtilDissoCash'],
+    dependsOn: [],
+  },
+  {
+    id: 'charts.buildTournamentRewardsDataset',
+    title: 'buildTournamentRewardsDataset',
+    entry: 'charts',
+    module: 'src/charts/datasets/tier-tables.ts',
+    symbol: 'buildTournamentRewardsDataset',
+    tier: 'generated',
+    because: 'Exported from charts and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
+    params: [
+      { name: 'league', kind: 'string', describes: 'string' },
+    ],
+    returns: { kind: 'object', nullable: true, describes: 'Dataset | null' },
+    invariants: ['not yet checked — this entry is generated, not curated'],
+    reads: [],
+    produces: ['charts.buildTournamentRewardsDataset'],
     dependsOn: [],
   },
   {
@@ -28769,8 +28879,14 @@ export const GENERATED_IMPLEMENTATIONS: Record<string, (args: Record<string, unk
   'data.buildWorkshopLevelCostRows': a => buildWorkshopLevelCostRows(a.costs as never, a.fromLevel as never, a.toLevel as never, a.totalDiscountPercent as never),
   'data.computeWorkshopCostTotal': a => computeWorkshopCostTotal(a.costs as never, a.fromLevel as never, a.toLevel as never, a.totalDiscountPercent as never),
   'data.getWorkshopStatDefinitionByKey': a => getWorkshopStatDefinitionByKey(a.key as never),
+  'charts.buildModuleUpgradeCostsDataset': a => buildModuleUpgradeCostsDataset(),
+  'charts.buildUltimateWeaponUnlockLadderDataset': a => buildUltimateWeaponUnlockLadderDataset(),
+  'charts.buildLabRushGemsDataset': a => buildLabRushGemsDataset(),
+  'charts.buildEnemyBaseStatsDataset': a => buildEnemyBaseStatsDataset(a.stat as never),
   'charts.computeGoldBotDeathWaveRows': a => computeGoldBotDeathWaveRows(),
+  'charts.buildGuardianUpgradesDataset': a => buildGuardianUpgradesDataset(a.guardianKey as never),
   'charts.projectFundingUtilDissoCash': a => projectFundingUtilDissoCash(a.labLevel as never),
+  'charts.buildTournamentRewardsDataset': a => buildTournamentRewardsDataset(a.league as never),
   'charts.findChartByPathId': a => findChartByPathId(a.pathId as never),
   'charts.findChartsByRendererKey': a => findChartsByRendererKey(a.rendererKey as never),
   'charts.listChartRendererKeys': a => listChartRendererKeys(),

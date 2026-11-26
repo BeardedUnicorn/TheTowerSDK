@@ -75,4 +75,13 @@ export const CHART_MECHANIC_LINKS: Readonly<
   'eo-vs-sla-breakpoints': ['orb', 'cardMastery.ExtraOrb', 'slowAura'],
 
   'guild-box-rewards': ['guild.box', 'guild'],
+
+  'guardian-upgrades': ['guardian', 'guardian.upgradeTrack'],
+  'module-upgrade-costs': ['module.upgradeCost', 'module.level'],
+  'uw-unlock-ladder': ['ultimateWeapon', 'ultimateWeaponPlus'],
+  'lab-rush-gems': ['lab.rush', 'currency.gem'],
+  'enemy-base-stats': ['enemy.waveScaling', 'tier'],
+  'tier-coin-multipliers': ['tier'],
+  'elite-cells-by-tier': ['tier', 'enemy'],
+  'tournament-rewards': ['tournament'],
 }

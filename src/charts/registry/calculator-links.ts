@@ -83,6 +83,27 @@ export const CHART_CALCULATOR_LINKS: Readonly<
     calculators: ['lab.speedTotal', 'lab.durationDays'],
   },
 
+  'guardian-upgrades': {
+    calculators: ['guardian.statCost', 'guardian.statCostBetween', 'guardian.allStatCost', 'guardian.statBounds'],
+  },
+  'module-upgrade-costs': {
+    calculators: ['module.coinCostBetween', 'module.shardCostBetween', 'data.getModuleCoinUpgradeCost', 'data.getModuleShardUpgradeCost'],
+  },
+  'uw-unlock-ladder': {
+    calculators: ['uw.nextUnlockStoneCost', 'uw.nextPlusUnlockStoneCost', 'uw.unlockStonesBetween', 'uw.plusUnlockStonesBetween'],
+  },
+  'lab-rush-gems': {
+    calculators: ['lab.rushGems', 'lab.gemRushEfficiency'],
+  },
+  'enemy-base-stats': {
+    calculators: ['mechanics.computeEmpiricalWaveBaseHealth', 'mechanics.computeEmpiricalWaveBaseDamage'],
+    note: 'a fitted model, not a reading of the game: it drifts at very high waves and tiers',
+  },
+  'tier-coin-multipliers': {
+    data: 'tierCoinMultipliersData',
+    calculators: ['tier.coinMultiplier'],
+  },
+
   // --- charts whose rows are measured, with no formula in the SDK ----------
   //
   // Each of these is a table somebody built from observation. Nothing here can
@@ -180,5 +201,14 @@ export const CHART_CALCULATOR_LINKS: Readonly<
   'power-tree-upgrades': {
     calculators: [],
     note: 'vault tech tree costs; the chart is the catalog',
+  },
+  'elite-cells-by-tier': {
+    data: 'eliteCellsByTierData',
+    calculators: [],
+    note: 'published drop range per tier; nothing in the package derives it',
+  },
+  'tournament-rewards': {
+    calculators: [],
+    note: 'published reward table per league and placing; the amounts are fixed, not derived',
   },
 }

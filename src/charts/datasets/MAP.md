@@ -6,10 +6,14 @@ The charts that compute their own rows rather than reading a catalog.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `cost-ladders.ts` | Cost ladders that had no chart: | buildModuleUpgradeCostsDataset, buildUltimateWeaponUnlockLadderDataset, LAB_RUSH_CHART_HOURS, LAB_RUSH_CHART_MAXED_LAB_COUNTS (+1 more) |
+| `enemy-scaling.ts` | How enemy health and damage grow with the wave, on every tier. | ENEMY_SCALING_CHART_WAVES, buildEnemyBaseStatsDataset |
 | `gold-bot-vs-death-wave.ts` | Rows for the Golden Bot versus Death Wave chart: | computeGoldBotDeathWaveRows |
 | `golden-tower.ts` | The Golden Tower chart tables: | goldenTowerRelativeIncomeDescriptionLines, goldenTowerRelativeIncomeFooterLines, goldenTowerRelativeIncomeData, goldenTowerUptimeIncomeDescriptionLines (+5 more) |
+| `guardian-upgrades.ts` | A guardian chip's upgrade table as a chart: | buildGuardianUpgradesDataset |
 | `index.ts` | The charts that compute their own rows. | — |
 | `project-funding-util-disso.ts` | Project Funding under Utility Dissonance, as a function of the Starting Cash lab. | PROJECT_FUNDING_RARITIES, projectFundingUtilDissoCash, projectFundingUtilDissoMultiplierData, projectFundingUtilDissoGainPer10Data |
+| `tier-tables.ts` | Tables the game publishes per tier or per league that had no chart: | tierCoinMultipliersData, eliteCellsByTierData, buildTournamentRewardsDataset |
 | `types.ts` | — | GoldBotDeathWaveRow, GoldenTowerIncomeComparisonRow, GoldenTowerMilestoneUnlockRow, UwPlusUpgradeTier (+2 more) |
 | `uw-plus.data.ts` | The Ultimate Weapon+ chart data: | uwPlusUnlockCostsByOwnedCount, uwPlusUnlockTotal, uwPlusUpgradeSections, uwPlusFooterText |
 

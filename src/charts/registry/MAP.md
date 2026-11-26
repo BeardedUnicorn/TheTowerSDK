@@ -10,6 +10,7 @@ Which charts exist, and what calculator or mechanic each belongs to.
 | `data.ts` | The chart catalog — every chart this game data supports, and what it is. | SHARED_CHART_REGISTRY, findChartByPathId, findChartsByRendererKey, listChartRendererKeys |
 | `index.ts` | Which charts exist, and what each one is about. | — |
 | `mechanic-links.ts` | — | CHART_MECHANIC_LINKS |
+| `progression-charts.data.ts` | The charts for ladders and per-tier tables the catalog was missing: | PROGRESSION_CHART_DEFINITIONS |
 | `types.ts` | The types `charts/registry/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | ChartCalculatorLink, SharedChartRendererKey, SharedChartDefinition |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)
