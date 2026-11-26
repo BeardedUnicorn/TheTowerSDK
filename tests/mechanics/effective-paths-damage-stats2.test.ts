@@ -9,6 +9,7 @@ import {
   maxRendArmourMultiplier,
   rangeDamageMultiplier,
 } from '../../src/mechanics/effective-paths/damage-stats'
+import { WORKSHOP_DATA } from '../../src/data/workshop/table'
 import { workshopStatValue } from '../../src/mechanics/effective-paths/workshop-values'
 import fixtures from '../../fixtures/mechanics/effective-paths-damage-stats2.fixtures.json'
 
@@ -58,8 +59,11 @@ describe('EPD_DPM', () => {
   for (const [index, d] of fixtures.damagePerMeter.entries()) {
     it(`matches the sheet on state ${index}`, () => {
       // The workshop table has to agree first, or the rest means nothing.
-      const ours = workshopStatValue('Damage / Meter', d.wsLevel)
-      expect(ours?.value).toBeCloseTo(d.sheetWorkshopValue, 9)
+      // `EPD_DPM` wants the table's own number and divides by 1000 itself.
+      const ours = WORKSHOP_DATA['Damage / Meter'][String(d.wsLevel)].value
+      expect(ours).toBeCloseTo(d.sheetWorkshopValue, 9)
+      // The game's unit is that same number as a multiplier a metre.
+      expect(workshopStatValue('Damage / Meter', d.wsLevel)).toMatchObject({ value: 1 + ours / 1000, unit: 'multiplier' })
 
       close(damagePerMeter({
         workshopValue: d.sheetWorkshopValue,

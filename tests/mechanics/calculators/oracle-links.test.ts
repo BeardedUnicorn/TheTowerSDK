@@ -116,7 +116,10 @@ describe('what the link is for', () => {
     // Now 82 of 111: twenty-two calculators for what an upgrade run costs (`specs-costs`, and the
     // card, tier and farm-time ones beside the lookups). `epaths.coinFarmDays` is the one left out:
     // it is the sheet's arithmetic for turning coins into time, not an entity the game has.
-    expect(curated).toHaveLength(111)
-    expect(linked).toBe(82)
+    //
+    // Now 87 of 116: five more for the workshop, all linked. What an upgrade gives in the game's
+    // unit, the table's raw number, the price of several levels, and the enemy level skip pair.
+    expect(curated).toHaveLength(116)
+    expect(linked).toBe(87)
   })
 })

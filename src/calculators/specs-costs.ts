@@ -247,7 +247,10 @@ export const COST_CALCULATORS: readonly CalculatorSpec[] = [
       { name: 'toLevel', kind: 'number', describes: 'target level' },
     ],
     returns: { kind: 'number', unit: 'coins', nullable: true, describes: 'total at list price' },
-    invariants: [...RANGE_INVARIANTS, 'list price — the workshop discount labs are not applied'],
+    invariants: [
+      ...RANGE_INVARIANTS,
+      'list price — the workshop discount labs are not applied; workshop.upgradePrice applies them as the Workshop screen does',
+    ],
     reads: ['workshop.stat', 'workshop.level'],
     produces: ['workshop.coinCostBetween'],
     dependsOn: [],

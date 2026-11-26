@@ -14,6 +14,11 @@ export const SHOCKWAVE_MODULE_STAT_INDEX = 45
 export const SHOCKWAVE_LEVEL_LINEAR_MULT = 10
 export const SHOCKWAVE_LEVEL_LINEAR_BASE = 100
 
+/**
+ * Seconds between shockwaves, never below `SHOCKWAVE_MIN_FREQUENCY_SECONDS`.
+ *
+ * @unit seconds
+ */
 export function shockwaveFrequencySeconds(input: {
   workshopBase: number
   moduleBonus: number

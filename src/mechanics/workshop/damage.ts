@@ -58,6 +58,9 @@ export const WORKSHOP_DAMAGE_QUADRATIC = 0.077
  * "Effective" matters: the game computes this from
  * `max(0, upgradeLevel[0] - damageDecayPenalty)`, not from the level the player
  * bought. Pass the decayed level, or use `effectiveDamageUpgradeLevel` first.
+ *
+ * @unit amount: tower damage from the workshop alone
+ * @paramUnit effectiveLevel levels
  */
 export function workshopDamageAtLevel(effectiveLevel: number): number {
   const level = Math.max(0, Math.floor(effectiveLevel))
@@ -78,6 +81,10 @@ export function workshopDamageAtLevel(effectiveLevel: number): number {
  * under a decay penalty of 500 is computing damage as though they had 3500 —
  * which also drops them below two band thresholds, so the loss is worse than
  * linear.
+ *
+ * @unit levels
+ * @paramUnit boughtLevel levels
+ * @paramUnit damageDecayPenalty levels
  */
 export function effectiveDamageUpgradeLevel(
   boughtLevel: number,
@@ -91,6 +98,12 @@ export function effectiveDamageUpgradeLevel(
 export const WORKSHOP_ENHANCEMENT_RESEARCH_INDEX = 150
 export const WORKSHOP_DAMAGE_ENHANCEMENT_PER_LEVEL = 0.01
 
+/**
+ * The multiplier the Damage enhancement applies: 1% a level once the Workshop Enhancements lab is done.
+ *
+ * @unit multiplier
+ * @paramUnit enhancementLevel levels
+ */
 export function damageEnhancementMultiplier(
   enhancementLevel: number,
   workshopEnhancementsLabLevel: number,

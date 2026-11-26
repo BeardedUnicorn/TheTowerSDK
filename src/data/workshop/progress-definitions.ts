@@ -114,6 +114,11 @@ export function getWorkshopStatDefinitions(): WorkshopStatDefinition[] {
   return WORKSHOP_STAT_DEFINITIONS
 }
 
+/**
+ * One upgrade's rows as the table stores them.
+ *
+ * @unit each value in the table storage unit of that upgrade (WORKSHOP_STAT_UNITS); cash and coins buy the next level
+ */
 export function getWorkshopStatDefinitionByKey(key: string): WorkshopStatDefinition | null {
   return WORKSHOP_STAT_DEFINITIONS.find(stat => stat.key === key) ?? null
 }

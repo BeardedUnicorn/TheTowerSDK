@@ -15,7 +15,9 @@ Workshop tables: costs, discounts and upgrade definitions.
 | `index.ts` | Workshop upgrades as data: | — |
 | `progress-definitions.ts` | Workshop stat definitions: | getWorkshopStatDefinitions, getWorkshopStatDefinitionByKey |
 | `table.ts` | The workshop upgrade table: | WORKSHOP_DATA |
-| `types.ts` | The types `data/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopCostLevels, WorkshopLevelCostRow, WorkshopEnhancementStatDefinition, WorkshopCategory (+5 more) |
+| `types.ts` | The types `data/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopCostLevels, WorkshopLevelCostRow, WorkshopEnhancementStatDefinition, WorkshopCategory (+8 more) |
+| `units.ts` | The unit each workshop upgrade's value is in, and how the table's number becomes it. | WORKSHOP_STAT_UNITS, workshopGameValueAtLevel |
 | `unlocks.ts` | What each gated workshop group costs to unlock, and in what order, so a calculator can price the next "Unlock …" button rather than treat a locked upgrade as merely unbought. | WORKSHOP_UNLOCK_ROWS, WORKSHOP_STATS_OPEN_FROM_START, getNextWorkshopUnlock |
+| `upgrade-price.ts` | What the Workshop charges for one or several levels of a regular upgrade. | computeWorkshopUpgradePrice |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

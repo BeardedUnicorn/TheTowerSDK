@@ -313,6 +313,8 @@ function totalSkipsAtWorkshopPct(
  *
  * The trailing battle-condition arguments are accepted but deliberately unused: they keep the
  * signature interchangeable with `computeEffectiveEnemySkipPctWithBcLabs`, which does apply them.
+ *
+ * @unit percent
  */
 export function inferWorkshopSkipPctFromSkipCount(
   wave: number,
@@ -346,7 +348,12 @@ export function inferWorkshopSkipPctFromSkipCount(
   return storedPct
 }
 
-/** Workshop skip % from UI skip % or inferred from a tracked skip counter. */
+/**
+ * Workshop skip % from UI skip % or inferred from a tracked skip counter.
+ *
+ * @unit percent
+ * @paramUnit skipPct percent
+ */
 export function computeWorkshopSkipPctFromSkipInput(
   wave: number,
   skipPct: number,

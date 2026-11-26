@@ -101,7 +101,11 @@ export function waveInfoBossHpTableFloat(
   return F32(F32(benefitPct) * F32(F32(value) * F32(hpFixedMult)))
 }
 
-/** Workshop mult from boss_health table float. */
+/**
+ * Workshop mult from boss_health table float.
+ *
+ * @unit multiplier
+ */
 export function waveInfoBossHpWorkshopMult(
   labLevels: Readonly<Record<string, number>>,
   labBenefitAtLevel: (slug: string, level: number) => number,

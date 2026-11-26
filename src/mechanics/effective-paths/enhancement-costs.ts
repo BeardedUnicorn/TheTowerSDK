@@ -49,6 +49,8 @@ const ENHANCEMENT_CODE_TO_LABEL: Readonly<Record<string, string>> = Object.fromE
 /**
  * An enhancement's level from a map that may use display names, `WSP_*` codes,
  * or both.
+ *
+ * @unit levels
  */
 export function workshopEnhancementLevelFromMap(
   levels: Readonly<Record<string, number>> | undefined,
@@ -202,6 +204,8 @@ export function enhancementCoinSpend(
 /**
  * Total workshop-enhancement coins spent, which is what gates the later
  * defensive enhancements.
+ *
+ * @unit coins
  */
 export function workshopEnhancementSpend(
   levels: Readonly<Record<string, number>>,
@@ -221,6 +225,8 @@ export function workshopEnhancementSpend(
  * Undiscounted, and cumulative to each stat's level. Verified against the live
  * function at five level sets, exactly. Accepts `WSP_*` codes as well
  * as display names — see {@link workshopEnhancementLevelFromMap}.
+ *
+ * @unit coins, undiscounted
  */
 export function workshopEnhancementCoinsInvested(
   category: WorkshopEnhancementCategory,

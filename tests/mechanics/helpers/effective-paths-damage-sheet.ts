@@ -16,7 +16,7 @@ import type {
 } from '../../../src/mechanics/effective-paths/edamage-config'
 import { ZERO_EFFECTIVE_DAMAGE_LEVELS } from '../../../src/mechanics/effective-paths/edamage-levels'
 import { effectiveDamageLabLevelsFromSheet } from '../../../src/mechanics/effective-paths/edamage-lab-levels'
-import { workshopStatValue } from '../../../src/mechanics/effective-paths/workshop-values'
+import { WORKSHOP_DATA } from '../../../src/data/workshop/table'
 import { parseNumberInput } from '../../../src/formatting/numbers/compute'
 
 /** The three rows the sheet's workshop block spells differently from the game. */
@@ -255,8 +255,9 @@ export function configFromSheet(source: SheetCells = cells as SheetCells): Effec
     stats[name] = {
       workshopLevel: level,
       // Derived from the level rather than read off the sheet, which is what
-      // the site does too — and what `EPD_DPM` does internally.
-      workshopValue: workshopStatValue(WORKSHOP_GAME_NAMES[name], level)?.value ?? 0,
+      // the site does too — and what `EPD_DPM` does internally. The table's own
+      // number, not `workshopStatValue`, which answers in the game's unit.
+      workshopValue: WORKSHOP_DATA[WORKSHOP_GAME_NAMES[name]]?.[String(level)]?.value ?? 0,
       enhancementLevel: cell(`BI${row}`),
       enhancementMultiplier: cell(`BK${row}`) || 1,
       relicPct: cell(`BL${row}`),

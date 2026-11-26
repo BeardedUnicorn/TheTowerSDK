@@ -520,9 +520,24 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       'Level count and maximum value are different numbers. Multishot Targets has 8 rows and a max '
       + 'of 9, because it starts at 2. Using the row count as the cap is wrong wherever level 0 is '
       + 'non-zero, which is most of the table.',
+      'THE VALUE COLUMN IS NOT IN ONE UNIT. Critical Chance is stored as 80 for 80%, Recovery '
+      + 'Amount as 0.28 for 28%, Enemy Level Skip as 0.0005 for 0.05%, Range as a tenth of its '
+      + 'metres, Land Mine Damage as 800 for x8, Damage / Meter as thousandths over 1. Reading a row '
+      + 'without its unit reported Enemy Attack Level Skip as 0.5% a level against the game\'s '
+      + '0.05%. `WORKSHOP_STAT_UNITS` names each unit and `workshopGameValueAtLevel` converts.',
+      'THE BUY MULTIPLIER IS A SUM, NOT A DISCOUNT. x5, x10 and x100 price each level as it would '
+      + 'be alone, section discount applied and rounded, then add them (60 of 60 prices on the '
+      + 'Workshop screen, build 1301). Discounting the total once is out by a coin or more at low '
+      + 'levels: Health Regen from level 0 at x5 is 405, not 404. When fewer levels are left the '
+      + 'game sells those and shows the real count on the row.',
+      'The Workshop row shows the CURRENT value at every multiplier, never the value after buying. '
+      + 'What a purchase adds has to come from the table row it lands on.',
     ],
     implementedBy: [
       'WORKSHOP_DATA',
+      'WORKSHOP_STAT_UNITS',
+      'workshopGameValueAtLevel',
+      'computeWorkshopUpgradePrice',
       'WORKSHOP_UPGRADE_NAMES',
       'WORKSHOP_DECREASING_UPGRADES',
       'WORKSHOP_NON_MONOTONIC_UPGRADES',

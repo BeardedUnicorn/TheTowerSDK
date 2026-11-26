@@ -113,8 +113,9 @@ export interface DamageStatSource {
   /** `BG` — the workshop upgrade level. */
   workshopLevel: number
   /**
-   * The raw `WSValues` entry for this stat at its level — what
-   * `workshopStatValue()` returns.
+   * The raw `WSValues` entry for this stat at its level: the table's own
+   * number, `WORKSHOP_DATA[stat][level].value`. Not `workshopStatValue()`,
+   * which answers in the game's unit (x1.0426 where the table holds 42.6).
    *
    * Only Damage / Meter reads it, and it wants the table value untouched:
    * `EPD_DPM` applies its own ÷1000. The sheet's `BH13` shows the divided

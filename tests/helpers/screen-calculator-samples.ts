@@ -39,6 +39,26 @@ export const SCREEN_CALCULATOR_SAMPLES: Record<string, { args: Record<string, un
   },
   'workshop.relicBenefitByStat': { args: { relicIndices: [] }, moved: { relicIndices: [0, 1, 2, 3, 4] } },
   'workshop.nextUnlock': { args: { category: 'attack', unlocked: 5 }, moved: { category: 'defense', unlocked: 8 } },
+  'workshop.statValue': {
+    args: { stat: 'Enemy Attack Level Skip', level: 0 },
+    moved: { stat: 'Enemy Attack Level Skip', level: 10 },
+  },
+  'workshop.tableValue': {
+    args: { statKey: 'Health', level: 0 },
+    moved: { statKey: 'Health', level: 10 },
+  },
+  'workshop.upgradePrice': {
+    args: { stat: 'Health', fromLevel: 1142, count: 1, sectionDiscountPercent: 15 },
+    moved: { stat: 'Health', fromLevel: 1142, count: 5, sectionDiscountPercent: 15 },
+  },
+  'workshop.levelSkipNextLevelPrice': {
+    args: { statKey: 'Enemy Attack Level Skip', fromLevel: 0, utilityDiscountPct: 15 },
+    moved: { statKey: 'Enemy Attack Level Skip', fromLevel: 1, utilityDiscountPct: 15 },
+  },
+  'workshop.levelSkipChance': {
+    args: { statKey: 'Enemy Attack Level Skip', utilityLevel: 0 },
+    moved: { statKey: 'Enemy Attack Level Skip', utilityLevel: 1 },
+  },
   'uw.nextUnlockStoneCost': { args: { owned: 6 }, moved: { owned: 0 } },
   'uw.nextPlusUnlockStoneCost': { args: { ownedPlusCount: 0 }, moved: { ownedPlusCount: 8 } },
   'lab.rushGems': {

@@ -92,6 +92,11 @@ export function getOutOfRoundHealthRegenPreview(input: HealthRegenPreviewInput):
   return raw
 }
 
+/**
+ * The Workshop preview of Orb Speed, in the table's own unit.
+ *
+ * @unit table storage unit: a tenth of the Orb Speed the screen shows
+ */
 export function getOutOfRoundOrbSpeedPreview(input: OrbSpeedPreviewInput): number {
   const L = Math.max(0, input.workshopLevel)
   let term = L * ORB_SPEED_LEVEL_SCALE + ORB_SPEED_OFFSET + input.workshopCurveMult
@@ -101,6 +106,11 @@ export function getOutOfRoundOrbSpeedPreview(input: OrbSpeedPreviewInput): numbe
   return term
 }
 
+/**
+ * The Workshop preview of Recovery Amount, as a share of max health.
+ *
+ * @unit fraction: 0.28 is 28% of max health
+ */
 export function getOutOfRoundRecoveryAmountPreview(input: RecoveryAmountPreviewInput): number {
   const L = Math.max(0, input.workshopLevel)
   let core = L * RECOVERY_AMOUNT_LEVEL_SCALE + RECOVERY_AMOUNT_OFFSET + input.workshopCurveMult
@@ -111,6 +121,11 @@ export function getOutOfRoundRecoveryAmountPreview(input: RecoveryAmountPreviewI
   return core
 }
 
+/**
+ * The Workshop preview of Max Recovery.
+ *
+ * @unit multiplier
+ */
 export function getOutOfRoundRecoveryMaxPreview(input: RecoveryMaxPreviewInput): number {
   const L = Math.max(0, input.workshopLevel)
   let core = L * RECOVERY_MAX_LEVEL_SCALE + RECOVERY_MAX_OFFSET + input.workshopCurveMult

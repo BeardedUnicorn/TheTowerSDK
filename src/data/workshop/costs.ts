@@ -79,6 +79,8 @@ export type WorkshopCostKey = keyof typeof WSP_WORKSHOP_COST_LEVELS
  * Own keys only. A `typeof === 'object'` check passes for `Object.prototype` itself, so
  * a key of `__proto__` returned an empty curve rather than `null` — and an empty curve
  * prices every level at nothing, which reads as a real answer rather than a missing one.
+ *
+ * @unit coins, undiscounted
  */
 export function getWorkshopCostLevelsByKey(key: string): WorkshopCostLevels | null {
   if (!Object.prototype.hasOwnProperty.call(WSP_WORKSHOP_COST_LEVELS, key)) return null
@@ -97,6 +99,8 @@ export function getWorkshopCostLevelsByKey(key: string): WorkshopCostLevels | nu
  *   - `buildWorkshopLevelCostRows` prices *buying* level L, so it reads entry `L - 1`.
  *
  * `workshop-cost-conventions.test.ts` pins the two together so they cannot drift apart.
+ *
+ * @unit coins, undiscounted
  */
 export function getWorkshopCostByKeyAndLevel(key: string, level: number): number | null {
   const levels = getWorkshopCostLevelsByKey(key)
@@ -114,6 +118,11 @@ export function getWorkshopMaxLevelByKey(key: string): number | null {
   return Math.max(...keys)
 }
 
+/**
+ * An enhancement's ladder as a list, where entry `level` buys level + 1.
+ *
+ * @unit coins, undiscounted
+ */
 export function getWorkshopCostsByKey(key: string): number[] | null {
   const levels = getWorkshopCostLevelsByKey(key)
   if (!levels) return null

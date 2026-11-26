@@ -16,7 +16,7 @@ Workshop upgrades: their stats, costs and the tables that describe them.
 | `screen-value.ts` | The number the Workshop screen shows beside each upgrade, built from the parts the SDK already has: | WORKSHOP_SCREEN_FORMULA_BY_STAT, totalRelicBenefitByStat, computeWorkshopScreenValue |
 | `stats.ts` | — | combineWorkshopPreviewStat, shockwaveFrequencyPreview |
 | `table-build.ts` | Builds workshop lab values keyed by research slug. | computeMainWorkshopLabFactor, mergeWorkshopLabLevels, buildWorkshopTableFloats, workshopTableFloatFromBuild |
-| `types.ts` | The types `mechanics/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopDamageTier, WorkshopDamagePreviewInput, CriticalMultiplierPreviewInput, HealthRegenPreviewInput (+18 more) |
+| `types.ts` | The types `mechanics/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopDamageTier, WorkshopDamagePreviewInput, CriticalMultiplierPreviewInput, HealthRegenPreviewInput (+19 more) |
 | `utility-stats.ts` | — | getOutOfRoundAttackSpeedPreview, getOutOfRoundLifestealPreview, getOutOfRoundFreeUpgradeChancePreview, getWorkshopUtilityLevelSkipChance |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

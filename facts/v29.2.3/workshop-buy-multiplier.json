@@ -1,0 +1,444 @@
+{
+  "gameVersion": "v29.2.3",
+  "build": 1301,
+  "dataVersion": 35,
+  "checkedAt": "2026-11-25",
+  "note": "What the Workshop screen of The Tower (build 1301, macOS) showed on 2026-11-25 for every upgrade that could still be bought, at each fixed buy multiplier. Levels are the active Farm preset from the tool_export.json the game wrote that day. \"shown\" is the on-screen text exactly. \"badge\" is the count the row itself displayed, which is below the multiplier when fewer levels were left. The row shows the current value at every multiplier and never the value after buying. Max was not read. Nothing was bought: coins read 2.21B before and after.",
+  "discountLabLevels": {
+    "attack": 32,
+    "defense": 30,
+    "utility": 30
+  },
+  "prices": [
+    {
+      "stat": "Damage",
+      "level": 805,
+      "section": "attack",
+      "shownValue": "189.91K",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "12.22M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "61.48M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "123.81M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "1.39B"
+        }
+      ]
+    },
+    {
+      "stat": "Critical Factor",
+      "level": 130,
+      "section": "attack",
+      "shownValue": "x32.96",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "1.01B"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "5.26B"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "10.98B"
+        },
+        {
+          "multiplier": 100,
+          "badge": 20,
+          "shown": "217.01B"
+        }
+      ]
+    },
+    {
+      "stat": "Damage / Meter",
+      "level": 118,
+      "section": "attack",
+      "shownValue": "x1.0877 / m",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "2.79M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "58.92M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "161.40M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 82,
+          "shown": "265.09T"
+        }
+      ]
+    },
+    {
+      "stat": "Bounce Shot Range",
+      "level": 52,
+      "section": "attack",
+      "shownValue": "7.20m",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "5.01B"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "214.69B"
+        },
+        {
+          "multiplier": 10,
+          "badge": 8,
+          "shown": "3.20T"
+        },
+        {
+          "multiplier": 100,
+          "badge": 8,
+          "shown": "3.20T"
+        }
+      ]
+    },
+    {
+      "stat": "Super Crit Chance",
+      "level": 9,
+      "section": "attack",
+      "shownValue": "2.00%",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "1.26M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "15.32M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "100.88M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 91,
+          "shown": "4.73T"
+        }
+      ]
+    },
+    {
+      "stat": "Super Crit Mult",
+      "level": 0,
+      "section": "attack",
+      "shownValue": "x1.27",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "25.20K"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "552.22K"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "2.76M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "3.99T"
+        }
+      ]
+    },
+    {
+      "stat": "Health",
+      "level": 1142,
+      "section": "defense",
+      "shownValue": "269.89M",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "25.22M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "126.60M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "254.45M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "2.77B"
+        }
+      ]
+    },
+    {
+      "stat": "Health Regen",
+      "level": 0,
+      "section": "defense",
+      "shownValue": "0.00/sec",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "26"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "405"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "2.06K"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "2.03M"
+        }
+      ]
+    },
+    {
+      "stat": "Defense Absolute",
+      "level": 0,
+      "section": "defense",
+      "shownValue": "0",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "43"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "490"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "2.23K"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "2.04M"
+        }
+      ]
+    },
+    {
+      "stat": "Land Mine Damage",
+      "level": 70,
+      "section": "defense",
+      "shownValue": "x8.2",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "3.42M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "18.74M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "43.12M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "12.99T"
+        }
+      ]
+    },
+    {
+      "stat": "Land Mine Radius",
+      "level": 40,
+      "section": "defense",
+      "shownValue": "1.30",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "86.61M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "3.47B"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "65.71B"
+        },
+        {
+          "multiplier": 100,
+          "badge": 10,
+          "shown": "65.71B"
+        }
+      ]
+    },
+    {
+      "stat": "Recovery Amount",
+      "level": 35,
+      "section": "utility",
+      "shownValue": "30.24%",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "2.88M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "17.94M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "46.93M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "15.95B"
+        }
+      ]
+    },
+    {
+      "stat": "Max Recovery",
+      "level": 45,
+      "section": "utility",
+      "shownValue": "x2.85",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "7.49M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "44.39M"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "111.47M"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "23.14B"
+        }
+      ]
+    },
+    {
+      "stat": "Enemy Attack Level Skip",
+      "level": 0,
+      "section": "utility",
+      "shownValue": "0.05%",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "255.00M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "1.41B"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "3.16B"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "237.35B"
+        }
+      ]
+    },
+    {
+      "stat": "Enemy Health Level Skip",
+      "level": 0,
+      "section": "utility",
+      "shownValue": "0.05%",
+      "multipliers": [
+        {
+          "multiplier": 1,
+          "badge": 1,
+          "shown": "255.00M"
+        },
+        {
+          "multiplier": 5,
+          "badge": 5,
+          "shown": "1.41B"
+        },
+        {
+          "multiplier": 10,
+          "badge": 10,
+          "shown": "3.16B"
+        },
+        {
+          "multiplier": 100,
+          "badge": 100,
+          "shown": "237.35B"
+        }
+      ]
+    }
+  ],
+  "unlocks": [
+    {
+      "shown": "Unlock Rend Armor",
+      "price": "500.00B"
+    },
+    {
+      "shown": "Unlock The Wall",
+      "price": "500.00M"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import { WORKSHOP_DATA } from '../../src/data/workshop/table'
+import { formatGameNumber } from '../../src/formatting/numbers/game-notation'
 import { describe, expect, it } from 'vitest'
 import {
   applyElsTierSkipAdjustments,
@@ -69,6 +71,35 @@ describe('els-upgrade-path', () => {
   it('returns positive coin costs for early upgrades', () => {
     expect(standardElsCoinUpgradeCost('Enemy Attack Level Skip', 0, 0)).toBeGreaterThan(0)
     expect(enhancementElsCoinUpgradeCost(0, 0, 0)).toBeGreaterThan(0)
+  })
+
+  // Read off the Workshop screen on 2026-11-25 (v29.2.3, Workshop Utility Discount lab 30 = 15%):
+  // both level skips at level 0 showed 0.05% and a price of 255.00M at x1.
+  it.each(['Enemy Attack Level Skip', 'Enemy Health Level Skip'])(
+    'prices the first level of %s as the game shows it',
+    (stat) => {
+      expect(standardElsCoinUpgradeCost(stat, 0, 0)).toBe(300_000_000)
+      expect(standardElsCoinUpgradeCost(stat, 0, 15)).toBe(255_000_000)
+    },
+  )
+
+  it('reads the row of the level being left, the one the table prices the next level on', () => {
+    const rows = WORKSHOP_DATA['Enemy Attack Level Skip'] as Record<string, { coins: number }>
+    for (const level of [1, 10, 100, 698]) {
+      expect(standardElsCoinUpgradeCost('Enemy Attack Level Skip', level, 0)).toBe(Math.round(rows[level].coins))
+    }
+    // x5 and x10 from level 0 on the same screen: 1.41B and 3.16B.
+    const bought = (count: number) => Array.from({ length: count }, (_, level) =>
+      standardElsCoinUpgradeCost('Enemy Attack Level Skip', level, 15)!).reduce((sum, cost) => sum + cost, 0)
+    expect(formatGameNumber(bought(5))).toBe('1.41B')
+    expect(formatGameNumber(bought(10))).toBe('3.16B')
+    expect(formatGameNumber(bought(100))).toBe('237.35B')
+  })
+
+  it('can buy the last level and nothing past it', () => {
+    expect(standardElsCoinUpgradeCost('Enemy Attack Level Skip', 698, 0)).toBeGreaterThan(0)
+    expect(standardElsCoinUpgradeCost('Enemy Attack Level Skip', 699, 0)).toBeNull()
+    expect(standardElsCoinUpgradeCost('Enemy Attack Level Skip', -1, 0)).toBeNull()
   })
 
   it('ranks next clicks by ROI % (best coin efficiency first)', () => {

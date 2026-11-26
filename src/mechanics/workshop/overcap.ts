@@ -17,6 +17,9 @@ export const WORKSHOP_NORMAL_IN_RUN_CAP = 6000
 /**
  * Health / Health Regen growth past the normal cap, before other modifiers.
  * Pass the actual in-run level after Infinity Threshold's free upgrades.
+ *
+ * @unit multiplier
+ * @paramUnit level levels
  */
 export function workshopOvercapMultiplier(level: number): number {
   if (!Number.isFinite(level)) throw new RangeError('Workshop level must be finite')
@@ -27,6 +30,9 @@ export function workshopOvercapMultiplier(level: number): number {
 /**
  * Apply the in-run Health / Health Regen rule to a value evaluated at
  * min(level, 6000). Damage already uses its full curve and must not use this.
+ *
+ * @unit the unit of valueAtCappedLevel
+ * @paramUnit level levels
  */
 export function applyWorkshopOvercapMultiplier(valueAtCappedLevel: number, level: number): number {
   if (!Number.isFinite(valueAtCappedLevel) || valueAtCappedLevel < 0) {

@@ -33,6 +33,7 @@ import {
   findToolLabBySlug,
   RELIC_GAME_TABLE_BY_INDEX,
   WORKSHOP_DATA,
+  WORKSHOP_STAT_UNITS,
 } from '../../data'
 import type { ModuleCalcType } from '../../data'
 import { ownLookup } from '../../support/own-lookup'
@@ -333,5 +334,7 @@ export function computeWorkshopScreenValue(input: WorkshopScreenInput): Workshop
     if (template?.name === input.stat && !readCards.has(card.slug)) unread.push(`${template.name} card level ${card.level}`)
   }
 
-  return { stat: input.stat, level: input.level, value, basis: recipe.basis, formula: recipe.formula, unread }
+  const gameUnit = ownValue(WORKSHOP_STAT_UNITS, input.stat)?.unit ?? 'amount'
+  const unit = gameUnit === 'fraction' ? 'percent' : gameUnit
+  return { stat: input.stat, level: input.level, value, unit, basis: recipe.basis, formula: recipe.formula, unread }
 }

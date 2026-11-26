@@ -318,8 +318,8 @@ describe('the function inventory', () => {
 
 describe('the Coins / Kill Bonus workshop value', () => {
   it('matches the game table at every level', () => {
-    // `workshopStatValue` refuses this stat because `DVT_WS_VALUE`'s formula
-    // for it is stale. The economy tab computes it inline instead, and that
+    // The sheet's `DVT_WS_VALUE` cannot give this stat: its formula for it
+    // is stale. The economy tab computes it inline instead, and that
     // form is the game's own curve — which is why deriving it here is sound.
     const rows = WORKSHOP_DATA['Coins / Kill Bonus']
     const levels = Object.keys(rows).map(Number).sort((a, b) => a - b)

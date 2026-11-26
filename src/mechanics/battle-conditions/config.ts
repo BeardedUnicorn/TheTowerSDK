@@ -340,7 +340,11 @@ export function getBattleConditionLevel(
   return row?.level ?? 0
 }
 
-/** The table's float as the Wave Info multiplier: `1 + float × WAVE_INFO_WORKSHOP_SCALE`, in f32. */
+/**
+ * The table's float as the Wave Info multiplier: `1 + float × WAVE_INFO_WORKSHOP_SCALE`, in f32.
+ *
+ * @unit multiplier
+ */
 export function workshopMultFromTableFloat(tableFloat: number): number {
   if (!Number.isFinite(tableFloat)) return 1
   const scaled = F32(F32(tableFloat) * F32(WAVE_INFO_WORKSHOP_SCALE))

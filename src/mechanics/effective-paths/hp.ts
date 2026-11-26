@@ -274,7 +274,12 @@ export function composeEffectiveHealth(input: EffectiveHealthCompositionInput): 
  * approximation and the game diverge — not because they are the better source.
  */
 
-/** `WS_HP_CALC` — the sheet's workshop health curve. */
+/**
+ * `WS_HP_CALC` — the sheet's workshop health curve.
+ *
+ * @unit amount: health
+ * @paramUnit level levels
+ */
 export function sheetWorkshopHealthCurve(level: number): number {
   const base = level === 0 ? 5 : 0.077 * Math.pow(level - 1, 2.72) + 5 * (level - 1) + 10
   const highLevel = level > 5000 ? Math.pow(1.0015, level - 5000) : 1
@@ -299,6 +304,9 @@ export function sheetWorkshopHealthCurve(level: number): number {
  * The grouping here is deliberately faithful to the sheet, including a quirk:
  * the `level > 5000` factor multiplies only the 500+ term rather than the whole
  * expression, because of where the sheet closes its parentheses.
+ *
+ * @unit amount: health a second
+ * @paramUnit level levels
  */
 export function sheetWorkshopRegenCurve(level: number): number {
   const base = level === 0
@@ -312,7 +320,12 @@ export function sheetWorkshopRegenCurve(level: number): number {
   return base + tier250 + tier500 * highLevel
 }
 
-/** `WS_DABS_CALC` — the sheet's workshop defense absolute curve. */
+/**
+ * `WS_DABS_CALC` — the sheet's workshop defense absolute curve.
+ *
+ * @unit amount: damage blocked
+ * @paramUnit level levels
+ */
 export function sheetWorkshopDefenseAbsoluteCurve(level: number): number {
   let base: number
   if (level === 0) base = 0

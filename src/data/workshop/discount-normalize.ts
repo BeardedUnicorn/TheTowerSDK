@@ -21,18 +21,35 @@ function snapToDiscountStep(value: number, step: number, max: number): number {
   return Math.round(snapped * 10) / 10
 }
 
+/**
+ * The tab's discount from its Workshop Discount lab level: 0.5% a level.
+ *
+ * @unit percent
+ * @paramUnit level lab levels
+ */
 export function workshopLabLevelToSectionDiscountPercent(level: number): number {
   const clampedLevel = Math.max(0, Math.min(99, Math.floor(level)))
   const pct = clampedLevel * WORKSHOP_SECTION_DISCOUNT_STEP
   return snapToDiscountStep(pct, WORKSHOP_SECTION_DISCOUNT_STEP, WORKSHOP_SECTION_DISCOUNT_MAX_PCT)
 }
 
+/**
+ * An enhancement tab's discount from its Coin Discount lab level: 0.3% a level.
+ *
+ * @unit percent
+ * @paramUnit level lab levels
+ */
 export function enhancementLabLevelToSectionDiscountPercent(level: number): number {
   const clampedLevel = Math.max(0, Math.min(100, Math.floor(level)))
   const pct = clampedLevel * ENHANCEMENT_SECTION_DISCOUNT_STEP
   return snapToDiscountStep(pct, ENHANCEMENT_SECTION_DISCOUNT_STEP, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT)
 }
 
+/**
+ * The enhancement vault discount from its step count: 2.5% a step.
+ *
+ * @unit percent
+ */
 export function enhancementLabLevelToVaultDiscountPercent(level: number): number {
   const clampedLevel = Math.max(0, Math.min(10, Math.floor(level)))
   const pct = clampedLevel * ENHANCEMENT_VAULT_DISCOUNT_STEP
@@ -61,6 +78,11 @@ export function normalizeEnhancementSectionDiscountPercent(value: unknown, fallb
   return snapToDiscountStep(raw, ENHANCEMENT_SECTION_DISCOUNT_STEP, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT)
 }
 
+/**
+ * An enhancement vault discount as stored, as a percentage.
+ *
+ * @unit percent
+ */
 export function normalizeEnhancementVaultDiscountPercent(value: unknown, fallback = 0): number {
   const raw = Number(value)
   if (!Number.isFinite(raw)) return fallback

@@ -158,7 +158,11 @@ export const SCREEN_CALCULATORS: readonly CalculatorSpec[] = [
         { name: 'dissonantBoost', kind: 'object', describes: '{ attack?, defense? } for the tier selected' },
       ],
     }],
-    returns: { kind: 'object', nullable: true, describes: '{ stat, level, value, basis, formula, unread }' },
+    returns: {
+      kind: 'object',
+      nullable: true,
+      describes: '{ stat, level, value, unit, basis, formula, unread }; unit percent means value 0.05 is 0.05%',
+    },
     invariants: [
       'null for an upgrade without a verified formula, or a level the table has no row for',
       'a bare { stat, level } returns the value with nothing added',
@@ -204,6 +208,124 @@ export const SCREEN_CALCULATORS: readonly CalculatorSpec[] = [
     invariants: ['null once the tab has nothing left to unlock', 'coins is the full price, not discounted'],
     reads: ['workshop.unlocked'],
     produces: ['workshop.unlockPrice'],
+    dependsOn: [],
+  },
+  {
+    id: 'workshop.statValue',
+    title: 'What a workshop upgrade gives at a level',
+    entry: 'mechanics',
+    module: `${MECH}/effective-paths/workshop-values.ts`,
+    symbol: 'workshopStatValue',
+    because:
+      'The upgrade table is not in one unit: Critical Chance is stored as 80 for 80%, Recovery '
+      + 'Amount as 0.28 for 28%, Land Mine Damage as 800 for x8. This returns the game\'s value '
+      + 'and names the unit, so a per-level step is never read ten or a hundred times out. Enemy '
+      + 'Attack Level Skip was reported as 0.5% a level this way; the game gives 0.05%.',
+    params: [
+      { name: 'stat', kind: 'string', describes: 'a WORKSHOP_DATA key, such as Enemy Attack Level Skip' },
+      { name: 'level', kind: 'number', describes: 'the bought workshop level, from 0' },
+    ],
+    returns: {
+      kind: 'object',
+      nullable: true,
+      describes: '{ value, unit, coinCost, cashCost }; unit fraction means 0.0005 is 0.05%; the costs buy the NEXT level, undiscounted',
+    },
+    invariants: [
+      'null for an unknown upgrade or a level the table has no row for',
+      'value is the workshop alone: no lab, relic, card or module is in it',
+      'a fraction is never above 1 except Recovery Amount and Wall Health, which pass 100%',
+    ],
+    reads: ['workshop.level'],
+    produces: ['workshop.statValue'],
+    dependsOn: [],
+  },
+  {
+    id: 'workshop.tableValue',
+    title: 'The upgrade table\'s own number at a level',
+    entry: 'data',
+    module: `${DATA}/workshop/compute.ts`,
+    symbol: 'computeWorkshopStatNumericValueAtLevel',
+    because:
+      'The raw table number, in whatever unit the game stores that upgrade in, which differs from '
+      + 'upgrade to upgrade. A formula ported from the game wants this; anything shown to a player '
+      + 'wants workshop.statValue or workshop.screenValue instead.',
+    params: [
+      { name: 'statKey', kind: 'string', describes: 'a WORKSHOP_DATA key' },
+      { name: 'level', kind: 'number', describes: 'the bought workshop level; clamped to the table' },
+    ],
+    returns: { kind: 'number', unit: 'table storage unit, per upgrade', describes: 'the table value, unconverted' },
+    invariants: ['the level is clamped into the table rather than refused'],
+    reads: ['workshop.level'],
+    produces: ['workshop.tableValue'],
+    dependsOn: [],
+  },
+  {
+    id: 'workshop.upgradePrice',
+    title: 'Coins for one or several levels of a workshop upgrade',
+    entry: 'data',
+    module: `${DATA}/workshop/upgrade-price.ts`,
+    symbol: 'computeWorkshopUpgradePrice',
+    because:
+      'The buy multiplier prices each level on its own, discounted and rounded, and adds them; it '
+      + 'sells fewer levels when the upgrade runs out. Discounting the total once is a coin or more '
+      + 'out, and reading the price off the next row instead of the current one is a whole level out.',
+    params: [
+      { name: 'stat', kind: 'string', describes: 'a WORKSHOP_DATA key' },
+      { name: 'fromLevel', kind: 'number', describes: 'the level already bought' },
+      { name: 'count', kind: 'number', optional: true, describes: 'levels to buy: 1, 5, 10 or 100 on the screen' },
+      {
+        name: 'sectionDiscountPercent',
+        kind: 'number',
+        optional: true,
+        unit: 'percent',
+        describes: 'the tab\'s Workshop Discount lab as a percentage: lab level 30 is 15',
+      },
+    ],
+    returns: { kind: 'object', unit: 'coins', nullable: true, describes: '{ stat, fromLevel, toLevel, levels, coins }' },
+    invariants: [
+      'null for an unknown upgrade, a level without a row, or a count below 1',
+      'levels is below count when fewer levels are left, and 0 at the last level',
+      'coins is the sum of each level discounted and rounded on its own',
+    ],
+    reads: ['workshop.level', 'workshop.discountPct'],
+    produces: ['workshop.upgradePrice'],
+    dependsOn: [],
+  },
+  {
+    id: 'workshop.levelSkipNextLevelPrice',
+    title: 'Coins for the next level of an enemy level skip',
+    entry: 'mechanics',
+    module: `${MECH}/modules/els-upgrade-path.ts`,
+    symbol: 'standardElsCoinUpgradeCost',
+    because:
+      'The price of a level sits on the row being left. Read one row on, the first level cost '
+      + '268.60M with a 15% discount where the Workshop shows 255.00M, and the last level could not be bought.',
+    params: [
+      { name: 'statKey', kind: 'string', describes: 'Enemy Attack Level Skip or Enemy Health Level Skip' },
+      { name: 'fromLevel', kind: 'number', describes: 'the level already bought' },
+      { name: 'utilityDiscountPct', kind: 'number', optional: true, unit: 'percent', describes: 'Workshop Utility Discount as a percentage' },
+    ],
+    returns: { kind: 'number', unit: 'coins', nullable: true, describes: 'the discounted price of one level' },
+    invariants: ['null at the last level, below level 0, and for any other upgrade'],
+    reads: ['workshop.level', 'workshop.discountPct'],
+    produces: ['workshop.upgradePrice'],
+    dependsOn: [],
+  },
+  {
+    id: 'workshop.levelSkipChance',
+    title: 'The workshop\'s enemy level skip chance at a level',
+    entry: 'mechanics',
+    module: `${MECH}/workshop/utility-stats.ts`,
+    symbol: 'getWorkshopUtilityLevelSkipChance',
+    because: 'A fraction, not a percentage: 0.0005 at level 0 is the 0.05% the Workshop shows, and each level adds 0.0005.',
+    params: [
+      { name: 'statKey', kind: 'string', describes: 'Enemy Attack Level Skip or Enemy Health Level Skip' },
+      { name: 'utilityLevel', kind: 'number', describes: 'the bought workshop level; clamped to the table' },
+    ],
+    returns: { kind: 'number', unit: 'fraction', nullable: true, describes: 'the chance, 0 to 0.35' },
+    invariants: ['0.0005 at level 0 and 0.35 at level 699', 'null for an upgrade the table does not have'],
+    reads: ['workshop.level'],
+    produces: ['workshop.statValue'],
     dependsOn: [],
   },
 

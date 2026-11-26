@@ -42,7 +42,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/tournaments`](data/tournaments/MAP.md) | 3 | Tournament leagues, brackets, and the heat each tier carries. |
 | [`src/data/ultimate-weapons`](data/ultimate-weapons/MAP.md) | 5 | Ultimate weapons and their stones. |
 | [`src/data/vault`](data/vault/MAP.md) | 4 | The vault tree and how it is walked. |
-| [`src/data/workshop`](data/workshop/MAP.md) | 11 | Workshop tables: costs, discounts and upgrade definitions. |
+| [`src/data/workshop`](data/workshop/MAP.md) | 13 | Workshop tables: costs, discounts and upgrade definitions. |
 | [`src/formatting`](formatting/MAP.md) | 1 | Numbers, durations and rates in the game’s own notation. |
 | [`src/formatting/duration`](formatting/duration/MAP.md) | 2 | Durations, in the units a run is measured in. |
 | [`src/formatting/numbers`](formatting/numbers/MAP.md) | 4 | Reading and writing numbers in the game’s notation ladder. |

@@ -14,6 +14,8 @@ function nonnegativeFinite(value: number, name: string): void {
  * Seconds between shots for each stationary workshop orb.
  * Pass the effective orb-speed stat, including its existing modifiers.
  * Zero speed means no shots (Infinity); mini-orb count comes from module rarity.
+ *
+ * @unit seconds
  */
 export function sentryProtocolWorkshopOrbFireInterval(orbSpeed: number): number {
   nonnegativeFinite(orbSpeed, 'orbSpeed')

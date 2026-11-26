@@ -174,6 +174,9 @@ function readWorkshopLevelRow(
  * Dominant workshop term from `workshop.json` when `kind` is known (exact float per level),
  * else linear `0.0005 + L × 0.0005`.
  *
+ *
+ * @unit fraction: 0.0005 is 0.05%
+ * @paramUnit utilityLevel levels
  */
 export function levelSkipWorkshopBase(utilityLevel: number, kind?: LevelSkipKind): number {
   const L = Math.max(0, Math.floor(utilityLevel))
@@ -205,7 +208,11 @@ export function levelSkipLabBenefitIncrease(cumulativeLabBenefit: number): numbe
   return LEVEL_SKIP_LAB_BENEFIT_INCREASE_RATE
 }
 
-/** @deprecated Use {@link levelSkipWorkshopBase} with {@link LEVEL_SKIP_WORKSHOP_BASE} / {@link LEVEL_SKIP_WORKSHOP_PER_LEVEL}. */
+/**
+ * @deprecated Use {@link levelSkipWorkshopBase} with {@link LEVEL_SKIP_WORKSHOP_BASE} / {@link LEVEL_SKIP_WORKSHOP_PER_LEVEL}.
+ *
+ * @unit fraction
+ */
 export function workshopLevelSkipStat(
   benefitBase: number,
   benefitPerLevel: number,

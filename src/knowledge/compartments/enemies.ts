@@ -587,7 +587,12 @@ traps: ['IT IS NOT RANDOM. Both Attack and Health level skip are deterministic, 
 'With Wave Skip, ELS is checked once PER SKIPPED WAVE — so the two cards compound rather '
       + 'than overlap.',
 'Battle conditions from tier 14 up apply "ELS Reduction", which cuts this directly. The '
-      + 'stat is worth less exactly where enemies scale hardest.'],
+      + 'stat is worth less exactly where enemies scale hardest.',
+'A workshop level is +0.05%, not +0.5%. The Workshop screen showed 0.05% at level 0 (build '
+      + '1301) and the table holds 0.0005 a level. The Effective Paths sheet has ten times that, '
+      + 'and `workshopStatValue` used to pass the sheet\'s figure on.',
+'The price of a level is on the row being left. Level 0 to 1 is 300M before the Workshop '
+      + 'Utility Discount (255.00M at 15%), which is row 0; row 1 is the price of level 2.'],
 assertions: [{ subject: 'enemyLevelSkip', predicate: 'isDeterministic', value: true, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },
 { subject: 'enemyLevelSkip', predicate: 'workshopMaxPercent', value: 35, provenance: {
   origin: 'wiki',
@@ -599,7 +604,7 @@ assertions: [{ subject: 'enemyLevelSkip', predicate: 'isDeterministic', value: t
 { subject: 'enemyLevelSkip', predicate: 'chanceIsComputedWithoutRng', value: true, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const },
 { subject: 'enemyLevelSkip', predicate: 'additiveSourceCount', value: ENEMY_LEVEL_SKIP_ADDITIVE_SOURCE_COUNT, provenance: { origin: 'code', ref: 'SDK reference model; independent validation not recorded', verifiedAt: '2026-10-15' }, verification: 'unverified' as const }]
 ,
-units: 'percent'},
+units: 'a chance: the game shows a percent (0.05% a workshop level); the upgrade table and every function here hold the fraction (0.0005 a level)'},
 {
 id: 'enemyLevelSkip.pipeline',
 label: 'How enemy level skip is actually computed',

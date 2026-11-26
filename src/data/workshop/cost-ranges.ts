@@ -15,7 +15,9 @@ import { WORKSHOP_DATA } from './table'
  * Coins, at list price, to take a workshop upgrade from `fromLevel` to `toLevel`.
  *
  * A row's `coins` buys the NEXT level, so the sum runs over rows `fromLevel` up to, not including,
- * `toLevel`. List price: the workshop discount labs are not applied. `0` when the two levels are
+ * `toLevel`. List price: the workshop discount labs are not applied, and the rows are summed as
+ * stored, unrounded. For the price the Workshop shows, with the tab's discount applied to each
+ * level and rounded as the game does, use `computeWorkshopUpgradePrice`. `0` when the two levels are
  * equal; `null` for a stat the table does not have, a level that is not a whole number, `toLevel`
  * below `fromLevel`, or a level past the stat's last row.
  */

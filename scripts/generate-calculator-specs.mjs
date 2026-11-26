@@ -249,6 +249,27 @@ function publicExports(program, checker) {
   }))
 }
 
+/**
+ * Units a function states for itself, in its doc comment.
+ *
+ * `@unit fraction` names what the return value is in; `@paramUnit level percent` does the same for
+ * one parameter. The signature cannot say this: `number` is the type of 0.0005 and of 0.05 alike,
+ * which is how Enemy Attack Level Skip was read as 0.5% a level when the game gives 0.05%. A unit
+ * is only written where the source states it, so an entry without one is unstated, not unitless.
+ */
+function declaredUnits(checker, symbol) {
+  const units = { returns: undefined, params: new Map() }
+  for (const tag of symbol?.getJsDocTags(checker) ?? []) {
+    const text = oneLine((tag.text ?? []).map(part => part.text).join(''))
+    if (tag.name === 'unit' && text) units.returns = text
+    if (tag.name === 'paramUnit') {
+      const [name, ...rest] = text.split(' ')
+      if (name && rest.length > 0) units.params.set(name, rest.join(' '))
+    }
+  }
+  return units
+}
+
 function collect() {
   const files = sourceFiles()
   const program = createProgram(files)
@@ -269,6 +290,11 @@ function collect() {
       const exported = exportedBy.get(entry)?.get(symbol)
       if (exported && target && exported !== target) return
       seen.add(id)
+      const units = declaredUnits(checker, target)
+      const unknownParam = [...units.params.keys()].find(name => !params.some(param => param.name === name))
+      if (unknownParam) throw new Error(`${relative}: ${symbol} has @paramUnit ${unknownParam}, which is not one of its parameters`)
+      params = params.map(param => (units.params.has(param.name) ? { ...param, unit: units.params.get(param.name) } : param))
+      returns = units.returns ? { ...returns, unit: units.returns } : returns
       specs.push({
         id,
         entry,
@@ -309,7 +335,7 @@ function render(specs) {
     const params = spec.params.length === 0
       ? '    params: [],'
       : `    params: [\n${spec.params.map(param =>
-        `      { name: ${quote(param.name)}, kind: ${quote(param.kind)}, ${param.optional ? 'optional: true, ' : ''}describes: ${quote(param.describes)} },\n`).join('')}    ],`
+        `      { name: ${quote(param.name)}, kind: ${quote(param.kind)}, ${param.optional ? 'optional: true, ' : ''}${param.unit ? `unit: ${quote(param.unit)}, ` : ''}describes: ${quote(param.describes)} },\n`).join('')}    ],`
     return [
       '  {',
       `    id: ${quote(spec.id)},`,
@@ -321,7 +347,7 @@ function render(specs) {
       ...(spec.returns.isAsync ? ['    isAsync: true,'] : []),
       `    because: ${quote(`Exported from ${spec.entry} and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.`)},`,
       params,
-      `    returns: { kind: ${quote(spec.returns.kind)}, ${spec.returns.nullable ? 'nullable: true, ' : ''}describes: ${quote(spec.returns.describes)} },`,
+      `    returns: { kind: ${quote(spec.returns.kind)}, ${spec.returns.unit ? `unit: ${quote(spec.returns.unit)}, ` : ''}${spec.returns.nullable ? 'nullable: true, ' : ''}describes: ${quote(spec.returns.describes)} },`,
       `    invariants: [${quote(PLACEHOLDER_INVARIANT)}],`,
       '    reads: [],',
       `    produces: [${quote(spec.id)}],`,

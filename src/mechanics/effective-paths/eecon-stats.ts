@@ -66,12 +66,15 @@ export const ECONOMY_PERK_STACKS = 5
 /**
  * The Coins / Kill Bonus workshop value, from its level.
  *
- * `workshopStatValue` refuses this stat, and rightly — it answers in the units
- * of `DVT_WS_VALUE`, whose fallback formula for Coins / Kill Bonus is stale.
+ * The sheet's `DVT_WS_VALUE` cannot give this stat: its fallback formula for
+ * Coins / Kill Bonus is stale, which is why the stat has no sheet mapping.
  * The economy tab never calls that function. `BJ5` is `1 + BI5/100` off the
  * preset level, which is the game's own curve exactly, at all 150 levels. So
  * the value is derivable here even though it is not derivable there; the two
  * are different questions, which is easy to read as one.
+ *
+ * @unit multiplier
+ * @paramUnit level levels
  */
 export function coinsPerKillWorkshopValue(level: number): number {
   return 1 + Math.max(0, Math.floor(level)) / 100
