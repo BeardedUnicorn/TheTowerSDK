@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0 (2026-11-26)
+
+
+### Bug Fixes
+
+* **mcp:** check every structured answer against its schema before it leaves ([ddb80bf](https://github.com/BeardedUnicorn/TheTowerSDK/commit/ddb80bf80721a530de61bc6f49785367660d821a))
+
+
+### Features
+
+* **mcp:** give the Claude Desktop extension settings, prompts, tool titles and an honest version ([268f318](https://github.com/BeardedUnicorn/TheTowerSDK/commit/268f318325f3e4b030060cb990dc0dddd31bc977))
+* **mcp:** send structured output with a schema for every standalone tool ([65ef76f](https://github.com/BeardedUnicorn/TheTowerSDK/commit/65ef76f3d6bf5a671f823bbae0bff8e85b96f659))
+* **vault:** price the v29 vault in keys, and label the old calculators and charts pre-v29 ([86eb384](https://github.com/BeardedUnicorn/TheTowerSDK/commit/86eb384900ef416ad4004460e2e1838925d0adce))
+
 ## 2.0.0 (2026-11-26)
 
 
