@@ -14,10 +14,11 @@ import { fileURLToPath } from 'node:url'
 /**
  * Protocol revisions this loop can speak, newest first.
  *
- * The surface used here -- initialize, ping, tools/list, tools/call -- has the same shape in all
- * of them, so the server answers in whichever one the client asked for. A client that names a
- * revision this list does not hold gets the newest one, which is what the specification asks of
- * a server; a client that names none gets the oldest, which is what this server always said.
+ * The surface used here -- initialize, ping, tools/list, tools/call, prompts/list, prompts/get --
+ * has the same shape in all of them, so the server answers in whichever one the client asked for.
+ * A client that names a revision this list does not hold gets the newest one, which is what the
+ * specification asks of a server; a client that names none gets the oldest, which is what this
+ * server always said.
  */
 const PROTOCOL_VERSIONS = ['2025-06-18', '2025-03-26', '2024-11-05']
 
@@ -166,7 +167,26 @@ function reportsFailure(result) {
   return (has('error') && Boolean(result.error)) || (has('ok') && result.ok === false)
 }
 
-export function runStdioMcp({ name, version, instructions, tools }) {
+/**
+ * One prompt's messages, with the caller's arguments filled in.
+ *
+ * A required argument left out is the caller's mistake and is answered as invalid params, which
+ * is the code the specification gives it.
+ */
+function promptMessages(promptName, prompt, args) {
+  const missing = (prompt.arguments ?? [])
+    .filter(argument => argument.required && !String(args[argument.name] ?? '').trim())
+    .map(argument => argument.name)
+  if (missing.length > 0) {
+    throw Object.assign(new Error(`${promptName} needs ${missing.join(', ')}`), { code: -32602 })
+  }
+  return {
+    description: prompt.description,
+    messages: [{ role: 'user', content: { type: 'text', text: prompt.text(args) } }],
+  }
+}
+
+export function runStdioMcp({ name, version, instructions, tools, prompts = {} }) {
   const send = msg => process.stdout.write(`${JSON.stringify(msg)}\n`)
   const own = (record, key) => Object.prototype.hasOwnProperty.call(record, key) ? record[key] : undefined
   const fail = (id, code, message) => send({ jsonrpc: '2.0', id, error: { code, message } })
@@ -176,12 +196,25 @@ export function runStdioMcp({ name, version, instructions, tools }) {
       protocolVersion: protocolVersion === undefined
         ? PROTOCOL_VERSIONS.at(-1)
         : PROTOCOL_VERSIONS.includes(protocolVersion) ? protocolVersion : PROTOCOL_VERSIONS[0],
-      capabilities: { tools: {} },
+      capabilities: { tools: {}, ...(Object.keys(prompts).length > 0 ? { prompts: {} } : {}) },
       serverInfo: { name, version },
       instructions,
     }),
     /* A liveness check. Unanswered, a client that pings on a timer concludes the server died. */
     ping: () => ({}),
+    'prompts/list': () => ({
+      prompts: Object.entries(prompts).map(([promptName, prompt]) => ({
+        name: promptName,
+        title: prompt.title,
+        description: prompt.description,
+        ...(prompt.arguments?.length ? { arguments: prompt.arguments } : {}),
+      })),
+    }),
+    'prompts/get': ({ name: promptName, arguments: args }) => {
+      const prompt = own(prompts, promptName)
+      if (!prompt) throw Object.assign(new Error(`unknown prompt: ${promptName}`), { code: -32602 })
+      return promptMessages(promptName, prompt, args && typeof args === 'object' ? args : {})
+    },
     'tools/list': () => ({
       tools: Object.entries(tools).map(([toolName, t]) => {
         const desc = String(t.description ?? '')
@@ -302,7 +335,7 @@ export function runStdioMcp({ name, version, instructions, tools }) {
       Promise.resolve()
         .then(() => handler(request.params ?? {}))
         .then(result => { if (hasId) send({ jsonrpc: '2.0', id: request.id, result }) })
-        .catch(error => { if (hasId) fail(request.id, -32603, error instanceof Error ? error.message : String(error)) })
+        .catch(error => { if (hasId) fail(request.id, Number.isInteger(error?.code) ? error.code : -32603, error instanceof Error ? error.message : String(error)) })
     }
   })
 }

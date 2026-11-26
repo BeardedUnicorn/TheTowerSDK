@@ -232,6 +232,7 @@
     "AGENTS.md",
     "LICENSE",
     "NOTICE",
+    "PRIVACY.md",
     "!mcp/**/*.test.ts",
     "!mcp/**/*.test.mjs"
   ],

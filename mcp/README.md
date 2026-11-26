@@ -20,9 +20,20 @@ package and its one runtime dependency. Download it from
 <https://github.com/BeardedUnicorn/TheTowerSDK/releases/latest/download/thetowersdk.mcpb> and open
 it, or drag it onto Settings → Extensions.
 
-It has one setting, **Tool Export**, the game's `tool_export.json` (`TOWER_TOOL_EXPORT`). On a Mac
-leave it empty: the server finds the export in the game's own folder. The map and ledger tools
-write to `~/Documents/TheTowerSDK/mechanics-map` (`TOWER_MECHANICS_MAP_DIR`).
+It has three settings, all optional:
+
+| Setting | What it is | Variable |
+| --- | --- | --- |
+| **Tool Export** | The game's `tool_export.json`. On a Mac leave it empty: the server finds the export in the game's own folder. On Windows and Linux the save tools need it. | `TOWER_TOOL_EXPORT` |
+| **Notes Folder** | Where the map and ledger tools write. Empty means `~/Documents/TheTowerSDK/mechanics-map`. | `TOWER_NOTES_DIR` |
+| **Offline Wiki** | Never contact the community wikis; answer only from pages already on disk. | `TOWER_WIKI_OFFLINE` |
+
+A Tool Export that names no file is reported by the save tools; they do not fall back to another
+export. The server also offers three prompts (review my account, what to upgrade next, explain a
+mechanic) in the app's prompt menu. [PRIVACY.md](../PRIVACY.md) says what leaves the computer.
+
+A bundle built from the release tag carries the release's version. Any other build is stamped
+`<version>-dev.<commit>`, so the app shows which build is installed.
 
 `pnpm build && pnpm mcpb:build` builds it locally, into `.mcpb-build/`.
 
@@ -82,14 +93,15 @@ The text is built from the tools the server is advertising, so it never names on
 
 A call that fails sets `isError`, including a wrong name or a missing file, and its text is still
 JSON with the reason and any suggestions. Arguments are checked against each tool's schema before
-it runs. Every tool carries MCP annotations (`readOnlyHint`, `openWorldHint`).
+it runs. Every tool carries MCP annotations (`title`, `readOnlyHint`, `openWorldHint`).
 
 `tools/list` sends descriptions in full. Set `TOWER_MCP_COMPACT=1` to cut them to 180 characters for
 a client with a small catalog.
 
 `decode_save` and `run_extractor` are read-only on the save file. Map/ledger tools **append** to
 `docs/mechanics-map/` under the directory the server was started in (override with
-`TOWER_MECHANICS_MAP_DIR`).
+`TOWER_MECHANICS_MAP_DIR`). The Claude Desktop extension writes to
+`~/Documents/TheTowerSDK/mechanics-map` instead, or to its Notes Folder setting.
 
 `decode_save`, `run_extractor`, `read_save_field`, `battle_history`, `save_series`, `next_unlocks` and
 `coin_bonus` take the export's `path`, and
