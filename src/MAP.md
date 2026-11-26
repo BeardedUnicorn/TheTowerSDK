@@ -73,6 +73,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/mechanics/planning`](mechanics/planning/MAP.md) | 2 | Deciding what to buy next, rather than what something does. |
 | [`src/mechanics/primitives`](mechanics/primitives/MAP.md) | 6 | The arithmetic and fixed values every other mechanic is built on. |
 | [`src/mechanics/resource-drops`](mechanics/resource-drops/MAP.md) | 20 | Coin and cell income: where it comes from and how it is simulated. |
+| [`src/mechanics/survival`](mechanics/survival/MAP.md) | 11 | How many waves the tower survives, and which upgrade adds more of them. |
 | [`src/mechanics/uptime`](mechanics/uptime/MAP.md) | 4 | How long a thing is active, and how often it comes back. |
 | [`src/mechanics/vault`](mechanics/vault/MAP.md) | 5 | Source-qualified v29 Power Vault effect fractions, distinct from legacy identities and costs. |
 | [`src/mechanics/waves`](mechanics/waves/MAP.md) | 20 | Wave scaling and pacing — enemy counts, spawn rates and skips. |

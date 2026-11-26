@@ -144,6 +144,7 @@ const DIRECTORY_PURPOSE = {
   'src/save/tier-records': 'A player\'s records per tier: waves, runs started, best coins and cells.',
   'src/mechanics/primitives': 'The arithmetic and fixed values every other mechanic is built on.',
   'src/mechanics/uptime': 'How long a thing is active, and how often it comes back.',
+  'src/mechanics/survival': 'How many waves the tower survives, and which upgrade adds more of them.',
   'src/mechanics/guardians': 'Guardian damage and the chips that shape it.',
   'src/mechanics/perks': 'What a perk is worth.',
   'src/mechanics/planning': 'Deciding what to buy next, rather than what something does.',
