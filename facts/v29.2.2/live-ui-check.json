@@ -433,19 +433,19 @@
         "stat": "Free Attack Upgrade",
         "level": 99,
         "shown": "53.46%",
-        "formula": "table × (1 + FreeAttackUpgrade relics)"
+        "formula": "(table + Free Upgrades card) × (1 + FreeAttackUpgrade relics)"
       },
       {
         "stat": "Free Defense Upgrade",
         "level": 99,
         "shown": "59.80%",
-        "formula": "(table + Generator Free Defense Upgrade substat) × (1 + FreeDefenseUpgrade relics)"
+        "formula": "(table + Generator Free Defense Upgrade substat + Free Upgrades card) × (1 + FreeDefenseUpgrade relics)"
       },
       {
         "stat": "Free Utility Upgrade",
         "level": 99,
         "shown": "58.65%",
-        "formula": "(table + Generator Free Utility Upgrade substat) × (1 + FreeUtilityUpgrade relics)"
+        "formula": "(table + Generator Free Utility Upgrade substat + Free Upgrades card) × (1 + FreeUtilityUpgrade relics)"
       },
       {
         "stat": "Recovery Amount",

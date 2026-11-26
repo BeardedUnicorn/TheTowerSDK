@@ -1,0 +1,285 @@
+{
+  "gameVersion": "v29.2.3",
+  "build": 1301,
+  "dataVersion": 35,
+  "checkedAt": "2026-11-25",
+  "note": "What the Workshop screen of The Tower (build 1301, macOS) showed on 2026-11-25, with the levels behind each reading from the tool_export.json written at 2026-11-26T05:42:49.284Z. \"shown\" is the on-screen text exactly; \"price\" is the x1 price on the same row. The Dissonant workshop preset was opened once the round in progress had ended (the game refuses to switch presets during a round); its coin balance read 1.20B, Farm read 2.21B before and after, and nothing was bought. Its Utility tab listed nothing. The equipped modules and the dissonance boost waves were the same as in facts/v29.2.2/live-ui-check.json. Three things were not: Coins / Wave research went from 57 to 58, a relic was added, and the Free Upgrades card (level 6) was active where Fortress had been. The lab levels, relics and cards below are this day's. The dissonant defense boost was x1.00, so these readings cannot show whether it multiplies Health Regen or Defense Absolute.",
+  "preset": "Dissonant",
+  "dissonantBoostsShown": {
+    "attack": "x1.01",
+    "defense": "x1.00",
+    "utility": "x1.30",
+    "uw": "x1.01"
+  },
+  "labLevels": {
+    "damage": 40,
+    "attack_speed": 52,
+    "critical_factor": 37,
+    "damage_meter": 38,
+    "super_crit_chance": 2,
+    "super_crit_mult": 3,
+    "health": 38,
+    "defense": 18,
+    "orbs_speed": 20,
+    "land_mine_damage": 2,
+    "shockwave_size": 2,
+    "cash_bonus": 44,
+    "cash_wave": 23,
+    "coins_kill_bonus": 63,
+    "coins_wave": 58,
+    "interest": 8,
+    "range": 28,
+    "health_regen": 11,
+    "defense_absolute": 28
+  },
+  "relics": {
+    "unlockedIndices": [
+      2,
+      3,
+      26,
+      34,
+      35,
+      38,
+      52,
+      62,
+      63,
+      73,
+      74,
+      75,
+      77,
+      91,
+      101,
+      120,
+      193,
+      200,
+      204,
+      215,
+      224,
+      228,
+      240,
+      253,
+      255,
+      256,
+      260,
+      264,
+      265,
+      268,
+      269,
+      272,
+      273,
+      274,
+      275,
+      276,
+      280,
+      284,
+      288,
+      292,
+      296,
+      303,
+      304,
+      307,
+      308,
+      309,
+      310,
+      313,
+      314,
+      317,
+      318,
+      321,
+      322,
+      326,
+      327
+    ]
+  },
+  "activeCards": [
+    {
+      "slug": "as",
+      "name": "Attack Speed",
+      "level": 7
+    },
+    {
+      "slug": "hp",
+      "name": "Health",
+      "level": 7
+    },
+    {
+      "slug": "coins",
+      "name": "Coins",
+      "level": 7
+    },
+    {
+      "slug": "crit-chance",
+      "name": "Critical Chance",
+      "level": 7
+    },
+    {
+      "slug": "eb",
+      "name": "Enemy Balance",
+      "level": 7
+    },
+    {
+      "slug": "def",
+      "name": "Extra Defense",
+      "level": 7
+    },
+    {
+      "slug": "freeups",
+      "name": "Free Upgrades",
+      "level": 6
+    },
+    {
+      "slug": "x-orb",
+      "name": "Extra Orb",
+      "level": 6
+    },
+    {
+      "slug": "pc",
+      "name": "Plasma Cannon",
+      "level": 6
+    },
+    {
+      "slug": "crit-coin",
+      "name": "Critical Coin",
+      "level": 6
+    },
+    {
+      "slug": "ws",
+      "name": "Wave Skip",
+      "level": 6
+    },
+    {
+      "slug": "rpc",
+      "name": "Recovery Package Chance",
+      "level": 6
+    },
+    {
+      "slug": "wa",
+      "name": "Wave Accelerator",
+      "level": 2
+    },
+    {
+      "slug": "zerk",
+      "name": "Berserker",
+      "level": 1
+    },
+    {
+      "slug": "cells",
+      "name": "Cells",
+      "level": 5
+    }
+  ],
+  "readings": [
+    {
+      "stat": "Damage",
+      "level": 1109,
+      "section": "attack",
+      "shown": "361.79K",
+      "price": "25.04M"
+    },
+    {
+      "stat": "Critical Factor",
+      "level": 120,
+      "section": "attack",
+      "shown": "x30.64",
+      "price": "56.43M"
+    },
+    {
+      "stat": "Damage / Meter",
+      "level": 120,
+      "section": "attack",
+      "shown": "x1.0885 / m",
+      "price": "17.43M"
+    },
+    {
+      "stat": "Bounce Shot Range",
+      "level": 0,
+      "section": "attack",
+      "shown": "2.00m",
+      "price": "168"
+    },
+    {
+      "stat": "Super Crit Chance",
+      "level": 25,
+      "section": "attack",
+      "shown": "5.20%",
+      "price": "165.11M"
+    },
+    {
+      "stat": "Super Crit Mult",
+      "level": 25,
+      "section": "attack",
+      "shown": "x3.92",
+      "price": "57.66M"
+    },
+    {
+      "stat": "Health",
+      "level": 850,
+      "section": "defense",
+      "shown": "120.81M",
+      "price": "13.06M"
+    },
+    {
+      "stat": "Health Regen",
+      "level": 754,
+      "section": "defense",
+      "shown": "448.00K/sec",
+      "price": "10.00M"
+    },
+    {
+      "stat": "Defense Absolute",
+      "level": 643,
+      "section": "defense",
+      "shown": "339.58K",
+      "price": "7.01M"
+    },
+    {
+      "stat": "Land Mine Damage",
+      "level": 0,
+      "section": "defense",
+      "shown": "x1.2",
+      "price": "425"
+    },
+    {
+      "stat": "Land Mine Radius",
+      "level": 0,
+      "section": "defense",
+      "shown": "0.50",
+      "price": "425"
+    }
+  ],
+  "farmReadings": [
+    {
+      "stat": "Free Attack Upgrade",
+      "level": 99,
+      "shown": "63.18%"
+    },
+    {
+      "stat": "Free Defense Upgrade",
+      "level": 99,
+      "shown": "69.16%"
+    },
+    {
+      "stat": "Free Utility Upgrade",
+      "level": 99,
+      "shown": "67.83%"
+    },
+    {
+      "stat": "Coins / Wave",
+      "level": 149,
+      "shown": "324"
+    }
+  ],
+  "unconfirmed": [
+    {
+      "stat": "Knockback Force",
+      "level": 40,
+      "shown": "6.25",
+      "note": "Same level, relics and boost waves as on 2026-11-24, so this reading neither confirms nor refutes the attack-boost fit."
+    }
+  ],
+  "discountLabLevels": {
+    "attack": 32,
+    "defense": 30,
+    "utility": 30
+  }
+}

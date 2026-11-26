@@ -113,7 +113,10 @@ describe('the Workshop screen on 2026-11-24', () => {
   it('covers exactly the readings the screen settled', () => {
     const byBasis = (basis: string) => Object.entries(WORKSHOP_SCREEN_FORMULA_BY_STAT)
       .filter(([, formula]) => formula.basis === basis).map(([stat]) => stat).sort()
-    expect(byBasis('composed')).toEqual(screen.composed.map(row => row.stat).sort())
+    // Health Regen and Defense Absolute were settled a day later, on a second preset
+    // (`workshop-screen-value-second-preset.test.ts`); this day had them at level 0.
+    const settledLater = ['Defense Absolute', 'Health Regen']
+    expect(byBasis('composed')).toEqual([...screen.composed.map(row => row.stat), ...settledLater].sort())
     expect(byBasis('table')).toEqual(facts.workshopValues.map(row => row.stat).sort())
   })
 })
@@ -148,7 +151,7 @@ describe('inputs left out', () => {
   })
 
   it('return null for an upgrade with no formula or a level the table does not have', () => {
-    expect(computeWorkshopScreenValue({ stat: 'Health Regen', level: 0 })).toBeNull()
+    expect(computeWorkshopScreenValue({ stat: 'Knockback Force', level: 40 })).toBeNull()
     expect(computeWorkshopScreenValue({ stat: 'Wall Health', level: 0 })).toBeNull()
     expect(computeWorkshopScreenValue({ stat: 'Damage', level: 1e6 })).toBeNull()
     expect(computeWorkshopScreenValue({ stat: 'toString', level: 0 })).toBeNull()

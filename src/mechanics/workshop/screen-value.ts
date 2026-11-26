@@ -7,14 +7,17 @@
  * in other sources, each in its own way: Damage multiplies by the Cannon's main stat, Defense
  * Percent adds the relic total as points, Range shows the table times ten and ignores the Range
  * lab. Each formula below reproduced the screen of game v29.2.2 (build 1296) on 2026-11-24 from
- * that account's levels (`facts/v29.2.2/live-ui-check.json`). Nothing here is fitted: an upgrade
- * whose composition the screen could not settle has no formula, and the function returns `null`
- * for it rather than a plausible number.
+ * that account's levels (`facts/v29.2.2/live-ui-check.json`), and again on 2026-11-25 (build 1301)
+ * on a second workshop preset with other levels (`facts/v29.2.3/workshop-dissonant-preset.json`).
+ * Nothing here is fitted: an upgrade whose composition the screen could not settle has no formula,
+ * and the function returns `null` for it rather than a plausible number.
  *
  * - **Knockback Force** is left out. Its 6.25 fits only if the dissonant ATTACK boost multiplies a
- *   defense stat, and that account's defense boost was 1, so the two could not be told apart.
- * - **Health Regen, Defense Absolute, Rend Armor and the Wall** were at level 0, which shows 0
- *   whatever multiplies it.
+ *   defense stat, and that account's defense boost was 1, so the two could not be told apart. The
+ *   second preset had the same level, relics and boost, so it settled nothing.
+ * - **Health Regen and Defense Absolute** were at level 0 on the first preset, which shows 0
+ *   whatever multiplies it. The second had them at 754 and 643, and they are in.
+ * - **Rend Armor and the Wall** are locked on that account, so their rows have never been seen.
  * - The `table` upgrades showed the table value with nothing else on that account feeding them.
  *   A source that might (a Multishot Chance substat, say) is not added, and is listed in
  *   `unread` so the gap is visible instead of silent.
@@ -103,6 +106,18 @@ const RECIPE_BY_STAT: Readonly<Record<string, Recipe>> = {
     'table × Health lab × Health card × (1 + TowerHealth relics) × Armor main stat × dissonant defense boost',
     p => p.table * p.lab('health') * p.cardMultiplier('hp') * (1 + p.relic('TowerHealth')) * p.moduleMain('armor') * p.dissonant('defense'),
   ),
+  // Read on the Dissonant preset (level 754 showed 448.00K/sec). The Armor substat multiplies as
+  // 1 + 0.6; adding it to the relics instead gives 441.54K. The defense boost was x1.00 that day,
+  // so whether it multiplies here, as it does Health, is not known and it is left out.
+  'Health Regen': composed(
+    'table × Health Regen lab × (1 + HealthRegen relics) × (1 + Armor Health Regen substat)',
+    p => p.table * p.lab('health_regen') * (1 + p.relic('HealthRegen')) * (1 + p.substat('armor', 'Health Regen')),
+  ),
+  // Same preset: level 643 showed 339.58K. The same caveat about the defense boost applies.
+  'Defense Absolute': composed(
+    'table × Defense Absolute lab × (1 + TowerDefenseAbs relics)',
+    p => p.table * p.lab('defense_absolute') * (1 + p.relic('TowerDefenseAbs')),
+  ),
   // Relics add Defense Percent as points, not as a multiplier (wiki "Relics", Using Relics).
   'Defense Percent': composed(
     'table + Defense lab + DefensePercent relics as points + Armor Defense % substat + Extra Defense card',
@@ -135,14 +150,19 @@ const RECIPE_BY_STAT: Readonly<Record<string, Recipe>> = {
   ),
   'Coins / Wave': composed('table × Coins / Wave lab', p => p.table * p.lab('coins_wave')),
   'Interest / Wave': composed('table × Interest lab', p => p.table * p.lab('interest')),
-  'Free Attack Upgrade': composed('table × (1 + FreeAttackUpgrade relics)', p => p.table * (1 + p.relic('FreeAttackUpgrade'))),
+  // The Free Upgrades card adds its points to all three before the relics multiply: with it
+  // active at level 6 (+9) the rows went from 53.46 / 59.80 / 58.65 to 63.18 / 69.16 / 67.83.
+  'Free Attack Upgrade': composed(
+    '(table + Free Upgrades card) × (1 + FreeAttackUpgrade relics)',
+    p => (p.table + p.cardBonus('freeups')) * (1 + p.relic('FreeAttackUpgrade')),
+  ),
   'Free Defense Upgrade': composed(
-    '(table + Generator Free Defense Upgrade substat) × (1 + FreeDefenseUpgrade relics)',
-    p => (p.table + p.substat('generator', 'Free Defense Upgrade')) * (1 + p.relic('FreeDefenseUpgrade')),
+    '(table + Generator Free Defense Upgrade substat + Free Upgrades card) × (1 + FreeDefenseUpgrade relics)',
+    p => (p.table + p.substat('generator', 'Free Defense Upgrade') + p.cardBonus('freeups')) * (1 + p.relic('FreeDefenseUpgrade')),
   ),
   'Free Utility Upgrade': composed(
-    '(table + Generator Free Utility Upgrade substat) × (1 + FreeUtilityUpgrade relics)',
-    p => (p.table + p.substat('generator', 'Free Utility Upgrade')) * (1 + p.relic('FreeUtilityUpgrade')),
+    '(table + Generator Free Utility Upgrade substat + Free Upgrades card) × (1 + FreeUtilityUpgrade relics)',
+    p => (p.table + p.substat('generator', 'Free Utility Upgrade') + p.cardBonus('freeups')) * (1 + p.relic('FreeUtilityUpgrade')),
   ),
   // These three tables hold a fraction; the screen prints a percentage.
   'Recovery Amount': composed('table × 100 × (1 + RecoveryAmount relics)', p => p.table * 100 * (1 + p.relic('RecoveryAmount'))),

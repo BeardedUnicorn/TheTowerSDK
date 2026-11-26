@@ -77,7 +77,8 @@ describe('the values the Workshop screen showed', () => {
       }
       checked.push(stat)
     }
-    expect(checked.length).toBeGreaterThanOrEqual(41)
+    // 43 of the 48: all but Knockback Force, Rend Armor Chance and Mult, Wall Health and Rebuild.
+    expect(checked).toHaveLength(43)
   })
 })
 
