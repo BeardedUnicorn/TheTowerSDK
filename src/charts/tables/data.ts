@@ -693,9 +693,18 @@ Shards per Daily Mission = 115
 Package Chance = 82%
 wave skip = 19%`
 
-export const eliteSpawnChanceHeaders = [
-  'Double%', 'Single%', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12', 'T13', 'T14', 'T15', 'T16', 'T17', 'T18', 'T19', 'T20', 'T21', '', '',
-] as const
+/**
+ * One header per cell of a row: the two chance bands, a threshold column per campaign tier, then
+ * the two reference columns the footer names. Built from the tier count so a new tier cannot leave
+ * its column without a label — a list that stopped at T21 cut the last tiers off the chart.
+ */
+export const eliteSpawnChanceHeaders: readonly string[] = [
+  'Double%',
+  'Single%',
+  ...Array.from({ length: MAX_CAMPAIGN_TIER }, (_, index) => `T${index + 1}`),
+  'leftRef',
+  'rightRef',
+]
 
 export const eliteSpawnChanceTitle = 'Elite Enemy Spawn Chance Increase Per Wave and Tier'
 

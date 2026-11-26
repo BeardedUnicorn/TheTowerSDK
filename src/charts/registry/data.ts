@@ -263,6 +263,14 @@ export const SHARED_CHART_REGISTRY: readonly SharedChartDefinition[] = [
     colorHex: "#ffcc80",
   },
   {
+    pathId: "bots:upgrades-and-costs:bot-bot",
+    rendererKey: "bot-upgrades",
+    title: "Bot Upgrades: Bot Bot",
+    description: "Upgrade values and costs for Bot Bot.",
+    fileName: "bot-upgrades-bot-bot.png",
+    colorHex: "#ffcc80",
+  },
+  {
     pathId: "labs:cells:most-efficient-speed-multipliers",
     rendererKey: "lab-speed-multiplier",
     title: "Most Efficient Lab Speed Multiplier",

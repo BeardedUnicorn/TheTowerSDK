@@ -74,5 +74,5 @@ export const CHART_MECHANIC_LINKS: Readonly<
 
   'eo-vs-sla-breakpoints': ['orb', 'cardMastery.ExtraOrb', 'slowAura'],
 
-  'guild-box-rewards': ['guardian'],
+  'guild-box-rewards': ['guild.box', 'guild'],
 }

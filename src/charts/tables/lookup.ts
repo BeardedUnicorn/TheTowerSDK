@@ -21,7 +21,7 @@ import {
   projectFundingUtilDissoMultiplierData,
 } from '../datasets/project-funding-util-disso'
 import type { SharedChartRendererKey } from '../registry/types'
-import { BOT_UPGRADES_DATA, findBotByName, normalizeBotStats } from '../../data'
+import { findBotByName, normalizeBotStats } from '../../data'
 import { computeGoldBotDeathWaveRows } from '../datasets/gold-bot-vs-death-wave'
 import { uwPlusUpgradeSections } from '../datasets/uw-plus.data'
 import { uwStoneChartData } from '../../data'
@@ -196,8 +196,12 @@ function buildEliteSpawnChanceDataset(): SharedChartTableDataset<Record<string, 
     modifiersRow[index + 2] = eliteSpawnChanceModifierDisplay[index]
   }
 
+  // Three cells of the source table are the literal text `undefined` (the known hole at row 1,
+  // tiers 22-24). A chart shows a missing value as blank, never as the word.
+  const rows = eliteSpawnChanceRows.map(row => row.map(cell => (cell === 'undefined' ? '' : cell)))
+
   return matrixToDataset(eliteSpawnChanceTitle, headers, [
-    ...eliteSpawnChanceRows,
+    ...rows,
     emptyRow,
     ratioRow,
     modifiersRow,
@@ -277,9 +281,15 @@ function buildModuleSubstatValuesDataset(args: readonly string[]): SharedChartTa
   }
 }
 
-function buildBotUpgradesDataset(args: readonly string[]): SharedChartTableDataset<Record<string, unknown>> {
+/**
+ * A chart id names its bot as a slug (`golden-bot`); the catalog names it `Golden Bot`. An argument
+ * that matches no bot is refused rather than answered with the first bot in the catalog — that
+ * fallback served Flame Bot's table under three other bots' titles.
+ */
+function buildBotUpgradesDataset(args: readonly string[]): SharedChartTableDataset<Record<string, unknown>> | null {
   const botArg = String(args[0] ?? '').trim()
-  const bot = findBotByName(botArg) ?? BOT_UPGRADES_DATA.find(entry => entry.name === botArg) ?? BOT_UPGRADES_DATA[0]
+  const bot = findBotByName(botArg) ?? findBotByName(botArg.replace(/[-_]+/g, ' '))
+  if (!bot) return null
   const stats = normalizeBotStats(bot)
   const maxLevel = Math.max(...stats.map(stat => Math.max(...stat.levels.map(level => Number(level.level) || 0))), 0)
   const headers = ['Level']

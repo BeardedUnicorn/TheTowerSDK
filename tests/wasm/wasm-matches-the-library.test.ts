@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { PACKAGE_ROOT } from '../helpers/paths'
 
 import { CALCULATOR_BUILDERS, findCalculatorBuilder } from '../../src/builders'
+import { resolveCanonicalToolDataset } from '../../src/charts'
 import { LAB_CATALOG } from '../../src/data'
 import { formatGroupedNumber, formatNumberForDisplay } from '../../src/formatting'
 
@@ -124,6 +125,27 @@ describe.skipIf(!built)('the WASM module answers as the library does', () => {
 
     expect(answer.result).toBe(10000)
     expect(answer.nonFinite).toBeUndefined()
+  })
+
+  it('opens the chart an id names, without being told the variant again', async () => {
+    /*
+     * A chart id carries its variant: `bots:upgrades-and-costs:golden-bot`. The MCP server read it
+     * from the id; this module did not, so the same id that worked there came back as an error
+     * here, or — for the bot renderer, which once fell back to the first bot — as Flame Bot.
+     */
+    const call = await loadCaller()
+
+    for (const [id, bot] of [
+      ['bots:upgrades-and-costs:golden-bot', 'Golden Bot'],
+      ['bots:upgrades-and-costs:bot-bot', 'Bot Bot'],
+    ] as const) {
+      const answer = await call({ op: 'charts.rows', id, limit: 3 })
+      const expected = resolveCanonicalToolDataset('bot-upgrades', [bot])
+
+      expect(answer.ok, id).toBe(true)
+      expect(answer.columns, id).toEqual(expected?.columns)
+      expect(answer.items, id).toEqual(expected?.rows.slice(0, 3))
+    }
   })
 
   it('will not read the prototype for a catalog name', async () => {

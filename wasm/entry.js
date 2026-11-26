@@ -237,7 +237,9 @@ const OPS = {
   // covers several things -- which weapon, which module type, which bot.
   'charts.rows': ({ id, args, offset, limit }) => {
     const listed = SHARED_CHART_REGISTRY.find(entry => entry.pathId === id)
-    const datasetArgs = Array.isArray(args) ? args.map(String) : []
+    // A chart id names its variant after the second colon: `bots:upgrades-and-costs:golden-bot`.
+    const fromId = listed ? listed.pathId.split(':').slice(2) : []
+    const datasetArgs = Array.isArray(args) && args.length > 0 ? args.map(String) : fromId
     const dataset = resolveCanonicalToolDataset(listed ? listed.rendererKey : id, datasetArgs)
     if (!dataset) return { error: `no chart dataset named ${id}` }
     const rows = Array.isArray(dataset.rows) ? dataset.rows : []

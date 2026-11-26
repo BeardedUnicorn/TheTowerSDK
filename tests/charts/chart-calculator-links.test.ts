@@ -24,10 +24,10 @@ describe('every chart the site publishes is linked', () => {
     expect(linked).toEqual(rendered)
   })
 
-  it('names 48 charts across 29 renderers', () => {
+  it('names 49 charts across 29 renderers', () => {
     // Counted from the array, never grepped for `pathId:` — an earlier count
     // did that and caught two occurrences outside it.
-    expect(SHARED_CHART_REGISTRY.length).toBe(48)
+    expect(SHARED_CHART_REGISTRY.length).toBe(49)
     expect(Object.keys(CHART_CALCULATOR_LINKS)).toHaveLength(29)
   })
 })

@@ -51,7 +51,7 @@
 				{
 					href: '/docs/charts/',
 					label: 'Charts',
-					body: 'Forty-six ready-made datasets, each resolving to a finished table you can render any way you like.'
+					body: `${sdkFacts.chartDatasets} ready-made datasets, each resolving to a finished table you can render any way you like.`
 				}
 			]
 		},

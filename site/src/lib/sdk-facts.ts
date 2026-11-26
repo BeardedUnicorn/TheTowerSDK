@@ -36,6 +36,9 @@ export const sdkFacts = {
 	/** Curated chart datasets — `@beardedunicorn/thetowersdk/charts`. */
 	chartDatasets: SHARED_CHART_REGISTRY.length,
 
+	/** Distinct renderers behind those datasets; one renderer can serve several charts. */
+	chartRenderers: new Set(SHARED_CHART_REGISTRY.map((entry) => entry.rendererKey)).size,
+
 	/** Entities in the knowledge graph. */
 	graphNodes: allNodes(GAME_KNOWLEDGE).length,
 
