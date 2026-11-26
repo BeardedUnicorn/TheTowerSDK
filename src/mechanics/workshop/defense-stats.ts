@@ -59,13 +59,23 @@ import {
 } from '../primitives/constants'
 import type { HealthRegenPreviewInput, OrbSpeedPreviewInput, RecoveryAmountPreviewInput, RecoveryMaxPreviewInput } from './types'
 
-/** The term that starts at level 250, before its 0.02: `(L − 249)^2.25`. */
+/**
+ * The term that starts at level 250, before its 0.02: `(L − 249)^2.25`.
+ *
+ * @unit health a second, before the 0.02 it is multiplied by
+ * @paramUnit level levels
+ */
 export function healthRegenTier249(level: number): number {
   if (level <= HEALTH_REGEN_TIER249_THRESHOLD) return 0
   return Math.pow(level - HEALTH_REGEN_TIER249_THRESHOLD, HEALTH_REGEN_TIER249_EXP)
 }
 
-/** The term that starts at level 500, before its 0.02: `(L − 499)^2.85`. */
+/**
+ * The term that starts at level 500, before its 0.02: `(L − 499)^2.85`.
+ *
+ * @unit health a second, before the 0.02 it is multiplied by
+ * @paramUnit level levels
+ */
 export function healthRegenTier499(level: number): number {
   if (level <= HEALTH_REGEN_TIER499_THRESHOLD) return 0
   return Math.pow(level - HEALTH_REGEN_TIER499_THRESHOLD, HEALTH_REGEN_TIER499_EXP)

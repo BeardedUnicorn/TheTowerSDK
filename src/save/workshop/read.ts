@@ -188,6 +188,11 @@ function mergeCategoryLevelRecords(
   return { ...attack, ...defense, ...utility }
 }
 
+/**
+ * How many upgrades in a level record have been bought at least once.
+ *
+ * @unit count of upgrades
+ */
 export function countPositiveLevels(record: Record<string, number>): number {
   return Object.values(record).filter(level => level > 0).length
 }

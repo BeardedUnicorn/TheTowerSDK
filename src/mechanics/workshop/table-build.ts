@@ -18,6 +18,11 @@ import type { LabWorkshopSlug, WorkshopTableBuildInput, WorkshopTableFloatMap } 
 
 const F32 = Math.fround
 
+/**
+ * The main workshop lab factor: 1 unless an override is given.
+ *
+ * @unit multiplier
+ */
 export function computeMainWorkshopLabFactor(
   _tier: number,
   override?: number,

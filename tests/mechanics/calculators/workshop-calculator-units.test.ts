@@ -22,24 +22,23 @@ const run = (id: string, args: Record<string, unknown>): number => runCalculator
 const game = (stat: string, level: number): number => workshopStatValue(stat, level)!.value
 
 /**
- * Numbers whose unit nothing here establishes. Each is an intermediate term of a ported game
- * routine (a curve before its catalog multiplier, an f32 slot, a table float) or takes its unit
- * from inputs the caller supplies. Naming a unit for one would be a guess.
+ * Numbers left without a unit, each for a stated reason. Naming one for any of these would be a
+ * guess, or would claim more than the function knows.
  */
 const UNIT_NOT_ESTABLISHED = [
+  // Takes the unit of what it is given: a generic combine and a 32-bit power.
   'mechanics.combineWorkshopPreviewStat',
-  'mechanics.computeMainWorkshopLabFactor',
   'mechanics.f32Pow',
-  'mechanics.getOutOfRoundCriticalMultiplier',
+  // Not checked against the game. With neutral inputs neither gives its upgrade's table row:
+  // the free-upgrade tail adds 1 to a chance, and the lifesteal one grows as tier^1.5.
   'mechanics.getOutOfRoundFreeUpgradeChancePreview',
   'mechanics.getOutOfRoundLifestealPreview',
-  'mechanics.healthRegenTier249',
-  'mechanics.healthRegenTier499',
+  // Internal slot values of the lab-to-workshop routine. They have no unit a player would see;
+  // `workshopMultFromTableFloat` is where one becomes a multiplier.
   'mechanics.labWorkshopDivisorS13',
   'mechanics.labWorkshopEnemyExtendedFloat',
   'mechanics.labWorkshopSlotFloat',
   'mechanics.workshopTableFloatFromBuild',
-  'save.countPositiveLevels',
 ]
 
 describe('every workshop number says what it is in', () => {
@@ -131,6 +130,24 @@ describe('the declared units are the game\'s', () => {
     expect(run('mechanics.effectiveDamageUpgradeLevel', { boughtLevel: 4000, damageDecayPenalty: 500 })).toBe(3500)
     expect(unitOf('mechanics.workshopStatMaxLevel')).toBe('levels')
     expect(run('mechanics.workshopStatMaxLevel', { stat: 'Enemy Attack Level Skip' })).toBe(699)
+  })
+
+  it('the critical multiplier preview is the Critical Factor row\'s multiplier', () => {
+    expect(unitOf('mechanics.getOutOfRoundCriticalMultiplier')).toMatch(/^multiplier/)
+    // With nothing but the workshop level it is the table: x14.2 at level 130, x16.2 at 150.
+    for (const level of [0, 130, 150]) {
+      expect(run('mechanics.getOutOfRoundCriticalMultiplier', {
+        input: { workshopLevel: level, workshopStat28: 1, moduleCriticalMultiplier: 0, upgradeSlot18: 0 },
+      })).toBeCloseTo(game('Critical Factor', level), 5)
+    }
+  })
+
+  it('the two previews left unlabelled do not give their upgrade\'s table row', () => {
+    // Recorded so the gap is a fact rather than an impression. Free Attack Upgrade is 49.5% at
+    // level 99; the shared tail gives 50.5 from the level alone. Lifesteal is 4.46% at level 80.
+    expect(run('mechanics.getOutOfRoundFreeUpgradeChancePreview', { input: { workshopCurveValue: 0, levelField: 99 } })).toBe(50.5)
+    expect(run('mechanics.getOutOfRoundLifestealPreview', { input: { workshopCurveValue: 0, catalogTier: 80 } }))
+      .not.toBeCloseTo(4.46, 1)
   })
 
   it('enhancement ladders are in coins, starting at 5 billion', () => {

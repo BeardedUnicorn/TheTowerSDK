@@ -97,7 +97,11 @@ export function getOutOfRoundDamagePreview(input: WorkshopDamagePreviewInput): n
   return raw
 }
 
-/** workshop preview critical multiplier preview. */
+/**
+ * workshop preview critical multiplier preview.
+ *
+ * @unit multiplier: the number after the x on the Critical Factor row
+ */
 export function getOutOfRoundCriticalMultiplier(input: CriticalMultiplierPreviewInput): number {
   const levelTerm = input.workshopLevel * CRIT_MULT_LEVEL_SCALE + CRIT_MULT_LEVEL_BASE
   let raw = levelTerm * input.workshopStat28 + input.moduleCriticalMultiplier
