@@ -113,6 +113,24 @@ describe.skipIf(!BUILT)('the server over stdio', () => {
     expect(listed.find(tool => tool.name === 'oracle_expand')!.description).toMatch(/from memory/i)
   })
 
+  it('offers its prompts, and fills one in', async () => {
+    const init = await rpc('initialize', { protocolVersion: '2025-06-18' }) as { result?: { capabilities?: Record<string, unknown> } }
+    expect(init.result?.capabilities).toHaveProperty('prompts')
+
+    const listed = (await rpc('prompts/list')) as { result?: { prompts?: { name: string, title: string }[] } }
+    expect(listed.result!.prompts!.map(prompt => prompt.name)).toContain('explain_a_mechanic')
+    for (const prompt of listed.result!.prompts!) expect(prompt.title, prompt.name).toBeTruthy()
+
+    const filled = (await rpc('prompts/get', { name: 'explain_a_mechanic', arguments: { mechanic: 'Death Wave' } })) as
+      { result?: { messages?: { role: string, content: { type: string, text: string } }[] } }
+    expect(filled.result!.messages![0]!.role).toBe('user')
+    expect(filled.result!.messages![0]!.content.text).toContain('Death Wave')
+
+    /* A required argument left out is the caller's mistake, and is answered as one. */
+    expect((await rpc('prompts/get', { name: 'explain_a_mechanic' })).error?.code).toBe(-32602)
+    expect((await rpc('prompts/get', { name: 'no_such_prompt' })).error?.code).toBe(-32602)
+  })
+
   it('marks which tools write and which leave the machine', async () => {
     const listed = (await rpc('tools/list')).result!.tools!
     const hints = Object.fromEntries(listed.map(tool => [tool.name, tool.annotations]))

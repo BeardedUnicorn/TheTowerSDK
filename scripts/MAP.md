@@ -37,6 +37,7 @@ The checks and generators. Each is a `package.json` script; none is called from 
 | `ingest-patch-notes.mjs` | Ingest the official patch-notes channel into a local archive. | — |
 | `link-coverage-inventories.mjs` | Regenerate the file-based coverage inventories. | — |
 | `map-the-repo.mjs` | Give every source file a map of itself, and every directory a map of its files. | ROOTS, NO_HEADER, takesAHeader |
+| `mcpb-manifest.mjs` | The manifest of `thetowersdk.mcpb`, and the version a build is stamped with. | MANIFEST_VERSION, PRIVACY_POLICY_URL, bundleVersion, parseAuthor (+1 more) |
 | `move-modules.mjs` | Move source modules and repoint every import, by resolving paths rather than matching text. | — |
 | `move-types-to-types-module.mjs` | Moves each folder's exported types into that folder's `types.ts` (organization contract, Rule 8a). | — |
 | `publish-wiki.mjs` | Render the wiki and push it, using whatever git credentials you already have. | — |

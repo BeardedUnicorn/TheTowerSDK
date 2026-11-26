@@ -65,6 +65,16 @@ describeServer('mcp save tools without a path', () => {
     expect(answer.rootKeys).toBeGreaterThan(0)
   })
 
+  it('reports a TOWER_TOOL_EXPORT that names no file, rather than reading another export', async () => {
+    const missing = path.join(home, 'empty', 'not-there.json')
+    const answer = await callOnce(path.join(home, 'empty'), { TOWER_TOOL_EXPORT: missing }, 'decode_save', {})
+    expect(answer.error).toContain(missing)
+    expect(answer.error).toContain('not a file')
+    /* A path given outright is still read: the setting is wrong, the argument is not. */
+    const given = await callOnce(path.join(home, 'empty'), { TOWER_TOOL_EXPORT: missing }, 'decode_save', { path: FIXTURE })
+    expect(given.error).toBeUndefined()
+  })
+
   const itOnMac = process.platform === 'darwin' ? it : it.skip
 
   itOnMac('finds the export in the game\'s macOS container', async () => {
