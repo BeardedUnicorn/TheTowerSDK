@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.0.0 (2026-11-26)
+
+
+* fix(workshop)!: make the damage and health regen curves give the game's table ([d97886d](https://github.com/BeardedUnicorn/TheTowerSDK/commit/d97886d09f176e03681924069ec44e423d2e493b))
+* fix(workshop)!: report every upgrade's value in the game's unit, and price several levels ([996255b](https://github.com/BeardedUnicorn/TheTowerSDK/commit/996255b7c78931fbbf7653e8d7e272e6fffefa01))
+
+
+### Bug Fixes
+
+* **charts:** open each bot's own chart and show every tier of elite spawn chance ([bf8cbe7](https://github.com/BeardedUnicorn/TheTowerSDK/commit/bf8cbe793e47ff3d04bbde2529f1ac93ac959448))
+
+
+### Features
+
+* **calculators:** price an upgrade run from one level to another ([22707b9](https://github.com/BeardedUnicorn/TheTowerSDK/commit/22707b9142a75c6613e779e52f2680f366ba8cf7))
+* **charts:** chart guardian chips, module costs, unlock ladders, enemy scaling and per-tier tables ([504bc22](https://github.com/BeardedUnicorn/TheTowerSDK/commit/504bc2266600064c0fa5a73bda8cb0a152ed5b5a))
+* **charts:** give every series an id, count the cost ladders, and add a chart_series tool ([a6581fe](https://github.com/BeardedUnicorn/TheTowerSDK/commit/a6581fedbdd25d75ab47e1863e446b49c7639bcd))
+* **save:** read a save's history as series ([49662f9](https://github.com/BeardedUnicorn/TheTowerSDK/commit/49662f979dd564d1347c99ef0a8d7bb32c488587))
+* **workshop:** give the Workshop screen value for Health Regen and Defense Absolute ([e0db27e](https://github.com/BeardedUnicorn/TheTowerSDK/commit/e0db27e83c550c799c0199c0df5c08b5ae646565))
+
+
+### BREAKING CHANGES
+
+* workshopDamageCurve, getOutOfRoundDamagePreview, healthRegenCurve, healthRegenTier249, healthRegenTier499, healthRegenTier5k and getOutOfRoundHealthRegenPreview return different numbers, the ones the game's table has. WORKSHOP_DAMAGE_QUAD_COEFF is 0.077, and the HEALTH_REGEN_TIER249_EXP, HEALTH_REGEN_TIER249_COEFF, HEALTH_REGEN_TIER499_COEFF and HEALTH_REGEN_TIER5K_EXP constants changed value with the formula.
+
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
+* workshopStatValue returns the game's value with a unit field, not the Effective Paths sheet's number. Enemy Attack and Health Level Skip, Recovery Amount, Lifesteal, Land Mine Damage and Damage / Meter change value, and the eight upgrades it returned null for now return one. A caller feeding its Damage / Meter output to the eDamage model must read WORKSHOP_DATA instead. standardElsCoinUpgradeCost returns the price on the row being left, one row earlier than before. Four calculator ids moved: mechanics.workshopStatValue is workshop.statValue, mechanics.standardElsCoinUpgradeCost is workshop.levelSkipNextLevelPrice, mechanics.getWorkshopUtilityLevelSkipChance is workshop.levelSkipChance, and data.computeWorkshopStatNumericValueAtLevel is workshop.tableValue.
+
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
+
 ## 1.7.2 (2026-11-25)
 
 
