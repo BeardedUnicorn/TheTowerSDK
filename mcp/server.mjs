@@ -3534,6 +3534,8 @@ export const TOOLS = {
       if (!found) {
         return {
           error: `no series "${series}"`,
+          // A save's own series live in the save, not the catalogs.
+          ...(String(series).startsWith('save:') ? { hint: 'a series from a save comes from save_series, which takes the export\'s path' } : {}),
           didYouMean: nearestNames(String(series), charts.listChartSeries().map(item => item.id), 5),
         }
       }
@@ -3542,6 +3544,66 @@ export const TOOLS = {
       const shown = pageOf(data, { offset, limit })
       return {
         ...described,
+        offset: shown.offset,
+        returned: shown.returned,
+        ...(shown.truncated ? { truncated: true, next: shown.next } : {}),
+        items: shown.items,
+      }
+    },
+  },
+
+  save_series: {
+    description:
+      'A save\'s history as series of {x, y} points: coins per hour, wave, coins and cells for '
+      + 'every run by date; wave and final rank for every tournament by date; the best wave, coins '
+      + 'and cells on each tier. Omit `series` to list what this save holds; give a `series` for '
+      + 'its points, paged. Dates are milliseconds since the epoch. chart_series returns the same '
+      + 'shape for the game\'s own cost and value curves; battle_history returns the runs '
+      + 'themselves.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
+        series: { type: 'string', description: 'A series id from the listing, e.g. "save:battle:coins-per-hour"' },
+        offset: { type: 'number', description: 'Skip this many points — the `next` from a truncated answer' },
+        limit: { type: 'number', description: 'How many points to return (default 40, at most 100)' },
+      },
+    },
+    run: async ({ path: savePath, series, offset, limit }) => {
+      const loaded = await readSaveOrExplain(savePath)
+      if (loaded.error) return loaded
+
+      const extract = sdk.save.readSaveSeriesFromSaveRoot(loaded.parsedRoot)
+      if (!extract) {
+        return {
+          series: 0,
+          items: [],
+          note: 'this save has no battle history, tournament records or per-tier records to chart',
+        }
+      }
+
+      if (!series) {
+        return {
+          series: extract.series.length,
+          ...(extract.warnings.length > 0 ? { warnings: extract.warnings } : {}),
+          items: extract.series.map(item => ({ id: item.id, title: item.title, points: item.points, ...(item.unit ? { unit: item.unit } : {}) })),
+        }
+      }
+
+      const found = extract.series.find(item => item.id === String(series))
+      if (!found) {
+        return {
+          error: `this save has no series "${series}"`,
+          ids: extract.series.map(item => item.id),
+          ...(sdk.charts.getChartSeries(String(series)) ? { hint: 'that is a catalog series; ask chart_series for it' } : {}),
+        }
+      }
+
+      const { data, ...described } = found
+      const shown = pageOf(data, { offset, limit })
+      return {
+        ...described,
+        ...(extract.warnings.length > 0 ? { warnings: extract.warnings } : {}),
         offset: shown.offset,
         returned: shown.returned,
         ...(shown.truncated ? { truncated: true, next: shown.next } : {}),

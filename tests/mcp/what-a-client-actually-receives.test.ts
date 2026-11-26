@@ -253,6 +253,26 @@ describe.skipIf(!BUILT)('the server over stdio', () => {
       }))
     })
 
+    it('save_series lists what a save holds and returns one series as points', async () => {
+      const listing = await call('save_series', { path: history })
+      expect((listing.body?.items as { id: string }[]).map(item => item.id)).toEqual([
+        'save:battle:coins-per-hour', 'save:battle:wave', 'save:battle:coins', 'save:battle:cells',
+      ])
+
+      const rate = await call('save_series', { path: history, series: 'save:battle:coins-per-hour', limit: 2 })
+      expect(rate.body).toMatchObject({ family: 'save', points: 3, returned: 2, truncated: true, next: 2 })
+      /* 5e9 coins in 2 hours, then 1e9 in 1 hour: oldest run first. */
+      expect((rate.body?.items as { x: number, y: number }[]).map(point => point.y)).toEqual([2.5e9, 1e9])
+      expect((rate.body?.items as { x: number }[])[0]?.x).toBe(Date.parse('2026-10-01T10:00:00'))
+
+      const missing = await call('save_series', { path: history, series: 'save:tournament:rank' })
+      expect(missing.body?.error).toContain('no series')
+      const catalog = await call('save_series', { path: history, series: 'lab:damage:cost' })
+      expect(catalog.body?.hint).toContain('chart_series')
+      const wrongTool = await call('chart_series', { series: 'save:battle:wave' })
+      expect(wrongTool.body?.hint).toContain('save_series')
+    })
+
     it('battle_history returns every run, paged, with the rate the game shows', async () => {
       const all = await call('battle_history', { path: history, limit: 2 })
       expect(all.body).toMatchObject({ runs: 3, returned: 2, truncated: true, next: 2 })

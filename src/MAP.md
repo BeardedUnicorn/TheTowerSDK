@@ -109,6 +109,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/save/relics`](save/relics/MAP.md) | 3 | What a save says about relics. |
 | [`src/save/runs`](save/runs/MAP.md) | 3 | The fields a run records, and how their text normalises. |
 | [`src/save/runtime-controls`](save/runtime-controls/MAP.md) | 4 | Saved gameplay selections and ordered life-saving effect identities. |
+| [`src/save/series`](save/series/MAP.md) | 3 | A player's history as series: runs over time, tournaments over time, records by tier. |
 | [`src/save/themes`](save/themes/MAP.md) | 3 | What a save says about themes. |
 | [`src/save/tier-records`](save/tier-records/MAP.md) | 3 | A player's records per tier: waves, runs started, best coins and cells. |
 | [`src/save/tournaments`](save/tournaments/MAP.md) | 3 | The player's tournament league and past tournaments. |

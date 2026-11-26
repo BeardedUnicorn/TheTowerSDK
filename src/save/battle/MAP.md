@@ -8,7 +8,7 @@ Battle reports and history as the save stores them.
 |---|---|---|
 | `duration.ts` | — | readDurationSecondsFromSave, formatBattleDurationFromSaveSeconds |
 | `history-normalize.ts` | — | normalizeBattleHistorySaveEntry |
-| `history.ts` | — | findBattleHistoryItems, looksLikeBattleRun, countImportableBattleRuns, listImportableBattleRuns (+2 more) |
+| `history.ts` | — | findBattleHistoryItems, looksLikeBattleRun, countImportableBattleRuns, listImportableBattleRuns (+3 more) |
 | `index.ts` | Battle reports read from a save: | — |
 | `report-fields.ts` | Battle report fields read from a save: | buildBattleReportStatFields, readBattleReportRawSaveValue, getBattleReportSaveKeysForTest, getBattleReportExtendedSaveKeysForTest |
 | `reports.ts` | — | readBattleDateFromSave, normalizeBattleRunDateTimeForDedup, buildBattleRunDedupKeyFromTimestampMs, buildBattleRunDeduplicationKey (+7 more) |

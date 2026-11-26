@@ -151,6 +151,7 @@ Export files contain personal account data. Tell users plainly if your tool uplo
 | `readLifetimeFromSaveRoot` | Lifetime totals |
 | `readDissonanceCycleWavesFromSaveRoot` | Best wave per tier this dissonance cycle |
 | `listImportableBattleRuns` | Run history |
+| `readSaveSeriesFromSaveRoot` | Runs and tournaments by date, and records by tier, as `{x, y}` series |
 
 Plus perks, "killed by" and per-run battle report fields — see [`src/save/index.ts`](src/save/index.ts).
 
@@ -983,6 +984,7 @@ Or by config file:
 | `calc_list` · `calc_describe` · `calc_run` · `calc_chart` · `calc_graph` | Every calculator: find it, read its inputs, run it, see which chart it draws and what feeds it |
 | `chart_rows` | The published rows behind a chart |
 | `chart_series` | One series the catalogs hold, as `{x, y}` points by id |
+| `save_series` | A save's history as `{x, y}` points: runs and tournaments by date, records by tier |
 | `form_calc` | The site's form calculators — fields, defaults, and a run |
 | `patch_notes` | The developers' patch notes: search them, or find when something first appeared |
 | `plan_effective_path` | An Effective Path, with the candidates it left out and why — from zero, or from a save for the economy family |
