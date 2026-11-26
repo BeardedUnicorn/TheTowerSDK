@@ -73,8 +73,8 @@ describe('coverage inventories are current', () => {
     // Raise these numbers when the count goes up; never lower them to make a
     // change pass. A drop means either an oracle node lost its `implementedBy`
     // or a module was renamed out from under one — both worth stopping for.
-    const MECHANICS_LINKED_FLOOR = 12
-    const SAVE_LINKED_FLOOR = 7
+    const MECHANICS_LINKED_FLOOR = 21
+    const SAVE_LINKED_FLOOR = 8
 
     const mechanics = CoverageInventorySchema.parse(sdkModulesRaw)
     const save = CoverageInventorySchema.parse(saveSchemaRaw)

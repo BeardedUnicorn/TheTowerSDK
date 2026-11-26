@@ -37,6 +37,10 @@ function workshopTop(name: string): { readonly level: number, readonly value: nu
 const WIKI_DEATH_DEFY = { origin: 'wiki', ref: 'Death Defy', verifiedAt: '2026-08-16' } as const
 const WIKI_PACKAGES = { origin: 'wiki', ref: 'Recovery Packages', verifiedAt: '2026-08-16' } as const
 const WIKI_KNOCKBACK = { origin: 'wiki', ref: 'Knockback', verifiedAt: '2026-08-16' } as const
+const WIKI_PACKAGES_2026_11 = { origin: 'wiki', ref: 'Recovery Packages', verifiedAt: '2026-11-26' } as const
+const WIKI_ENEMIES_2026_11 = { origin: 'wiki', ref: 'Enemies', verifiedAt: '2026-11-26' } as const
+const WIKI_LIFESTEAL_2026_11 = { origin: 'wiki', ref: 'Lifesteal', verifiedAt: '2026-11-26' } as const
+const WIKI_DEATH_WAVE_2026_11 = { origin: 'wiki', ref: 'Death Wave', verifiedAt: '2026-11-26' } as const
 
 /**
  * Checked against the shipped workshop table on 2026-08-17.
@@ -260,6 +264,58 @@ export const SURVIVAL_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
     ],
     sources: [WIKI_KNOCKBACK, CATALOG_SURVIVAL],
   },
+  {
+    id: 'waveSurvival',
+    label: 'Wave survival model',
+    kind: 'system',
+    summary:
+      'How many waves a run lasts, played forward wave by wave: healing as a clamped rate, damage '
+      + 'reaching the tower by enemy class, and a seeded simulator whose hit curves are fitted to the '
+      + 'account\'s own run history. It answers which upgrade adds more waves per coin, which effective '
+      + 'health — a single-hit score — cannot.',
+    disambiguation:
+      'Not effective HP. eHP is the damage one hit must do; this is the wave a run ends on, with '
+      + 'healing, level skips, free upgrades and package luck in it.',
+    units: 'waves',
+    traps: [
+      'FITTED, NOT DERIVED. Hits landed per enemy and the max-health scale are tuned to run history; '
+      + 'with a handful of runs they are loosely pinned. Quote the leave-one-out error beside any prediction.',
+      'A recovery package is rolled once per wave at Package Chance; the Package After Boss lab adds '
+      + 'one after each boss wave. Treating Package Chance as a rate per second overstates healing.',
+      'Lifesteal heals from tower projectiles only — bounce and multishot included, orbs not — and '
+      + 'stops at full health. A Vampire disables it, and health regen, while it attacks.',
+      'Death Wave\'s health bonus RAISES MAX HEALTH (0.05% per enemy destroyed at base); it is not a '
+      + 'heal capped at 100%. A run record\'s healthFromDeathWaveThisRound is that growth.',
+      'Each melee hit an enemy lands is 4% stronger than its last. Ranged shots, the Ray beam and the '
+      + 'Vampire drain do not heat up.',
+      'A Vampire drains 2% of max health a second and no modifier changes it: Defense % does not apply.',
+      'In an AFK run free upgrades keep raising Recovery Amount, Max Recovery and the level skips, so a '
+      + 'workshop level bought in one of them is partly a level the run would have reached anyway.',
+      'Run records do not say whether a run was AFK or active, and a save keeps only today\'s '
+      + 'workshop. Fitting past runs against today\'s state fits them to the wrong account; stored '
+      + 'snapshots around each run are the only record of what it was played with.',
+      'The workshop Max Recovery table is x1.5 + 0.03 a level (x2.85 at level 45), not the wiki\'s '
+      + '"x1.00 + 0.031". Both reach x16.50 at level 500.',
+    ],
+    implementedBy: [
+      'healingForWave',
+      'incomingDamageForWave',
+      'simulateSurvivalRun',
+      'fitSurvivalCalibration',
+      'rankSurvivalUpgrades',
+      'calibrateSurvivalFromHistory',
+    ],
+    assertions: [
+      { subject: 'waveSurvival', predicate: 'packageRollsPerWave', value: 1, provenance: WIKI_PACKAGES_2026_11 },
+      { subject: 'waveSurvival', predicate: 'meleeHeatUpPerHit', value: 0.04, provenance: WIKI_ENEMIES_2026_11 },
+      { subject: 'waveSurvival', predicate: 'vampireDrainPerSecondOfMaxHealth', value: 0.02, provenance: WIKI_ENEMIES_2026_11 },
+      { subject: 'waveSurvival', predicate: 'lifestealReadsOrbs', value: false, provenance: WIKI_LIFESTEAL_2026_11 },
+      { subject: 'waveSurvival', predicate: 'deathWaveHealthIsAHeal', value: false, provenance: WIKI_DEATH_WAVE_2026_11 },
+      // Read from the table, which disagrees with the wiki's stated base and step.
+      { subject: 'waveSurvival', predicate: 'maxRecoveryAtWorkshopLevel45', value: (WORKSHOP_DATA as unknown as Record<string, Record<string, { value: number }>>)['Max Recovery']['45'].value, provenance: CATALOG_SURVIVAL, verification: 'verified_here' as const },
+    ],
+    sources: [WIKI_PACKAGES_2026_11, WIKI_ENEMIES_2026_11, WIKI_LIFESTEAL_2026_11, WIKI_DEATH_WAVE_2026_11, CATALOG_SURVIVAL],
+  },
 ]
 
 export const SURVIVAL_KNOWLEDGE_EDGES: readonly KnowledgeEdge[] =[
@@ -301,5 +357,21 @@ export const SURVIVAL_KNOWLEDGE_EDGES: readonly KnowledgeEdge[] =[
     to: 'knockback',
     note: 'Mass rises 4% per wave alive, so knockback decays against long-lived enemies.',
     sources: [WIKI_KNOCKBACK],
-  }
+  },
+{
+    from: 'recoveryPackage',
+    kind: 'scales',
+    to: 'waveSurvival',
+    note:
+      'Packages are most of the healing in a long run, and the only heal that goes past full health. '
+      + 'How much one heals depends on where health sits against the Max Recovery cap when it lands.',
+    sources: [WIKI_PACKAGES_2026_11],
+  },
+{
+    from: 'deathPrevention',
+    kind: 'scales',
+    to: 'waveSurvival',
+    note: 'A killing hit rolls Death Defy first; the model stops there and leaves the rest of the chain out.',
+    sources: [{ ...WIKI_DEATH_DEFY, section: 'Activation Priority' }],
+  },
 ]
