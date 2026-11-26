@@ -15,10 +15,9 @@ import type { CalculatorSpec } from './types'
  * a calculator at all are written there.
  *
  * Their invariants were run against the functions before they were written (2026-11-26), in
- * `tests/mechanics/calculators/formatting-helper-invariants.test.ts`. Three are caveats rather
- * than guarantees: `format.multiplierVisualRounded` and `format.hoursDuration` do not guard
- * `NaN`, and the first prints zero as `-0.00×`. Those are stated as what the function does,
- * because a caller reading "formats a multiplier" would assume otherwise.
+ * `tests/mechanics/calculators/formatting-helper-invariants.test.ts`. Running them found three
+ * defects, since fixed: `format.multiplierVisualRounded` printed `NaN×` and wrote zero as
+ * `-0.00×`, and `format.hoursDuration` printed `NaNs`.
  */
 
 const NUM = 'src/formatting/numbers/compute.ts'
@@ -167,7 +166,7 @@ export const FORMATTING_TOOL_CALCULATORS: readonly CalculatorSpec[] = [
     symbol: 'formatMultiplierVisualRounded',
     because:
       'Rounds up rather than to nearest, so the text never understates a bonus the player has. '
-      + 'It does not guard its input, which is the part to know before calling it.',
+      + 'Module cards are written with it.',
     params: [
       { name: 'm', kind: 'number', describes: 'the multiplier', unit: 'multiplier' },
       { name: 'fractionDigits', kind: 'number', optional: true, describes: 'decimals to show; 2 when omitted' },
@@ -176,7 +175,8 @@ export const FORMATTING_TOOL_CALCULATORS: readonly CalculatorSpec[] = [
     invariants: [
       'rounds up, never down: 1.231 at two decimals is 1.24×',
       'a value already at that precision stays put: 1.23 is 1.23×',
-      'does not guard its input: NaN prints as NaN× and zero as -0.00×',
+      'zero prints as 0.00×, never as -0.00×',
+      'NaN and infinity print as 1 at the shown decimals, as format.multiplier does',
     ],
     reads: ['display.multiplier'],
     produces: ['display.multiplierText'],
@@ -212,14 +212,14 @@ export const FORMATTING_TOOL_CALCULATORS: readonly CalculatorSpec[] = [
     symbol: 'formatHoursDuration',
     because:
       'For a duration that is already in hours — a lab time, a time-to-afford — so the caller does '
-      + 'not convert to seconds first and get the factor wrong. It does not guard NaN.',
+      + 'not convert to seconds first and get the factor wrong.',
     params: [{ name: 'hours', kind: 'number', describes: 'the duration', unit: 'hours' }],
     returns: { kind: 'string', describes: 'e.g. "1d 1h 30m 0s"' },
     invariants: [
       'always ends in seconds, and omits leading units that are zero: one hour is "1h 0m 0s"',
       'rounds to the nearest second',
       'zero and negative hours are "0s"',
-      'does not guard its input: NaN prints as "NaNs"',
+      'NaN is "0s", and a duration that never ends is "∞" rather than "0s"',
     ],
     reads: ['duration.hours'],
     produces: ['display.duration'],

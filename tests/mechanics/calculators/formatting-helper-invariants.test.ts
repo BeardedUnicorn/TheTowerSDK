@@ -19,10 +19,9 @@ import {
  * curated one, where it is a claim. A claim nobody ran is the thing the registry exists to
  * prevent, so every line of every `invariants` list in that block has an assertion here.
  *
- * Three of them are caveats: `format.multiplierVisualRounded` and `format.hoursDuration` do not
- * guard `NaN`, and the first prints zero as `-0.00×`. They are pinned as what the functions do
- * today. If one is fixed, its assertion fails and the invariant has to be rewritten with it —
- * which is the point of pinning it.
+ * Running them found three defects, fixed since: `format.multiplierVisualRounded` printed `NaN×`
+ * and wrote zero as `-0.00×`, and `format.hoursDuration` printed `NaNs`. The assertions that
+ * pinned those now pin the repaired behaviour.
  *
  * Finite inputs go through `runCalculator`, so the handle and its wiring are under test too.
  * Non-finite ones call the function, because that is what a caller holding a bad number does.
@@ -122,9 +121,18 @@ describe('format.multiplierVisualRounded', () => {
     expect(run('format.multiplierVisualRounded', { m: 1.23 })).toBe(`1.23${MULTIPLY}`)
   })
 
-  it('does not guard its input', () => {
-    expect(formatMultiplierVisualRounded(Number.NaN)).toBe(`NaN${MULTIPLY}`)
-    expect(run('format.multiplierVisualRounded', { m: 0 })).toBe(`-0.00${MULTIPLY}`)
+  it('prints zero as zero', () => {
+    expect(run('format.multiplierVisualRounded', { m: 0 })).toBe(`0.00${MULTIPLY}`)
+    expect(run('format.multiplierVisualRounded', { m: 0, fractionDigits: 3 })).toBe(`0.000${MULTIPLY}`)
+    // A real negative still carries its sign; only negative zero lost it.
+    expect(run('format.multiplierVisualRounded', { m: -1.5 })).toBe(`-1.50${MULTIPLY}`)
+  })
+
+  it('prints NaN and infinity as 1, at the shown decimals', () => {
+    for (const bad of [Number.NaN, Infinity, -Infinity]) {
+      expect(formatMultiplierVisualRounded(bad)).toBe(`1.00${MULTIPLY}`)
+      expect(formatMultiplierVisualRounded(bad, 3)).toBe(formatMultiplier(bad, 3))
+    }
   })
 })
 
@@ -154,8 +162,10 @@ describe('format.hoursDuration', () => {
     expect(run('format.hoursDuration', { hours: -2 })).toBe('0s')
   })
 
-  it('does not guard its input', () => {
-    expect(formatHoursDuration(Number.NaN)).toBe('NaNs')
+  it('prints NaN as 0s and a duration that never ends as ∞', () => {
+    expect(formatHoursDuration(Number.NaN)).toBe('0s')
+    expect(formatHoursDuration(-Infinity)).toBe('0s')
+    expect(formatHoursDuration(Infinity)).toBe('∞')
   })
 })
 
