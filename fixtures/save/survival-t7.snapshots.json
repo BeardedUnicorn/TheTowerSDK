@@ -1,0 +1,1386 @@
+{
+ "about": "Five stored readings of one tier-7 account around five farming runs, cut down to the fields the wave survival model reads. Each reading is a snapshot of SDK reader output: workshop levels, equipped cards, three labs, the unlock counts, and run totals. No player name, id or currency balance is kept.",
+ "runModes": {
+  "2026-11-25T22:50:06.596Z": "active",
+  "2026-11-26T02:29:00.649Z": "exclude",
+  "2026-11-26T10:07:04.975Z": "afk",
+  "2026-11-26T13:55:15.758Z": "afk",
+  "2026-11-26T18:34:23.686Z": "afk"
+ },
+ "activeRunBoughtLevels": {
+  "2026-11-25T22:50:06.596Z": {
+   "Health": 2082,
+   "Recovery Amount": 235,
+   "Max Recovery": 284,
+   "Enemy Attack Level Skip": 260,
+   "Enemy Health Level Skip": 241
+  }
+ },
+ "snapshots": [
+  {
+   "meta": {
+    "exportedAt": "2026-11-25T22:07:43.342Z"
+   },
+   "readers": {
+    "readWorkshopFromSaveRoot": {
+     "active": {
+      "levels": {
+       "Damage": 805,
+       "Attack Speed": 99,
+       "Critical Chance": 79,
+       "Critical Factor": 130,
+       "Range": 79,
+       "Damage / Meter": 118,
+       "Multishot Chance": 99,
+       "Multishot Targets": 7,
+       "Rapid Fire Chance": 85,
+       "Rapid Fire Duration": 99,
+       "Bounce Shot Chance": 85,
+       "Bounce Shot Targets": 7,
+       "Bounce Shot Range": 52,
+       "Super Crit Chance": 9,
+       "Super Crit Mult": 0,
+       "Rend Armor Chance": 0,
+       "Rend Armor Mult": 0,
+       "Health": 1142,
+       "Health Regen": 0,
+       "Defense Percent": 99,
+       "Defense Absolute": 0,
+       "Thorns": 99,
+       "Lifesteal": 80,
+       "Knockback Chance": 80,
+       "Knockback Force": 40,
+       "Orb Speed": 38,
+       "Orbs": 4,
+       "Shockwave Size": 35,
+       "Shockwave Frequency": 40,
+       "Land Mine Chance": 50,
+       "Land Mine Damage": 70,
+       "Land Mine Radius": 40,
+       "Death Defy": 75,
+       "Wall Health": 0,
+       "Wall Rebuild": 0,
+       "Cash Bonus": 149,
+       "Cash / Wave": 149,
+       "Coins / Kill Bonus": 149,
+       "Coins / Wave": 149,
+       "Free Attack Upgrade": 99,
+       "Free Defense Upgrade": 99,
+       "Free Utility Upgrade": 99,
+       "Interest / Wave": 99,
+       "Recovery Amount": 35,
+       "Max Recovery": 45,
+       "Package Chance": 60,
+       "Enemy Attack Level Skip": 0,
+       "Enemy Health Level Skip": 0
+      }
+     }
+    },
+    "readCardsFromSaveRoot": {
+     "equippedCards": [
+      {
+       "slug": "as",
+       "level": 7
+      },
+      {
+       "slug": "hp",
+       "level": 7
+      },
+      {
+       "slug": "coins",
+       "level": 7
+      },
+      {
+       "slug": "crit-chance",
+       "level": 7
+      },
+      {
+       "slug": "eb",
+       "level": 7
+      },
+      {
+       "slug": "def",
+       "level": 7
+      },
+      {
+       "slug": "fort",
+       "level": 7
+      },
+      {
+       "slug": "x-orb",
+       "level": 6
+      },
+      {
+       "slug": "pc",
+       "level": 6
+      },
+      {
+       "slug": "crit-coin",
+       "level": 6
+      },
+      {
+       "slug": "ws",
+       "level": 6
+      },
+      {
+       "slug": "rpc",
+       "level": 6
+      },
+      {
+       "slug": "wa",
+       "level": 2
+      },
+      {
+       "slug": "zerk",
+       "level": 1
+      },
+      {
+       "slug": "cells",
+       "level": 5
+      }
+     ]
+    },
+    "readLabsFromSaveRoot": {
+     "researches": [
+      {
+       "slug": "package_after_boss",
+       "level": 1
+      },
+      {
+       "slug": "workshop_defense_discount",
+       "level": 30
+      },
+      {
+       "slug": "workshop_utility_discount",
+       "level": 30
+      }
+     ]
+    },
+    "readWorkshopUnlocksFromSaveRoot": {
+     "upgradeTiersUnlocked": {
+      "attack": 5,
+      "defense": 8,
+      "utility": 6
+     }
+    }
+   },
+   "runs": []
+  },
+  {
+   "meta": {
+    "exportedAt": "2026-11-26T06:32:50.148Z"
+   },
+   "readers": {
+    "readWorkshopFromSaveRoot": {
+     "active": {
+      "levels": {
+       "Damage": 805,
+       "Attack Speed": 99,
+       "Critical Chance": 79,
+       "Critical Factor": 130,
+       "Range": 79,
+       "Damage / Meter": 118,
+       "Multishot Chance": 99,
+       "Multishot Targets": 7,
+       "Rapid Fire Chance": 85,
+       "Rapid Fire Duration": 99,
+       "Bounce Shot Chance": 85,
+       "Bounce Shot Targets": 7,
+       "Bounce Shot Range": 52,
+       "Super Crit Chance": 9,
+       "Super Crit Mult": 0,
+       "Rend Armor Chance": 0,
+       "Rend Armor Mult": 0,
+       "Health": 1142,
+       "Health Regen": 0,
+       "Defense Percent": 99,
+       "Defense Absolute": 0,
+       "Thorns": 99,
+       "Lifesteal": 80,
+       "Knockback Chance": 80,
+       "Knockback Force": 40,
+       "Orb Speed": 38,
+       "Orbs": 4,
+       "Shockwave Size": 35,
+       "Shockwave Frequency": 40,
+       "Land Mine Chance": 50,
+       "Land Mine Damage": 70,
+       "Land Mine Radius": 40,
+       "Death Defy": 75,
+       "Wall Health": 0,
+       "Wall Rebuild": 0,
+       "Cash Bonus": 149,
+       "Cash / Wave": 149,
+       "Coins / Kill Bonus": 149,
+       "Coins / Wave": 149,
+       "Free Attack Upgrade": 99,
+       "Free Defense Upgrade": 99,
+       "Free Utility Upgrade": 99,
+       "Interest / Wave": 99,
+       "Recovery Amount": 35,
+       "Max Recovery": 45,
+       "Package Chance": 60,
+       "Enemy Attack Level Skip": 0,
+       "Enemy Health Level Skip": 0
+      }
+     }
+    },
+    "readCardsFromSaveRoot": {
+     "equippedCards": [
+      {
+       "slug": "as",
+       "level": 7
+      },
+      {
+       "slug": "hp",
+       "level": 7
+      },
+      {
+       "slug": "coins",
+       "level": 7
+      },
+      {
+       "slug": "crit-chance",
+       "level": 7
+      },
+      {
+       "slug": "eb",
+       "level": 7
+      },
+      {
+       "slug": "def",
+       "level": 7
+      },
+      {
+       "slug": "freeups",
+       "level": 6
+      },
+      {
+       "slug": "x-orb",
+       "level": 6
+      },
+      {
+       "slug": "pc",
+       "level": 6
+      },
+      {
+       "slug": "crit-coin",
+       "level": 6
+      },
+      {
+       "slug": "ws",
+       "level": 6
+      },
+      {
+       "slug": "rpc",
+       "level": 6
+      },
+      {
+       "slug": "wa",
+       "level": 2
+      },
+      {
+       "slug": "zerk",
+       "level": 1
+      },
+      {
+       "slug": "cells",
+       "level": 5
+      }
+     ]
+    },
+    "readLabsFromSaveRoot": {
+     "researches": [
+      {
+       "slug": "package_after_boss",
+       "level": 1
+      },
+      {
+       "slug": "workshop_defense_discount",
+       "level": 30
+      },
+      {
+       "slug": "workshop_utility_discount",
+       "level": 30
+      }
+     ]
+    },
+    "readWorkshopUnlocksFromSaveRoot": {
+     "upgradeTiersUnlocked": {
+      "attack": 5,
+      "defense": 8,
+      "utility": 6
+     }
+    }
+   },
+   "runs": [
+    {
+     "battleDate": "2026-11-25T22:50:06.596Z",
+     "realTime": 15181.1631,
+     "gameTime": 67897.13,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2697,
+     "killedBy": 8,
+     "damageTaken": 3274006181464.4224,
+     "damageTakenWhileBerserked": 27812153017173.46,
+     "defensePercentBlocked": 24502879897745.086,
+     "defenseAbsoluteBlocked": 801935902.6528807,
+     "flameBotBlocked": 334413088376.26544,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1364,
+     "recoveryPackagesRegen": 3017219057249.428,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 35287971297.858185,
+     "deathDefy": 0,
+     "wavesSkipped": 549,
+     "attackLevelSkips": 334,
+     "healthLevelSkips": 334,
+     "freeAttackUpgrades": 1466,
+     "freeDefenseUpgrades": 1635,
+     "freeUtilityUpgrades": 1605,
+     "totalEnemies": 258936,
+     "totalBasic": 145238,
+     "totalFast": 38713,
+     "totalTank": 40165,
+     "totalRanged": 30498,
+     "totalBoss": 214,
+     "totalProtector": 310,
+     "totalVampires": 115,
+     "totalRays": 148,
+     "totalScatters": 115,
+     "destroyedByProjectiles": 89317,
+     "destroyedByOrbs": 134297,
+     "destroyedByThorns": 2148,
+     "destroyedByDeathWave": 3949
+    },
+    {
+     "battleDate": "2026-11-26T02:29:00.649Z",
+     "realTime": 11919.6807,
+     "gameTime": 55720.332,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2193,
+     "killedBy": 0,
+     "damageTaken": 788268036360.6351,
+     "damageTakenWhileBerserked": 7422117034913.34,
+     "defensePercentBlocked": 6621553037436.149,
+     "defenseAbsoluteBlocked": 295074010.69279927,
+     "flameBotBlocked": 118259625826.89949,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1153,
+     "recoveryPackagesRegen": 631908442335.6927,
+     "lifesteal": 128378894889.51175,
+     "towerHealthRegen": 420305.23187089665,
+     "healthFromDeathWaveThisRound": 6153095663.784835,
+     "deathDefy": 0,
+     "wavesSkipped": 434,
+     "attackLevelSkips": 255,
+     "healthLevelSkips": 250,
+     "freeAttackUpgrades": 1333,
+     "freeDefenseUpgrades": 1523,
+     "freeUtilityUpgrades": 1459,
+     "totalEnemies": 195816,
+     "totalBasic": 114884,
+     "totalFast": 27498,
+     "totalTank": 29217,
+     "totalRanged": 21475,
+     "totalBoss": 176,
+     "totalProtector": 251,
+     "totalVampires": 73,
+     "totalRays": 75,
+     "totalScatters": 72,
+     "destroyedByProjectiles": 76048,
+     "destroyedByOrbs": 91049,
+     "destroyedByThorns": 1894,
+     "destroyedByDeathWave": 3863
+    }
+   ]
+  },
+  {
+   "meta": {
+    "exportedAt": "2026-11-26T08:18:51.227Z"
+   },
+   "readers": {
+    "readWorkshopFromSaveRoot": {
+     "active": {
+      "levels": {
+       "Damage": 805,
+       "Attack Speed": 99,
+       "Critical Chance": 79,
+       "Critical Factor": 130,
+       "Range": 79,
+       "Damage / Meter": 118,
+       "Multishot Chance": 99,
+       "Multishot Targets": 7,
+       "Rapid Fire Chance": 85,
+       "Rapid Fire Duration": 99,
+       "Bounce Shot Chance": 85,
+       "Bounce Shot Targets": 7,
+       "Bounce Shot Range": 52,
+       "Super Crit Chance": 9,
+       "Super Crit Mult": 0,
+       "Rend Armor Chance": 0,
+       "Rend Armor Mult": 0,
+       "Health": 1142,
+       "Health Regen": 0,
+       "Defense Percent": 99,
+       "Defense Absolute": 0,
+       "Thorns": 99,
+       "Lifesteal": 80,
+       "Knockback Chance": 80,
+       "Knockback Force": 40,
+       "Orb Speed": 38,
+       "Orbs": 4,
+       "Shockwave Size": 35,
+       "Shockwave Frequency": 40,
+       "Land Mine Chance": 50,
+       "Land Mine Damage": 70,
+       "Land Mine Radius": 40,
+       "Death Defy": 75,
+       "Wall Health": 0,
+       "Wall Rebuild": 0,
+       "Cash Bonus": 149,
+       "Cash / Wave": 149,
+       "Coins / Kill Bonus": 149,
+       "Coins / Wave": 149,
+       "Free Attack Upgrade": 99,
+       "Free Defense Upgrade": 99,
+       "Free Utility Upgrade": 99,
+       "Interest / Wave": 99,
+       "Recovery Amount": 35,
+       "Max Recovery": 45,
+       "Package Chance": 60,
+       "Enemy Attack Level Skip": 0,
+       "Enemy Health Level Skip": 0
+      }
+     }
+    },
+    "readCardsFromSaveRoot": {
+     "equippedCards": [
+      {
+       "slug": "as",
+       "level": 7
+      },
+      {
+       "slug": "hp",
+       "level": 7
+      },
+      {
+       "slug": "coins",
+       "level": 7
+      },
+      {
+       "slug": "crit-chance",
+       "level": 7
+      },
+      {
+       "slug": "eb",
+       "level": 7
+      },
+      {
+       "slug": "def",
+       "level": 7
+      },
+      {
+       "slug": "freeups",
+       "level": 6
+      },
+      {
+       "slug": "x-orb",
+       "level": 6
+      },
+      {
+       "slug": "pc",
+       "level": 6
+      },
+      {
+       "slug": "crit-coin",
+       "level": 6
+      },
+      {
+       "slug": "ws",
+       "level": 6
+      },
+      {
+       "slug": "rpc",
+       "level": 6
+      },
+      {
+       "slug": "wa",
+       "level": 2
+      },
+      {
+       "slug": "zerk",
+       "level": 1
+      },
+      {
+       "slug": "cells",
+       "level": 5
+      }
+     ]
+    },
+    "readLabsFromSaveRoot": {
+     "researches": [
+      {
+       "slug": "package_after_boss",
+       "level": 1
+      },
+      {
+       "slug": "workshop_defense_discount",
+       "level": 30
+      },
+      {
+       "slug": "workshop_utility_discount",
+       "level": 30
+      }
+     ]
+    },
+    "readWorkshopUnlocksFromSaveRoot": {
+     "upgradeTiersUnlocked": {
+      "attack": 5,
+      "defense": 8,
+      "utility": 6
+     }
+    }
+   },
+   "runs": [
+    {
+     "battleDate": "2026-11-25T22:50:06.596Z",
+     "realTime": 15181.1631,
+     "gameTime": 67897.13,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2697,
+     "killedBy": 8,
+     "damageTaken": 3274006181464.4224,
+     "damageTakenWhileBerserked": 27812153017173.46,
+     "defensePercentBlocked": 24502879897745.086,
+     "defenseAbsoluteBlocked": 801935902.6528807,
+     "flameBotBlocked": 334413088376.26544,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1364,
+     "recoveryPackagesRegen": 3017219057249.428,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 35287971297.858185,
+     "deathDefy": 0,
+     "wavesSkipped": 549,
+     "attackLevelSkips": 334,
+     "healthLevelSkips": 334,
+     "freeAttackUpgrades": 1466,
+     "freeDefenseUpgrades": 1635,
+     "freeUtilityUpgrades": 1605,
+     "totalEnemies": 258936,
+     "totalBasic": 145238,
+     "totalFast": 38713,
+     "totalTank": 40165,
+     "totalRanged": 30498,
+     "totalBoss": 214,
+     "totalProtector": 310,
+     "totalVampires": 115,
+     "totalRays": 148,
+     "totalScatters": 115,
+     "destroyedByProjectiles": 89317,
+     "destroyedByOrbs": 134297,
+     "destroyedByThorns": 2148,
+     "destroyedByDeathWave": 3949
+    },
+    {
+     "battleDate": "2026-11-26T02:29:00.649Z",
+     "realTime": 11919.6807,
+     "gameTime": 55720.332,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2193,
+     "killedBy": 0,
+     "damageTaken": 788268036360.6351,
+     "damageTakenWhileBerserked": 7422117034913.34,
+     "defensePercentBlocked": 6621553037436.149,
+     "defenseAbsoluteBlocked": 295074010.69279927,
+     "flameBotBlocked": 118259625826.89949,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1153,
+     "recoveryPackagesRegen": 631908442335.6927,
+     "lifesteal": 128378894889.51175,
+     "towerHealthRegen": 420305.23187089665,
+     "healthFromDeathWaveThisRound": 6153095663.784835,
+     "deathDefy": 0,
+     "wavesSkipped": 434,
+     "attackLevelSkips": 255,
+     "healthLevelSkips": 250,
+     "freeAttackUpgrades": 1333,
+     "freeDefenseUpgrades": 1523,
+     "freeUtilityUpgrades": 1459,
+     "totalEnemies": 195816,
+     "totalBasic": 114884,
+     "totalFast": 27498,
+     "totalTank": 29217,
+     "totalRanged": 21475,
+     "totalBoss": 176,
+     "totalProtector": 251,
+     "totalVampires": 73,
+     "totalRays": 75,
+     "totalScatters": 72,
+     "destroyedByProjectiles": 76048,
+     "destroyedByOrbs": 91049,
+     "destroyedByThorns": 1894,
+     "destroyedByDeathWave": 3863
+    }
+   ]
+  },
+  {
+   "meta": {
+    "exportedAt": "2026-11-26T19:25:07.148Z"
+   },
+   "readers": {
+    "readWorkshopFromSaveRoot": {
+     "active": {
+      "levels": {
+       "Damage": 805,
+       "Attack Speed": 99,
+       "Critical Chance": 79,
+       "Critical Factor": 130,
+       "Range": 79,
+       "Damage / Meter": 118,
+       "Multishot Chance": 99,
+       "Multishot Targets": 7,
+       "Rapid Fire Chance": 85,
+       "Rapid Fire Duration": 99,
+       "Bounce Shot Chance": 85,
+       "Bounce Shot Targets": 7,
+       "Bounce Shot Range": 52,
+       "Super Crit Chance": 9,
+       "Super Crit Mult": 0,
+       "Rend Armor Chance": 0,
+       "Rend Armor Mult": 0,
+       "Health": 1142,
+       "Health Regen": 0,
+       "Defense Percent": 99,
+       "Defense Absolute": 0,
+       "Thorns": 99,
+       "Lifesteal": 80,
+       "Knockback Chance": 80,
+       "Knockback Force": 40,
+       "Orb Speed": 38,
+       "Orbs": 4,
+       "Shockwave Size": 35,
+       "Shockwave Frequency": 40,
+       "Land Mine Chance": 50,
+       "Land Mine Damage": 70,
+       "Land Mine Radius": 40,
+       "Death Defy": 75,
+       "Wall Health": 0,
+       "Wall Rebuild": 0,
+       "Cash Bonus": 149,
+       "Cash / Wave": 149,
+       "Coins / Kill Bonus": 149,
+       "Coins / Wave": 149,
+       "Free Attack Upgrade": 99,
+       "Free Defense Upgrade": 99,
+       "Free Utility Upgrade": 99,
+       "Interest / Wave": 99,
+       "Recovery Amount": 35,
+       "Max Recovery": 45,
+       "Package Chance": 60,
+       "Enemy Attack Level Skip": 0,
+       "Enemy Health Level Skip": 0
+      }
+     }
+    },
+    "readCardsFromSaveRoot": {
+     "equippedCards": [
+      {
+       "slug": "as",
+       "level": 7
+      },
+      {
+       "slug": "hp",
+       "level": 7
+      },
+      {
+       "slug": "coins",
+       "level": 7
+      },
+      {
+       "slug": "crit-chance",
+       "level": 7
+      },
+      {
+       "slug": "eb",
+       "level": 7
+      },
+      {
+       "slug": "def",
+       "level": 7
+      },
+      {
+       "slug": "freeups",
+       "level": 6
+      },
+      {
+       "slug": "x-orb",
+       "level": 6
+      },
+      {
+       "slug": "pc",
+       "level": 6
+      },
+      {
+       "slug": "crit-coin",
+       "level": 6
+      },
+      {
+       "slug": "ws",
+       "level": 6
+      },
+      {
+       "slug": "rpc",
+       "level": 6
+      },
+      {
+       "slug": "wa",
+       "level": 2
+      },
+      {
+       "slug": "zerk",
+       "level": 1
+      },
+      {
+       "slug": "cells",
+       "level": 5
+      }
+     ]
+    },
+    "readLabsFromSaveRoot": {
+     "researches": [
+      {
+       "slug": "package_after_boss",
+       "level": 1
+      },
+      {
+       "slug": "workshop_defense_discount",
+       "level": 30
+      },
+      {
+       "slug": "workshop_utility_discount",
+       "level": 30
+      }
+     ]
+    },
+    "readWorkshopUnlocksFromSaveRoot": {
+     "upgradeTiersUnlocked": {
+      "attack": 5,
+      "defense": 8,
+      "utility": 6
+     }
+    }
+   },
+   "runs": [
+    {
+     "battleDate": "2026-11-25T22:50:06.596Z",
+     "realTime": 15181.1631,
+     "gameTime": 67897.13,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2697,
+     "killedBy": 8,
+     "damageTaken": 3274006181464.4224,
+     "damageTakenWhileBerserked": 27812153017173.46,
+     "defensePercentBlocked": 24502879897745.086,
+     "defenseAbsoluteBlocked": 801935902.6528807,
+     "flameBotBlocked": 334413088376.26544,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1364,
+     "recoveryPackagesRegen": 3017219057249.428,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 35287971297.858185,
+     "deathDefy": 0,
+     "wavesSkipped": 549,
+     "attackLevelSkips": 334,
+     "healthLevelSkips": 334,
+     "freeAttackUpgrades": 1466,
+     "freeDefenseUpgrades": 1635,
+     "freeUtilityUpgrades": 1605,
+     "totalEnemies": 258936,
+     "totalBasic": 145238,
+     "totalFast": 38713,
+     "totalTank": 40165,
+     "totalRanged": 30498,
+     "totalBoss": 214,
+     "totalProtector": 310,
+     "totalVampires": 115,
+     "totalRays": 148,
+     "totalScatters": 115,
+     "destroyedByProjectiles": 89317,
+     "destroyedByOrbs": 134297,
+     "destroyedByThorns": 2148,
+     "destroyedByDeathWave": 3949
+    },
+    {
+     "battleDate": "2026-11-26T02:29:00.649Z",
+     "realTime": 11919.6807,
+     "gameTime": 55720.332,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2193,
+     "killedBy": 0,
+     "damageTaken": 788268036360.6351,
+     "damageTakenWhileBerserked": 7422117034913.34,
+     "defensePercentBlocked": 6621553037436.149,
+     "defenseAbsoluteBlocked": 295074010.69279927,
+     "flameBotBlocked": 118259625826.89949,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1153,
+     "recoveryPackagesRegen": 631908442335.6927,
+     "lifesteal": 128378894889.51175,
+     "towerHealthRegen": 420305.23187089665,
+     "healthFromDeathWaveThisRound": 6153095663.784835,
+     "deathDefy": 0,
+     "wavesSkipped": 434,
+     "attackLevelSkips": 255,
+     "healthLevelSkips": 250,
+     "freeAttackUpgrades": 1333,
+     "freeDefenseUpgrades": 1523,
+     "freeUtilityUpgrades": 1459,
+     "totalEnemies": 195816,
+     "totalBasic": 114884,
+     "totalFast": 27498,
+     "totalTank": 29217,
+     "totalRanged": 21475,
+     "totalBoss": 176,
+     "totalProtector": 251,
+     "totalVampires": 73,
+     "totalRays": 75,
+     "totalScatters": 72,
+     "destroyedByProjectiles": 76048,
+     "destroyedByOrbs": 91049,
+     "destroyedByThorns": 1894,
+     "destroyedByDeathWave": 3863
+    },
+    {
+     "battleDate": "2026-11-26T10:07:04.975Z",
+     "realTime": 12033.7666,
+     "gameTime": 56296.66,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2230,
+     "killedBy": 8,
+     "damageTaken": 4316750862166.586,
+     "damageTakenWhileBerserked": 17288699165872.266,
+     "defensePercentBlocked": 12916330366267.84,
+     "defenseAbsoluteBlocked": 432188793.5573193,
+     "flameBotBlocked": 230726604577.74783,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1113,
+     "recoveryPackagesRegen": 3290325315151.1753,
+     "lifesteal": 824977465589.9198,
+     "towerHealthRegen": 1590169.7363422683,
+     "healthFromDeathWaveThisRound": 9675873228.852457,
+     "deathDefy": 0,
+     "wavesSkipped": 453,
+     "attackLevelSkips": 265,
+     "healthLevelSkips": 265,
+     "freeAttackUpgrades": 1408,
+     "freeDefenseUpgrades": 1535,
+     "freeUtilityUpgrades": 1501,
+     "totalEnemies": 219819,
+     "totalBasic": 127848,
+     "totalFast": 31572,
+     "totalTank": 32846,
+     "totalRanged": 24371,
+     "totalBoss": 178,
+     "totalProtector": 255,
+     "totalVampires": 84,
+     "totalRays": 76,
+     "totalScatters": 85,
+     "destroyedByProjectiles": 89257,
+     "destroyedByOrbs": 97328,
+     "destroyedByThorns": 2632,
+     "destroyedByDeathWave": 3705
+    },
+    {
+     "battleDate": "2026-11-26T13:55:15.758Z",
+     "realTime": 10778.1572,
+     "gameTime": 46187.293,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 1826,
+     "killedBy": 1,
+     "damageTaken": 181616478040.21927,
+     "damageTakenWhileBerserked": 719756305803.5781,
+     "defensePercentBlocked": 535896728544.762,
+     "defenseAbsoluteBlocked": 11023411.080002338,
+     "flameBotBlocked": 8886697559.742119,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 917,
+     "recoveryPackagesRegen": 140624480566.47906,
+     "lifesteal": 20220249917.89507,
+     "towerHealthRegen": 56361.14970081641,
+     "healthFromDeathWaveThisRound": 5342581865.547061,
+     "deathDefy": 0,
+     "wavesSkipped": 369,
+     "attackLevelSkips": 137,
+     "healthLevelSkips": 146,
+     "freeAttackUpgrades": 1180,
+     "freeDefenseUpgrades": 1327,
+     "freeUtilityUpgrades": 1304,
+     "totalEnemies": 167928,
+     "totalBasic": 100979,
+     "totalFast": 23311,
+     "totalTank": 24308,
+     "totalRanged": 17786,
+     "totalBoss": 150,
+     "totalProtector": 201,
+     "totalVampires": 47,
+     "totalRays": 52,
+     "totalScatters": 36,
+     "destroyedByProjectiles": 70703,
+     "destroyedByOrbs": 72322,
+     "destroyedByThorns": 226,
+     "destroyedByDeathWave": 3748
+    },
+    {
+     "battleDate": "2026-11-26T18:34:23.686Z",
+     "realTime": 11598.0576,
+     "gameTime": 51676.07,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2039,
+     "killedBy": 0,
+     "damageTaken": 898317719846.2643,
+     "damageTakenWhileBerserked": 4066648844055.5747,
+     "defensePercentBlocked": 3154079993595.6987,
+     "defenseAbsoluteBlocked": 61250360.85766555,
+     "flameBotBlocked": 72801847336.80772,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1048,
+     "recoveryPackagesRegen": 781283746217.9493,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 5464770775.682028,
+     "deathDefy": 0,
+     "wavesSkipped": 408,
+     "attackLevelSkips": 185,
+     "healthLevelSkips": 177,
+     "freeAttackUpgrades": 1335,
+     "freeDefenseUpgrades": 1430,
+     "freeUtilityUpgrades": 1412,
+     "totalEnemies": 181960,
+     "totalBasic": 108303,
+     "totalFast": 25418,
+     "totalTank": 26370,
+     "totalRanged": 19558,
+     "totalBoss": 163,
+     "totalProtector": 236,
+     "totalVampires": 68,
+     "totalRays": 62,
+     "totalScatters": 59,
+     "destroyedByProjectiles": 69901,
+     "destroyedByOrbs": 85575,
+     "destroyedByThorns": 623,
+     "destroyedByDeathWave": 3762
+    }
+   ]
+  },
+  {
+   "meta": {
+    "exportedAt": "2026-11-26T20:34:28.974Z"
+   },
+   "readers": {
+    "readWorkshopFromSaveRoot": {
+     "active": {
+      "levels": {
+       "Damage": 805,
+       "Attack Speed": 99,
+       "Critical Chance": 79,
+       "Critical Factor": 130,
+       "Range": 79,
+       "Damage / Meter": 118,
+       "Multishot Chance": 99,
+       "Multishot Targets": 7,
+       "Rapid Fire Chance": 85,
+       "Rapid Fire Duration": 99,
+       "Bounce Shot Chance": 85,
+       "Bounce Shot Targets": 7,
+       "Bounce Shot Range": 52,
+       "Super Crit Chance": 9,
+       "Super Crit Mult": 0,
+       "Rend Armor Chance": 0,
+       "Rend Armor Mult": 0,
+       "Health": 1300,
+       "Health Regen": 0,
+       "Defense Percent": 99,
+       "Defense Absolute": 0,
+       "Thorns": 99,
+       "Lifesteal": 80,
+       "Knockback Chance": 80,
+       "Knockback Force": 40,
+       "Orb Speed": 38,
+       "Orbs": 4,
+       "Shockwave Size": 35,
+       "Shockwave Frequency": 40,
+       "Land Mine Chance": 50,
+       "Land Mine Damage": 70,
+       "Land Mine Radius": 40,
+       "Death Defy": 75,
+       "Wall Health": 0,
+       "Wall Rebuild": 0,
+       "Cash Bonus": 149,
+       "Cash / Wave": 149,
+       "Coins / Kill Bonus": 149,
+       "Coins / Wave": 149,
+       "Free Attack Upgrade": 99,
+       "Free Defense Upgrade": 99,
+       "Free Utility Upgrade": 99,
+       "Interest / Wave": 99,
+       "Recovery Amount": 35,
+       "Max Recovery": 45,
+       "Package Chance": 60,
+       "Enemy Attack Level Skip": 0,
+       "Enemy Health Level Skip": 0
+      }
+     }
+    },
+    "readCardsFromSaveRoot": {
+     "equippedCards": [
+      {
+       "slug": "as",
+       "level": 7
+      },
+      {
+       "slug": "hp",
+       "level": 7
+      },
+      {
+       "slug": "coins",
+       "level": 7
+      },
+      {
+       "slug": "crit-chance",
+       "level": 7
+      },
+      {
+       "slug": "eb",
+       "level": 7
+      },
+      {
+       "slug": "def",
+       "level": 7
+      },
+      {
+       "slug": "freeups",
+       "level": 6
+      },
+      {
+       "slug": "x-orb",
+       "level": 6
+      },
+      {
+       "slug": "pc",
+       "level": 6
+      },
+      {
+       "slug": "crit-coin",
+       "level": 6
+      },
+      {
+       "slug": "ws",
+       "level": 6
+      },
+      {
+       "slug": "rpc",
+       "level": 6
+      },
+      {
+       "slug": "wa",
+       "level": 2
+      },
+      {
+       "slug": "zerk",
+       "level": 1
+      },
+      {
+       "slug": "cells",
+       "level": 5
+      }
+     ]
+    },
+    "readLabsFromSaveRoot": {
+     "researches": [
+      {
+       "slug": "package_after_boss",
+       "level": 1
+      },
+      {
+       "slug": "workshop_defense_discount",
+       "level": 30
+      },
+      {
+       "slug": "workshop_utility_discount",
+       "level": 30
+      }
+     ]
+    },
+    "readWorkshopUnlocksFromSaveRoot": {
+     "upgradeTiersUnlocked": {
+      "attack": 5,
+      "defense": 8,
+      "utility": 6
+     }
+    }
+   },
+   "runs": [
+    {
+     "battleDate": "2026-11-25T22:50:06.596Z",
+     "realTime": 15181.1631,
+     "gameTime": 67897.13,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2697,
+     "killedBy": 8,
+     "damageTaken": 3274006181464.4224,
+     "damageTakenWhileBerserked": 27812153017173.46,
+     "defensePercentBlocked": 24502879897745.086,
+     "defenseAbsoluteBlocked": 801935902.6528807,
+     "flameBotBlocked": 334413088376.26544,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1364,
+     "recoveryPackagesRegen": 3017219057249.428,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 35287971297.858185,
+     "deathDefy": 0,
+     "wavesSkipped": 549,
+     "attackLevelSkips": 334,
+     "healthLevelSkips": 334,
+     "freeAttackUpgrades": 1466,
+     "freeDefenseUpgrades": 1635,
+     "freeUtilityUpgrades": 1605,
+     "totalEnemies": 258936,
+     "totalBasic": 145238,
+     "totalFast": 38713,
+     "totalTank": 40165,
+     "totalRanged": 30498,
+     "totalBoss": 214,
+     "totalProtector": 310,
+     "totalVampires": 115,
+     "totalRays": 148,
+     "totalScatters": 115,
+     "destroyedByProjectiles": 89317,
+     "destroyedByOrbs": 134297,
+     "destroyedByThorns": 2148,
+     "destroyedByDeathWave": 3949
+    },
+    {
+     "battleDate": "2026-11-26T02:29:00.649Z",
+     "realTime": 11919.6807,
+     "gameTime": 55720.332,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2193,
+     "killedBy": 0,
+     "damageTaken": 788268036360.6351,
+     "damageTakenWhileBerserked": 7422117034913.34,
+     "defensePercentBlocked": 6621553037436.149,
+     "defenseAbsoluteBlocked": 295074010.69279927,
+     "flameBotBlocked": 118259625826.89949,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1153,
+     "recoveryPackagesRegen": 631908442335.6927,
+     "lifesteal": 128378894889.51175,
+     "towerHealthRegen": 420305.23187089665,
+     "healthFromDeathWaveThisRound": 6153095663.784835,
+     "deathDefy": 0,
+     "wavesSkipped": 434,
+     "attackLevelSkips": 255,
+     "healthLevelSkips": 250,
+     "freeAttackUpgrades": 1333,
+     "freeDefenseUpgrades": 1523,
+     "freeUtilityUpgrades": 1459,
+     "totalEnemies": 195816,
+     "totalBasic": 114884,
+     "totalFast": 27498,
+     "totalTank": 29217,
+     "totalRanged": 21475,
+     "totalBoss": 176,
+     "totalProtector": 251,
+     "totalVampires": 73,
+     "totalRays": 75,
+     "totalScatters": 72,
+     "destroyedByProjectiles": 76048,
+     "destroyedByOrbs": 91049,
+     "destroyedByThorns": 1894,
+     "destroyedByDeathWave": 3863
+    },
+    {
+     "battleDate": "2026-11-26T10:07:04.975Z",
+     "realTime": 12033.7666,
+     "gameTime": 56296.66,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2230,
+     "killedBy": 8,
+     "damageTaken": 4316750862166.586,
+     "damageTakenWhileBerserked": 17288699165872.266,
+     "defensePercentBlocked": 12916330366267.84,
+     "defenseAbsoluteBlocked": 432188793.5573193,
+     "flameBotBlocked": 230726604577.74783,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1113,
+     "recoveryPackagesRegen": 3290325315151.1753,
+     "lifesteal": 824977465589.9198,
+     "towerHealthRegen": 1590169.7363422683,
+     "healthFromDeathWaveThisRound": 9675873228.852457,
+     "deathDefy": 0,
+     "wavesSkipped": 453,
+     "attackLevelSkips": 265,
+     "healthLevelSkips": 265,
+     "freeAttackUpgrades": 1408,
+     "freeDefenseUpgrades": 1535,
+     "freeUtilityUpgrades": 1501,
+     "totalEnemies": 219819,
+     "totalBasic": 127848,
+     "totalFast": 31572,
+     "totalTank": 32846,
+     "totalRanged": 24371,
+     "totalBoss": 178,
+     "totalProtector": 255,
+     "totalVampires": 84,
+     "totalRays": 76,
+     "totalScatters": 85,
+     "destroyedByProjectiles": 89257,
+     "destroyedByOrbs": 97328,
+     "destroyedByThorns": 2632,
+     "destroyedByDeathWave": 3705
+    },
+    {
+     "battleDate": "2026-11-26T13:55:15.758Z",
+     "realTime": 10778.1572,
+     "gameTime": 46187.293,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 1826,
+     "killedBy": 1,
+     "damageTaken": 181616478040.21927,
+     "damageTakenWhileBerserked": 719756305803.5781,
+     "defensePercentBlocked": 535896728544.762,
+     "defenseAbsoluteBlocked": 11023411.080002338,
+     "flameBotBlocked": 8886697559.742119,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 917,
+     "recoveryPackagesRegen": 140624480566.47906,
+     "lifesteal": 20220249917.89507,
+     "towerHealthRegen": 56361.14970081641,
+     "healthFromDeathWaveThisRound": 5342581865.547061,
+     "deathDefy": 0,
+     "wavesSkipped": 369,
+     "attackLevelSkips": 137,
+     "healthLevelSkips": 146,
+     "freeAttackUpgrades": 1180,
+     "freeDefenseUpgrades": 1327,
+     "freeUtilityUpgrades": 1304,
+     "totalEnemies": 167928,
+     "totalBasic": 100979,
+     "totalFast": 23311,
+     "totalTank": 24308,
+     "totalRanged": 17786,
+     "totalBoss": 150,
+     "totalProtector": 201,
+     "totalVampires": 47,
+     "totalRays": 52,
+     "totalScatters": 36,
+     "destroyedByProjectiles": 70703,
+     "destroyedByOrbs": 72322,
+     "destroyedByThorns": 226,
+     "destroyedByDeathWave": 3748
+    },
+    {
+     "battleDate": "2026-11-26T18:34:23.686Z",
+     "realTime": 11598.0576,
+     "gameTime": 51676.07,
+     "isTournament": false,
+     "tier": 7,
+     "wave": 2039,
+     "killedBy": 0,
+     "damageTaken": 898317719846.2643,
+     "damageTakenWhileBerserked": 4066648844055.5747,
+     "defensePercentBlocked": 3154079993595.6987,
+     "defenseAbsoluteBlocked": 61250360.85766555,
+     "flameBotBlocked": 72801847336.80772,
+     "chronoFieldBlocked": 0,
+     "chainThunderBlocked": 0,
+     "primordialCollapseBlocked": 0,
+     "energyShieldHitsAbsorbed": 0,
+     "recoveryPackages": 1048,
+     "recoveryPackagesRegen": 781283746217.9493,
+     "lifesteal": 0,
+     "towerHealthRegen": 0,
+     "healthFromDeathWaveThisRound": 5464770775.682028,
+     "deathDefy": 0,
+     "wavesSkipped": 408,
+     "attackLevelSkips": 185,
+     "healthLevelSkips": 177,
+     "freeAttackUpgrades": 1335,
+     "freeDefenseUpgrades": 1430,
+     "freeUtilityUpgrades": 1412,
+     "totalEnemies": 181960,
+     "totalBasic": 108303,
+     "totalFast": 25418,
+     "totalTank": 26370,
+     "totalRanged": 19558,
+     "totalBoss": 163,
+     "totalProtector": 236,
+     "totalVampires": 68,
+     "totalRays": 62,
+     "totalScatters": 59,
+     "destroyedByProjectiles": 69901,
+     "destroyedByOrbs": 85575,
+     "destroyedByThorns": 623,
+     "destroyedByDeathWave": 3762
+    }
+   ]
+  }
+ ]
+}

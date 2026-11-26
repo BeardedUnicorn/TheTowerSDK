@@ -24,6 +24,7 @@ import {
   survivalMeleeHeatUpFactor,
   survivalRatioAtWave,
   survivalReferenceRatio,
+  survivalStateForCalibration,
 } from './hit-curves'
 import { resolveSurvivalStats } from './resolve'
 import { survivalEnemyBaseAtLevel, survivalSpawnCountsForWave } from './spawns'
@@ -71,12 +72,13 @@ export function survivalDamageAfterMitigation(raw: number, stats: SurvivalResolv
  * used. A Vampire's "hit" is one second of its drain — 2% of max health, which nothing mitigates.
  */
 export function survivalHitsForWave(
-  state: SurvivalState,
+  account: SurvivalState,
   wave: number,
   calibration: SurvivalCalibration = SURVIVAL_DEFAULT_CALIBRATION,
   context: SurvivalWaveContext = {},
-  spawns: SurvivalSpawnCounts = survivalSpawnCountsForWave(state, wave),
+  spawns: SurvivalSpawnCounts = survivalSpawnCountsForWave(account, wave),
 ): SurvivalClassHits[] {
+  const state = survivalStateForCalibration(account, calibration)
   const w = Math.max(1, Math.floor(wave))
   const stats = resolveSurvivalStats(state, context.levels ?? state.levels, context.deathWaveFraction ?? 0)
   const attackLevel = Math.max(1, w - Math.max(0, Math.floor(context.attackSkips ?? 0)))

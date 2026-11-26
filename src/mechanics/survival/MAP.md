@@ -9,7 +9,7 @@ How many waves the tower survives, and which upgrade adds more of them.
 | `calibrate.ts` | Tunes the hit curves until simulated runs match real ones. | fitSurvivalCalibration |
 | `constants.ts` | The survival model's fixed numbers: | SURVIVAL_STATS, SURVIVAL_STAT_TAB_BY_STAT, SURVIVAL_FULL_HEALTH_MULTIPLE, SURVIVAL_MELEE_HEAT_UP_PER_HIT (+8 more) |
 | `healing.ts` | Healing as a clamped rate per wave, not a bigger pool. | survivalHealthAfterPackage, survivalHealthAfterCappedHeal, survivalExpectedPackagesForWave, survivalProjectileDamageForWave (+1 more) |
-| `hit-curves.ts` | How many hits one spawned enemy lands before it dies — the only term of incoming damage with no game data behind it. | SURVIVAL_MAX_HITS_PER_ENEMY, survivalRatioAtWave, survivalReferenceRatio, survivalHitsPerEnemy (+1 more) |
+| `hit-curves.ts` | How many hits one spawned enemy lands before it dies — the only term of incoming damage with no game data behind it. | SURVIVAL_MAX_HITS_PER_ENEMY, survivalRatioAtWave, survivalStateForCalibration, survivalReferenceRatio (+2 more) |
 | `incoming-damage.ts` | Damage reaching the tower in one wave: | survivalDamageAfterMitigation, survivalHitsForWave, incomingDamageForWave |
 | `index.ts` | How many waves the tower survives, and which upgrade adds more of them. | — |
 | `rank.ts` | Turns death waves into the answer the model exists for: | rankSurvivalUpgrades |
