@@ -125,7 +125,11 @@ describe('what the link is for', () => {
     //
     // Now 96 of 125: five for the wave survival model, all linked to the entities they compose:
     // recovery packages, health, the two defenses and the death-prevention chain.
-    expect(curated).toHaveLength(125)
+    //
+    // Now 96 of 138: the thirteen presentation helpers (`formatting/tools`, the notation step and
+    // the record-wide separator pass) promoted from the generated tier. None is linked, as
+    // formatting is not — they write a number down, they are not an entity the game has.
+    expect(curated).toHaveLength(138)
     expect(linked).toBe(96)
   })
 })
