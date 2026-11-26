@@ -18229,9 +18229,9 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     tier: 'generated',
     because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
     params: [
-      { name: 'workshopLevel', kind: 'number', describes: 'number' },
+      { name: 'workshopLevel', kind: 'number', unit: 'levels', describes: 'number' },
     ],
-    returns: { kind: 'number', describes: 'number' },
+    returns: { kind: 'number', unit: 'amount: tower damage from the workshop alone', describes: 'number' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.workshopDamageCurve'],
@@ -18248,7 +18248,7 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     params: [
       { name: 'input', kind: 'object', describes: 'WorkshopDamagePreviewInput' },
     ],
-    returns: { kind: 'number', describes: 'number' },
+    returns: { kind: 'number', unit: 'amount: tower damage', describes: 'number' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.getOutOfRoundDamagePreview'],
@@ -18367,9 +18367,9 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     tier: 'generated',
     because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
     params: [
-      { name: 'level', kind: 'number', describes: 'number' },
+      { name: 'level', kind: 'number', unit: 'levels', describes: 'number' },
     ],
-    returns: { kind: 'number', describes: 'number' },
+    returns: { kind: 'number', unit: 'multiplier', describes: 'number' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.healthRegenTier5k'],
@@ -18384,9 +18384,9 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     tier: 'generated',
     because: 'Exported from mechanics and reachable by agents. Declared for coverage: the signature is derived from the source, the reason it matters is not yet written.',
     params: [
-      { name: 'level', kind: 'number', describes: 'number' },
+      { name: 'level', kind: 'number', unit: 'levels', describes: 'number' },
     ],
-    returns: { kind: 'number', describes: 'number' },
+    returns: { kind: 'number', unit: 'amount: health a second from the workshop alone', describes: 'number' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.healthRegenCurve'],
@@ -18403,7 +18403,7 @@ const GENERATED_MECHANICS: readonly CalculatorSpec[] = [
     params: [
       { name: 'input', kind: 'object', describes: 'HealthRegenPreviewInput' },
     ],
-    returns: { kind: 'number', describes: 'number' },
+    returns: { kind: 'number', unit: 'amount: health a second', describes: 'number' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['mechanics.getOutOfRoundHealthRegenPreview'],
@@ -21500,7 +21500,7 @@ const GENERATED_DATA: readonly CalculatorSpec[] = [
     params: [
       { name: 'key', kind: 'string', describes: 'string' },
     ],
-    returns: { kind: 'number', nullable: true, describes: 'number | null' },
+    returns: { kind: 'number', unit: 'row index: the level cap minus 1', nullable: true, describes: 'number | null' },
     invariants: ['not yet checked — this entry is generated, not curated'],
     reads: [],
     produces: ['data.getWorkshopMaxLevelByKey'],

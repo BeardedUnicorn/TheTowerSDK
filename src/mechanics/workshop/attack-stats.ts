@@ -5,7 +5,7 @@
  *
  * Workshop upgrade level `L` (attack damage slot):
  *
- *   core(L) = L × 2.8 + L² × 1e-6 + 3
+ *   core(L) = L × 2.8 + L² × 0.077 + 3
  *
  * For each tier threshold Tᵢ, when L > Tᵢ add:
  *
@@ -17,7 +17,7 @@
  * | 1499      | 2.12       | 0.09    |
  * | 1999      | 2.18       | 0.10    |
  * | 2499      | 2.25       | 0.10    |
- * | 2999      | 2.30       | 0.10    |
+ * | 2999      | 2.30       | 0.15    |
  * | 3499      | 2.33       | 0.20    |
  * | 3999      | 2.34       | 0.20    |
  *
@@ -58,12 +58,21 @@ export const WORKSHOP_DAMAGE_TIERS: readonly WorkshopDamageTier[] = [
   { threshold: 1499, exponent: 2.12, coefficient: 0.09 },
   { threshold: 1999, exponent: 2.18, coefficient: 0.1 },
   { threshold: 2499, exponent: 2.25, coefficient: 0.1 },
-  { threshold: 2999, exponent: 2.3, coefficient: 0.1 },
+  { threshold: 2999, exponent: 2.3, coefficient: 0.15 },
   { threshold: 3499, exponent: 2.33, coefficient: 0.2 },
   { threshold: 3999, exponent: 2.34, coefficient: 0.2 },
 ]
 
-/** Polynomial + tier pow sum before catalog × card × relic. */
+/**
+ * Tower damage from the workshop level, before the catalog, card and relic multipliers.
+ *
+ * Gives every row of `WORKSHOP_DATA.Damage` to the table's own rounding, and is the same curve as
+ * `workshopDamageAtLevel`. It carried `L² × 1e-6` and 0.10 on the 2999 band until it was checked
+ * against the table; the game loads 0.077 for the first, and only 0.15 fits the rows past 2999.
+ *
+ * @unit amount: tower damage from the workshop alone
+ * @paramUnit workshopLevel levels
+ */
 export function workshopDamageCurve(workshopLevel: number): number {
   const L = Math.max(0, workshopLevel)
   let sum = L * WORKSHOP_DAMAGE_LINEAR_COEFF + L * L * WORKSHOP_DAMAGE_QUAD_COEFF + WORKSHOP_DAMAGE_BASE_OFFSET
@@ -76,6 +85,11 @@ export function workshopDamageCurve(workshopLevel: number): number {
   return sum
 }
 
+/**
+ * The Workshop preview of Damage: the curve times the catalog, card and relic multipliers.
+ *
+ * @unit amount: tower damage
+ */
 export function getOutOfRoundDamagePreview(input: WorkshopDamagePreviewInput): number {
   let raw = workshopDamageCurve(input.workshopLevel) * input.catalogMult
   if (input.cardMult != null) raw *= input.cardMult

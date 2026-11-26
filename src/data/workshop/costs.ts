@@ -110,6 +110,16 @@ export function getWorkshopCostByKeyAndLevel(key: string, level: number): number
   return Number.isFinite(Number(value)) ? Number(value) : null
 }
 
+/**
+ * The last row of an enhancement's ladder that carries a price, which is one BELOW the number of
+ * levels it has.
+ *
+ * Row L buys level L + 1, so Damage's 600 levels are priced on rows 0 to 599 and this returns 599.
+ * The name says "max level" and every caller adds 1 to get one. For the number of levels, use
+ * `computeWorkshopEnhancementMaxLevel`. `null` when there is no such ladder.
+ *
+ * @unit row index: the level cap minus 1
+ */
 export function getWorkshopMaxLevelByKey(key: string): number | null {
   const levels = getWorkshopCostLevelsByKey(key)
   if (!levels) return null

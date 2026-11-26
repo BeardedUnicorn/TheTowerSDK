@@ -27,23 +27,17 @@ const game = (stat: string, level: number): number => workshopStatValue(stat, le
  * from inputs the caller supplies. Naming a unit for one would be a guess.
  */
 const UNIT_NOT_ESTABLISHED = [
-  'data.getWorkshopMaxLevelByKey',
   'mechanics.combineWorkshopPreviewStat',
   'mechanics.computeMainWorkshopLabFactor',
   'mechanics.f32Pow',
   'mechanics.getOutOfRoundCriticalMultiplier',
-  'mechanics.getOutOfRoundDamagePreview',
   'mechanics.getOutOfRoundFreeUpgradeChancePreview',
-  'mechanics.getOutOfRoundHealthRegenPreview',
   'mechanics.getOutOfRoundLifestealPreview',
-  'mechanics.healthRegenCurve',
   'mechanics.healthRegenTier249',
   'mechanics.healthRegenTier499',
-  'mechanics.healthRegenTier5k',
   'mechanics.labWorkshopDivisorS13',
   'mechanics.labWorkshopEnemyExtendedFloat',
   'mechanics.labWorkshopSlotFloat',
-  'mechanics.workshopDamageCurve',
   'mechanics.workshopTableFloatFromBuild',
   'save.countPositiveLevels',
 ]

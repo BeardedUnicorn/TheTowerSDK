@@ -4,17 +4,16 @@
  * ## Health regen — `workshop preview health regen`
  *
  *   L = workshop level
- *   tier249 = L > 249  ? pow(L − 1, 2.39) : 0
- *   tier499 = L > 499  ? pow(L − 500, 2.85) : 0   // w8 = L − 500 when L > 499
- *   tier5k  = L ≥ 5001 ? pow(L − 5000, 1.0024) : 1
+ *   base    = 0.0045 × (L − 1)^2.39 + 0.004 × (L − 1) + 0.04 × L     // exponent 2 at L = 0
+ *   tier249 = L ≥ 250  ? (L − 249)^2.25 : 0
+ *   tier499 = L ≥ 500  ? (L − 499)^2.85 : 0
+ *   tier5k  = L > 5000 ? 1.0024^(L − 5000) : 1
  *
- *   core = (L − 1) × 0.004
- *        + tier249 × 0.0045
- *        + L × 0.04
- *        + tier499 × 0.004
- *        + tier249 × 0.004          // first pow term × 0.004
+ *   core  = base + 0.02 × tier249 + 0.02 × tier499
+ *   regen = core × tier5k × catalogRow × cardMult
  *
- *   regen = core × catalogRow × cardMult × tier5k
+ * `core × tier5k` is every row of `WORKSHOP_DATA['Health Regen']`, all 6001, to under one part
+ * in a million. The constants are the ones the game's code loads beside each other.
  *
  * ## Orb speed — `workshop preview orb speed`
  *
@@ -39,6 +38,8 @@
  */
 
 import {
+  HEALTH_REGEN_BASE_COEFF,
+  HEALTH_REGEN_BASE_EXP,
   HEALTH_REGEN_LEVEL_LINEAR,
   HEALTH_REGEN_LEVEL_SCALE,
   HEALTH_REGEN_TIER249_COEFF,
@@ -58,33 +59,56 @@ import {
 } from '../primitives/constants'
 import type { HealthRegenPreviewInput, OrbSpeedPreviewInput, RecoveryAmountPreviewInput, RecoveryMaxPreviewInput } from './types'
 
+/** The term that starts at level 250, before its 0.02: `(L − 249)^2.25`. */
 export function healthRegenTier249(level: number): number {
   if (level <= HEALTH_REGEN_TIER249_THRESHOLD) return 0
-  return Math.pow(level - 1, HEALTH_REGEN_TIER249_EXP)
+  return Math.pow(level - HEALTH_REGEN_TIER249_THRESHOLD, HEALTH_REGEN_TIER249_EXP)
 }
 
+/** The term that starts at level 500, before its 0.02: `(L − 499)^2.85`. */
 export function healthRegenTier499(level: number): number {
   if (level <= HEALTH_REGEN_TIER499_THRESHOLD) return 0
-  return Math.pow(level - 500, HEALTH_REGEN_TIER499_EXP)
+  return Math.pow(level - HEALTH_REGEN_TIER499_THRESHOLD, HEALTH_REGEN_TIER499_EXP)
 }
 
+/**
+ * The growth past level 5000, on the whole value: `1.0024^(L − 5000)`.
+ *
+ * @unit multiplier
+ * @paramUnit level levels
+ */
 export function healthRegenTier5k(level: number): number {
   if (level < HEALTH_REGEN_TIER5K_THRESHOLD) return 1
-  return Math.pow(level - 5000, HEALTH_REGEN_TIER5K_EXP)
+  return Math.pow(HEALTH_REGEN_TIER5K_EXP, level - (HEALTH_REGEN_TIER5K_THRESHOLD - 1))
 }
 
-/** Polynomial core before catalog × card × tier5k. */
+/**
+ * Health regen from the workshop level up to level 5000; past it, multiply by `healthRegenTier5k`.
+ *
+ * With that factor this is every row of `WORKSHOP_DATA['Health Regen']`. It was not: the first
+ * power term was switched on only above level 249 and the two 0.02 terms were missing, which gave
+ * 4.4 at level 100 where the table has 269.1.
+ *
+ * @unit amount: health a second from the workshop alone
+ * @paramUnit level levels
+ */
 export function healthRegenCurve(level: number): number {
   const L = Math.max(0, level)
-  const tier249 = healthRegenTier249(L)
-  const tier499 = healthRegenTier499(L)
-  return (L - 1) * HEALTH_REGEN_LEVEL_LINEAR
-    + tier249 * HEALTH_REGEN_TIER249_COEFF
+  // At level 0 the base is on -1, which has no real 2.39th power; the game squares it there.
+  const base = HEALTH_REGEN_BASE_COEFF * Math.pow(L - 1, L < 1 ? 2 : HEALTH_REGEN_BASE_EXP)
+  return base
+    + (L - 1) * HEALTH_REGEN_LEVEL_LINEAR
     + L * HEALTH_REGEN_LEVEL_SCALE
-    + tier499 * HEALTH_REGEN_TIER499_COEFF
-    + tier249 * HEALTH_REGEN_LEVEL_LINEAR
+    + healthRegenTier249(L) * HEALTH_REGEN_TIER249_COEFF
+    + healthRegenTier499(L) * HEALTH_REGEN_TIER499_COEFF
 }
 
+/**
+ * The Workshop preview of Health Regen: the curve, its past-5000 growth, then the catalog and card
+ * multipliers.
+ *
+ * @unit amount: health a second
+ */
 export function getOutOfRoundHealthRegenPreview(input: HealthRegenPreviewInput): number {
   let raw = healthRegenCurve(input.workshopLevel) * input.catalogMult
   raw *= healthRegenTier5k(input.workshopLevel)

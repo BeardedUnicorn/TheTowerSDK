@@ -6,7 +6,7 @@ The arithmetic and fixed values every other mechanic is built on.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `constants.ts` | — | RANGE_SOFT_CAP_KNEE, RANGE_SOFT_CAP_CEILING, RANGE_SOFT_CAP_SLOPE, RANGE_BATTLE_UPGRADE_INDEX (+62 more) |
+| `constants.ts` | — | RANGE_SOFT_CAP_KNEE, RANGE_SOFT_CAP_CEILING, RANGE_SOFT_CAP_SLOPE, RANGE_BATTLE_UPGRADE_INDEX (+64 more) |
 | `index.ts` | The arithmetic and the fixed values every other mechanic is built on. | — |
 | `math.ts` | — | clamp, inverseLerp, lerp, safeMul (+1 more) |
 | `types.ts` | The types `mechanics/primitives/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | UnityRandomState |

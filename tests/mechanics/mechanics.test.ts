@@ -731,7 +731,8 @@ describe('mechanics/projectile-damage', () => {
 
 describe('mechanics/workshop-attack-stats', () => {
   it('damage curve core at L=100', () => {
-    expect(workshopDamageCurve(100)).toBeCloseTo(283.01, 2)
+    // 3 + 2.8 x 100 + 0.077 x 100^2, the table's level 100. It was pinned to 283.01, the 1e-6 form.
+    expect(workshopDamageCurve(100)).toBeCloseTo(1053, 2)
   })
 
   it('adds tier pow term above 999', () => {
@@ -925,10 +926,11 @@ describe('mechanics/tower-fire', () => {
 })
 
 describe('mechanics/workshop-defense-stats', () => {
-  it('health regen curve adds tier249 pow above 249', () => {
-    const low = healthRegenCurve(200)
-    const high = healthRegenCurve(300)
-    expect(high).toBeGreaterThan(low)
+  it('health regen curve adds a term from level 250', () => {
+    // Without it the step from 249 to 250 would match the step before; the new term adds 0.02.
+    const before = healthRegenCurve(249) - healthRegenCurve(248)
+    const across = healthRegenCurve(250) - healthRegenCurve(249)
+    expect(across - before).toBeGreaterThan(0.02)
   })
 
   it('orb speed combines level scale + lab + card', () => {
