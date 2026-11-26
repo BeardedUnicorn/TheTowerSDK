@@ -63,6 +63,44 @@ const GENERATED = CALCULATORS.filter(c => c.tier === 'generated')
 
 /** Arguments that exercise each calculator, and a second set that must differ. */
 const SAMPLES: Record<string, { args: Record<string, unknown>, moved: Record<string, unknown> }> = {
+  // --- cost ranges: a second range that costs something different ---
+  'guardian.statCost': { args: { guardianKey: 'attack', statName: 'Cooldown', level: 3 }, moved: { guardianKey: 'attack', statName: 'Cooldown', level: 9 } },
+  'guardian.statCostBetween': {
+    args: { guardianKey: 'attack', statName: 'Cooldown', fromLevel: 0, toLevel: 5 },
+    moved: { guardianKey: 'attack', statName: 'Cooldown', fromLevel: 0, toLevel: 9 },
+  },
+  'guardian.allStatCost': { args: { guardianKey: 'attack' }, moved: { guardianKey: 'attack', fromLevels: [5, 5, 5] } },
+  'vault.nodeKeysCost': { args: { nodeId: 'defabs', level: 1 }, moved: { nodeId: 'defabs', level: 3 } },
+  'vault.nodeKeysBetween': { args: { nodeId: 'defabs', fromLevel: 0, toLevel: 1 }, moved: { nodeId: 'defabs', fromLevel: 0, toLevel: 3 } },
+  'vault.treeKeysRemaining': { args: { tree: 'power' }, moved: { tree: 'power', levels: { defabs: 3 } } },
+  'uw.unlockStonesBetween': { args: { ownedFrom: 0, ownedTo: 3 }, moved: { ownedFrom: 0, ownedTo: 9 } },
+  'uw.plusUnlockStonesBetween': { args: { ownedFrom: 0, ownedTo: 3 }, moved: { ownedFrom: 0, ownedTo: 9 } },
+  'uw.stoneCostBetween': {
+    args: { weapon: 'Death Wave', stat: 'Damage', fromLevel: 0, toLevel: 3 },
+    moved: { weapon: 'Death Wave', stat: 'Damage', fromLevel: 0, toLevel: 9 },
+  },
+  'workshop.coinCostBetween': { args: { stat: 'Damage', fromLevel: 0, toLevel: 3 }, moved: { stat: 'Damage', fromLevel: 0, toLevel: 30 } },
+  'workshop.enhancementCoinCostBetween': {
+    args: { stat: 'Health', fromLevel: 0, toLevel: 3 },
+    moved: { stat: 'Health', fromLevel: 0, toLevel: 3, discounts: { defenseDiscountLabLevel: 50 } },
+  },
+  'lab.coinCostBetween': { args: { labKey: 'damage', fromLevel: 0, toLevel: 5 }, moved: { labKey: 'damage', fromLevel: 0, toLevel: 9 } },
+  'lab.durationDaysBetween': {
+    args: { labKey: 'damage', fromLevel: 0, toLevel: 5 },
+    moved: { labKey: 'damage', fromLevel: 0, toLevel: 5, modifiers: { labSpeedLabLevel: 50 } },
+  },
+  'bot.statCostBetween': {
+    args: { botLabel: 'Golden Bot', statName: 'Cooldown', fromLevel: 0, toLevel: 3 },
+    moved: { botLabel: 'Golden Bot', statName: 'Cooldown', fromLevel: 0, toLevel: 9 },
+  },
+  'bot.statValue': { args: { botLabel: 'Golden Bot', statName: 'Cooldown', level: 0 }, moved: { botLabel: 'Golden Bot', statName: 'Cooldown', level: 5 } },
+  'module.coinCostBetween': { args: { fromLevel: 1, toLevel: 20, discountPercent: 0 }, moved: { fromLevel: 1, toLevel: 20, discountPercent: 25 } },
+  'module.shardCostBetween': { args: { fromLevel: 1, toLevel: 20, discountPercent: 0 }, moved: { fromLevel: 1, toLevel: 40, discountPercent: 0 } },
+  'assist.stoneCostBetween': { args: { fromLevel: 0, toLevel: 3 }, moved: { fromLevel: 0, toLevel: 9 } },
+  'card.levelGemCost': { args: { fromGameLevel: 0, toGameLevel: 3 }, moved: { fromGameLevel: 0, toGameLevel: 7 } },
+  'card.levelCopiesRequired': { args: { gameLevel: 3 }, moved: { gameLevel: 7 } },
+  'epaths.coinFarmDays': { args: { coins: 1e9, coinsPerHour: 1e6 }, moved: { coins: 1e9, coinsPerHour: 5e6 } },
+  'tier.coinMultiplier': { args: { tier: 1 }, moved: { tier: 12 } },
   'lab.durationDays': { args: { labKey: 'damage', level: 5 }, moved: { labKey: 'damage', level: 9 } },
   'lab.coinCost': { args: { labKey: 'damage', level: 5 }, moved: { labKey: 'damage', level: 9 } },
   'lab.maxLevel': { args: { labKey: 'damage' }, moved: { labKey: 'card_mastery' } },

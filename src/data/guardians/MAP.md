@@ -6,7 +6,7 @@ Guardian definitions and their upgrade ladders.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `definitions.ts` | Guardian definitions built from the upgrade ladders: | getGuardianStatNames, getGuardianStatValues, getGuardianCostValues, getGuardianBaseValues (+4 more) |
+| `definitions.ts` | Guardian definitions built from the upgrade ladders: | getGuardianStatNames, getGuardianStatValues, getGuardianCostValues, getGuardianBaseValues (+8 more) |
 | `index.ts` | Guardians as data: | — |
 | `types.ts` | The types `data/guardians/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | GuardianDefinition, AttackUpgrade, AllyUpgrade, BountyUpgrade (+3 more) |
 | `upgrades.data.ts` | The guardian upgrade ladders: | guardianUpgrades |

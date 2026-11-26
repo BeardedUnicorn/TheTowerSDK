@@ -7,6 +7,7 @@ Workshop tables: costs, discounts and upgrade definitions.
 | File | Purpose | Exports |
 |---|---|---|
 | `compute.ts` | What a workshop upgrade is worth at a given level. | computeWorkshopStatNumericValueAtLevel, WORKSHOP_ENHANCEMENT_KEY_ALIASES, getWorkshopEnhancementDataKey, computeWorkshopEnhancementMaxLevel |
+| `cost-ranges.ts` | What a run of workshop upgrades costs in coins, asked for by the stat's name and two levels. | workshopCoinCostBetween |
 | `costs.ts` | The workshop cost curves: | WSP_ATTACK_COSTS, WSP_ATTACK_SPEED_COSTS, WSP_DEFENSE_COSTS, WSP_ORB_SIZE_COSTS (+12 more) |
 | `discount-normalize.ts` | — | WORKSHOP_SECTION_DISCOUNT_MAX_PCT, WORKSHOP_SECTION_DISCOUNT_STEP, ENHANCEMENT_SECTION_DISCOUNT_MAX_PCT, ENHANCEMENT_SECTION_DISCOUNT_STEP (+11 more) |
 | `discounted-costs.ts` | — | computeWorkshopTotalDiscountPercent, computeDiscountedWorkshopCost, workshopCostMaxLevel, buildWorkshopLevelCostRows (+1 more) |

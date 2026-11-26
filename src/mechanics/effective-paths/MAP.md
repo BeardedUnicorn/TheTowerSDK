@@ -18,7 +18,7 @@ Effective Paths: the cheapest route to a damage, economy or survivability target
 | `edamage-coin-levels.ts` | The coin band, `eDamage Coins!BO5:CM5`, read into {@link EffectiveDamageCoinLevels}. | COIN_BAND_HEADERS, COIN_BAND_NON_LEVELS, COIN_BAND_DELTA_FIELDS, effectiveDamageCoinLevelsFromSheet |
 | `edamage-compute.ts` | Effective Paths — effective damage, end to end. | CHRONO_SLOW_CAP, computeEffectiveDamage, ENHANCEMENT_MULTIPLIER_PER_LEVEL, STONE_STAT_FIELD_KEYS (+1 more) |
 | `edamage-config.ts` | Effective Paths — the player state the eDamage grid reads. | DAMAGE_WORKSHOP_STATS, DamageWorkshopStat, ZERO_DAMAGE_STAT_SOURCE, MODULE_SLOTS (+16 more) |
-| `edamage-costs.ts` | Effective Paths — what each eDamage candidate costs. | ULTIMATE_WEAPON_ABBREVIATIONS, ultimateWeaponStats, resolveUltimateWeaponStat, ultimateWeaponStoneCost (+9 more) |
+| `edamage-costs.ts` | Effective Paths — what each eDamage candidate costs. | ULTIMATE_WEAPON_ABBREVIATIONS, ultimateWeaponStats, resolveUltimateWeaponStat, ultimateWeaponStoneCost (+12 more) |
 | `edamage-eligibility.ts` | Current eDamage research hide rows. | damageLabHiddenByRunType |
 | `edamage-farm-time.ts` | module edamage-farm-time purpose Current eDamage's mixed Farming Time Only candidate board. | FARM_TIME_EXTRA_CANDIDATES, farmTimeUpgrades, farmTimeLevels |
 | `edamage-lab-levels.ts` | The lab band, `eDamage!BP5:CV5` (blank `BO`), read into {@link EffectiveDamageLabLevels}. | LAB_BAND_HEADERS, LAB_BAND_NON_LEVELS, LAB_BAND_FIXED_CELLS, effectiveDamageLabLevelsFromSheet |
@@ -38,13 +38,13 @@ Effective Paths: the cheapest route to a damage, economy or survivability target
 | `ehp-from-sheet.ts` | Effective health and regen inputs read from Effective Paths sheet cells, so a sheet's own values can be planned from. | effectiveHealthConfigFromSheet, effectiveHealthLevelsFromSheet, effectiveRegenConfigFromSheet |
 | `ehp-model.ts` | Effective Paths — the complete eHP model. | ZERO_EFFECTIVE_HEALTH_LEVELS, NO_EFFECTIVE_HEALTH_PERKS, zeroEffectiveHealthConfig, zeroEffectiveRegenConfigSource (+10 more) |
 | `ehp-plan.ts` | Effective Paths — planning an eHP path. | HEALTH_PATH_VARIANTS, EFFECTIVE_HEALTH_UPGRADES, planEffectiveHealthPath |
-| `enhancement-costs.ts` | Effective Paths — what a workshop enhancement costs. | workshopEnhancementLevelFromMap, WORKSHOP_ENHANCEMENT_CATEGORIES, enhancementCoinCost, enhancementMaxLevel (+10 more) |
+| `enhancement-costs.ts` | Effective Paths — what a workshop enhancement costs. | workshopEnhancementLevelFromMap, WORKSHOP_ENHANCEMENT_CATEGORIES, enhancementCoinCost, enhancementMaxLevel (+11 more) |
 | `formula.ts` | Effective Paths — reading the spreadsheet's own functions. | EffectivePathsFormulaError, parseSheetFunction |
 | `generics.ts` | Effective Paths — the `EPG_*` helpers. | assistSubstatCap, moduleBonus, standardPerksBonusScale, isPastLevelStop (+2 more) |
 | `hp.ts` | Effective Paths — the eHP and eRegen stat layer. | DEFAULT_PERK_QUANTITY, effectiveHealth, effectiveRegen, effectiveDefenseAbsolute (+11 more) |
 | `index.ts` | Effective Paths: | — |
 | `input-ranges.ts` | The ranges each Effective Paths input may take: | EP_PATH_ROW_CAP, NOT_LABS, isDamageLabUpgrade, SHOW_LEVELS_OPTIONS (+6 more) |
-| `lab-costs.ts` | Effective Paths — what a lab level costs, in coins and in time. | EFFECTIVE_PATHS_LAB_KEY_BY_NAME, findEffectivePathsLabKey, labCoinDiscount, labSpeedTotal (+4 more) |
+| `lab-costs.ts` | Effective Paths — what a lab level costs, in coins and in time. | EFFECTIVE_PATHS_LAB_KEY_BY_NAME, findEffectivePathsLabKey, labCoinDiscount, labSpeedTotal (+6 more) |
 | `levels-schema.ts` | Effective Paths — level validation for the economy, health and regen models. | effectiveEconomyLevelsSchema, effectiveHealthLevelsSchema, effectiveRegenLevelsSchema, checkEffectiveEconomyLevels (+2 more) |
 | `path-display.ts` | The path table the player actually reads. | labCostCurveName, pathDisplayMultiplier, pathStepDurationDays, pathStepCostCoins (+2 more) |
 | `planner.ts` | Effective Paths — the path planner. | assertPathVariant, skipsFromFirstStep, describePathSkip, appendSkipExclusions (+2 more) |

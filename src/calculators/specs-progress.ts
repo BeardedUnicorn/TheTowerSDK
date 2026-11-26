@@ -293,4 +293,89 @@ export const PROGRESS_CALCULATORS: readonly CalculatorSpec[] = [
     produces: ['ilm.damageMultiplier'],
     dependsOn: [],
   },
+  // ---------------------------------------------------------------- tiers ---
+  {
+    id: 'tier.coinMultiplier',
+    title: 'The coin multiplier a tier pays',
+    entry: 'mechanics',
+    module: `${MECH}/waves/base-empirical-scaling.ts`,
+    symbol: 'empiricalTierCoinMultiplier',
+    because:
+      'Why a higher tier is worth farming at all: every coin earned on it is multiplied by this. '
+      + 'It is a table lookup per tier, not a curve, so it cannot be interpolated between tiers.',
+    params: [{ name: 'tier', kind: 'number', describes: 'campaign tier, from 1' }],
+    returns: { kind: 'number', unit: 'multiplier', describes: 'coin multiplier for that tier' },
+    invariants: [
+      'never falls as the tier rises',
+      'a tier outside the campaign range is held to it rather than refused',
+    ],
+    reads: ['run.tier'],
+    produces: ['tier.coinMultiplier'],
+    dependsOn: [],
+  },
+  // --------------------------------------------------------------- cards ---
+  {
+    id: 'card.levelGemCost',
+    title: 'Gems to take a card from one level to another',
+    entry: 'mechanics',
+    module: `${MECH}/cards/costs.ts`,
+    symbol: 'cardLevelUpgradeGemCost',
+    because:
+      'A card levels on copies, and a copy is 20 gems, so this is the gem price of the copies a '
+      + 'level range needs. It is a price, not a promise: a draw gives a random card.',
+    params: [
+      { name: 'fromGameLevel', kind: 'number', describes: 'current card level, 0 to 7' },
+      { name: 'toGameLevel', kind: 'number', describes: 'target card level, 0 to 7' },
+    ],
+    returns: { kind: 'number', unit: 'gems', describes: 'gems for the copies needed' },
+    invariants: [
+      'returns 0 when the target is not above the current level',
+      'a level outside 0 to 7 is held to that range rather than refused',
+    ],
+    reads: ['card.level', 'card.levelCopiesRequired'],
+    produces: ['card.levelGemCost'],
+    dependsOn: [],
+  },
+  {
+    id: 'card.levelCopiesRequired',
+    title: 'Copies of a card needed, in total, to be at a level',
+    entry: 'mechanics',
+    module: `${MECH}/cards/costs.ts`,
+    symbol: 'cardLevelCopiesRequired',
+    because: 'The count is cumulative — 80 copies for the last level means 80 in all, not 80 more.',
+    params: [{ name: 'gameLevel', kind: 'number', describes: 'card level, 0 to 7' }],
+    returns: { kind: 'number', unit: 'copies', describes: 'cumulative copies' },
+    invariants: [
+      'never falls as the level rises',
+      'a level outside 0 to 7 is held to that range rather than refused',
+    ],
+    reads: ['card.level'],
+    produces: ['card.levelCopiesRequired'],
+    dependsOn: [],
+  },
+
+  // -------------------------------------------------------------- farming ---
+  {
+    id: 'epaths.coinFarmDays',
+    title: 'Days of farming a coin cost takes',
+    entry: 'mechanics',
+    module: `${MECH}/effective-paths/eecon-plan.ts`,
+    symbol: 'coinFarmDays',
+    sheet: 'eEcon!E6',
+    because:
+      'How the paths turn a coin price into time, so a coin upgrade and a lab can be compared. The '
+      + 'sheet prices a day at 23 hours of farming, not 24.',
+    params: [
+      { name: 'coins', kind: 'number', describes: 'the cost', unit: 'coins' },
+      { name: 'coinsPerHour', kind: 'number', optional: true, describes: 'farming rate; the sheet\'s default of 100,000 when absent', unit: 'coins per hour' },
+    ],
+    returns: { kind: 'number', unit: 'days', describes: 'days of farming at that rate' },
+    invariants: [
+      'never negative, even for a cost discounted below zero',
+      'returns 0 for a rate that is not above zero, rather than dividing by it',
+    ],
+    reads: ['economy.coinsPerHour'],
+    produces: ['epaths.coinFarmDays'],
+    dependsOn: [],
+  },
 ]

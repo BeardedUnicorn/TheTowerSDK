@@ -9,7 +9,7 @@ inside the file — what depends on it.
 
 | Tree | Files | What lives here | Headers |
 |---|---:|---|---|
-| [`src`](src/MAP.md) | 652 | The package itself — everything that ships, and nothing that does not. | yes |
+| [`src`](src/MAP.md) | 656 | The package itself — everything that ships, and nothing that does not. | yes |
 | [`tooling`](tooling/MAP.md) | 52 | Development tooling for this repository. Never published, never imported by `src`. | yes |
 | [`scripts`](scripts/MAP.md) | 44 | The checks and generators. Each is a `package.json` script; none is called from `src`. | yes |
 | [`mcp`](mcp/MAP.md) | 7 | The MCP server, so an agent can query the package instead of guessing at it. | yes |
@@ -21,5 +21,5 @@ Regenerate with `pnpm map`. `pnpm lint:map` runs inside `verify` and fails if an
 it has drifted, so none of these files should ever be edited by hand.
 
 The prose above each generated block is written by hand, and is the one thing no generator can
-produce. 583 of 775 files have one; 192 do not, and
+produce. 586 of 779 files have one; 193 do not, and
 show as `—` in their directory's Purpose column.

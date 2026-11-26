@@ -123,4 +123,27 @@ export const CALCULATOR_ORACLE_LINKS: Readonly<Record<string, readonly string[]>
    * `math.clamp`, the `inputs.merge*` family and the `run.*` collectors are
    * absent for the same reason: they are plumbing, not game knowledge.
    */
+
+  // --- cost ranges -----------------------------------------------------------
+  'guardian.statCost': ['guardian', 'guardian.upgradeTrack'],
+  'guardian.statCostBetween': ['guardian', 'guardian.upgradeTrack'],
+  'guardian.allStatCost': ['guardian', 'guardian.upgradeTrack'],
+  'vault.nodeKeysCost': ['vault', 'currency.key'],
+  'vault.nodeKeysBetween': ['vault', 'currency.key'],
+  'vault.treeKeysRemaining': ['vault', 'vault.powerTree', 'vault.harmonyTree', 'currency.key'],
+  'uw.unlockStonesBetween': ['ultimateWeapon', 'currency'],
+  'uw.plusUnlockStonesBetween': ['ultimateWeaponPlus', 'currency'],
+  'uw.stoneCostBetween': ['ultimateWeapon', 'currency'],
+  'workshop.coinCostBetween': ['workshop', 'workshop.upgradeTable'],
+  'workshop.enhancementCoinCostBetween': ['workshopEnhancement'],
+  'lab.coinCostBetween': ['lab', 'currency'],
+  'lab.durationDaysBetween': ['lab', 'lab.speed'],
+  'bot.statCostBetween': ['bot', 'bot.upgradeLadder'],
+  'bot.statValue': ['bot', 'bot.upgradeLadder'],
+  'module.coinCostBetween': ['module.upgradeCost', 'module.level'],
+  'module.shardCostBetween': ['module.upgradeCost', 'module.level'],
+  'assist.stoneCostBetween': ['assistModule'],
+  'card.levelGemCost': ['card', 'card.level', 'currency.gem'],
+  'card.levelCopiesRequired': ['card', 'card.level'],
+  'tier.coinMultiplier': ['tier'],
 }

@@ -47,16 +47,16 @@ export const CHART_CALCULATOR_LINKS: Readonly<
     calculators: ['enemy.eliteSpawnChance', 'mechanics.waveInfoEliteSpawnChancePct'],
   },
   'uw-stone-costs': {
-    calculators: ['uw.stoneCost', 'uw.maxLevel', 'data.buildUwStatCostRows', 'data.sumUwStatCostsBetween'],
+    calculators: ['uw.stoneCost', 'uw.stoneCostBetween', 'uw.maxLevel', 'data.buildUwStatCostRows'],
   },
   'uw-plus-upgrades': {
     data: 'uwPlusUpgradeSections',
-    calculators: ['uw.statValue', 'data.getUwStatMaxLevel'],
+    calculators: ['uw.statValue', 'uw.plusUnlockStonesBetween', 'data.getUwStatMaxLevel'],
   },
   'bot-upgrades': {
     calculators: [
       'bot.findByName', 'bot.statNames', 'bot.statMinLevel', 'bot.statMaxLevel',
-      'data.buildBotStatCostRows', 'data.sumBotAllStatCosts',
+      'bot.statValue', 'bot.statCostBetween', 'data.buildBotStatCostRows', 'data.sumBotAllStatCosts',
     ],
   },
   'gold-bot-vs-death-wave-uptime': {

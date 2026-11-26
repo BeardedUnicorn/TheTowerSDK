@@ -6,6 +6,7 @@ The five bots: unlock costs, upgrade stats, and the levels each stat reaches.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `cost-ranges.ts` | What a run of bot upgrades costs, asked for by name. | botStatCostBetween |
 | `data.ts` | — | FLAME_BOT_FIXED_DURATION_SECONDS, BOT_BASE_UNLOCK_COSTS, BOT_PLUS_UNLOCK_COST, BOT_SYNC_SLOT_COST (+50 more) |
 | `index.ts` | The five bots: | — |
 | `types.ts` | The types `data/bots/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | BotLabInfoRow, BotStatUnit, BotStatDefinition, BotValueRow (+8 more) |

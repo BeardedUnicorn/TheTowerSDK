@@ -9,7 +9,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/assets`](assets/MAP.md) | 1 | Naming rules for artwork you supply yourself. |
 | [`src/bot`](bot/MAP.md) | 4 | Every calculator as a chat command, transport-agnostic. |
 | [`src/builders`](builders/MAP.md) | 17 | The calculators, each declaring its own inputs. |
-| [`src/calculators`](calculators/MAP.md) | 14 | Calculator specs and the registry over them. |
+| [`src/calculators`](calculators/MAP.md) | 16 | Calculator specs and the registry over them. |
 | [`src/charts`](charts/MAP.md) | 1 | Curated chart datasets and their resolution. |
 | [`src/charts/datasets`](charts/datasets/MAP.md) | 6 | The charts that compute their own rows rather than reading a catalog. |
 | [`src/charts/registry`](charts/registry/MAP.md) | 5 | Which charts exist, and what calculator or mechanic each belongs to. |
@@ -18,7 +18,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data`](data/MAP.md) | 1 | The game tables — costs, levels, effects, catalogs. |
 | [`src/data/assets`](data/assets/MAP.md) | 3 | Which sprite belongs to which module, card, bot or theme. Names only. |
 | [`src/data/battle-conditions`](data/battle-conditions/MAP.md) | 2 | The names battle conditions carry, as the game writes them. |
-| [`src/data/bots`](data/bots/MAP.md) | 3 | The five bots: unlock costs, upgrade stats, and the levels each stat reaches. |
+| [`src/data/bots`](data/bots/MAP.md) | 4 | The five bots: unlock costs, upgrade stats, and the levels each stat reaches. |
 | [`src/data/cards`](data/cards/MAP.md) | 4 | Cards, their level values and their mastery values. |
 | [`src/data/charts`](data/charts/MAP.md) | 3 | Tables the game publishes as tables rather than formulas. |
 | [`src/data/currency`](data/currency/MAP.md) | 3 | The game’s currencies, and what each is spent on. |
@@ -41,7 +41,7 @@ The package itself — everything that ships, and nothing that does not.
 | [`src/data/tournaments`](data/tournaments/MAP.md) | 3 | Tournament leagues, brackets, and the heat each tier carries. |
 | [`src/data/ultimate-weapons`](data/ultimate-weapons/MAP.md) | 5 | Ultimate weapons and their stones. |
 | [`src/data/vault`](data/vault/MAP.md) | 4 | The vault tree and how it is walked. |
-| [`src/data/workshop`](data/workshop/MAP.md) | 10 | Workshop tables: costs, discounts and upgrade definitions. |
+| [`src/data/workshop`](data/workshop/MAP.md) | 11 | Workshop tables: costs, discounts and upgrade definitions. |
 | [`src/formatting`](formatting/MAP.md) | 1 | Numbers, durations and rates in the game’s own notation. |
 | [`src/formatting/duration`](formatting/duration/MAP.md) | 2 | Durations, in the units a run is measured in. |
 | [`src/formatting/numbers`](formatting/numbers/MAP.md) | 4 | Reading and writing numbers in the game’s notation ladder. |

@@ -112,7 +112,11 @@ describe('what the link is for', () => {
     //
     // Now 61 of 89: fourteen calculators for numbers the game shows on a screen (`specs-screens`),
     // thirteen of them linked. `format.gameNumber` is the one left out, as formatting is.
-    expect(curated).toHaveLength(89)
-    expect(linked).toBe(61)
+    //
+    // Now 82 of 111: twenty-two calculators for what an upgrade run costs (`specs-costs`, and the
+    // card, tier and farm-time ones beside the lookups). `epaths.coinFarmDays` is the one left out:
+    // it is the sheet's arithmetic for turning coins into time, not an entity the game has.
+    expect(curated).toHaveLength(111)
+    expect(linked).toBe(82)
   })
 })

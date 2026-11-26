@@ -6,14 +6,16 @@ Calculator specs and the registry over them.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `fields.ts` | — | fieldsOf, LAB_COST_MODIFIER_FIELDS, NUMBER_OPTIONS, UNKNOWN_NUMBER_OPTIONS (+4 more) |
+| `fields.ts` | — | fieldsOf, LAB_COST_MODIFIER_FIELDS, WORKSHOP_ENHANCEMENT_DISCOUNT_FIELDS, NUMBER_OPTIONS (+5 more) |
 | `graph.ts` | How the calculators relate, so "what feeds this number?" is a lookup. | calculatorGraph, upstreamOf, calculatorsProducing, calculatorsReading |
 | `index.ts` | The calculator registry: | — |
 | `not-calculators.ts` | — | NOT_CALCULATORS |
 | `oracle-links.ts` | — | CALCULATOR_ORACLE_LINKS |
 | `registry.ts` | The calculators this repository reasons with, declared natively. | EPATHS_CALCULATORS, CALCULATORS, CALCULATOR_IDS, calculatorSpec |
+| `run-costs.ts` | The implementations behind `specs-costs.ts`, one direct import per handle. | COST_IMPLEMENTATIONS |
 | `run.ts` | Calling a declared calculator by its handle. | IMPLEMENTED_CALCULATOR_IDS, CalculatorError, runCalculator, listCalculators |
 | `specs-catalog.ts` | — | CATALOG_CALCULATORS |
+| `specs-costs.ts` | — | COST_CALCULATORS |
 | `specs-formatting.ts` | — | FORMATTING_CALCULATORS |
 | `specs-irregular.ts` | — | IRREGULAR_CALCULATORS |
 | `specs-progress.ts` | — | PROGRESS_CALCULATORS |
