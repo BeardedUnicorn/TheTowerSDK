@@ -68,7 +68,14 @@ async function converse(env: Record<string, string>, protocolVersion: string | n
   send(1, 'tools/list', {})
   calls.forEach((name, index) => send(index + 2, 'tools/call', { name, arguments: {} }))
   await done
-  child.kill()
+  /*
+   * Close the pipe and wait for the server to leave, rather than killing it. What it wrote to
+   * stderr arrives on a different pipe from its replies, so a reply being here does not mean the
+   * log line is: killing on the last reply read an empty log on a slower machine.
+   */
+  const closed = new Promise<void>(resolve => child.once('close', () => resolve()))
+  child.stdin.end()
+  await closed
   return {
     stderr,
     listed: replies.get(1)!.result!.tools!,
