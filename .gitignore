@@ -41,3 +41,6 @@ src/assets/*.generated.ts
 # WASM build artifacts: the Javy compiler is fetched on demand, and the module is built from dist.
 wasm/.tools/
 wasm/.build/
+
+# Screenshots and readings written by tooling/panel-capture. They show a player's own game.
+tooling/panel-capture/out/
