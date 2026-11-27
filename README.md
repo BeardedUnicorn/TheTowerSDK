@@ -1263,7 +1263,8 @@ history — each one is on npm, in [CHANGELOG.md](CHANGELOG.md) and on the repos
 - **Patch** — fixes and data corrections.
 - **Minor** — new exports, extractors and data, including data updated for a new game version;
   existing values may change.
-- **Major** — breaking API changes.
+- **Major** — breaking API changes. [MIGRATION.md](MIGRATION.md) says what to change in your code
+  for each one.
 
 Versions below 1.0.0 were published upstream as `thetowersdk`, where the version was a build
 marker rather than a compatibility promise. This fork starts at 1.0.0.

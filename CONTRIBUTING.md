@@ -115,6 +115,9 @@ Two things follow from that:
 - **The commit subject is the changelog line.** `fix(save): read the relic list when the export
   omits the count` is what a reader of the changelog sees, so write it for them. With squash
   merges, that is the pull request title.
+- **A breaking change adds its section to `MIGRATION.md` in the same pull request.** The changelog
+  is generated; the migration guide is not. Say what changed, who is affected, what to change, and
+  a value a reader can assert.
 - **The site and the wiki change with a release, not with a push.** Both describe the published
   version, so a `docs:` commit reaches them with the next release. To ship a site-only fix sooner,
   run the **github-pages** workflow by hand from the Actions tab with `tag` set to `main`. Left

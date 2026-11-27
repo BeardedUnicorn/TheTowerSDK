@@ -419,6 +419,13 @@ and anything else releases nothing. The commit subject becomes the changelog lin
 `version` in `package.json` or add a `CHANGELOG.md` entry by hand — see the Releases section of
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
+**A breaking change carries its migration.** A commit marked `!` or `BREAKING CHANGE:` adds a
+section to [MIGRATION.md](MIGRATION.md) in the same pull request: what changed and which exports it
+touches, who is affected, what a caller must change (with a before and after taken from the code at
+both versions, never from memory), and a value they can assert to confirm the new behavior. The
+changelog is generated; the migration guide is written by hand, so a breaking change without its
+section is not finished.
+
 ## Adding things
 
 **A new extractor** — put it in `src/save/`, export it from `src/save/index.ts`, return `null` when
