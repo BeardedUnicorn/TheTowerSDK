@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0 (2026-11-27)
+
+
+### Features
+
+* **workshop:** price in-run upgrades in cash ([da9b446](https://github.com/BeardedUnicorn/TheTowerSDK/commit/da9b4462acc4017b6404f5e7530cd5c9061a430f))
+
 ## 3.0.0 (2026-11-27)
 
 
