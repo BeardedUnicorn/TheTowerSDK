@@ -249,8 +249,9 @@ struct Reading {
         return abs(header - panel) > 2
     }
     /// What must change for a screenshot to be worth keeping: every chance, and the spawn rate.
+    /// Boss is left out: it reads 100% on every boss wave and 0% otherwise, which is not a step.
     var signature: String {
-        let chances = enemyNames.map { enemies[$0]?.first ?? "?" }.joined(separator: "|")
+        let chances = enemyNames.filter { $0 != "Boss" }.map { enemies[$0]?.first ?? "?" }.joined(separator: "|")
         return "\(tier ?? -1)|\(chances)|\(spawnRate ?? -1)"
     }
     var complete: Bool {
@@ -319,7 +320,11 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
     // and only when all twelve rows are present and every label that WAS read is in its place.
     var table: [(name: String?, values: [String])] = []
     for row in groupIntoRows(words) {
-        let tokens = row.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
+        var tokens = row.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
+        // The row's icon is occasionally read as a stray word ("0000") ahead of the label.
+        if tokens.count == 7, enemyNames.contains(where: { $0.caseInsensitiveCompare(tokens[1]) == .orderedSame }) {
+            tokens.removeFirst()
+        }
         guard let first = tokens.first else { continue }
         if let name = enemyNames.first(where: { $0.caseInsensitiveCompare(first) == .orderedSame }) {
             if !table.contains(where: { $0.name == name }) { table.append((name, Array(tokens.dropFirst()))) }
