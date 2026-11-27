@@ -17,6 +17,8 @@
 //   --hours <n>            Stop after this many hours (default: run until Ctrl-C).
 //   --once                 One capture, then exit.
 //   --ocr-file <image>     Read one existing image, print what was parsed, and exit. No capture.
+//   --reread <dir>         Read every .png in a folder of earlier captures again and write
+//                          reread.csv and reread.jsonl beside them. No capture.
 //   --where                Print the mouse position as window fractions once a second, to find
 //                          the two points --reopen needs. No capture.
 //   --reopen cx,cy,ox,oy   Before each capture, click the panel's close button at (cx,cy) and
@@ -50,6 +52,7 @@ struct Options {
     var ocrFile: String? = nil
     var whereMode = false
     var reopen: [Double]? = nil
+    var reread: String? = nil
 }
 
 func fail(_ message: String) -> Never {
@@ -82,6 +85,7 @@ func parseOptions() -> Options {
         case "--once": options.once = true
         case "--ocr-file": options.ocrFile = value(flag)
         case "--where": options.whereMode = true
+        case "--reread": options.reread = value(flag)
         case "--reopen":
             let parts = value(flag).split(separator: ",").compactMap { Double($0) }
             guard parts.count == 4, parts.allSatisfy({ $0 >= 0 && $0 <= 1 }) else {
@@ -148,18 +152,48 @@ struct Word {
     let box: CGRect // Vision's normalised box: origin bottom-left, 0...1.
 }
 
-func recognise(imageAt path: String) -> [Word]? {
-    guard let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: path) as CFURL, nil),
-          let image = CGImageSourceCreateImageAtIndex(source, 0, nil) else { return nil }
+func loadImage(_ path: String) -> CGImage? {
+    guard let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: path) as CFURL, nil) else { return nil }
+    return CGImageSourceCreateImageAtIndex(source, 0, nil)
+}
+
+func recognise(_ image: CGImage, region: CGRect? = nil, level: VNRequestTextRecognitionLevel = .accurate) -> [Word] {
     let request = VNRecognizeTextRequest()
-    request.recognitionLevel = .accurate
+    request.recognitionLevel = level
     request.usesLanguageCorrection = false
-    let handler = VNImageRequestHandler(cgImage: image, options: [:])
-    do { try handler.perform([request]) } catch { return nil }
+    request.recognitionLanguages = ["en-US"]
+    if let region = region { request.regionOfInterest = region }
+    do { try VNImageRequestHandler(cgImage: image, options: [:]).perform([request]) } catch { return [] }
     return (request.results ?? []).compactMap { observation in
         guard let candidate = observation.topCandidates(1).first else { return nil }
         return Word(text: candidate.string, box: observation.boundingBox)
     }
+}
+
+/// The height of one line of panel text. The median over every word read, because the box around
+/// any single word can come back a fifth taller than its neighbours'.
+func lineHeight(of words: [Word]) -> CGFloat {
+    let heights = words.map { $0.box.height }.sorted()
+    return heights.isEmpty ? 0.016 : heights[heights.count / 2]
+}
+
+/// The footer's counters sit to the right of a two-line label, level with the gap between its
+/// lines. This is the cell one of them occupies, given the label's first line.
+func valueCell(beside label: Word, lineHeight height: CGFloat) -> CGRect {
+    let minX = min(label.box.maxX + 0.01, 0.99)
+    let cell = CGRect(x: minX, y: label.box.midY - 0.5 * height - 0.95 * height, width: min(0.16, 1 - minX), height: 1.9 * height)
+    return cell.intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
+}
+
+/// A counter that the whole-image pass missed. A lone "0" is dropped when the recogniser reads
+/// the full screenshot and comes back (as "o") only when it is shown that one cell.
+func readCell(_ image: CGImage, beside label: Word, lineHeight: CGFloat) -> String? {
+    let cell = valueCell(beside: label, lineHeight: lineHeight)
+    guard cell.width > 0, cell.height > 0 else { return nil }
+    for level in [VNRequestTextRecognitionLevel.accurate, .fast] {
+        if let text = recognise(image, region: cell, level: level).first?.text { return text }
+    }
+    return nil
 }
 
 /// Words that sit on one line of the image, left to right.
@@ -183,6 +217,16 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
         guard let r = Range(match.range(at: index), in: text) else { return "" }
         return String(text[r])
     }
+}
+
+/// The game's digits are sometimes read as letters: its 0 as "O", its 6 as the Cyrillic "Б".
+/// A token is repaired only when the repair turns it into a number the panel could have written;
+/// anything else (a label such as "Boss") is returned untouched.
+func repairNumber(_ token: String) -> String {
+    let swaps: [Character: Character] = ["O": "0", "o": "0", "О": "0", "о": "0", "Б": "6", "б": "6"]
+    guard token.contains(where: { swaps[$0] != nil }) else { return token }
+    let repaired = String(token.map { swaps[$0] ?? $0 })
+    return firstMatch(#"^\(?\d+(\.\d+)?\)?(%|[KMBTqsm])?$"#, in: repaired) != nil ? repaired : token
 }
 
 let enemyNames = ["Basic", "Fast", "Tank", "Ranged", "Boss", "Protector", "Vampire", "Scatter", "Ray", "Saboteur", "Commander", "Overcharge"]
@@ -218,18 +262,26 @@ struct Reading {
     }
 }
 
-/// The whole-number word nearest in height to `label`, to its right.
-func numberBeside(_ label: Word, in words: [Word]) -> Int? {
-    var best: (distance: CGFloat, value: Int)? = nil
-    for word in words where word.box.minX > label.box.maxX {
-        guard let value = Int(word.text.trimmingCharacters(in: .whitespaces)) else { continue }
-        let distance = abs(word.box.midY - label.box.midY)
-        if distance < 0.03, best == nil || distance < best!.distance { best = (distance, value) }
+/// The whole number in the cell beside `label`: from the words already read, else from a second
+/// look at just that cell. Never a number from a neighbouring row.
+func numberBeside(_ label: Word, in words: [Word], image: CGImage) -> Int? {
+    let height = lineHeight(of: words)
+    let cell = valueCell(beside: label, lineHeight: height)
+    for word in words where cell.contains(CGPoint(x: word.box.midX, y: word.box.midY)) {
+        if let value = Int(repairNumber(word.text.trimmingCharacters(in: .whitespaces))) { return value }
     }
-    return best?.value
+    guard let text = readCell(image, beside: label, lineHeight: height) else { return nil }
+    return Int(repairNumber(text.trimmingCharacters(in: .whitespaces)))
 }
 
-func parse(_ words: [Word]) -> Reading {
+func activeAndSpawnRate(in text: String) -> (active: Int, rate: Int)? {
+    // "56 (34)": active enemies, then the spawn rate in brackets.
+    let pieces = text.split(separator: " ").map { repairNumber(String($0)) }.joined(separator: " ")
+    guard let m = firstMatch(#"^\s*(\d+)\s*\((\d+)\)\s*$"#, in: pieces), let active = Int(m[1]), let rate = Int(m[2]) else { return nil }
+    return (active, rate)
+}
+
+func parse(_ words: [Word], image: CGImage) -> Reading {
     var reading = Reading()
     for word in words {
         if reading.panelWave == nil, let m = firstMatch(#"Tier\s*(\d+)\s*[-–—]\s*Wave\s*(\d+)"#, in: word.text) {
@@ -240,15 +292,26 @@ func parse(_ words: [Word]) -> Reading {
         if reading.headerWave == nil, word.box.midY > 0.85, let m = firstMatch(#"^\s*(\d+)\s*/\s*(\d+)\s*$"#, in: word.text) {
             reading.headerWave = Int(m[1])
         }
-        if reading.spawnRate == nil, let m = firstMatch(#"^\s*(\d+)\s*\((\d+)\)\s*$"#, in: word.text) {
-            reading.activeEnemies = Int(m[1])
-            reading.spawnRate = Int(m[2])
+        if reading.spawnRate == nil, let found = activeAndSpawnRate(in: word.text) {
+            reading.activeEnemies = found.active
+            reading.spawnRate = found.rate
         }
-        if word.text.range(of: "Attack Level", options: .caseInsensitive) != nil {
-            reading.attackSkips = numberBeside(word, in: words)
-        }
-        if word.text.range(of: "Health Level", options: .caseInsensitive) != nil {
-            reading.healthSkips = numberBeside(word, in: words)
+    }
+    // The footer is only meaningful with the panel open: the battle screen behind it has its own
+    // "Enemy Attack Level Skip" upgrade tile.
+    if reading.panelOpen {
+        for word in words {
+            if word.text.range(of: "Attack Level", options: .caseInsensitive) != nil, reading.attackSkips == nil {
+                reading.attackSkips = numberBeside(word, in: words, image: image)
+            }
+            if word.text.range(of: "Health Level", options: .caseInsensitive) != nil, reading.healthSkips == nil {
+                reading.healthSkips = numberBeside(word, in: words, image: image)
+            }
+            if word.text.range(of: "Active Enemies", options: .caseInsensitive) != nil, reading.spawnRate == nil,
+               let text = readCell(image, beside: word, lineHeight: lineHeight(of: words)), let found = activeAndSpawnRate(in: text) {
+                reading.activeEnemies = found.active
+                reading.spawnRate = found.rate
+            }
         }
     }
     // The twelve enemy rows, top to bottom. A row is normally found by its label. The recogniser
@@ -256,7 +319,7 @@ func parse(_ words: [Word]) -> Reading {
     // and only when all twelve rows are present and every label that WAS read is in its place.
     var table: [(name: String?, values: [String])] = []
     for row in groupIntoRows(words) {
-        let tokens = row.flatMap { $0.text.split(separator: " ").map(String.init) }
+        let tokens = row.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
         guard let first = tokens.first else { continue }
         if let name = enemyNames.first(where: { $0.caseInsensitiveCompare(first) == .orderedSame }) {
             if !table.contains(where: { $0.name == name }) { table.append((name, Array(tokens.dropFirst()))) }
@@ -347,8 +410,9 @@ func describe(_ reading: Reading) -> String {
 let options = parseOptions()
 
 if let file = options.ocrFile {
-    guard let words = recognise(imageAt: file) else { fail("could not read \(file)") }
-    let reading = parse(words)
+    guard let image = loadImage(file) else { fail("could not read \(file)") }
+    let words = recognise(image)
+    let reading = parse(words, image: image)
     if ProcessInfo.processInfo.environment["TOWER_PANEL_DUMP"] != nil {
         for row in groupIntoRows(words) { print(row.map { $0.text }.joined(separator: " ¦ ")) }
     }
@@ -357,6 +421,28 @@ if let file = options.ocrFile {
     print(csvLine(reading, capturedAt: "-", file: file))
     print(jsonLine(reading, capturedAt: "-", file: file))
     exit(reading.complete ? 0 : 2)
+}
+
+if let dir = options.reread {
+    let files = ((try? FileManager.default.contentsOfDirectory(atPath: dir)) ?? []).filter { $0.hasSuffix(".png") }.sorted()
+    guard !files.isEmpty else { fail("no .png files in \(dir)") }
+    let csv = "\(dir)/reread.csv", json = "\(dir)/reread.jsonl"
+    try? FileManager.default.removeItem(atPath: csv)
+    try? FileManager.default.removeItem(atPath: json)
+    append(csvHeader, to: csv)
+    var incomplete = 0
+    for file in files {
+        guard let image = loadImage("\(dir)/\(file)") else { print("\(file)  could not be read"); continue }
+        let words = recognise(image)
+        let reading = parse(words, image: image)
+        let capturedAt = (file as NSString).deletingPathExtension
+        append(csvLine(reading, capturedAt: capturedAt, file: file), to: csv)
+        append(jsonLine(reading, capturedAt: capturedAt, file: file), to: json)
+        if reading.panelOpen, !reading.complete { incomplete += 1 }
+        print("\(capturedAt)  \(describe(reading))")
+    }
+    print("Read \(files.count) screenshots, \(incomplete) incomplete. Wrote \(csv).")
+    exit(0)
 }
 
 if options.whereMode {
@@ -407,9 +493,9 @@ while deadline.map({ Date() < $0 }) ?? true {
         }
         let capturedAt = stamp()
         let path = "\(outDir)/\(capturedAt).png"
-        if capture(window, to: path), let words = recognise(imageAt: path) {
+        if capture(window, to: path), let image = loadImage(path) {
             count += 1
-            let reading = parse(words)
+            let reading = parse(recognise(image), image: image)
             let changed = reading.panelOpen && reading.signature != lastSignature
             let sample = options.keepEvery > 0 && count % options.keepEvery == 1
             // Keep a changed reading and the one before it, so each step has a before and an after.
