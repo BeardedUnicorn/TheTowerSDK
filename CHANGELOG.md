@@ -1,5 +1,36 @@
 # Changelog
 
+## 3.0.0 (2026-11-27)
+
+
+* feat(planning)!: add the coin planning tools and the plan_spending MCP tool ([905ae31](https://github.com/BeardedUnicorn/TheTowerSDK/commit/905ae318823923c50f2ea1bb0f807cc77d5f536a))
+
+
+### Bug Fixes
+
+* **ci:** format the MCP docs page and date the survival test's snapshot files ([d730f76](https://github.com/BeardedUnicorn/TheTowerSDK/commit/d730f7644f5650a83c061059541af01ae200176b))
+* **formatting:** guard NaN and zero in two presentation helpers ([4910729](https://github.com/BeardedUnicorn/TheTowerSDK/commit/491072905b89f50f61d803ed7860d0b84801955f))
+
+
+### Features
+
+* **calculators:** curate the 13 formatting helpers ([c6548f7](https://github.com/BeardedUnicorn/TheTowerSDK/commit/c6548f7a6fc81faa09f798407c45f3105f130f65))
+* **survival:** add the survival calculators and the survival_rank MCP tool ([9730874](https://github.com/BeardedUnicorn/TheTowerSDK/commit/9730874d471fe270bdd662dccc720bed3b68e7d8))
+* **survival:** fit the hit curves to run history and rank upgrades by waves per coin ([719296a](https://github.com/BeardedUnicorn/TheTowerSDK/commit/719296a8b41c2b6a881c3572b349efcd16a7120b))
+* **survival:** model healing, incoming damage and a seeded run simulator ([b6daa37](https://github.com/BeardedUnicorn/TheTowerSDK/commit/b6daa3733bfe9653238c3c66a76dbfed3c8670ab))
+
+
+### BREAKING CHANGES
+
+* the resource-drops coin simulation returns different
+totals. Kill coins no longer multiply by the wave, so they are far lower
+at depth; every skipped wave now spawns nothing, so kills are fewer and
+wave-skip coins higher. Anything that reads absolute coin or kill totals
+from simulateResourceDropsCoins, simulateWaveCoinRows or
+accumulateWaveEcon will see different numbers.
+
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
+
 ## 2.1.0 (2026-11-26)
 
 
