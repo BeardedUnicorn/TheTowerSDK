@@ -23,7 +23,7 @@ import {
   sumUltimateWeaponPlusUnlockStones,
   sumUltimateWeaponUnlockStones,
 } from '../data/ultimate-weapons/unlocks'
-import { workshopCoinCostBetween } from '../data/workshop/cost-ranges'
+import { workshopCashCostBetween, workshopCoinCostBetween } from '../data/workshop/cost-ranges'
 import { cardLevelCopiesRequired, cardLevelUpgradeGemCost } from '../mechanics/cards/costs'
 import {
   ultimateWeaponStoneCostBetween,
@@ -64,6 +64,7 @@ export const COST_IMPLEMENTATIONS: Record<string, (args: Record<string, unknown>
     a.weapon as string, a.stat as string, a.fromLevel as number, a.toLevel as number,
   ),
   'workshop.coinCostBetween': a => workshopCoinCostBetween(a.stat as string, a.fromLevel as number, a.toLevel as number),
+  'workshop.cashCostBetween': a => workshopCashCostBetween(a.stat as string, a.fromLevel as number, a.toLevel as number),
   'workshop.enhancementCoinCostBetween': a => enhancementCoinCostBetween(
     a.stat as string, a.fromLevel as number, a.toLevel as number, a.discounts as never,
   ),

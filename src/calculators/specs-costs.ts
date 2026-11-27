@@ -266,6 +266,32 @@ export const COST_CALCULATORS: readonly CalculatorSpec[] = [
     dependsOn: [],
   },
   {
+    id: 'workshop.cashCostBetween',
+    title: 'Cash to take an upgrade from one level to another inside a run',
+    entry: 'data',
+    module: `${DATA}/workshop/cost-ranges.ts`,
+    symbol: 'workshopCashCostBetween',
+    because:
+      'In-run upgrades are bought with cash, and every other workshop price here is in coins. The '
+      + 'cash column prices one level at a time, so what a run of in-run levels costs had to be '
+      + 'added up by hand — or was left out of the advice altogether.',
+    params: [
+      { name: 'stat', kind: 'string', describes: 'upgrade name as the workshop table keys it — "Damage", "Health Regen"' },
+      { name: 'fromLevel', kind: 'number', describes: 'the level the upgrade stands at in the run — its workshop level at the start of a run, plus any free or bought levels — not the count of levels bought' },
+      { name: 'toLevel', kind: 'number', describes: 'the in-run level to reach' },
+    ],
+    returns: { kind: 'number', unit: 'cash', nullable: true, describes: 'total at the table\'s base cash price' },
+    invariants: [
+      ...RANGE_INVARIANTS,
+      'two adjoining ranges total the range that spans them',
+      'the base cash cost from the game\'s table — the workshop discount labs lower coin prices and are not applied; whether anything lowers a cash price is not verified',
+      'the last row\'s cash is never counted, although it is above zero on most upgrades: there is no level after it',
+    ],
+    reads: ['workshop.stat', 'run.inRunLevel'],
+    produces: ['workshop.cashCostBetween'],
+    dependsOn: [],
+  },
+  {
     id: 'workshop.enhancementCoinCostBetween',
     title: 'Coins to take a workshop enhancement from one level to another',
     entry: 'mechanics',

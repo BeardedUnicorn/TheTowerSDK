@@ -144,6 +144,7 @@ export const CALCULATOR_ORACLE_LINKS: Readonly<Record<string, readonly string[]>
   'uw.plusUnlockStonesBetween': ['ultimateWeaponPlus', 'currency'],
   'uw.stoneCostBetween': ['ultimateWeapon', 'currency'],
   'workshop.coinCostBetween': ['workshop', 'workshop.upgradeTable'],
+  'workshop.cashCostBetween': ['workshop', 'workshop.upgradeTable'],
   'workshop.enhancementCoinCostBetween': ['workshopEnhancement'],
   'lab.coinCostBetween': ['lab', 'currency'],
   'lab.durationDaysBetween': ['lab', 'lab.speed'],

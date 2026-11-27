@@ -234,12 +234,12 @@ export const SCREEN_CALCULATORS: readonly CalculatorSpec[] = [
       + 'Attack Level Skip was reported as 0.5% a level this way; the game gives 0.05%.',
     params: [
       { name: 'stat', kind: 'string', describes: 'a WORKSHOP_DATA key, such as Enemy Attack Level Skip' },
-      { name: 'level', kind: 'number', describes: 'the bought workshop level, from 0' },
+      { name: 'level', kind: 'number', describes: 'the bought workshop level, from 0; for cashCost, the level the upgrade stands at in the run' },
     ],
     returns: {
       kind: 'object',
       nullable: true,
-      describes: '{ value, unit, coinCost, cashCost }; unit fraction means 0.0005 is 0.05%; the costs buy the NEXT level, undiscounted',
+      describes: '{ value, unit, coinCost, cashCost }; unit fraction means 0.0005 is 0.05%; the costs buy the NEXT level, undiscounted. cashCost is the in-run price of the next level when the upgrade stands at `level` in the run; workshop.cashCostBetween totals a range',
     },
     invariants: [
       'null for an unknown upgrade or a level the table has no row for',

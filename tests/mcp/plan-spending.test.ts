@@ -109,6 +109,7 @@ describe('plan_spending', () => {
     // Golden Tower Bonus is researching level 14, so the queue offers 15, not 14.
     expect(answer.labQueue.find((row: Answer) => row.lab === 'Golden Tower Bonus')?.toLevel).toBe(15)
     expect(answer.notRanked.map((row: Answer) => row.candidate)).toContain('Module slot levels')
+    expect(answer.notRanked.find((row: Answer) => row.candidate === 'In-run upgrades bought with cash')?.reason).toMatch(/workshop\.cashCostBetween/)
     // A lab never researched and behind a milestone this account has not reached is explained, not offered.
     expect(answer.notRanked.find((row: Answer) => row.candidate === 'Golden Tower Duration 1')?.reason).toMatch(/tier 4 wave 200 milestone/)
   })

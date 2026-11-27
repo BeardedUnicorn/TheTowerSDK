@@ -14,6 +14,8 @@ import {
   sumGuardianStatCostsBetween,
   sumUltimateWeaponPlusUnlockStones,
   sumUltimateWeaponUnlockStones,
+  WORKSHOP_DATA,
+  workshopCashCostBetween,
   workshopCoinCostBetween,
 } from '../../src/data'
 import { uwPlusUnlockTotal } from '../../src/charts'
@@ -327,5 +329,43 @@ describe('workshop coin costs', () => {
     expect(workshopCoinCostBetween('constructor', 0, 1)).toBeNull()
     expect(workshopCoinCostBetween('Damage', 4, 3)).toBeNull()
     expect(workshopCoinCostBetween('Damage', 0.5, 3)).toBeNull()
+  })
+})
+
+describe('workshop cash costs inside a run', () => {
+  it('reads each row as the cash price of the level after it', () => {
+    // Health rows 0-4 carry 10, 12, 15, 19 and 23 cash.
+    expect(workshopCashCostBetween('Health', 0, 1)).toBe(10)
+    expect(workshopCashCostBetween('Health', 0, 5)).toBe(79)
+    expect(workshopCashCostBetween('Health', 1, 3)).toBe(27)
+    expect(workshopCashCostBetween('Health', 9, 9)).toBe(0)
+    // Wall Health rows 0 and 1 are checked against the native ladder in workshop-reference.
+    expect(workshopCashCostBetween('Wall Health', 0, 2)).toBe(175 + 276)
+  })
+
+  it('totals the rows it spans and nothing else', () => {
+    const rows = WORKSHOP_DATA['Wall Health']
+    let byHand = 0
+    for (let level = 300; level < 320; level += 1) byHand += rows[String(level)].cash
+    expect(workshopCashCostBetween('Wall Health', 300, 320)).toBe(byHand)
+  })
+
+  it('adds up across a split, to the last row', () => {
+    splits((from, to) => workshopCashCostBetween('Damage', from, to), 0, 300, 6000)
+  })
+
+  it('leaves out the last row, whose cash is above zero with no level after it', () => {
+    expect(WORKSHOP_DATA['Wall Health']['1800'].cash).toBeGreaterThan(0)
+    expect(workshopCashCostBetween('Wall Health', 1799, 1800)).toBe(WORKSHOP_DATA['Wall Health']['1799'].cash)
+    expect(workshopCashCostBetween('Wall Health', 1800, 1800)).toBe(0)
+    expect(workshopCashCostBetween('Wall Health', 1800, 1801)).toBeNull()
+  })
+
+  it('refuses a level past the table, and a name that is not a stat', () => {
+    expect(workshopCashCostBetween('Damage', 0, 6001)).toBeNull()
+    expect(workshopCashCostBetween('Nope', 0, 1)).toBeNull()
+    expect(workshopCashCostBetween('constructor', 0, 1)).toBeNull()
+    expect(workshopCashCostBetween('Damage', 4, 3)).toBeNull()
+    expect(workshopCashCostBetween('Damage', 0.5, 3)).toBeNull()
   })
 })

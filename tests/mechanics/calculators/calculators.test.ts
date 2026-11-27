@@ -95,6 +95,7 @@ const SAMPLES: Record<string, { args: Record<string, unknown>, moved: Record<str
     moved: { weapon: 'Death Wave', stat: 'Damage', fromLevel: 0, toLevel: 9 },
   },
   'workshop.coinCostBetween': { args: { stat: 'Damage', fromLevel: 0, toLevel: 3 }, moved: { stat: 'Damage', fromLevel: 0, toLevel: 30 } },
+  'workshop.cashCostBetween': { args: { stat: 'Damage', fromLevel: 0, toLevel: 3 }, moved: { stat: 'Damage', fromLevel: 0, toLevel: 30 } },
   'workshop.enhancementCoinCostBetween': {
     args: { stat: 'Health', fromLevel: 0, toLevel: 3 },
     moved: { stat: 'Health', fromLevel: 0, toLevel: 3, discounts: { defenseDiscountLabLevel: 50 } },

@@ -136,7 +136,9 @@ describe('what the link is for', () => {
     // `history.*` compose what a save says, and model no entity of their own.
     //
     // Now 107 of 156: effective health and effective economy, curated so their scope can be read.
-    expect(curated).toHaveLength(156)
-    expect(linked).toBe(107)
+    //
+    // Now 108 of 157: the cash price of a run of in-run levels, linked to the workshop and its table.
+    expect(curated).toHaveLength(157)
+    expect(linked).toBe(108)
   })
 })

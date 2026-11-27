@@ -512,6 +512,10 @@ export const WORKSHOP_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [
       '`cash` does NOT follow that convention: it is 0 on the final row of only 17 of the 48. So '
       + 'terminality cannot be inferred from the cash column, and code that tests either column '
       + 'for 0 to find the cap will disagree with itself depending on which it picked.',
+      'THE CASH COLUMN IS INDEXED BY THE LEVEL IN THE RUN, NOT BY LEVELS BOUGHT. A run starts each '
+      + 'upgrade at its workshop level, so the first in-run purchase of a stat at workshop level '
+      + '1300 pays row 1300, not row 0. `workshopCashCostBetween` totals a range; the rows are the '
+      + 'game\'s base cash costs, and whether any effect lowers a cash price is not verified.',
       `Lower is better for ${WORKSHOP_DECREASING_UPGRADES.join(' and ')} — both timers, both counting DOWN as the level `
       + 'rises. Every other upgrade rises. Ranking by "bigger is better" inverts exactly these two.',
       `${WORKSHOP_NON_MONOTONIC_UPGRADES.join(', ')} is not monotonic: it dips at level 30, from 4.750 to 4.655, `

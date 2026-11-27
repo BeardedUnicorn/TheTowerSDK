@@ -28,6 +28,7 @@ export const SPENDS_WITHOUT_A_MODEL: readonly UnrankedSpend[] = [
   { candidate: 'Workshop unlocks, such as the Wall', reason: 'the wave survival model does not read the Wall, so its extra waves cannot be priced' },
   { candidate: 'Recovery Package enhancement', reason: 'the wave survival model reads workshop levels, not enhancements; the wiki says it multiplies both Max Recovery and Recovery Amount' },
   { candidate: 'Attack workshop levels', reason: 'the wave survival model fits incoming damage and healing, not how fast enemies die' },
+  { candidate: 'In-run upgrades bought with cash', reason: 'they cost cash, not coins, and reset each run, so they are in neither queue; workshop.cashCostBetween prices a run of them' },
 ]
 
 /**
