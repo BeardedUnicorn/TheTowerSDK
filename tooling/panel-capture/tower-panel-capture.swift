@@ -241,9 +241,9 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
 /// A token is repaired only when the repair turns it into a number the panel could have written;
 /// anything else (a label such as "Boss") is returned untouched.
 func repairNumber(_ token: String) -> String {
-    // Latin O and D and Cyrillic О for 0, Cyrillic Б for 6, and Cyrillic К М В Т for the K M B T
-    // suffixes.
-    let swaps: [Character: Character] = ["O": "0", "o": "0", "D": "0", "О": "0", "о": "0", "Б": "6", "б": "6",
+    // Latin O and D and Cyrillic О for 0, Cyrillic З for 3 and Б for 6, and Cyrillic К М В Т for
+    // the K M B T suffixes.
+    let swaps: [Character: Character] = ["O": "0", "o": "0", "D": "0", "О": "0", "о": "0", "З": "3", "з": "3", "Б": "6", "б": "6",
                                          "К": "K", "М": "M", "В": "B", "Т": "T"]
     guard token.contains(where: { swaps[$0] != nil }) else { return token }
     let repaired = String(token.map { swaps[$0] ?? $0 })
@@ -290,11 +290,7 @@ struct Reading {
         // Every row has five cells and every cell reads as the panel writes it: a percentage for
         // the chance, and a number with an optional K M B T q suffix for the rest.
         guard panelOpen, spawnRate != nil, attackSkips != nil, healthSkips != nil else { return false }
-        for name in enemyNames {
-            guard let values = enemies[name], values.count == 5,
-                  firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil else { return false }
-            for value in values.dropFirst() where firstMatch(#"^\d+(\.\d+)?[KMBTq]?$"#, in: value) == nil { return false }
-        }
+        for name in enemyNames where !rowIsWellFormed(enemies[name] ?? []) { return false }
         return ordinaryChancesTotal == 100 && (!crossChecksEnabled || cellsAgree)
     }
 
@@ -442,19 +438,24 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
     return reading
 }
 
-/// Five cells, each as the panel writes it: a percentage, then four numbers with an optional
-/// K M B T q suffix.
+/// Five cells, each as the panel writes it. The chance is a whole percentage or one with two
+/// decimals ("8%", "1.33%"). The other four always carry exactly two decimals and an optional
+/// K M B T q suffix ("28.39M", "0.00", "1000.00"), so a dropped point ("2839M") or a suffix read
+/// as a digit ("1.638") is not well-formed.
 func rowIsWellFormed(_ values: [String]) -> Bool {
-    guard values.count == 5, firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil else { return false }
-    return values.dropFirst().allSatisfy { firstMatch(#"^\d+(\.\d+)?[KMBTq]?$"#, in: $0) != nil }
+    guard values.count == 5, firstMatch(#"^\d+(\.\d{2})?%$"#, in: values[0]) != nil else { return false }
+    return values.dropFirst().allSatisfy { firstMatch(#"^\d+\.\d{2}[KMBTq]?$"#, in: $0) != nil }
 }
 
 /// One enemy row read from its own strip of the screenshot, or nil if that does not give five
 /// well-formed cells either.
 func rereadRow(_ image: CGImage, band: CGRect, name: String) -> [String]? {
     guard band.width > 0, band.height > 0 else { return nil }
-    for level in [VNRequestTextRecognitionLevel.accurate, .fast] {
-        let words = recognise(image, region: band, level: level).sorted { $0.box.minX < $1.box.minX }
+    // The same strip can garble the same cell again, so a taller and a shorter strip are tried too.
+    let whole = CGRect(x: 0, y: 0, width: 1, height: 1)
+    let strips = [1.0, 1.35, 0.8].map { band.insetBy(dx: 0, dy: band.height * (1 - $0) / 2).intersection(whole) }
+    for (strip, level) in strips.flatMap({ strip in [VNRequestTextRecognitionLevel.accurate, .fast].map { (strip, $0) } }) {
+        let words = recognise(image, region: strip, level: level).sorted { $0.box.minX < $1.box.minX }
         var tokens = words.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
         if let label = tokens.firstIndex(where: { $0.caseInsensitiveCompare(name) == .orderedSame }) {
             tokens = Array(tokens[(label + 1)...])
