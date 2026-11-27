@@ -267,12 +267,26 @@ struct Reading {
         let chances = enemyNames.filter { $0 != "Boss" }.map { enemies[$0]?.first ?? "?" }.joined(separator: "|")
         return "\(tier ?? -1)|\(chances)|\(spawnRate ?? -1)"
     }
+    /// Basic, Fast, Tank, Ranged and Protector share one draw, so their chances total 100. A total
+    /// that is off by one is a misread digit: the game's 6 has been read as a 5.
+    var ordinaryChancesTotal: Double? {
+        var total = 0.0
+        for name in ["Basic", "Fast", "Tank", "Ranged", "Protector"] {
+            guard let text = enemies[name]?.first, text.hasSuffix("%"), let value = Double(text.dropLast()) else { return nil }
+            total += value
+        }
+        return total
+    }
     var complete: Bool {
-        // Five values per row, and a chance that reads as a percentage ("%8" is a misread).
-        panelOpen && enemyNames.allSatisfy { name in
-            guard let values = enemies[name], values.count == 5 else { return false }
-            return firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil
-        } && spawnRate != nil && attackSkips != nil && healthSkips != nil
+        // Every row has five cells and every cell reads as the panel writes it: a percentage for
+        // the chance, and a number with an optional K M B T q suffix for the rest.
+        guard panelOpen, spawnRate != nil, attackSkips != nil, healthSkips != nil else { return false }
+        for name in enemyNames {
+            guard let values = enemies[name], values.count == 5,
+                  firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil else { return false }
+            for value in values.dropFirst() where firstMatch(#"^\d+(\.\d+)?[KMBTq]?$"#, in: value) == nil { return false }
+        }
+        return ordinaryChancesTotal == 100
     }
 }
 
