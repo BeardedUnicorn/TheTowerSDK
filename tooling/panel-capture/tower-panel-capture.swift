@@ -9,7 +9,11 @@
 //   caffeinate -dim swift -swift-version 5 tower-panel-capture.swift
 //
 // Options:
-//   --interval <seconds>   Time between captures (default 45).
+//   --every-wave           Record one reading for every wave. Looks at the game every 2 seconds
+//                          (change with --interval) and writes a row the first time each wave
+//                          reads completely. A wave the Wave Skip card skips is never shown by
+//                          the game, so it cannot be recorded.
+//   --interval <seconds>   Time between captures (default 45, or 2 with --every-wave).
 //   --out <dir>            Where to write (default ./out/<start time>).
 //   --app <name>           Window owner to capture (default "The Tower").
 //   --keep-every <n>       Also keep every nth screenshot as an audit sample (default 20, 0 = off).
@@ -53,6 +57,8 @@ struct Options {
     var whereMode = false
     var reopen: [Double]? = nil
     var reread: String? = nil
+    var everyWave = false
+    var intervalGiven = false
 }
 
 func fail(_ message: String) -> Never {
@@ -71,14 +77,16 @@ func parseOptions() -> Options {
         let flag = args.removeFirst()
         switch flag {
         case "--interval":
-            guard let v = Double(value(flag)), v >= 2 else { fail("--interval needs a number of seconds, 2 or more") }
+            guard let v = Double(value(flag)), v >= 0.5 else { fail("--interval needs a number of seconds, 0.5 or more") }
             options.interval = v
+            options.intervalGiven = true
         case "--out": options.outDir = value(flag)
         case "--app": options.app = value(flag)
         case "--keep-every":
             guard let v = Int(value(flag)), v >= 0 else { fail("--keep-every needs a whole number") }
             options.keepEvery = v
         case "--keep-all": options.keepAll = true
+        case "--every-wave": options.everyWave = true
         case "--hours":
             guard let v = Double(value(flag)), v > 0 else { fail("--hours needs a positive number") }
             options.hours = v
@@ -95,6 +103,8 @@ func parseOptions() -> Options {
         default: fail("unknown option: \(flag)")
         }
     }
+    // Looking every two seconds catches every wave at the game's fastest speed.
+    if options.everyWave, !options.intervalGiven { options.interval = 2 }
     return options
 }
 
@@ -481,7 +491,9 @@ let csvPath = "\(outDir)/readings.csv"
 let jsonPath = "\(outDir)/readings.jsonl"
 if !FileManager.default.fileExists(atPath: csvPath) { append(csvHeader, to: csvPath) }
 
-print("Writing to \(outDir). Capturing every \(Int(options.interval))s. Ctrl-C to stop.")
+print(options.everyWave
+    ? "Writing to \(outDir). One reading per wave, looking every \(options.interval)s. Ctrl-C to stop."
+    : "Writing to \(outDir). Capturing every \(Int(options.interval))s. Ctrl-C to stop.")
 if options.reopen != nil { print("--reopen is on: this will click in the game window before every capture.") }
 
 let deadline = options.hours.map { Date().addingTimeInterval($0 * 3600) }
@@ -489,6 +501,61 @@ var lastSignature: String? = nil
 var previousUnkept: String? = nil // the last screenshot, if nothing has made it worth keeping yet
 var count = 0
 var missing = 0
+
+/// Writes one reading to the CSV and JSONL and decides whether its screenshot is kept.
+func record(_ reading: Reading, capturedAt: String, path: String) {
+    count += 1
+    let changed = reading.panelOpen && reading.signature != lastSignature
+    let sample = options.keepEvery > 0 && count % options.keepEvery == 1
+    // Keep a changed reading and the one before it, so each step has a before and an after.
+    // An incomplete read is kept too: the screenshot is then the only record.
+    let keep = options.keepAll || changed || sample || (reading.panelOpen && !reading.complete)
+    if changed, lastSignature != nil { previousUnkept = nil }
+    if let stale = previousUnkept { try? FileManager.default.removeItem(atPath: stale) }
+    previousUnkept = keep ? nil : path
+    if reading.panelOpen { lastSignature = reading.signature }
+
+    let name = (path as NSString).lastPathComponent
+    append(csvLine(reading, capturedAt: capturedAt, file: name), to: csvPath)
+    append(jsonLine(reading, capturedAt: capturedAt, file: name), to: jsonPath)
+    print("\(capturedAt)  \(describe(reading))\(changed && count > 1 ? "  <- changed" : "")")
+}
+
+// --every-wave state: the wave being watched, whether a complete reading of it is written, and
+// the best incomplete reading of it so far, held back in case a later look reads it completely.
+var watchedWave: (tier: Int, wave: Int)? = nil
+var watchedWaveWritten = false
+var heldIncomplete: (reading: Reading, capturedAt: String, path: String)? = nil
+
+func flushHeld() {
+    if let held = heldIncomplete { record(held.reading, capturedAt: held.capturedAt, path: held.path) }
+    heldIncomplete = nil
+}
+
+/// One reading per wave: the first complete read of each wave is written, and every later look at
+/// the same wave is discarded. A wave that never reads completely is written as incomplete.
+func recordOncePerWave(_ reading: Reading, capturedAt: String, path: String) {
+    guard reading.panelOpen, let tier = reading.tier, let wave = reading.panelWave else {
+        try? FileManager.default.removeItem(atPath: path)
+        return
+    }
+    if watchedWave == nil || watchedWave!.tier != tier || watchedWave!.wave != wave {
+        flushHeld()
+        watchedWave = (tier, wave)
+        watchedWaveWritten = false
+    }
+    if watchedWaveWritten {
+        try? FileManager.default.removeItem(atPath: path)
+    } else if reading.complete {
+        if let held = heldIncomplete { try? FileManager.default.removeItem(atPath: held.path) }
+        heldIncomplete = nil
+        record(reading, capturedAt: capturedAt, path: path)
+        watchedWaveWritten = true
+    } else {
+        if let held = heldIncomplete { try? FileManager.default.removeItem(atPath: held.path) }
+        heldIncomplete = (reading, capturedAt, path)
+    }
+}
 
 while deadline.map({ Date() < $0 }) ?? true {
     let started = Date()
@@ -499,27 +566,18 @@ while deadline.map({ Date() < $0 }) ?? true {
             click(at: pointIn(window, fx: r[2], fy: r[3]))
             Thread.sleep(forTimeInterval: 0.8)
         }
+        // Milliseconds in the name: in --every-wave mode two captures can fall in one second.
         let capturedAt = stamp()
-        let path = "\(outDir)/\(capturedAt).png"
+        let path = "\(outDir)/\(capturedAt)-\(String(format: "%03d", Int(Date().timeIntervalSince1970 * 1000) % 1000)).png"
         if capture(window, to: path), let image = loadImage(path) {
-            count += 1
             let reading = parse(recognise(image), image: image)
-            let changed = reading.panelOpen && reading.signature != lastSignature
-            let sample = options.keepEvery > 0 && count % options.keepEvery == 1
-            // Keep a changed reading and the one before it, so each step has a before and an after.
-            // An incomplete read is kept too: the screenshot is then the only record.
-            let keep = options.keepAll || changed || sample || (reading.panelOpen && !reading.complete)
-            if changed, lastSignature != nil { previousUnkept = nil }
-            if let stale = previousUnkept { try? FileManager.default.removeItem(atPath: stale) }
-            previousUnkept = keep ? nil : path
-            if reading.panelOpen { lastSignature = reading.signature }
-
-            let name = (path as NSString).lastPathComponent
-            append(csvLine(reading, capturedAt: capturedAt, file: name), to: csvPath)
-            append(jsonLine(reading, capturedAt: capturedAt, file: name), to: jsonPath)
-            print("\(capturedAt)  \(describe(reading))\(changed && count > 1 ? "  <- changed" : "")")
+            if options.everyWave {
+                recordOncePerWave(reading, capturedAt: capturedAt, path: path)
+            } else {
+                record(reading, capturedAt: capturedAt, path: path)
+            }
             missing = reading.panelOpen ? 0 : missing + 1
-            if missing == 3 { print("The panel has been missing for three captures. Open Wave Info in the game.") }
+            if missing == (options.everyWave ? 10 : 3) { print("\(capturedAt)  The Wave Info panel is not showing. Open it in the game.") }
         } else {
             print("\(capturedAt)  capture failed. Check Screen Recording permission for the app running this script.")
         }
@@ -530,4 +588,5 @@ while deadline.map({ Date() < $0 }) ?? true {
     let remaining = options.interval - Date().timeIntervalSince(started)
     if remaining > 0 { Thread.sleep(forTimeInterval: remaining) }
 }
+flushHeld()
 print("Stopped. Readings are in \(csvPath).")
