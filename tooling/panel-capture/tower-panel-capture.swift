@@ -23,6 +23,9 @@
 //   --ocr-file <image>     Read one existing image, print what was parsed, and exit. No capture.
 //   --reread <dir>         Read every .png in a folder of earlier captures again and write
 //                          reread.csv and reread.jsonl beside them. No capture.
+//   --no-cross-checks      Do not require cells the panel repeats to agree with each other. Use on
+//                          a tier or account where an enemy-specific lab or battle condition makes
+//                          them differ, or every reading will be marked incomplete.
 //   --where                Print the mouse position as window fractions once a second, to find
 //                          the two points --reopen needs. No capture.
 //   --reopen cx,cy,ox,oy   Before each capture, click the panel's close button at (cx,cy) and
@@ -42,6 +45,9 @@ import CoreGraphics
 import Foundation
 import ImageIO
 import Vision
+
+/// Whether a reading must also pass the cross-checks between cells. Off with --no-cross-checks.
+var crossChecksEnabled = true
 
 // MARK: - Arguments
 
@@ -87,6 +93,7 @@ func parseOptions() -> Options {
             options.keepEvery = v
         case "--keep-all": options.keepAll = true
         case "--every-wave": options.everyWave = true
+        case "--no-cross-checks": crossChecksEnabled = false
         case "--hours":
             guard let v = Double(value(flag)), v > 0 else { fail("--hours needs a positive number") }
             options.hours = v
@@ -286,7 +293,42 @@ struct Reading {
                   firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil else { return false }
             for value in values.dropFirst() where firstMatch(#"^\d+(\.\d+)?[KMBTq]?$"#, in: value) == nil { return false }
         }
-        return ordinaryChancesTotal == 100
+        return ordinaryChancesTotal == 100 && (!crossChecksEnabled || cellsAgree)
+    }
+
+    /// The panel repeats itself: several rows always show the same health, attack, speed or mass,
+    /// and Tank, Boss, Protector and Vampire health are fixed multiples of Basic. A misread digit
+    /// in one cell ("13.00" read as "15.00") is well-formed, so only its disagreement with the
+    /// cells that should match gives it away.
+    ///
+    /// These held in every reading on tiers 1 and 7. An enemy-specific lab or a battle condition
+    /// could break one legitimately; --no-cross-checks turns them off.
+    var cellsAgree: Bool {
+        func cell(_ name: String, _ column: Int) -> String? {
+            guard let values = enemies[name], values.count > column else { return nil }
+            return values[column]
+        }
+        func same(_ names: [String], _ column: Int) -> Bool {
+            let cells = names.map { cell($0, column) }
+            return cells.allSatisfy { $0 != nil && $0 == cells[0] }
+        }
+        func amount(_ text: String?) -> Double? {
+            guard let text = text, let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTq]?)$"#, in: text), let number = Double(m[1]) else { return nil }
+            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15]
+            return number * (units[m[2]] ?? 1)
+        }
+        // Health 1, attack 2, speed 3, mass 4.
+        guard same(["Basic", "Fast", "Ranged", "Ray"], 1), same(["Boss", "Saboteur", "Commander", "Overcharge"], 1), same(["Vampire", "Scatter"], 1),
+              same(["Basic", "Fast", "Tank", "Boss", "Protector", "Vampire", "Ray"], 2),
+              same(["Boss", "Protector", "Vampire", "Ray"], 3), same(["Tank", "Scatter"], 3), same(["Commander", "Overcharge"], 3),
+              same(["Basic", "Fast", "Ranged"], 4), same(["Vampire", "Scatter"], 4), same(["Saboteur", "Commander", "Overcharge"], 4)
+        else { return false }
+        guard let basic = amount(cell("Basic", 1)), basic > 0 else { return false }
+        for (name, multiple) in [("Tank", 5.0), ("Boss", 20.0), ("Protector", 0.6), ("Vampire", 2.0)] {
+            // Two decimals of display rounding on each side: 1% covers it with room to spare.
+            guard let health = amount(cell(name, 1)), abs(health / basic / multiple - 1) < 0.01 else { return false }
+        }
+        return true
     }
 }
 
