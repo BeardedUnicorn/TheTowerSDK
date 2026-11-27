@@ -60,6 +60,9 @@ beforeAll(() => {
     fs.writeFileSync(path.join(snapshotsDir, `reading-${index}.json`), JSON.stringify(snapshot))
   })
   fs.writeFileSync(path.join(snapshotsDir, 'notes.json'), JSON.stringify({ hello: 'not a reading' }))
+  /* Written in one millisecond the files tie and fall back to name order, so date them a second apart. */
+  const names = [...fixture.snapshots.map((_, index) => `reading-${index}.json`), 'notes.json']
+  names.forEach((name, index) => fs.utimesSync(path.join(snapshotsDir, name), 1_700_000_000 + index, 1_700_000_000 + index))
 })
 
 afterAll(() => {

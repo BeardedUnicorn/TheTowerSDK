@@ -7,9 +7,9 @@
 <h1 class="text-3xl font-semibold">MCP &amp; AI</h1>
 <p class="mt-3 text-muted">
 	The package ships an MCP server, so there is nothing extra to install. Register it and your
-	editor's assistant gains forty-nine tools: it can run the shipped calculators and get real
-	numbers back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and
-	validate what it produced — rather than writing game maths from memory and hoping.
+	editor's assistant gains forty-nine tools: it can run the shipped calculators and get real numbers
+	back, work in an instrumented sandbox, decode a save, pull wiki pages, and trace and validate what
+	it produced — rather than writing game maths from memory and hoping.
 </p>
 
 <h2 class="mt-10 text-xl font-semibold">Register It</h2>
@@ -91,13 +91,13 @@
 		by tier. Leave the id out to list what the save holds
 	</li>
 	<li>
-		<code>survival_rank</code> — which workshop upgrade adds the most waves per coin, from a model
-		fitted to the save's own runs, with the fit's leave-one-out error beside the ranking
+		<code>survival_rank</code> — which workshop upgrade adds the most waves per coin, from a model fitted
+		to the save's own runs, with the fit's leave-one-out error beside the ranking
 	</li>
 	<li>
-		<code>plan_spending</code> — what the next coins should buy and when: income from the save's own
-		runs, labs and coin buys ranked on separate queues, the lab slots played forward, and a boost
-		policy the cell income sustains
+		<code>plan_spending</code> — what the next coins should buy and when: income from the save's own runs,
+		labs and coin buys ranked on separate queues, the lab slots played forward, and a boost policy the
+		cell income sustains
 	</li>
 </ul>
 
