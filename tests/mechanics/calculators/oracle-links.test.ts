@@ -126,13 +126,17 @@ describe('what the link is for', () => {
     // Now 96 of 125: five for the wave survival model, all linked to the entities they compose:
     // recovery packages, health, the two defenses and the death-prevention chain.
     //
-    // Now 105 of 141: sixteen for coin planning. The nine that price a mechanic are linked — labs,
+    // Now 96 of 138: the thirteen presentation helpers (`formatting/tools`, the notation step and
+    // the record-wide separator pass) promoted from the generated tier. None is linked, as
+    // formatting is not — they write a number down, they are not an entity the game has.
+    //
+    // Now 105 of 154: sixteen for coin planning. The nine that price a mechanic are linked — labs,
     // lab boosts, Dissonance, the workshop and the coin bonus. The seven left out read an account's
     // history or the run in progress: `planning.affordableBy`, the two `currentRun.*` and the four
     // `history.*` compose what a save says, and model no entity of their own.
     //
-    // Now 107 of 143: effective health and effective economy, curated so their scope can be read.
-    expect(curated).toHaveLength(143)
+    // Now 107 of 156: effective health and effective economy, curated so their scope can be read.
+    expect(curated).toHaveLength(156)
     expect(linked).toBe(107)
   })
 })

@@ -188,6 +188,22 @@ const SAMPLES: Record<string, { args: Record<string, unknown>, moved: Record<str
   },
   'format.dateToISO': { args: { dateStr: '2026-08-19' }, moved: { dateStr: '2026-08-20' } },
   'format.timeTo24h': { args: { timeStr: '1:30 PM' }, moved: { timeStr: '2:30 PM' } },
+  // --- the presentation helpers ---
+  'format.compact': { args: { n: 12_228_041 }, moved: { n: 25_200 } },
+  'format.largeNumber': { args: { value: 999.4 }, moved: { value: 12_228_041 } },
+  'format.shard': { args: { n: 12_228_041 }, moved: { n: 25_200 } },
+  'format.coin': { args: { n: 12_228_041 }, moved: { n: 25_200 } },
+  // The second sample moves the DIGITS, not the value: a formatter whose optional argument was
+  // dropped by the wiring would still answer, at the default.
+  'format.multiplier': { args: { m: 1.5 }, moved: { m: 1.5, fractionDigits: 1 } },
+  'format.multiplier3Decimals': { args: { m: 1.5 }, moved: { m: 2.5 } },
+  'format.moduleMultiplierFractionDigits': { args: { moduleType: 'generator' }, moved: { moduleType: 'cannon' } },
+  'format.multiplierVisualRounded': { args: { m: 1.2301 }, moved: { m: 1.2301, fractionDigits: 3 } },
+  'format.moduleMultiplierVisualRounded': { args: { m: 1.2301, moduleType: 'generator' }, moved: { m: 1.2301, moduleType: 'cannon' } },
+  'format.hoursDuration': { args: { hours: 1 }, moved: { hours: 25.5 } },
+  'format.trimmedNumber': { args: { value: 1.23456 }, moved: { value: 1.23456, maxDecimals: 2 } },
+  'notation.compactStep': { args: { tier: 0 }, moved: { tier: 11 } },
+  'notation.normalizeDecimalSeparatorsDeep': { args: { data: { coins: '1,5q' } }, moved: { data: { coins: '2,5q' } } },
 
   // `q` and `Q` differ by a factor of a thousand, so this pair is also the
   // check that the parser is case-SENSITIVE where the game is.

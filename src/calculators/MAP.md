@@ -13,11 +13,13 @@ Calculator specs and the registry over them.
 | `oracle-links.ts` | — | CALCULATOR_ORACLE_LINKS |
 | `registry.ts` | The calculators this repository reasons with, declared natively. | EPATHS_CALCULATORS, CALCULATORS, CALCULATOR_IDS, calculatorSpec |
 | `run-costs.ts` | The implementations behind `specs-costs.ts`, one direct import per handle. | COST_IMPLEMENTATIONS |
+| `run-formatting-tools.ts` | The implementations behind `specs-formatting-tools.ts`, one direct import per handle. | FORMATTING_TOOL_IMPLEMENTATIONS |
 | `run-planning.ts` | The implementations behind `specs-planning.ts`, one direct import per handle. | PLANNING_IMPLEMENTATIONS |
 | `run-survival.ts` | The implementations behind `specs-survival.ts`, one direct import per handle. | SURVIVAL_IMPLEMENTATIONS |
 | `run.ts` | Calling a declared calculator by its handle. | IMPLEMENTED_CALCULATOR_IDS, CalculatorError, runCalculator, listCalculators |
 | `specs-catalog.ts` | — | CATALOG_CALCULATORS |
 | `specs-costs.ts` | — | COST_CALCULATORS |
+| `specs-formatting-tools.ts` | — | FORMATTING_TOOL_CALCULATORS |
 | `specs-formatting.ts` | — | FORMATTING_CALCULATORS |
 | `specs-irregular.ts` | — | IRREGULAR_CALCULATORS |
 | `specs-planning.ts` | — | PLANNING_CALCULATORS |
