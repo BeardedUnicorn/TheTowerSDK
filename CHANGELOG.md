@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.1 (2026-11-27)
+
+
+### Bug Fixes
+
+* **tooling:** read the panel's 0 and 6 correctly in the capture script ([2a04071](https://github.com/BeardedUnicorn/TheTowerSDK/commit/2a04071e111605a98ad325b2180a1cebec1e428a))
+
 ## 3.1.0 (2026-11-27)
 
 
