@@ -219,11 +219,14 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
     }
 }
 
-/// The game's digits are sometimes read as letters: its 0 as "O", its 6 as the Cyrillic "Б".
+/// The game's characters are sometimes read as lookalikes: its 0 as "O", its 6 as the Cyrillic
+/// "Б", and a K suffix as the Cyrillic "К".
 /// A token is repaired only when the repair turns it into a number the panel could have written;
 /// anything else (a label such as "Boss") is returned untouched.
 func repairNumber(_ token: String) -> String {
-    let swaps: [Character: Character] = ["O": "0", "o": "0", "О": "0", "о": "0", "Б": "6", "б": "6"]
+    // Latin O and Cyrillic О for 0, Cyrillic Б for 6, and Cyrillic К М В Т for the K M B T suffixes.
+    let swaps: [Character: Character] = ["O": "0", "o": "0", "О": "0", "о": "0", "Б": "6", "б": "6",
+                                         "К": "K", "М": "M", "В": "B", "Т": "T"]
     guard token.contains(where: { swaps[$0] != nil }) else { return token }
     let repaired = String(token.map { swaps[$0] ?? $0 })
     return firstMatch(#"^\(?\d+(\.\d+)?\)?(%|[KMBTqsm])?$"#, in: repaired) != nil ? repaired : token
