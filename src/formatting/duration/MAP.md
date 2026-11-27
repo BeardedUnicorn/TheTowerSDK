@@ -6,7 +6,7 @@ Durations, in the units a run is measured in.
 
 | File | Purpose | Exports |
 |---|---|---|
-| `compute.ts` | — | SECOND, MINUTE, HOUR, DAY (+2 more) |
+| `compute.ts` | — | SECOND, MINUTE, HOUR, DAY (+3 more) |
 | `index.ts` | Durations in the units a run is measured in. | — |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

@@ -232,6 +232,7 @@ function resolveUwUptimeRatios(
 /**
  * Expected multiplicative boost from timed coin sources (UW + Golden Bot).
  * When `assumeSynced`, overlapping uptime uses the product of active mults in the overlap window.
+ * When `independent`, each window multiplies on its own: the reading for measured shares.
  */
 export function expectedTimedCoinKillMult(
   mults: Pick<ResourceDropsCoinMultiplierBreakdown,
@@ -247,6 +248,7 @@ export function expectedTimedCoinKillMult(
     | 'gbUptimeRatio'
   >,
   assumeSynced: boolean,
+  independent = false,
 ): number {
   const entries = [
     { mult: mults.gtCoinMult, uptime: mults.gtUptimeRatio },
@@ -257,6 +259,12 @@ export function expectedTimedCoinKillMult(
   ].filter(entry => entry.mult > 1 && entry.uptime > 0)
 
   if (entries.length === 0) return 1
+
+  /*
+   * Measured shares say how many kills fell inside each window and nothing about which fell
+   * inside two. Independent windows is the assumption that neither nests them nor keeps them apart.
+   */
+  if (independent) return entries.reduce((product, entry) => product * (1 + entry.uptime * (entry.mult - 1)), 1)
 
   if (assumeSynced) {
     const overlap = entries.reduce((min, entry) => Math.min(min, entry.uptime), 1)
@@ -340,7 +348,17 @@ export function buildResourceDropsCoinMultipliers(
     ? 1 + gbRangeFraction * (goldenBotBase - 1)
     : 1
 
-  const uptimeRatios = resolveUwUptimeRatios(input.uptime)
+  const share = (value: number | undefined) => clamp(Number(value) || 0, 0, 1)
+  const measured = input.coinWindowShares
+  const uptimeRatios = measured
+    ? {
+        gtUptimeRatio: share(measured.goldenTower),
+        bhUptimeRatio: share(measured.blackHole),
+        dwUptimeRatio: share(measured.deathWave),
+        slUptimeRatio: share(measured.spotlight),
+        gbUptimeRatio: share(measured.goldenBot),
+      }
+    : resolveUwUptimeRatios(input.uptime)
   const avgKillsPerGt = estimateKillsDuringGoldenTowerWindow(input, uptimeRatios.gtUptimeRatio)
   const gtPlusMult = goldenTowerPlusCoinMult(input.gtPlusLevel, avgKillsPerGt)
   const expectedTimedKillMult = expectedTimedCoinKillMult(
@@ -353,6 +371,7 @@ export function buildResourceDropsCoinMultipliers(
       ...uptimeRatios,
     },
     input.assumeSyncedUwCoinWindows,
+    measured != null,
   ) * gtPlusMult
 
   return {

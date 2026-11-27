@@ -15,6 +15,7 @@ import { getSharedToolLabs } from '../../../src/data/labs/overview'
 import { buildGuardianDefinitions } from '../../../src/data/guardians/definitions'
 import { BOT_UPGRADES_DATA, normalizeBotStats } from '../../../src/data/bots/data'
 import { SCREEN_CALCULATOR_SAMPLES } from '../../helpers/screen-calculator-samples'
+import { PLANNING_CALCULATOR_SAMPLES } from '../../helpers/planning-calculator-samples'
 import { SURVIVAL_CALCULATOR_SAMPLES } from '../../helpers/survival-calculator-samples'
 
 /*
@@ -349,6 +350,7 @@ SAMPLES['bot.statMaxLevel'] = {
 // them outside the monorepo.
 Object.assign(SAMPLES, SCREEN_CALCULATOR_SAMPLES)
 Object.assign(SAMPLES, SURVIVAL_CALCULATOR_SAMPLES)
+Object.assign(SAMPLES, PLANNING_CALCULATOR_SAMPLES)
 
 /**
  * Calculators that take nothing.
@@ -476,7 +478,9 @@ describe('every curated calculator moves', () => {
       const before = JSON.stringify(runCalculator(spec.id, sample.args).value)
       const after = JSON.stringify(runCalculator(spec.id, sample.moved).value)
       expect(after, `${spec.id} returned the same value for different inputs`).not.toBe(before)
-    })
+    // A fitted calculator runs twice here and takes over a second alone; beside the rest of
+    // `pnpm verify` it has passed the default five.
+    }, 20_000)
   }
 
   it('names the calculators that take no input, rather than skipping them quietly', () => {

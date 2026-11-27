@@ -6,8 +6,10 @@ Saved current-run upgrade arrays and position, distinct from purchased workshop.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `in-run-levels.ts` | Names the levels of the run in progress and says how the run is being played. | resolveInRunLevels, readLifetimeFreeUpgradesFromSaveRoot, readInRunLevelsFromSaveRoot |
 | `index.ts` | Saved current-run upgrade arrays and position, distinct from purchased workshop. | — |
+| `progress.ts` | Says how long the run in progress has been going and what it has earned. | resolveCurrentRunProgress, readCurrentRunProgressFromSaveRoot |
 | `read.ts` | Current-run fields listed as int/int[] in data/player-stats field catalog. | readCurrentRunFromSaveRoot |
-| `types.ts` | — | CurrentRunSaveExtract |
+| `types.ts` | — | CurrentRunSaveExtract, CurrentRunCategoryCounts, CurrentRunCategory, CurrentRunMode (+7 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

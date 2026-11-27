@@ -1,3 +1,4 @@
+import { labMaxCatalogLevel } from '../../src/mechanics/effective-paths/lab-costs'
 import { describe, expect, it } from 'vitest'
 import {
   DISCOUNT_PATH_UNSUPPORTED,
@@ -363,6 +364,29 @@ describe('the two stone gates read off eEcon Stones!DM2:DQ2', () => {
     }
     // And the composite that replaces them is available to plan.
     expect(reasons.get('UW CD') ?? '').not.toMatch(/synced|110/)
+  })
+
+  it('tells a maxed lab it is at its maximum, and keeps the cooldown wording for UW CD', () => {
+    const max = labMaxCatalogLevel('Golden Tower Bonus')
+    expect(max).toBeGreaterThan(0)
+    const plan = planEffectiveEconomyPath({
+      config: developedConfig(),
+      levels: { ...developedLevels(), time: { ...developedLevels().time, goldenTowerBonus: max } },
+      variant: 'time',
+      steps: 2,
+    })
+    const reasons = new Map(plan.excluded.map(entry => [entry.sheetName, entry.reason]))
+    expect(reasons.get('Golden Tower Bonus')).toBe(`already at its maximum level, ${max}`)
+    expect(plan.steps.some(step => step.name === 'Golden Tower Bonus')).toBe(false)
+    expect([...reasons.values()].filter(reason => /110 seconds/.test(reason))).toEqual([])
+    // One level short of the maximum it is still on the board.
+    const short = planEffectiveEconomyPath({
+      config: developedConfig(),
+      levels: { ...developedLevels(), time: { ...developedLevels().time, goldenTowerBonus: max - 1 } },
+      variant: 'time',
+      steps: 1,
+    })
+    expect(short.excluded.some(entry => entry.sheetName === 'Golden Tower Bonus' && /maximum/.test(entry.reason))).toBe(false)
   })
 
   it('hides UW CD once the longest cooldown is under 110 seconds', () => {

@@ -162,4 +162,16 @@ export const CALCULATOR_ORACLE_LINKS: Readonly<Record<string, readonly string[]>
   'survival.calibrateFromHistory': ['recoveryPackage', 'health', 'defensePercent'],
   'survival.simulateRun': ['recoveryPackage', 'health', 'deathPrevention'],
   'survival.rankUpgrades': ['workshop', 'recoveryPackage', 'health'],
+  // --- coin planning --------------------------------------------------------
+  'planning.forecastIncome': ['coinsBonusTotal', 'currency'],
+  'planning.checkCoinModel': ['coinsBonusTotal'],
+  'planning.rankSpends': ['lab', 'workshop', 'workshopEnhancement', 'dissonance'],
+  'planning.scheduleLabs': ['lab', 'lab.speed', 'lab.slot', 'lab.boost'],
+  'planning.cellBudget': ['lab.boost', 'lab.slot'],
+  'planning.dissonancePayback': ['dissonance', 'dissonance.boost', 'coinsBonusTotal'],
+  'planning.planSpending': ['lab', 'lab.boost', 'workshop', 'dissonance', 'coinsBonusTotal'],
+  'workshop.accountCoinCostBetween': ['workshop'],
+  'coinBonus.scenarios': ['coinsBonusTotal', 'dissonance.boost'],
+  'epaths.effectiveHealth': ['health', 'defensePercent', 'defenseAbsolute'],
+  'epaths.effectiveEconomy': ['coinsBonusTotal'],
 }

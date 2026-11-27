@@ -138,6 +138,7 @@ export const LAB_BOOST_BASE_CELL_COST_1H: Readonly<Record<string, number>> = {
  *
  * The oracle did not model this at all, which made every multi-lab boost
  * estimate low.
+ * DISPUTED: the v25.5 patch note and Fandom say it was removed; see `data/labs/boost-prices`.
  */
 export const LAB_BOOST_COST_STEP_PER_BOOSTED_LAB = 0.2
 

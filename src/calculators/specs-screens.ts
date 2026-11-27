@@ -65,6 +65,17 @@ export const SCREEN_CALCULATORS: readonly CalculatorSpec[] = [
     reads: ['coinBonus.input'],
     produces: ['coinBonus.total'],
     dependsOn: ['coinBonus.themesAndSongs', 'module.stat'],
+    includes: [
+      'No Ads purchase', 'Starter Pack', 'Epic Pack', 'the equipped Coins card and its mastery', 'the primary Generator module',
+      'the selected tier\'s coin bonus', 'themes, banners, guardian skins and songs', 'Coin Bonus relics',
+      'the Coin Bonus enhancement', 'the tier\'s Utility Dissonant boost and its echo',
+    ],
+    excludes: [
+      { input: 'Coins / Kill Bonus and Coins / Wave (workshop and labs)', reason: 'they multiply kill and wave coins inside a run and are not rows of the All Coins Bonuses panel' },
+      { input: 'Golden Tower, Black Hole, Death Wave and Spotlight coin bonuses', reason: 'timed multipliers on kills inside their windows, not part of the panel\'s total' },
+      { input: 'coin perks and the coin trade-off', reason: 'picked during a run; the panel is read before one starts' },
+      { input: 'how much of the total reaches run income', reason: 'the panel is a multiplier, not a forecast: planning.checkCoinModel measures what recorded coins did when it changed' },
+    ],
   },
   {
     id: 'coinBonus.themesAndSongs',

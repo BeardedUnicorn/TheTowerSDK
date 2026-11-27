@@ -13,17 +13,19 @@ Calculator specs and the registry over them.
 | `oracle-links.ts` | — | CALCULATOR_ORACLE_LINKS |
 | `registry.ts` | The calculators this repository reasons with, declared natively. | EPATHS_CALCULATORS, CALCULATORS, CALCULATOR_IDS, calculatorSpec |
 | `run-costs.ts` | The implementations behind `specs-costs.ts`, one direct import per handle. | COST_IMPLEMENTATIONS |
+| `run-planning.ts` | The implementations behind `specs-planning.ts`, one direct import per handle. | PLANNING_IMPLEMENTATIONS |
 | `run-survival.ts` | The implementations behind `specs-survival.ts`, one direct import per handle. | SURVIVAL_IMPLEMENTATIONS |
 | `run.ts` | Calling a declared calculator by its handle. | IMPLEMENTED_CALCULATOR_IDS, CalculatorError, runCalculator, listCalculators |
 | `specs-catalog.ts` | — | CATALOG_CALCULATORS |
 | `specs-costs.ts` | — | COST_CALCULATORS |
 | `specs-formatting.ts` | — | FORMATTING_CALCULATORS |
 | `specs-irregular.ts` | — | IRREGULAR_CALCULATORS |
+| `specs-planning.ts` | — | PLANNING_CALCULATORS |
 | `specs-progress.ts` | — | PROGRESS_CALCULATORS |
 | `specs-screens.ts` | — | SCREEN_CALCULATORS |
 | `specs-survival.ts` | — | SURVIVAL_CALCULATORS |
 | `specs-vault.ts` | — | VAULT_V29_CALCULATORS |
 | `specs.generated.ts` | — | GENERATED_CALCULATORS, GENERATED_IMPLEMENTATIONS |
-| `types.ts` | The shape of a declared calculator. | CalculatorParam, CalculatorParamField, CalculatorSpec, CalculatorEdge (+2 more) |
+| `types.ts` | The shape of a declared calculator. | CalculatorParam, CalculatorParamField, CalculatorSpec, CalculatorExclusion (+3 more) |
 
 [← src](../MAP.md) · [← the package](../../MAP.md)

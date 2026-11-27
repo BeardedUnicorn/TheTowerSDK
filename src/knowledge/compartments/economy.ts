@@ -227,6 +227,13 @@ export const KILL_VOLUME_INPUTS: readonly string[] = [
   'boss and fleet waves, which are composed differently from ordinary ones',
 ]
 
+/** Twenty stored exports of one tier-7 account, 2026-11-21 to 2026-11-26, and its run records. */
+const PLANNING_EXPORTS = {
+  origin: 'save',
+  ref: 'fixtures/save/planning-t7.snapshots.json',
+  verifiedAt: '2026-11-26',
+} as const
+
 export const ECONOMY_KNOWLEDGE_NODES: readonly KnowledgeNode[] = [{
 id: 'roundKillVolume',
 label: 'How many enemies a wave actually produces',
@@ -661,6 +668,112 @@ units: 'multiplier'},
     ],
     sources: [CATALOG_CURRENCY],
   },
+  {
+    id: 'coinPlanning',
+    label: 'Coin planning',
+    kind: 'system',
+    summary:
+      'What the next coins should buy and when, for one account: coins and cells per day from its own full '
+      + 'farm runs, a check of predicted against recorded coins, labs ranked by gain per slot-hour and '
+      + 'everything else by gain per coin, the lab slots played forward, a boost per slot the cell income '
+      + 'sustains, and what a Dissonant run repays.',
+    disambiguation:
+      'Not the Effective Paths planners, which rank one kind of spend in its own unit. This puts a lab, a '
+      + 'workshop level and a Dissonant run on one scale, coins per day, and dates them against real income.',
+    units: 'coins per day',
+    traps: [
+      'A RUN RECORD\'S battleDate IS THE RUN\'S END, not its start: across twenty stored exports a run first '
+      + 'appears minutes after its battleDate, with hours of real time already in it. Uptime counted from it '
+      + 'as a start places every run in the wrong hours.',
+      'A BEST-THREE MEAN IS A PEAK, and 23 hours a day is the sheet\'s assumption. One account ran 13.4 of '
+      + '24 hours and a third of the time over eleven days; forecast with the median rate of full farm runs and '
+      + 'the hours actually run.',
+      'INCOME CHANGES AT ONCE when a pack is bought, and runs on either side cannot be pooled. A Total Coin '
+      + 'Bonus that dips and recovers between two exports — the Coins card unequipped for a tournament — is not '
+      + 'such a change.',
+      'ONE RUN\'S COINS DIFFER FROM THE NEXT BY A FACTOR OF TWO OR THREE WITH NOTHING BOUGHT. Wave coins per '
+      + 'wave on one account ranged from 7.3K to 22.1K across two weeks at one coin bonus: the perks taken in '
+      + 'a run. Two runs either side of a pack therefore cannot show whether the pack arrived in full; its two '
+      + 'packs (x6) looked like x3.4 on a matched pair and like x4.9 across 27 runs, both inside that spread.',
+      'WAVE COINS ARE THE CLEAN READING OF A RUN. Coins / Wave x coin bonus x perks, with no ultimate weapon '
+      + 'in it: the model gave 60.1K a wave and a run recorded 60.6K. Recorded over predicted wave coins is the '
+      + 'run\'s own factor, and it divides out of kill coins too.',
+      'A KILL PAYS ITS ENEMY\'S BASE COINS AT ANY WAVE. The coin simulation multiplied them by the wave until '
+      + '2026-11-26 and came out about 70 times the records at wave 2,000; fitted over 28 runs from wave 1,077 '
+      + 'to 2,697, recorded kill coins over that figure fell as wave^-1.08. With the factor gone, the ultimate '
+      + 'weapons and modules read from the export and the enemy mix, kill counts and coin windows measured, '
+      + 'a run to wave 2,230 is predicted at 1.56B against 2.65B recorded with nothing fitted, and the fitted '
+      + 'kill scale is 1.7.',
+      'THE SHARE OF FAST, TANK AND RANGED ENEMIES IS NOT WHAT THE SPAWN CHANCES SAY. At tier 7 '
+      + '`waveInfoSpawnChances` and the coin mix give 4% each at every wave; 41 runs of one account killed '
+      + '6%, 5% and 3% of them by wave 48 and 15%, 16% and 12% by wave 2,700. No source gives the rule, so '
+      + 'the planning tools measure base coins per ordinary kill from the run records and pass it in '
+      + '(`ordinaryCoinWeight`); without that the simulation pays about a third as much per kill.',
+      'ENEMIES PER WAVE DO NOT FOLLOW THE SPAWN CHANCE CHART. The simulation has spawn chance x Enemy Balance '
+      + 'x 3.25 a played wave, calibrated on one run at wave 4,875: 6 at wave 48 and 259 at wave 2,697. One '
+      + 'account recorded 63 a played wave by wave 48, 130 by wave 1,077, then 121 to 126 in every run to '
+      + 'wave 2,697. Planning measures recorded over modelled kills from the run records and passes it in '
+      + '(`ordinaryKillScale`); nothing here says what holds the figure near 125.',
+      'A SKIPPED WAVE SPAWNS NOTHING, THE FIRST OF A CHAIN INCLUDED. The spawn fraction counted only the '
+      + 'skips beyond the first until 2026-11-26: 3.8% of waves at a 17% Wave Skip card, where 78,771 waves '
+      + 'of one account\'s runs had 19.8% skipped. It is now one over one plus chance x skips per proc, '
+      + '17.4% here; the same change took modelled wave-skip coins from a twentieth of a run to a fifth, '
+      + 'against a quarter recorded.',
+      'THE COIN WINDOWS ARE READ OFF THE RUN, NOT MODELLED. Enemies destroyed inside Spotlight are 14% to 16% '
+      + 'of a run where its angle covers 8%, and Death Wave tags 7% to 9% where the wave is on screen 1% of '
+      + 'the time: its bonus stays on an enemy until it dies. Critical Coin is 8% to 10% of kill coins and '
+      + 'is how Basic enemies pay at all. Planning measures these shares and combines the windows as '
+      + 'independent (`coinWindowShares`); the uptime model nests every window inside the shortest.',
+      'WHAT IS STILL SHORT IS COINS PER KILL, BY ABOUT 1.7. A run with no all-coin perks records Golden '
+      + 'Tower coins that imply a multiplier near x19.7 where stones, lab and module give x15.95, which a '
+      + 'Golden Tower bonus perk taken during the run would explain. Run records list no perks, so it '
+      + 'stays in the fitted scale.',
+      'THE MODEL\'S GOLDEN TOWER UPTIME MATCHES THE RECORDS. Bonus 10, duration 6, cooldown 3 and the duration '
+      + 'lab at 16 give a window open 13.7% of the time; the run recorded 30,153 of 219,819 enemies destroyed '
+      + 'inside Golden Tower, 13.7%. Weapon levels come from the export by slot and position, and a weapon '
+      + 'not owned must get none.',
+      'RUN COIN COUNTERS OVERLAP: a Golden Tower coin is also a kill coin. Compare each source with itself '
+      + 'across two runs and never add them up.',
+      'LABS ARE LIMITED BY SLOT TIME, NOT COINS. A lab that costs a million coins can take two hundred hours '
+      + 'of a slot. Ranking labs and coin buys in one list by coins puts the cheapest long lab first.',
+      'AN EXPORT TAKEN BETWEEN RUNS can show a loadout no run was played with. Predict a past run from an '
+      + 'export taken during it where one exists.',
+      'IN-RUN LEVELS ABOVE THE WORKSHOP ARE NOT ALL FREE UPGRADES. On one account the defense tab matched its '
+      + 'free-upgrade count exactly while attack and utility held hundreds more: cash had been spent there in '
+      + 'a run its player called AFK. Judge a run\'s mode per tab.',
+      'THE SAVE COUNTS THE RUN IN PROGRESS ITSELF: real and game seconds, coins, cells and free upgrades per '
+      + 'tab so far. It has no start timestamp; the export time less the real seconds is the latest the run '
+      + 'can have begun, since paused time is not counted.',
+    ],
+    implementedBy: [
+      'forecastIncomeFromSave',
+      'checkCoinModelFromSave',
+      'rankSpendsFromSave',
+      'scheduleLabsFromSave',
+      'planCellBudgetFromSave',
+      'priceDissonancePaybackFromSave',
+      'planSpendingFromSave',
+      'forecastIncome',
+      'scheduleLabs',
+      'planCellBudget',
+      'rankSpends',
+      'buildExportTimeline',
+      'readInRunLevelsFromSaveRoot',
+      'readCoinWeaponInputsFromSnapshot',
+      'measureOrdinaryCoinWeights',
+      'measureOrdinaryKills',
+      'measureCoinShares',
+      'readCoinModuleBonusesFromSnapshot',
+    ],
+    assertions: [
+      { subject: 'coinPlanning', predicate: 'runBattleDateIs', value: 'end', provenance: PLANNING_EXPORTS },
+      { subject: 'coinPlanning', predicate: 'saveHasRunStartTimestamp', value: false, provenance: PLANNING_EXPORTS },
+      { subject: 'coinPlanning', predicate: 'waveCoinsPerWaveSpreadAtOneCoinBonus', value: 3, provenance: PLANNING_EXPORTS },
+      { subject: 'coinPlanning', predicate: 'killCoinsGrowWithTheWaveOfTheKill', value: false, provenance: PLANNING_EXPORTS },
+      { subject: 'coinPlanning', predicate: 'goldenTowerUptimeShareOfKills', value: 0.137, provenance: PLANNING_EXPORTS },
+    ],
+    sources: [PLANNING_EXPORTS],
+  },
 ]
 
 export const ECONOMY_KNOWLEDGE_EDGES: readonly KnowledgeEdge[] =[
@@ -923,5 +1036,19 @@ note: "Dissonance boost and echo rewards contribute to the account-wide coin mul
     to: 'card.slot',
     note: 'Card slots beyond 22 need key upgrades in the harmony tech tree.',
     sources: [WIKI_KEYS],
-  }
+  },
+{
+    from: 'coinsBonusTotal',
+    kind: 'scales',
+    to: 'coinPlanning',
+    note: 'Every coin-bonus gain is the Total Coin Bonus ratio times income, discounted by the measured pass-through.',
+    sources: [PLANNING_EXPORTS],
+  },
+{
+    from: 'lab.slot',
+    kind: 'caps',
+    to: 'coinPlanning',
+    note: 'Five slots is the ceiling on research, which is why labs are ranked by gain per slot-hour and not per coin.',
+    sources: [PLANNING_EXPORTS],
+  },
 ]

@@ -390,6 +390,65 @@ describe('resource-drops-coin-simulation', () => {
     expect(computeGoldenTowerCoinMult(20, 0)).toBeGreaterThan(computeGoldenTowerCoinMult(0, 0))
   })
 
+  /*
+   * The wiki's table (Currency/Coins): Fast and Ranged pay 2, Tank 4, Basic nothing, at any wave.
+   * So a run's raw kill coins are its kills times one weight, and twice the kills at twice the
+   * depth pay twice the coins, not four times.
+   */
+  it('pays a kill the same at wave 10 as at wave 1,000', () => {
+    const rows = simulateWaveCoinRows(baseCoinInput({ targetWave: 1000, waveSkipActive: false }), { coinsPerWaveMult: 1 })
+    for (const row of [rows[9]!, rows[499]!, rows[999]!]) {
+      expect(row.rawKillCoins / row.expectedKills).toBeCloseTo(row.coinWeightPerKill, 9)
+    }
+    const yields = accumulateResourceDropsKillYields({ targetWave: 1000, enemyBalanceMult: 1, waveAcceleratorMastery: null, introSprintZeroCoinWaveCap: 0 })
+    expect(yields.rawKillCoins / yields.totalKills).toBeCloseTo(RESOURCE_DROPS_AVG_ENEMY_COIN_WEIGHT, 9)
+  })
+
+  it('takes a measured coin weight in place of the tier\'s spawn chances', () => {
+    const input = baseCoinInput({ tier: 7, targetWave: 500, waveSkipActive: false })
+    const fromTier = simulateWaveCoinRows(input, { coinsPerWaveMult: 1 })
+    const measured = simulateWaveCoinRows({ ...input, ordinaryCoinWeight: 1.125 }, { coinsPerWaveMult: 1 })
+    expect(measured[499]!.coinWeightPerKill).toBe(1.125)
+    expect(fromTier[499]!.coinWeightPerKill).toBeLessThan(0.5)
+    // Kills are the same; only what each pays changes, and wave coins not at all.
+    expect(measured[499]!.expectedKills).toBe(fromTier[499]!.expectedKills)
+    expect(measured[499]!.rawKillCoins / fromTier[499]!.rawKillCoins).toBeCloseTo(1.125 / fromTier[499]!.coinWeightPerKill, 9)
+    expect(measured[499]!.waveCoins).toBe(fromTier[499]!.waveCoins)
+    expect(accumulateWaveEcon({ ...input, ordinaryCoinWeight: 1.125 }).rawKillCoins / accumulateWaveEcon(input).rawKillCoins)
+      .toBeCloseTo(1.125 / fromTier[499]!.coinWeightPerKill, 9)
+  })
+
+  it('scales kills by a measured figure, and pays skipped waves from the kills they did not spawn', () => {
+    const input = baseCoinInput({ tier: 7, targetWave: 500, waveSkipActive: false })
+    const modelled = simulateResourceDropsCoins(input)
+    const measured = simulateResourceDropsCoins({ ...input, ordinaryKillScale: 0.6 })
+    expect(measured.totalKillsEstimated).toBeCloseTo(modelled.totalKillsEstimated * 0.6, 6)
+    expect(measured.coins.coinsFromKills).toBeCloseTo(modelled.coins.coinsFromKills * 0.6, 3)
+    expect(measured.coins.coinsFromWavePayout).toBe(modelled.coins.coinsFromWavePayout)
+    expect(simulateResourceDropsCoins({ ...input, ordinaryKillScale: 0 }).totalKillsEstimated).toBe(modelled.totalKillsEstimated)
+
+    // With Wave Skip at 17%, about a sixth of waves spawn nothing and pay 1.1x the wave before.
+    const skipping = simulateResourceDropsCoins(baseCoinInput({ tier: 7, targetWave: 500, waveSkipActive: true, waveSkipCardLevel: 6 }))
+    expect(skipping.totalKillsEstimated / modelled.totalKillsEstimated).toBeCloseTo(1 / (1 + 0.17 * 1.235), 2)
+    const share = skipping.coins.coinsFromKillsWaveSkipBonus / (skipping.coins.coinsFromKills + skipping.coins.coinsFromKillsWaveSkipBonus)
+    expect(share).toBeGreaterThan(0.15)
+    expect(share).toBeLessThan(0.25)
+  })
+
+  it('combines measured window shares as independent windows, in place of the uptime model', () => {
+    const input = baseCoinInput({ slCoinLabLevel: 12, dwCoinLabLevel: 12 })
+    const none = buildResourceDropsCoinMultipliers(input)
+    expect(none.expectedTimedKillMult).toBe(1)
+    const measured = buildResourceDropsCoinMultipliers({ ...input, coinWindowShares: { spotlight: 0.16, deathWave: 0.08 } })
+    expect(measured.slUptimeRatio).toBe(0.16)
+    expect(measured.dwUptimeRatio).toBe(0.08)
+    expect(measured.gtUptimeRatio).toBe(0)
+    // Spotlight x2.2 on 16% of kills and Death Wave x2.1 on 8%, each on its own.
+    expect(measured.expectedTimedKillMult).toBeCloseTo((1 + 0.16 * 1.2) * (1 + 0.08 * 1.1), 12)
+    // A share outside 0 to 1 is held to it, and a window with no bonus adds nothing.
+    expect(buildResourceDropsCoinMultipliers({ ...input, coinWindowShares: { spotlight: 5, blackHole: 0.5 } }).expectedTimedKillMult).toBeCloseTo(2.2, 12)
+  })
+
   it('accumulateResourceDropsKillYields matches per-wave brute force', () => {
     function bruteForce(input: {
       targetWave: number
@@ -410,7 +469,8 @@ describe('resource-drops-coin-simulation', () => {
         const kills = cap * input.enemyBalanceMult * RESOURCE_DROPS_ENEMIES_PER_SPAWN_TICK
         totalKills += kills
         if (wave <= input.introSprintZeroCoinWaveCap) continue
-        rawKillCoins += kills * wave * RESOURCE_DROPS_AVG_ENEMY_COIN_WEIGHT
+        // Base coins per kill, the same at any wave: wiki Currency/Coins, "Coins per kill".
+        rawKillCoins += kills * RESOURCE_DROPS_AVG_ENEMY_COIN_WEIGHT
       }
       return { totalKills, rawKillCoins }
     }
@@ -431,8 +491,10 @@ describe('resource-drops-coin-simulation', () => {
         // tolerance of 1e-3 is below the float64 spacing and fails on rounding
         // alone. The claim is that the segment sum and the loop agree, not that
         // they agree to a fixed number of decimal places at any magnitude.
+        // The loop adds up to half a million terms one by one and the segment sum multiplies once,
+        // so they part in the eleventh digit: rounding, three orders below anything that matters.
         expect(Math.abs(fast.rawKillCoins - slow.rawKillCoins) / Math.max(1, slow.rawKillCoins))
-          .toBeLessThan(1e-12)
+          .toBeLessThan(1e-10)
       }
     }
   })

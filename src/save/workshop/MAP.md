@@ -6,9 +6,10 @@ What a save says about workshop.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `account-prices.ts` | Prices a range of workshop or enhancement levels the way one account pays for it. | workshopTabOfStat, priceWorkshopLevelsForAccount, priceEnhancementLevelsForAccount, readLabLevelsBySlugFromSaveRoot (+2 more) |
 | `index.ts` | Workshop levels, in both currencies. | — |
 | `read.ts` | Workshop levels read from a save: | WORKSHOP_SAVE_ATTACK_LEVELS_KEY, WORKSHOP_SAVE_DEFENSE_LEVELS_KEY, WORKSHOP_SAVE_UTILITY_LEVELS_KEY, WORKSHOP_SAVE_ATTACK_ENHANCEMENT_LEVELS_KEY (+23 more) |
-| `types.ts` | The types `save/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopSaveMeta, WorkshopSavePresetSnapshot, WorkshopSaveExtract, WorkshopCategoryCounts (+1 more) |
+| `types.ts` | The types `save/workshop/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WorkshopSaveMeta, WorkshopSavePresetSnapshot, WorkshopSaveExtract, WorkshopCategoryCounts (+3 more) |
 | `unlocks.ts` | Which workshop rows a save has unlocked, and which stats are locked against free upgrades. | readWorkshopUnlocksFromSaveRoot |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

@@ -6,6 +6,7 @@ Lab progress and what remains.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `cost-modifiers.ts` | Reads what changes a lab's price and speed on one account: | labSpeedRelicFractionFromIndices, labCostModifiersFromLevels, readLabCostModifiersFromSaveRoot |
 | `favorites.ts` | — | FAVORITE_LABS_SAVE_FIELD, readFavoriteLabSlugsFromSaveRoot, saveHasFavoriteLabs |
 | `index.ts` | Labs read from a save: | — |
 | `read.ts` | Lab research read from a save: | LABS_SAVE_UNLOCKED_KEY, LABS_SAVE_RESEARCH_LEVEL_KEY, LABS_SAVE_RESEARCH_PERCENT_KEY, LABS_SAVE_LAB_LEVEL_KEY (+12 more) |

@@ -69,7 +69,8 @@ export function forEachWaveEconRow(
     ctx.targetWave,
     Math.max(1, Math.floor(Number(options.maxRows ?? ctx.targetWave) || ctx.targetWave)),
   )
-  const coinWeightPerKill = ordinaryCoinWeightAtTier(input.tier, input)
+  const coinWeightPerKill = input.ordinaryCoinWeight ?? ordinaryCoinWeightAtTier(input.tier, input)
+  const killScale = input.ordinaryKillScale != null && input.ordinaryKillScale > 0 ? input.ordinaryKillScale : 1
   let prevWaveCells = 0
   let prevPlayedBaseCells = 0
 
@@ -83,10 +84,10 @@ export function forEachWaveEconRow(
       waveAcceleratorMastery: waMastery,
       spawnYield,
     })
-    const expectedKills = fullKills * spawnFraction
+    const expectedKills = fullKills * spawnFraction * killScale
     const rawKillCoins = wave <= introCap
       ? 0
-      : expectedKills * wave * coinWeightPerKill
+      : expectedKills * coinWeightPerKill // base coins per kill, the same at any wave: see simulate-wave-coins
     const waveCoins = wave <= introCap ? 0 : multipliers.coinsPerWaveMult * spawnFraction
 
     const drops = computeWaveDropYield(input, wave, ctx.enemyBalanceMult, 1)

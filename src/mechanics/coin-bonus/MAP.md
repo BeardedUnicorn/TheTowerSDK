@@ -8,6 +8,7 @@ The account-wide coin multiplier, row by row as the game lists it under Total Co
 |---|---|---|
 | `compute.ts` | The Total Coin Bonus on the Battle tab, built the way the game's All Coins Bonuses panel lists it. | computeThemeAndSongCoinBonus, computeTotalCoinBonus |
 | `index.ts` | Coin bonus: | — |
-| `types.ts` | The types `mechanics/coin-bonus/` exports, in one place — the inputs the battle screen's Total Coin Bonus is built from, and the breakdown it shows. | PaidCosmeticCounts, CoinsCardState, GeneratorModuleState, TotalCoinBonusInput (+1 more) |
+| `scenarios.ts` | Prices several what-ifs for the Total Coin Bonus at once, each against the same starting point. | applyCoinBonusScenario, compareCoinBonusScenarios |
+| `types.ts` | The types `mechanics/coin-bonus/` exports, in one place — the inputs the battle screen's Total Coin Bonus is built from, and the breakdown it shows. | PaidCosmeticCounts, CoinsCardState, GeneratorModuleState, TotalCoinBonusInput (+4 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

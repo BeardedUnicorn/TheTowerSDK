@@ -19,19 +19,24 @@ import { clamp } from '../primitives/math'
 import type { WaveSkipPerWaveAdjust } from './types'
 
 /**
- * EV spawn fraction when skip procs with expected multi-skip depth.
+ * The share of a run's waves that are played, and so spawn enemies.
  *
- * Each proc advances `expectedSkipsPerProc` wave counters while only the anchor wave spawned;
- * `(expectedSkipsPerProc - 1)` slots in that chain are skip-only.
+ * After each played wave Wave Skip procs with chance `skipChance` and skips `expectedSkipsPerProc`
+ * waves on average, every one of which spawns nothing. So for each played wave there are
+ * `skipChance x expectedSkipsPerProc` skipped ones, and the played share is one over one plus that.
+ *
+ * Until 2026-11-26 this counted only the skips beyond the first in a chain, which made 3.8% of
+ * waves spawn-less at a 17% card. Across 78,771 waves of one account's runs with that card,
+ * 19.8% were skipped; this gives 17.4%.
  */
 export function waveSkipSpawnFraction(
   skipChance: number,
   expectedSkipsPerProc: number,
 ): number {
   const p = clamp(skipChance, 0, 1)
-  const extra = Math.max(0, expectedSkipsPerProc - 1)
-  if (p <= 0 || extra <= 0) return 1
-  return 1 / (1 + p * extra)
+  const skips = Math.max(0, expectedSkipsPerProc)
+  if (p <= 0 || skips <= 0) return 1
+  return 1 / (1 + p * skips)
 }
 
 /** Sum of 1.1^k for k = 1..extra (extra = expectedSkipsPerProc − 1). */
@@ -67,8 +72,9 @@ export function waveSkipIncomeEv(
   if (extra <= 0 || p <= 0 || anchorPlayedBase <= 0) return linearOnPrev
 
   const chainFactor = waveSkipChainIncomeFactor(expectedSkipsPerProc, incomeMult)
+  /* Per nominal wave, so scaled by the share of waves that are played and can start a chain. */
   const burstBonus =
-    p * anchorPlayedBase * Math.max(0, chainFactor - incomeMult) / (1 + p * extra)
+    p * anchorPlayedBase * Math.max(0, chainFactor - incomeMult) * spawnFraction
 
   return linearOnPrev + burstBonus
 }

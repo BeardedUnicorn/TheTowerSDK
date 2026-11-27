@@ -227,6 +227,8 @@ const DIRECTORY_PURPOSE = {
   'src/node/nrbf': 'The .NET Binary Format reader, ported to TypeScript.',
   'src/save/battle': 'Battle reports and history as the save stores them.',
   'src/save/series': 'A player\'s history as series: runs over time, tournaments over time, records by tier.',
+  'src/save/history': 'An account\'s history from the exports kept of it: snapshots, differences, events and the state at a moment.',
+  'src/save/planning': 'Spending plans from a save: the account\'s income from its own runs, and what to buy with it and when.',
   'src/save/survival': 'The wave survival model from a save: the account\'s state, what its runs measured, and a fit of them.',
   'src/save/effective-paths': 'Effective Paths inputs recovered from a save.',
   'src/save/ids': 'The IDS block: the grid and every domain read out of it.',

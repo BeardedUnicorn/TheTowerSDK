@@ -2528,11 +2528,26 @@ export const TOOLS = {
             'Starting levels, merged over all-zero. Shape matches the family\'s levels type — use '
             + 'get_export on ZERO_EFFECTIVE_DAMAGE_LEVELS or ZERO_EFFECTIVE_ECONOMY_LEVELS to see it',
         },
+        scenarios: {
+          type: 'array',
+          description:
+            'Plan again with a change, to compare rankings: [{ "name": "GT Bonus 20", "levels": { "time": { "goldenTowerBonus": 20 } } }]. '
+            + 'Each scenario\'s `levels` are merged over the starting levels, and its steps are returned under `scenarios` beside the plan without it',
+          items: { type: 'object', properties: { name: { type: 'string' }, levels: { type: 'object' } }, required: ['name', 'levels'] },
+        },
       },
       required: ['family', 'variant'],
     },
-    run: async ({ family, variant, steps, levels, savePath }) => {
+    run: async ({ family, variant, steps, levels, savePath, scenarios }) => {
       const m = sdk.mechanics
+      if (scenarios !== undefined) {
+        const wellFormed = Array.isArray(scenarios) && scenarios.length > 0 && scenarios.length <= 8
+          && scenarios.every(row => row !== null && typeof row === 'object' && typeof row.name === 'string'
+            && row.levels !== null && typeof row.levels === 'object' && !Array.isArray(row.levels))
+        if (!wellFormed) return { error: 'scenarios must be a list of one to eight objects, each with a `name` and `levels`.' }
+      }
+      /* The levels of the scenario being planned, merged after the caller's own; null for the plan itself. */
+      let scenarioLevels = null
       /* Bounded: a planner asked for a million steps runs until the client gives up on the server. */
       const count = Math.max(1, sampleSize(steps, 10, 200))
 
@@ -2547,12 +2562,14 @@ export const TOOLS = {
       const merge = (zero) => {
         const merged = { ...zero }
         const given = levels && typeof levels === 'object' && !Array.isArray(levels) ? levels : {}
-        for (const [key, value] of Object.entries(given)) {
-          if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue
-          if (!Object.hasOwn(zero, key)) unknownLevelKeys.push(key)
-          merged[key] = merged[key] && typeof merged[key] === 'object' && value && typeof value === 'object'
-            ? { ...merged[key], ...value }
-            : value
+        for (const layer of [given, scenarioLevels ?? {}]) {
+          for (const [key, value] of Object.entries(layer)) {
+            if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue
+            if (!Object.hasOwn(zero, key) && !unknownLevelKeys.includes(key)) unknownLevelKeys.push(key)
+            merged[key] = merged[key] && typeof merged[key] === 'object' && value && typeof value === 'object'
+              ? { ...merged[key], ...value }
+              : value
+          }
         }
         return merged
       }
@@ -2582,6 +2599,9 @@ export const TOOLS = {
           unmapped: inputs.unmapped,
           unfilledConfig: inputs.unfilledConfig ?? [],
           coinsPerHour: sdk.save.computeCoinsPerHourFromSaveRoot(loaded.parsedRoot),
+          /* Without these the planner counts no Utility enhancement spend and hides Coin Bonus on every account. */
+          enhancementLevels: sdk.save.readWorkshopFromSaveRoot(loaded.parsedRoot)?.active.enhancementLevels ?? {},
+          labModifiers: sdk.save.readLabCostModifiersFromSaveRoot(loaded.parsedRoot) ?? {},
         }
       }
 
@@ -2598,6 +2618,7 @@ export const TOOLS = {
           variant,
           steps: count,
           workshopEnhancementsUnlocked: true,
+          ...(fromSave ? { enhancementLevels: fromSave.enhancementLevels, labModifiers: fromSave.labModifiers } : {}),
           ...(fromSave?.coinsPerHour ? { coinsPerHour: fromSave.coinsPerHour } : {}),
         }),
         health: () => m.planEffectiveHealthPath({
@@ -2637,6 +2658,26 @@ export const TOOLS = {
         return { error: String(error instanceof Error ? error.message : error) }
       }
 
+      let compared = null
+      if (scenarios !== undefined) {
+        compared = []
+        for (const scenario of scenarios) {
+          scenarioLevels = scenario.levels
+          try {
+            const changed = plans[family]()
+            compared.push({
+              name: scenario.name,
+              steps: changed.steps.map(step => ({ step: step.step, name: step.name, level: step.level, cost: step.cost, roi: step.roi })),
+              excluded: changed.excluded.length,
+            })
+          }
+          catch (error) {
+            compared.push({ name: scenario.name, error: String(error instanceof Error ? error.message : error) })
+          }
+        }
+        scenarioLevels = null
+      }
+
       return {
         family,
         variant,
@@ -2671,6 +2712,7 @@ export const TOOLS = {
           step: step.step, name: step.name, level: step.level, cost: step.cost, roi: step.roi,
         })),
         excluded: plan.excluded,
+        ...(compared ? { scenarios: compared } : {}),
       }
     },
   },
@@ -3377,12 +3419,36 @@ export const TOOLS = {
             + '{ "coinsCard": { "equipped": true } } or { "relicCoinBonus": 0.2 }. A field the input '
             + 'does not have is refused',
         },
+        scenarios: {
+          type: 'array',
+          description:
+            'Several what-ifs in one call, each against the save as it is: '
+            + '[{ "name": "to 2000", "dissonanceWave": { "tier": 7, "wave": 2000 } }]. Each takes a `name` and any of '
+            + '`tier`, `overrides` (as above) and `dissonanceWave`, a Dissonant run reaching that wave on that tier. '
+            + 'Answered under `scenarios` with the total, its ratio to today\'s and the rows that changed',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              tier: { type: 'number' },
+              overrides: { type: 'object' },
+              dissonanceWave: { type: 'object', properties: { tier: { type: 'number' }, wave: { type: 'number' } }, required: ['tier', 'wave'] },
+            },
+            required: ['name'],
+          },
+        },
       },
     },
     run: async (input = {}) => {
       const refused = unreadArguments('coin_bonus', input)
       if (refused) return refused
-      const { tier, overrides } = input
+      const { tier, overrides, scenarios } = input
+      if (scenarios !== undefined) {
+        const wellFormed = Array.isArray(scenarios) && scenarios.length > 0
+          && scenarios.every(row => row !== null && typeof row === 'object' && typeof row.name === 'string' && row.name.length > 0)
+        if (!wellFormed) return { error: 'scenarios must be a list of objects, each with a `name`, such as [{ "name": "to 2000", "dissonanceWave": { "tier": 7, "wave": 2000 } }].' }
+        if (scenarios.length > 20) return { error: `at most 20 scenarios in one call; ${scenarios.length} were given.` }
+      }
       const loaded = await readSaveOrExplain(input.path)
       if (loaded.error) return loaded
       const { parsedRoot, savePath } = loaded
@@ -3403,6 +3469,7 @@ export const TOOLS = {
         bonus: extract.bonus,
         input: extract.input,
         ...(extract.warnings.length > 0 ? { warnings: extract.warnings.slice(0, WARNINGS_SHOWN) } : {}),
+        ...(scenarios === undefined ? {} : { scenarios: sdk.mechanics.compareCoinBonusScenarios(extract.input, scenarios) }),
       }
       if (overrides === undefined) return answer
 
@@ -3787,6 +3854,173 @@ export const TOOLS = {
             ? 'Only one run was fitted, so there is no leave-one-out error: treat the ranking as a direction only.'
             : `Leave-one-out, the predicted death wave missed by ${(fit.leaveOneOutError * 100).toFixed(1)}% on average. A gain smaller than that is within the noise.`,
           'Run records do not say AFK or active: every fitted run was taken as AFK.',
+        ],
+        ...(warnings.length > 0 ? { warnings: [...new Set(warnings)].slice(0, WARNINGS_SHOWN) } : {}),
+      }
+    },
+  },
+
+  plan_spending: {
+    checksOwnArguments: true,
+    description:
+      'What the next coins should buy, and when, for the account in a save. Runs the planning tools in '
+      + 'order and returns one answer: coins and cells per day from the account\'s own full farm runs; whether '
+      + 'recorded coins moved as the coin bonus said they would; labs ranked by gain per slot-hour and everything else by '
+      + 'gain per coin, on two queues that never mix, with what could not be ranked and why; the lab slots '
+      + 'played forward with the coins needed at each start; a boost per slot that cell income sustains; and '
+      + 'what a Dissonant run is worth by wave. Give `snapshotsDir` when stored readings of the account '
+      + 'exist: they date a change in income and show a run that sat paused. Never recommends spending money. '
+      + 'Takes up to a minute with the survival model, a few seconds without.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', description: SAVE_PATH_DESCRIPTION },
+        snapshotsDir: {
+          type: 'string',
+          description:
+            'A folder of earlier readings of the same account, one JSON file each: stored snapshots or kept '
+            + 'exports. Without it a change in income is found only as a step in the runs',
+        },
+        timeZone: { type: 'string', description: 'IANA time zone for the schedule\'s local times, such as America/Denver. UTC when omitted: the export carries none' },
+        horizonDays: { type: 'number', description: 'How far ahead to schedule labs, in days (default 3, at most 14)' },
+        cellFloor: { type: 'number', description: 'Cells to keep in the bank (default 0)' },
+        boostPrices: {
+          type: 'object',
+          description:
+            'Boost prices read on the Labs screen, cells per HOUR for one slot by multiplier: { "1.5": 15, "2": 100 }. '
+            + 'Omitted, the wiki\'s prices are used and the answer says they are unverified',
+        },
+        maxBoost: { type: 'number', description: 'The highest boost multiplier to consider' },
+        dissonantWave: { type: 'number', description: 'The wave a Dissonant run is expected to reach, to rank one against the other spends' },
+        survival: {
+          type: 'boolean',
+          description: 'Price workshop levels through the wave survival model (default true). false is much faster and leaves workshop levels unranked',
+        },
+        workshopTargets: {
+          type: 'array',
+          description: 'Workshop ranges to price: [{ "stat": "Recovery Amount", "toLevel": 100 }]. Omitted, each survival stat to its next hundred',
+          items: { type: 'object', properties: { stat: { type: 'string' }, toLevel: { type: 'number' } }, required: ['stat', 'toLevel'] },
+        },
+      },
+    },
+    run: async (input = {}) => {
+      const refused = unreadArguments('plan_spending', input)
+      if (refused) return refused
+      if (input.timeZone !== undefined && typeof input.timeZone !== 'string') return { error: 'timeZone must be text: an IANA name such as "America/Denver".' }
+      if (input.boostPrices !== undefined) {
+        const prices = input.boostPrices
+        const valid = prices !== null && typeof prices === 'object' && !Array.isArray(prices) && Object.keys(prices).length > 0
+          && Object.entries(prices).every(([multiplier, cells]) => Number(multiplier) > 1 && typeof cells === 'number' && cells >= 0)
+        if (!valid) return { error: 'boostPrices must map a multiplier above 1 to cells per hour, such as { "1.5": 15, "2": 100 }.' }
+      }
+      if (input.workshopTargets !== undefined) {
+        const valid = Array.isArray(input.workshopTargets) && input.workshopTargets.length <= 12
+          && input.workshopTargets.every(row => row !== null && typeof row === 'object' && typeof row.stat === 'string' && Number.isInteger(row.toLevel) && row.toLevel >= 0)
+        if (!valid) return { error: 'workshopTargets must be a list of at most 12 such as [{ "stat": "Recovery Amount", "toLevel": 100 }].' }
+      }
+
+      const loaded = await readSaveOrExplain(input.path)
+      if (loaded.error) return loaded
+      const { parsedRoot, savePath } = loaded
+
+      const warnings = []
+      let snapshots
+      if (input.snapshotsDir !== undefined) {
+        if (typeof input.snapshotsDir !== 'string' || input.snapshotsDir.trim().length === 0) {
+          return { error: 'snapshotsDir must be text: the path of a folder of stored readings.' }
+        }
+        const directory = /^~(?=$|[\\/])/.test(input.snapshotsDir)
+          ? path.join(os.homedir(), input.snapshotsDir.slice(1))
+          : input.snapshotsDir
+        const read = sdk.node.readSurvivalSnapshotDirectory(directory)
+        if (read.snapshots.length === 0) {
+          return { error: `no usable readings in ${directory}`, ...(read.warnings.length > 0 ? { warnings: read.warnings.slice(0, WARNINGS_SHOWN) } : {}) }
+        }
+        snapshots = read.snapshots
+        warnings.push(...read.warnings)
+      }
+
+      let plan
+      try {
+        plan = sdk.save.planSpendingFromSave({
+          save: parsedRoot,
+          snapshots,
+          timeZone: input.timeZone,
+          horizonDays: input.horizonDays === undefined ? undefined : Math.min(14, Math.max(0.5, Number(input.horizonDays) || 3)),
+          cellFloor: typeof input.cellFloor === 'number' ? Math.max(0, input.cellFloor) : undefined,
+          cellsPerHourByMultiplier: input.boostPrices,
+          maxBoostMultiplier: typeof input.maxBoost === 'number' ? input.maxBoost : undefined,
+          dissonantWave: typeof input.dissonantWave === 'number' ? input.dissonantWave : undefined,
+          includeSurvival: input.survival !== false,
+          workshopTargets: input.workshopTargets,
+        })
+      }
+      catch (error) {
+        return { error: `the plan could not be made: ${reasonOf(error)}` }
+      }
+      if (!plan) return { error: 'this save has no export time to plan from, so no forecast can be dated.', path: savePath }
+      warnings.push(...plan.warnings)
+      const shown = (list, most) => list.slice(0, most)
+
+      /* A part that could not be made is left out, not sent as null: its absence is the statement. */
+      return {
+        path: savePath,
+        now: plan.now,
+        coins: plan.coins,
+        cells: plan.cells,
+        forecast: {
+          tier: plan.forecast.tier,
+          coinsPerRun: plan.forecast.coinsPerRun,
+          coinsPerHour: plan.forecast.coinsPerHour,
+          cellsPerHour: plan.forecast.cellsPerHour,
+          hoursPerDay: plan.forecast.hoursPerDay,
+          coinsPerDay: plan.forecast.coinsPerDay,
+          cellsPerDay: plan.forecast.cellsPerDay,
+          runsUsed: plan.forecast.runsUsed,
+          regimeBreaks: plan.forecast.regimeBreaks,
+          pausedRuns: plan.forecast.pausedRuns.map(run => ({ endedAt: run.endedAt, wave: run.wave, realSeconds: run.realSeconds })),
+          uptime: plan.forecast.uptime,
+          warnings: plan.forecast.warnings,
+        },
+        ...(plan.coinModel
+          ? {
+              coinModel: {
+                passThrough: plan.coinModel.passThrough,
+                waveCoinDrift: plan.coinModel.waveCoinDrift,
+                runToRunSpread: plan.coinModel.runToRunSpread,
+                driftFactor: plan.coinModel.driftFactor,
+                killCoinScale: plan.coinModel.calibration,
+                changedBetween: plan.coinModel.changedBetween,
+                pairs: plan.coinModel.pairs,
+                sources: plan.coinModel.sources,
+                warnings: plan.coinModel.warnings,
+              },
+            }
+          : {}),
+        labQueue: shown(plan.labQueue, 20),
+        coinQueue: shown(plan.coinQueue, 20),
+        notRanked: shown(plan.notRanked, 30),
+        ...(plan.buyList ? { buyList: { balance: plan.buyList.balance, items: plan.buyList.items } } : {}),
+        ...(plan.labSchedule
+          ? {
+              labSchedule: {
+                timeZone: plan.labSchedule.timeZone,
+                labSpeed: plan.labSchedule.labSpeed,
+                rows: plan.labSchedule.rows,
+                swaps: plan.labSchedule.swaps,
+                warnings: plan.labSchedule.warnings,
+              },
+            }
+          : {}),
+        ...(plan.boostPolicy ? { boostPolicy: plan.boostPolicy } : {}),
+        ...(plan.dissonance ? { dissonance: plan.dissonance } : {}),
+        notes: [
+          'Gains are coins per day. Labs are ranked by gain per slot-hour and everything else by gain per coin; the two queues are never merged.',
+          'Every lab is permanent once researched, and so is a Dissonant boost. Workshop levels can be moved with Workshop Respec.',
+          !plan.coinModel || plan.coinModel.passThrough >= 1
+            ? 'Coin-bonus gains are counted in full: no shortfall beyond the difference between two ordinary runs was measured. One run\'s coins differ from the next by the perks taken, so a few runs are a poor measure of a bonus.'
+            : `Coin-bonus gains are multiplied by ${plan.coinModel.passThrough.toFixed(2)}: across the last change in income, runs fell that far short of the coin bonus, beyond how much they differ on their own.`,
+          'Gems, stones and real-money purchases are out of scope and never recommended.',
         ],
         ...(warnings.length > 0 ? { warnings: [...new Set(warnings)].slice(0, WARNINGS_SHOWN) } : {}),
       }

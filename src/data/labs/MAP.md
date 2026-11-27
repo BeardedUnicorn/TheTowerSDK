@@ -6,6 +6,7 @@ Lab catalogs: categories, unlocks, research and display names.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `boost-prices.ts` | What a lab speed boost costs in cells, by multiplier. | LAB_BOOST_CELLS_PER_HOUR, LAB_BOOST_MULTIPLIERS, LAB_BOOST_DURATION_HOURS, LAB_BOOST_PRICES_VERIFIED_IN_GAME (+1 more) |
 | `catalog.data.ts` | — | LAB_CATALOG |
 | `categories.ts` | Lab categories and names: | CANONICAL_LAB_SLUG_BY_ALIAS, LAB_LEVEL_TABLE_NAME_BY_SLUG, labLevelTableLookupNames, findLabCategoryForSaveIndex (+3 more) |
 | `compute.ts` | Finding a lab by the name a player sees, and how far it goes. | findLabRecordByName, computeLabsMaxLevel |

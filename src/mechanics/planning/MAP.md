@@ -6,7 +6,15 @@ Deciding what to buy next, rather than what something does.
 
 | File | Purpose | Exports |
 |---|---|---|
+| `cell-budget.ts` | Picks a lab boost for each slot that the account's cell income can keep running. | planCellBudget |
+| `coin-drift.ts` | Sets recorded coins against what the coin model predicts, and says how much of a predicted gain arrives. | fitKillCoinCalibration, killCoinScaleAtWave, measureCoinDrift |
+| `constants.ts` | The thresholds the planning models classify with, named so each can be found and questioned. | RESTART_MAX_REAL_SECONDS, PAUSED_SPAN_FACTOR, PAUSED_MIN_EXTRA_SECONDS, REGIME_COIN_BONUS_RATIO (+7 more) |
+| `dissonance-payback.ts` | Prices a Dissonant run: | priceDissonancePayback |
+| `income.ts` | Forecasts an account's coins and cells per day from the runs it has actually played. | quantileBand, classifyPlanningRuns, findRegimeBreaks, forecastIncome (+1 more) |
 | `index.ts` | Prices prospective upgrades against account income using shared ROI scaling. | — |
+| `lab-schedule.ts` | Plays the lab slots forward in time: | scheduleLabs |
 | `roi-scaling.ts` | Economy-scaled ROI — normalize upgrade efficiency by the player's current spending level. | computeRoiReferenceCost, computeEconomyScaledRoiPct, formatAdaptiveRoiPct, formatAdaptiveRoiMultiplier (+1 more) |
+| `spend-rank.ts` | Ranks everything the next coins could buy on one scale: | rankSpends |
+| `types.ts` | The types `mechanics/planning/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | QuantileBand, PlanningRun, PlanningRunKind, ClassifiedRun (+37 more) |
 
 [← src](../../MAP.md) · [← the package](../../../MAP.md)

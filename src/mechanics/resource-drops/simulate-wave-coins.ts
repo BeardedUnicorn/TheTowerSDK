@@ -71,7 +71,8 @@ export function forEachWaveCoinRow(
     ctx.targetWave,
     Math.max(1, Math.floor(Number(options.maxRows ?? ctx.targetWave) || ctx.targetWave)),
   )
-  const coinWeightPerKill = ordinaryCoinWeightAtTier(input.tier, input)
+  const coinWeightPerKill = input.ordinaryCoinWeight ?? ordinaryCoinWeightAtTier(input.tier, input)
+  const killScale = input.ordinaryKillScale != null && input.ordinaryKillScale > 0 ? input.ordinaryKillScale : 1
   let prevRawKillCoins = 0
   let prevPlayedBaseKillCoins = 0
   let prevRawWaveCoins = 0
@@ -92,10 +93,16 @@ export function forEachWaveCoinRow(
       waveAcceleratorMastery: waMastery,
       spawnYield,
     })
-    const expectedKills = fullKills * spawnFraction
+    const expectedKills = fullKills * spawnFraction * killScale
+    /*
+     * A kill pays its enemy's base coins at any wave: the wiki lists a fixed value per enemy
+     * (Currency/Coins, "Coins per kill"), "multiplied by all of your coin bonuses". This used to
+     * multiply by the wave as well, with no recorded check; fitted to 36 runs of one account from
+     * wave 1,077 to 2,697, recorded kill coins over that figure fell as wave^-1.06.
+     */
     const rawKillCoins = wave <= introCap
       ? 0
-      : expectedKills * wave * coinWeightPerKill * perkCoinMultiplier * perkKillCoinMultiplier
+      : expectedKills * coinWeightPerKill * perkCoinMultiplier * perkKillCoinMultiplier
     const playedBaseKillCoins = rawKillCoins
     const skipKillCoins = wave > 1 && wave > introCap
       ? waveSkipIncomeEv(

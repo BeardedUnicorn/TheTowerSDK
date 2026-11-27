@@ -22,7 +22,7 @@ Coin and cell income: where it comes from and how it is simulated.
 | `index.ts` | What a run earns: | — |
 | `simulate-wave-coins.ts` | A run's coins simulated wave by wave. | forEachWaveCoinRow, accumulateWaveCoin, simulateWaveCoinRows |
 | `simulate-wave-econ.ts` | A run simulated wave by wave: | forEachWaveEconRow, accumulateWaveEcon, simulateWaveEconRows |
-| `types.ts` | The types `mechanics/resource-drops/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WaveEconTotals, WaveCoinTotals, ResourceDropsCoinIapToggles, GeneratorCpkSubstatAdds (+15 more) |
+| `types.ts` | The types `mechanics/resource-drops/` exports, in one place — so a neighbouring module finds the shape it needs here instead of declaring its own under a second name. | WaveEconTotals, WaveCoinTotals, ResourceDropsCoinIapToggles, GeneratorCpkSubstatAdds (+16 more) |
 | `wave-drop-yield.ts` | Per-wave cells and shard yields from elites, bosses and fleets — the drops that come from special enemies rather than ordinary kills — as expected values for one wave. | computeWaveDropYield |
 | `wave-ordinary-coin-weight.ts` | Ordinary enemy coin weight from tier spawn chance weights. | PROTECTOR_COIN_VALUE, ordinaryCoinWeightFromSpawnChances, ordinaryCoinWeightAtTier, ENEMY_TYPE_BASE_COIN_VALUE (+1 more) |
 | `wave-skip-per-wave.ts` | Per-wave wave skip EV — skipped waves spawn nothing; skip payout compounds 1.1^n. | waveSkipSpawnFraction, waveSkipChainIncomeFactor, waveSkipIncomeEv, buildWaveSkipPerWaveAdjust |

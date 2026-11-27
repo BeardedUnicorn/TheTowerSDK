@@ -340,6 +340,7 @@ export const OUTPUT_SCHEMAS = {
     note: str,
     steps: list(obj({ step: num, name: str, level: maybeNum, cost: maybeNum, roi: maybeNum }, ['step', 'name'])),
     excluded: said(list(obj({ id: str, sheetName: str, reason: str }, ['reason'])), 'Candidates left out, each with why.'),
+    scenarios: said(list(obj({ name: str, steps: list(obj({ step: num, name: str, level: maybeNum, cost: maybeNum, roi: maybeNum }, ['step', 'name'])), excluded: num, error: str }, ['name'])), 'With `scenarios`: the same plan under each change.'),
   }, ['family', 'variant', 'steps', 'excluded']),
 
   describe_schema: obj({
@@ -462,6 +463,7 @@ export const OUTPUT_SCHEMAS = {
     bonus: said(coinBonusRows, 'The Battle tab\'s Total Coin Bonus, row by row.'),
     input: said(open, 'What was read from the save to compute it.'),
     whatIf: said(obj({ overrides: open, input: open, bonus: coinBonusRows, totalRatio: maybeNum }), 'With `overrides`: the same rows after the change.'),
+    scenarios: said(list(obj({ name: str, tier: num, total: maybeNum, ratioToNow: maybeNum, changedRows: list(obj({ row: str, from: num, to: num }, ['row', 'from', 'to'])), error: str }, ['name', 'tier', 'changedRows'])), 'With `scenarios`: each what-if\'s total, its ratio to the save\'s and the rows it changed.'),
     warnings: strings,
   }, ['path', 'tier', 'bonus', 'input']),
 
@@ -504,6 +506,24 @@ export const OUTPUT_SCHEMAS = {
     notes: strings,
     warnings: strings,
   }, ['path', 'tier', 'mode', 'baseline', 'ranked', 'fit', 'notes']),
+
+  plan_spending: obj({
+    path: str,
+    now: said(str, 'The save\'s export time: the moment every date is counted from.'),
+    coins: maybeNum,
+    cells: maybeNum,
+    forecast: said(open, 'Coins and cells per day from the full farm runs since income last changed, with a 25th–75th percentile band.'),
+    coinModel: said(open, 'Recorded against predicted coins: the pass-through coin-bonus gains are multiplied by, the drift across the last change in income on wave coins and on matched pairs of runs, how much runs differ with nothing changed, and the kill-coin scale fitted to the account. Absent when the save could not be checked.'),
+    labQueue: said(list(open), 'Labs, best gain per slot-hour first.'),
+    coinQueue: said(list(open), 'Everything that costs only coins, best gain per coin first.'),
+    notRanked: said(list(obj({ candidate: str, reason: str }, ['candidate', 'reason'])), 'What could be bought but was not ranked, and why.'),
+    buyList: said(open, 'The coin queue\'s worthwhile buys in order, with an early, likely and late date each becomes affordable. Absent with none.'),
+    labSchedule: said(open, 'The lab slots played forward: one row per lab with its start, finish, coins needed and boost. Absent without lab slots or a balance.'),
+    boostPolicy: said(open, 'A boost multiplier per slot that cell income sustains. Absent without a cell forecast.'),
+    dissonance: said(open, 'What a Dissonant run adds by wave, and how long it takes to repay. Absent without a coin bonus reading.'),
+    notes: strings,
+    warnings: strings,
+  }, ['path', 'now', 'forecast', 'labQueue', 'coinQueue', 'notRanked', 'notes']),
 
   form_calc: obj({
     calculators: said(list(obj({ id: str, title: str, summary: str }, ['id', 'title'])), 'No `id` given: the form calculators.'),

@@ -81,6 +81,7 @@ export const TITLES = {
   coin_bonus: 'Break down the coin bonus',
   save_series: 'Read an account\'s history as series',
   survival_rank: 'Rank upgrades by waves gained per coin',
+  plan_spending: 'Plan what the next coins buy',
   calc_list: 'List calculators',
   calc_describe: 'Describe a calculator',
   calc_run: 'Run a calculator',

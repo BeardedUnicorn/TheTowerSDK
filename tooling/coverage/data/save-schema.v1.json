@@ -361,6 +361,30 @@
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
     {
+      "id": "save:current-run/in-run-levels",
+      "surface": "save",
+      "label": "current-run/in-run-levels",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/current-run/in-run-levels.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:current-run/progress",
+      "surface": "save",
+      "label": "current-run/progress",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/current-run/progress.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
       "id": "save:current-run/read",
       "surface": "save",
       "label": "current-run/read",
@@ -532,6 +556,74 @@
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
     {
+      "id": "save:history/access",
+      "surface": "save",
+      "label": "history/access",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/history/access.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:history/diff",
+      "surface": "save",
+      "label": "history/diff",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/history/diff.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:history/snapshot",
+      "surface": "save",
+      "label": "history/snapshot",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/history/snapshot.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:history/state-at",
+      "surface": "save",
+      "label": "history/state-at",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/history/state-at.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:history/timeline",
+      "surface": "save",
+      "label": "history/timeline",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/history/timeline.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:history/types",
+      "surface": "save",
+      "label": "history/types",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/history/types.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
       "id": "save:ids/grid",
       "surface": "save",
       "label": "ids/grid",
@@ -627,6 +719,17 @@
       "coverageStatus": "unmodeled",
       "sources": [
         "src/save/killed-by/read.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:labs/cost-modifiers",
+      "surface": "save",
+      "label": "labs/cost-modifiers",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/labs/cost-modifiers.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
@@ -825,6 +928,156 @@
       "coverageStatus": "unmodeled",
       "sources": [
         "src/save/perks/types.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:planning/candidates",
+      "surface": "save",
+      "label": "planning/candidates",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/planning/candidates.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:planning/cells",
+      "surface": "save",
+      "label": "planning/cells",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/cells.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/coin-check",
+      "surface": "save",
+      "label": "planning/coin-check",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/coin-check.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/coin-inputs",
+      "surface": "save",
+      "label": "planning/coin-inputs",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/coin-inputs.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/coin-weapons",
+      "surface": "save",
+      "label": "planning/coin-weapons",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/coin-weapons.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/dissonance",
+      "surface": "save",
+      "label": "planning/dissonance",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/dissonance.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/forecast",
+      "surface": "save",
+      "label": "planning/forecast",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/forecast.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/lab-queue",
+      "surface": "save",
+      "label": "planning/lab-queue",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/lab-queue.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/plan",
+      "surface": "save",
+      "label": "planning/plan",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/plan.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/rank",
+      "surface": "save",
+      "label": "planning/rank",
+      "graphNodeIds": [
+        "oracle.coinPlanning"
+      ],
+      "coverageStatus": "modeled",
+      "sources": [
+        "src/save/planning/rank.ts"
+      ],
+      "reason": "Linked to knowledge-oracle nodes via implementedBy."
+    },
+    {
+      "id": "save:planning/sources",
+      "surface": "save",
+      "label": "planning/sources",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/planning/sources.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:planning/types",
+      "surface": "save",
+      "label": "planning/types",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/planning/types.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
@@ -1168,6 +1421,17 @@
       "coverageStatus": "unmodeled",
       "sources": [
         "src/save/vault/v29-progress.ts"
+      ],
+      "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
+    },
+    {
+      "id": "save:workshop/account-prices",
+      "surface": "save",
+      "label": "workshop/account-prices",
+      "graphNodeIds": [],
+      "coverageStatus": "unmodeled",
+      "sources": [
+        "src/save/workshop/account-prices.ts"
       ],
       "reason": "No knowledge-oracle node names an export of this module. The oracle is anchored to game constants and catalog data (194 of its 336 implementedBy symbols live in the knowledge compartments themselves), so an unlinked module here is not evidence that the mechanic is undocumented — see tooling/coverage/oracle-links.ts."
     },
