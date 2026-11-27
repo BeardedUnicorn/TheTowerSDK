@@ -241,8 +241,9 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
 /// A token is repaired only when the repair turns it into a number the panel could have written;
 /// anything else (a label such as "Boss") is returned untouched.
 func repairNumber(_ token: String) -> String {
-    // Latin O and Cyrillic О for 0, Cyrillic Б for 6, and Cyrillic К М В Т for the K M B T suffixes.
-    let swaps: [Character: Character] = ["O": "0", "o": "0", "О": "0", "о": "0", "Б": "6", "б": "6",
+    // Latin O and D and Cyrillic О for 0, Cyrillic Б for 6, and Cyrillic К М В Т for the K M B T
+    // suffixes.
+    let swaps: [Character: Character] = ["O": "0", "o": "0", "D": "0", "О": "0", "о": "0", "Б": "6", "б": "6",
                                          "К": "K", "М": "M", "В": "B", "Т": "T"]
     guard token.contains(where: { swaps[$0] != nil }) else { return token }
     let repaired = String(token.map { swaps[$0] ?? $0 })
@@ -262,6 +263,7 @@ struct Reading {
     var attackSkips: Int? = nil
     var healthSkips: Int? = nil
     var rowsFoundByPosition: [String] = []
+    var rowsReadAgain: [String] = []
 
     var panelOpen: Bool { tier != nil && panelWave != nil }
     var stale: Bool {
@@ -387,8 +389,13 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
     // The twelve enemy rows, top to bottom. A row is normally found by its label. The recogniser
     // sometimes drops a label, leaving five bare values; such a row is accepted only by position,
     // and only when all twelve rows are present and every label that WAS read is in its place.
-    var table: [(name: String?, values: [String])] = []
+    var table: [(name: String?, values: [String], band: CGRect)] = []
+    let height = lineHeight(of: words)
     for row in groupIntoRows(words) {
+        // The strip of the screenshot this row occupies, for a second look at it alone.
+        let middle = row.map { $0.box.midY }.reduce(0, +) / CGFloat(row.count)
+        let band = CGRect(x: 0.08, y: middle - 1.1 * height, width: 0.9, height: 2.2 * height)
+            .intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
         var tokens = row.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
         // The row's icon is occasionally read as a stray word ("0000") ahead of the label.
         if tokens.count == 7, enemyNames.contains(where: { $0.caseInsensitiveCompare(tokens[1]) == .orderedSame }) {
@@ -396,22 +403,67 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
         }
         guard let first = tokens.first else { continue }
         if let name = enemyNames.first(where: { $0.caseInsensitiveCompare(first) == .orderedSame }) {
-            if !table.contains(where: { $0.name == name }) { table.append((name, Array(tokens.dropFirst()))) }
+            if !table.contains(where: { $0.name == name }) { table.append((name, Array(tokens.dropFirst()), band)) }
         } else if !table.isEmpty, table.count < enemyNames.count, tokens.count == 5, first.contains("%") {
-            table.append((nil, tokens))
+            table.append((nil, tokens, band))
         }
     }
     let inPlace = table.count == enemyNames.count
         && table.enumerated().allSatisfy { $0.element.name == nil || $0.element.name == enemyNames[$0.offset] }
+    var bands: [String: CGRect] = [:]
     for (index, entry) in table.enumerated() {
         if let name = entry.name {
             reading.enemies[name] = entry.values
+            bands[name] = entry.band
         } else if inPlace {
             reading.enemies[enemyNames[index]] = entry.values
+            bands[enemyNames[index]] = entry.band
             reading.rowsFoundByPosition.append(enemyNames[index])
         }
     }
+
+    // Second looks. Reading the whole screenshot at once sometimes garbles one cell (a lone "0"
+    // as a bullet, a 6 as a 5). Reading that row's strip alone usually gets it right, and the
+    // result is taken only if all five cells are well-formed.
+    func lookAgain(_ name: String) {
+        guard let band = bands[name], let values = rereadRow(image, band: band, name: name) else { return }
+        if values != reading.enemies[name] {
+            reading.enemies[name] = values
+            if !reading.rowsReadAgain.contains(name) { reading.rowsReadAgain.append(name) }
+        }
+    }
+    for name in enemyNames where !rowIsWellFormed(reading.enemies[name] ?? []) { lookAgain(name) }
+    if let total = reading.ordinaryChancesTotal, total != 100 {
+        for name in ["Basic", "Fast", "Tank", "Ranged", "Protector"] { lookAgain(name) }
+    }
+    if crossChecksEnabled, enemyNames.allSatisfy({ rowIsWellFormed(reading.enemies[$0] ?? []) }), !reading.cellsAgree {
+        for name in enemyNames { lookAgain(name) }
+    }
     return reading
+}
+
+/// Five cells, each as the panel writes it: a percentage, then four numbers with an optional
+/// K M B T q suffix.
+func rowIsWellFormed(_ values: [String]) -> Bool {
+    guard values.count == 5, firstMatch(#"^\d+(\.\d+)?%$"#, in: values[0]) != nil else { return false }
+    return values.dropFirst().allSatisfy { firstMatch(#"^\d+(\.\d+)?[KMBTq]?$"#, in: $0) != nil }
+}
+
+/// One enemy row read from its own strip of the screenshot, or nil if that does not give five
+/// well-formed cells either.
+func rereadRow(_ image: CGImage, band: CGRect, name: String) -> [String]? {
+    guard band.width > 0, band.height > 0 else { return nil }
+    for level in [VNRequestTextRecognitionLevel.accurate, .fast] {
+        let words = recognise(image, region: band, level: level).sorted { $0.box.minX < $1.box.minX }
+        var tokens = words.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
+        if let label = tokens.firstIndex(where: { $0.caseInsensitiveCompare(name) == .orderedSame }) {
+            tokens = Array(tokens[(label + 1)...])
+        } else if tokens.count > 5 {
+            tokens = Array(tokens.suffix(5))
+        }
+        if rowIsWellFormed(tokens) { return tokens }
+    }
+    return nil
 }
 
 // MARK: - Output
@@ -447,7 +499,7 @@ func jsonLine(_ reading: Reading, capturedAt: String, file: String) -> String {
         enemies[name] = row
     }
     var object: [String: Any] = ["capturedAt": capturedAt, "file": file, "stale": reading.stale, "complete": reading.complete, "enemies": enemies,
-                                 "rowsFoundByPosition": reading.rowsFoundByPosition]
+                                 "rowsFoundByPosition": reading.rowsFoundByPosition, "rowsReadAgain": reading.rowsReadAgain]
     object["tier"] = reading.tier
     object["panelWave"] = reading.panelWave
     object["headerWave"] = reading.headerWave
