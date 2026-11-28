@@ -242,9 +242,9 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
 /// anything else (a label such as "Boss") is returned untouched.
 func repairNumber(_ token: String) -> String {
     // Latin O and D and Cyrillic О for 0, Cyrillic З for 3 and Б for 6, Cyrillic К М В Т for the
-    // K M B T suffixes, and ฿ for B.
+    // K M B T suffixes, ฿ for B, and g for the q suffix ("919.10g").
     let swaps: [Character: Character] = ["O": "0", "o": "0", "D": "0", "О": "0", "о": "0", "З": "3", "з": "3", "Б": "6", "б": "6",
-                                         "К": "K", "М": "M", "В": "B", "Т": "T", "฿": "B"]
+                                         "К": "K", "М": "M", "В": "B", "Т": "T", "฿": "B", "g": "q"]
     var result = token
     if token.contains(where: { swaps[$0] != nil }) {
         let repaired = String(token.map { swaps[$0] ?? $0 })
@@ -320,7 +320,9 @@ struct Reading {
     ///
     /// The Boss row has two forms. In one tier 1 run it changed at wave 1500: health from 20 times
     /// Basic to about 5.93 times, and speed from the Protector's to the Tank's. That is taken to be
-    /// the Boss trade-off perk (health -70%, speed +50%). Both forms are accepted.
+    /// the Boss trade-off perk (health -70%, speed +50%). Both forms are accepted. At wave 5638 of
+    /// the same run Boss health rose eightfold, to 47.4 times Basic, which is taken to be the Boss
+    /// health x8 trade-off perk; eight times either form is accepted as well.
     var cellsAgree: Bool {
         func cell(_ name: String, _ column: Int) -> String? {
             guard let values = enemies[name], values.count > column else { return nil }
@@ -362,7 +364,7 @@ struct Reading {
             guard let mass = amount(cell(name, 4)), let saboteur = amount(cell("Saboteur", 4)) else { return false }
             return abs(mass - saboteur * fraction) < 0.011
         }
-        return multiple("Tank", [5]) && multiple("Saboteur", [20]) && multiple("Boss", [20, 5.93])
+        return multiple("Tank", [5]) && multiple("Saboteur", [20]) && multiple("Boss", [20, 5.93, 160, 47.44])
             && multiple("Protector", [0.6]) && multiple("Vampire", [2])
             && massFraction("Tank", 0.0051) && massFraction("Boss", 0.013)
     }
