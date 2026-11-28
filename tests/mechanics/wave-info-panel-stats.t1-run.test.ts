@@ -14,7 +14,7 @@ import { newWaveProtectorChanceV29 } from '../../src/mechanics/waves/new-wave-sp
 import { computeWaveBaseDamage, computeWaveBaseHealthRaw } from '../../src/mechanics/waves/reference/base-scaling-legacy'
 
 /**
- * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 4667, against
+ * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 5659, against
  * what the SDK returns for the same tier and wave. The companion of the Tier 7 file, with the same
  * two kinds of test:
  *
@@ -31,11 +31,12 @@ const TIER = fixture.provenance.tier
 const READINGS = fixture.readings
 const MASTERY = fixture.account.waveAcceleratorMastery
 
-const SUFFIX: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9, T: 1e12, q: 1e15 }
+// q and Q are different suffixes: Q is the one after q.
+const SUFFIX: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9, T: 1e12, q: 1e15, Q: 1e18 }
 
 /** "21.35B" → the mantissa in hundredths (2135) and the unit (1e9); "965.88" has unit 1. */
 function parsePanelNumber(text: string): { hundredths: number, unit: number } {
-  const match = /^(\d+)\.(\d{2})([KMBTq]?)$/.exec(text)
+  const match = /^(\d+)\.(\d{2})([KMBTqQ]?)$/.exec(text)
   if (!match) throw new Error(`unreadable panel number: ${text}`)
   const unit = match[3] ? SUFFIX[match[3]] : 1
   if (!unit) throw new Error(`unknown suffix in: ${text}`)
@@ -80,10 +81,25 @@ const STATES: ReadonlyArray<readonly [fromWave: number, basic: number, fast: num
   [3500, 40, 20, 23, 17, 45],
   [4000, 37, 21, 24, 18, 48],
   [4500, 36, 21, 24, 19, 49],
+  [5000, 35, 22, 24, 19, 50],
+  [5500, 33, 23, 25, 19, 52],
 ]
 
 /** The first wave of this run at which the panel's health is about half the base (see below). */
 const HEALTH_HALVED_FROM_WAVE = 4458
+/** The same for attack: taken to be the enemy damage trade-off perk, picked later in the run. */
+const ATTACK_HALVED_FROM_WAVE = 4812
+/** The first wave of this run at which Boss health is eight times what it was (see below). */
+const BOSS_HEALTH_X8_FROM_WAVE = 5638
+
+/**
+ * A panel number against 0.495 of the SDK's. The panel keeps only two decimals, so a short mantissa
+ * ("1.52Q") pins the ratio less tightly than a long one ("746.52q"); the allowance follows that.
+ */
+function expectHalved(panel: { hundredths: number, unit: number }, sdk: number, label: string) {
+  const ratio = (panel.hundredths * panel.unit) / 100 / sdk
+  expect(Math.abs(ratio - 0.495), label).toBeLessThan(0.0005 + (0.01 * panel.unit) / sdk)
+}
 
 function stateAt(wave: number) {
   let state = STATES[0]!
@@ -93,9 +109,9 @@ function stateAt(wave: number) {
 
 describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
   it('holds one reading per wave, in order, with ordinary chances that sum to 100', () => {
-    expect(READINGS.length).toBe(4602)
+    expect(READINGS.length).toBe(5571)
     expect(READINGS[0]!.wave).toBe(1)
-    expect(READINGS.at(-1)!.wave).toBe(4667)
+    expect(READINGS.at(-1)!.wave).toBe(5659)
     const seen = new Set<number>()
     for (let i = 0; i < READINGS.length; i += 1) {
       const r = READINGS[i]!
@@ -105,11 +121,11 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
       expect(c.Basic + c.Fast + c.Tank + c.Ranged + c.Protector, `wave ${r.wave}`).toBe(100)
     }
     const missing: number[] = []
-    for (let wave = 1; wave <= 4667; wave += 1) if (!seen.has(wave)) missing.push(wave)
+    for (let wave = 1; wave <= 5659; wave += 1) if (!seen.has(wave)) missing.push(wave)
     expect(missing).toEqual(fixture.missingWaves)
   })
 
-  it('shows 28 states, each starting at the wave listed', () => {
+  it('shows 30 states, each starting at the wave listed', () => {
     for (const r of READINGS) {
       const [, basic, fast, tank, ranged, spawnRate] = stateAt(r.wave)
       expect(
@@ -144,9 +160,11 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
     expect(compared).toBeGreaterThan(30)
   })
 
-  it('shows the Boss row change at wave 1500 of this run', () => {
+  it('shows the Boss row changes at waves 1500 and 5638 of this run', () => {
     // Health 20x Basic to about 5.93x and speed up by half: taken to be the Boss trade-off perk
-    // (health -70%, speed +50%), picked in this run around wave 1500. Not a property of the wave.
+    // (health -70%, speed +50%), picked in this run around wave 1500. Then health eightfold at
+    // wave 5638 with speed unchanged: taken to be the Boss health x8 trade-off perk. Neither is a
+    // property of the wave.
     for (const r of READINGS) {
       const basic = parsePanelNumber(r.basicHealth)
       const boss = parsePanelNumber(r.bossHealth)
@@ -155,7 +173,8 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
         expect(Math.abs(ratio / 20 - 1), `wave ${r.wave}`).toBeLessThan(0.01)
         expect(r.bossSpeed, `wave ${r.wave}`).toBe(r.protectorSpeed)
       } else {
-        expect(Math.abs(ratio / 5.93 - 1), `wave ${r.wave}`).toBeLessThan(0.01)
+        const expected = r.wave < BOSS_HEALTH_X8_FROM_WAVE ? 5.93 : 5.93 * 8
+        expect(Math.abs(ratio / expected - 1), `wave ${r.wave}`).toBeLessThan(0.01)
         expect(r.bossSpeed, `wave ${r.wave}`).toBe(r.tankSpeed)
       }
     }
@@ -178,8 +197,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
       const sdk = computeWaveBaseHealthRaw({ tier: TIER, wave: r.wave - r.healthSkips })
       if (r.wave >= HEALTH_HALVED_FROM_WAVE) {
         halved += 1
-        const ratio = (panel.hundredths * panel.unit) / 100 / sdk
-        expect(Math.abs(ratio - 0.495), `wave ${r.wave}`).toBeLessThan(0.001)
+        expectHalved(panel, sdk, `wave ${r.wave}`)
         continue
       }
       const difference = asPanelHundredths(sdk, panel.unit) - panel.hundredths
@@ -189,18 +207,27 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([65, 1767])
     expect(oneAbove).toEqual([2425, 2426, 3511])
-    expect(halved).toBe(209)
+    expect(halved).toBe(1178)
   })
 
   it('Basic attack is the base at the wave less the attack skips', () => {
     // The SDK returns a whole number, so below 1,000 only the whole part can be compared. Six
     // readings sit one hundredth off the SDK, each where the SDK value is on the boundary
     // (278,280 shown as 278.27K; 285,879,950 shown as 285.88M).
+    //
+    // From wave 4812 every attack in the panel drops to 0.495 of what it was a wave earlier, as
+    // health did at wave 4458. Taken to be the enemy damage trade-off perk; not read from the run.
     const oneBelow: number[] = []
     const oneAbove: number[] = []
+    let halved = 0
     for (const r of READINGS) {
       const panel = parsePanelNumber(r.basicAttack)
       const sdk = computeWaveBaseDamage({ tier: TIER, wave: r.wave - r.attackSkips })
+      if (r.wave >= ATTACK_HALVED_FROM_WAVE) {
+        halved += 1
+        expectHalved(panel, sdk, `wave ${r.wave}`)
+        continue
+      }
       if (panel.unit === 1) {
         expect(sdk, `wave ${r.wave}`).toBe(Math.floor(panel.hundredths / 100))
         continue
@@ -212,9 +239,10 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([919, 939, 940, 1200, 1262])
     expect(oneAbove).toEqual([4576])
+    expect(halved).toBe(830)
   })
 
-  it('elite chance per row is a third of the chart value, across six chart thresholds', () => {
+  it('elite chance per row is a third of the chart value, across seven chart thresholds', () => {
     const totals = new Set<number>()
     for (const r of READINGS) {
       const total = eliteSpawnChanceAtWave(TIER, r.wave).singleSpawnPct
@@ -222,8 +250,8 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
       expect(Math.floor(total / 3), `wave ${r.wave}`).toBe(Math.floor(r.eliteEach))
     }
     // 0% to wave 499, 1% from 500, 4% from 1000, 9% from 1500, 16% from 2000, 25% from 3000,
-    // 36% from 4000.
-    expect([...totals].sort((a, b) => a - b)).toEqual([0, 1, 4, 9, 16, 25, 36])
+    // 36% from 4000, 49% from 5000.
+    expect([...totals].sort((a, b) => a - b)).toEqual([0, 1, 4, 9, 16, 25, 36, 49])
   })
 
   it('Protector chance follows the wave-initialization formula (none on Tier 1)', () => {
@@ -242,7 +270,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
   it('spawn rate matches the Wave Accelerator chart from wave 1000 up, outside two bands', () => {
     // The two bands, 1250 to 1499 and 3500 to 3999, are measured gaps below.
     const charted = READINGS.filter(r => r.wave >= 1000 && !(r.wave >= 1250 && r.wave < 1500) && !(r.wave >= 3500 && r.wave < 4000))
-    expect(new Set(charted.map(r => r.spawnRate))).toEqual(new Set([37, 39, 40, 42, 44, 48, 49]))
+    expect(new Set(charted.map(r => r.spawnRate))).toEqual(new Set([37, 39, 40, 42, 44, 48, 49, 50, 52]))
     for (const r of charted) {
       expect(enemySpawnRateCap(r.wave, TIER, { waveAcceleratorMastery: MASTERY }), `wave ${r.wave}`).toBe(r.spawnRate)
     }
