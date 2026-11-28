@@ -14,7 +14,7 @@ import { newWaveProtectorChanceV29 } from '../../src/mechanics/waves/new-wave-sp
 import { computeWaveBaseDamage, computeWaveBaseHealthRaw } from '../../src/mechanics/waves/reference/base-scaling-legacy'
 
 /**
- * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 6184, against
+ * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 6722, against
  * what the SDK returns for the same tier and wave. The companion of the Tier 7 file, with the same
  * two kinds of test:
  *
@@ -84,6 +84,7 @@ const STATES: ReadonlyArray<readonly [fromWave: number, basic: number, fast: num
   [5000, 35, 22, 24, 19, 50],
   [5500, 33, 23, 25, 19, 52],
   [6000, 31, 24, 25, 20, 54],
+  [6500, 29, 24, 26, 21, 56],
 ]
 
 /** The first wave of this run at which the panel's health is about half the base (see below). */
@@ -110,9 +111,9 @@ function stateAt(wave: number) {
 
 describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
   it('holds one reading per wave, in order, with ordinary chances that sum to 100', () => {
-    expect(READINGS.length).toBe(6096)
+    expect(READINGS.length).toBe(6625)
     expect(READINGS[0]!.wave).toBe(1)
-    expect(READINGS.at(-1)!.wave).toBe(6184)
+    expect(READINGS.at(-1)!.wave).toBe(6722)
     const seen = new Set<number>()
     for (let i = 0; i < READINGS.length; i += 1) {
       const r = READINGS[i]!
@@ -122,11 +123,11 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
       expect(c.Basic + c.Fast + c.Tank + c.Ranged + c.Protector, `wave ${r.wave}`).toBe(100)
     }
     const missing: number[] = []
-    for (let wave = 1; wave <= 6184; wave += 1) if (!seen.has(wave)) missing.push(wave)
+    for (let wave = 1; wave <= 6722; wave += 1) if (!seen.has(wave)) missing.push(wave)
     expect(missing).toEqual(fixture.missingWaves)
   })
 
-  it('shows 31 states, each starting at the wave listed', () => {
+  it('shows 32 states, each starting at the wave listed', () => {
     for (const r of READINGS) {
       const [, basic, fast, tank, ranged, spawnRate] = stateAt(r.wave)
       expect(
@@ -208,7 +209,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([65, 1767])
     expect(oneAbove).toEqual([2425, 2426, 3511])
-    expect(halved).toBe(1703)
+    expect(halved).toBe(2232)
   })
 
   it('Basic attack is the base at the wave less the attack skips', () => {
@@ -240,7 +241,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([919, 939, 940, 1200, 1262])
     expect(oneAbove).toEqual([4576])
-    expect(halved).toBe(1355)
+    expect(halved).toBe(1884)
   })
 
   it('elite chance per row is a third of the chart value, across eight chart thresholds', () => {
@@ -271,7 +272,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
   it('spawn rate matches the Wave Accelerator chart from wave 1000 up, outside two bands', () => {
     // The two bands, 1250 to 1499 and 3500 to 3999, are measured gaps below.
     const charted = READINGS.filter(r => r.wave >= 1000 && !(r.wave >= 1250 && r.wave < 1500) && !(r.wave >= 3500 && r.wave < 4000))
-    expect(new Set(charted.map(r => r.spawnRate))).toEqual(new Set([37, 39, 40, 42, 44, 48, 49, 50, 52, 54]))
+    expect(new Set(charted.map(r => r.spawnRate))).toEqual(new Set([37, 39, 40, 42, 44, 48, 49, 50, 52, 54, 56]))
     for (const r of charted) {
       expect(enemySpawnRateCap(r.wave, TIER, { waveAcceleratorMastery: MASTERY }), `wave ${r.wave}`).toBe(r.spawnRate)
     }
