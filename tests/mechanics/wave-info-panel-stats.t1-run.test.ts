@@ -14,7 +14,7 @@ import { newWaveProtectorChanceV29 } from '../../src/mechanics/waves/new-wave-sp
 import { computeWaveBaseDamage, computeWaveBaseHealthRaw } from '../../src/mechanics/waves/reference/base-scaling-legacy'
 
 /**
- * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 6722, against
+ * The game's own Wave Info panel, read at (almost) every wave of Tier 1 from 1 to 8031, against
  * what the SDK returns for the same tier and wave. The companion of the Tier 7 file, with the same
  * two kinds of test:
  *
@@ -31,12 +31,12 @@ const TIER = fixture.provenance.tier
 const READINGS = fixture.readings
 const MASTERY = fixture.account.waveAcceleratorMastery
 
-// q and Q are different suffixes: Q is the one after q, and s the one after Q.
-const SUFFIX: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9, T: 1e12, q: 1e15, Q: 1e18, s: 1e21 }
+// q and Q are different suffixes, as are s and S: the order is q, Q, s, S.
+const SUFFIX: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9, T: 1e12, q: 1e15, Q: 1e18, s: 1e21, S: 1e24 }
 
 /** "21.35B" → the mantissa in hundredths (2135) and the unit (1e9); "965.88" has unit 1. */
 function parsePanelNumber(text: string): { hundredths: number, unit: number } {
-  const match = /^(\d+)\.(\d{2})([KMBTqQs]?)$/.exec(text)
+  const match = /^(\d+)\.(\d{2})([KMBTqQsS]?)$/.exec(text)
   if (!match) throw new Error(`unreadable panel number: ${text}`)
   const unit = match[3] ? SUFFIX[match[3]] : 1
   if (!unit) throw new Error(`unknown suffix in: ${text}`)
@@ -116,9 +116,9 @@ function stateAt(wave: number) {
 
 describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
   it('holds one reading per wave, in order, with ordinary chances that sum to 100', () => {
-    expect(READINGS.length).toBe(6625)
+    expect(READINGS.length).toBe(7915)
     expect(READINGS[0]!.wave).toBe(1)
-    expect(READINGS.at(-1)!.wave).toBe(6722)
+    expect(READINGS.at(-1)!.wave).toBe(8031)
     const seen = new Set<number>()
     for (let i = 0; i < READINGS.length; i += 1) {
       const r = READINGS[i]!
@@ -128,7 +128,7 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
       expect(c.Basic + c.Fast + c.Tank + c.Ranged + c.Protector, `wave ${r.wave}`).toBe(100)
     }
     const missing: number[] = []
-    for (let wave = 1; wave <= 6722; wave += 1) if (!seen.has(wave)) missing.push(wave)
+    for (let wave = 1; wave <= 8031; wave += 1) if (!seen.has(wave)) missing.push(wave)
     expect(missing).toEqual(fixture.missingWaves)
   })
 
@@ -214,7 +214,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([65, 1767])
     expect(oneAbove).toEqual([2425, 2426, 3511])
-    expect(halved).toBe(2232)
+    expect(halved).toBe(3522)
   })
 
   it('Basic attack is the base at the wave less the attack skips', () => {
@@ -246,10 +246,10 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     }
     expect(oneBelow).toEqual([919, 939, 940, 1200, 1262])
     expect(oneAbove).toEqual([4576])
-    expect(halved).toBe(1884)
+    expect(halved).toBe(3174)
   })
 
-  it('elite chance per row is a third of the chart value, across eight chart thresholds', () => {
+  it('elite chance per row is a third of the chart value, across ten chart thresholds', () => {
     const totals = new Set<number>()
     for (const r of READINGS) {
       const total = eliteSpawnChanceAtWave(TIER, r.wave).singleSpawnPct
@@ -257,8 +257,9 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
       expect(Math.floor(total / 3), `wave ${r.wave}`).toBe(Math.floor(r.eliteEach))
     }
     // 0% to wave 499, 1% from 500, 4% from 1000, 9% from 1500, 16% from 2000, 25% from 3000,
-    // 36% from 4000, 49% from 5000, 64% from 6000.
-    expect([...totals].sort((a, b) => a - b)).toEqual([0, 1, 4, 9, 16, 25, 36, 49, 64])
+    // 36% from 4000, 49% from 5000, 64% from 6000,
+    // 81% from 7000, 100% from 8000.
+    expect([...totals].sort((a, b) => a - b)).toEqual([0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100])
   })
 
   it('Protector chance follows the wave-initialization formula (none on Tier 1)', () => {
