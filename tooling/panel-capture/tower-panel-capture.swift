@@ -274,6 +274,18 @@ func splitMergedCells(_ token: String) -> [String] {
 let enemyNames = ["Basic", "Fast", "Tank", "Ranged", "Boss", "Protector", "Vampire", "Scatter", "Ray", "Saboteur", "Commander", "Overcharge"]
 let columnNames = ["chance", "health", "attack", "speed", "mass"]
 
+/// A panel number as a value: "28.39M" is 28,390,000.
+func panelAmount(_ text: String) -> Double? {
+    guard let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTqs]?)$"#, in: text), let number = Double(m[1]) else { return nil }
+    // The suffix after q (1e15) is a capital Q (1e18): Saboteur health reads "1.06Q" by wave 4663
+    // on tier 1. After Q come s (1e21) and S (1e24): Boss health reads "1.12s" at wave 6146. Each
+    // pair differs only by case; settleSuffixCase and the health multiples deal with one read as
+    // the other. The suffixes after those (O, N, D) are not accepted yet: O and D are also what a
+    // misread 0 looks like.
+    let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15, "Q": 1e18, "s": 1e21, "S": 1e24]
+    return number * (units[m[2]] ?? 1)
+}
+
 struct Reading {
     var tier: Int? = nil
     var panelWave: Int? = nil
@@ -307,6 +319,37 @@ struct Reading {
         }
         return total
     }
+    /// q and Q are different suffixes, as are s and S, and the recogniser sometimes returns the
+    /// wrong case ("4.14S" where the rows beside it read "4.14s"). The wrong case is a thousand
+    /// times off, and no health in the panel is that far from Basic health, so the case is settled
+    /// by size: Basic, Fast, Ranged and Ray show one health and take the spelling most of them
+    /// have; every other row takes whichever case puts it between half and 500 times Basic.
+    mutating func settleSuffixCase() {
+        let otherCase: [Character: Character] = ["q": "Q", "Q": "q", "s": "S", "S": "s"]
+        func flipped(_ text: String) -> String? {
+            guard let last = text.last, let other = otherCase[last] else { return nil }
+            return String(text.dropLast()) + String(other)
+        }
+        func health(_ name: String) -> String? {
+            guard let values = enemies[name], values.count > 1 else { return nil }
+            return values[1]
+        }
+        let shared = ["Basic", "Fast", "Ranged", "Ray"]
+        let spellings = shared.compactMap(health)
+        guard let basicText = spellings.max(by: { a, b in spellings.filter { $0 == a }.count < spellings.filter { $0 == b }.count }),
+              let basic = panelAmount(basicText), basic > 0 else { return }
+        for name in enemyNames {
+            guard let text = health(name), let other = flipped(text) else { continue }
+            if shared.contains(name) {
+                if other == basicText { enemies[name]?[1] = other }
+                continue
+            }
+            guard let own = panelAmount(text), let alternative = panelAmount(other) else { continue }
+            func plausible(_ value: Double) -> Bool { value / basic >= 0.5 && value / basic < 500 }
+            if !plausible(own), plausible(alternative) { enemies[name]?[1] = other }
+        }
+    }
+
     var complete: Bool {
         // Every row has five cells and every cell reads as the panel writes it: a percentage for
         // the chance, and a number with an optional K M B T q suffix for the rest.
@@ -337,16 +380,7 @@ struct Reading {
             let cells = names.map { cell($0, column) }
             return cells.allSatisfy { $0 != nil && $0 == cells[0] }
         }
-        func amount(_ text: String?) -> Double? {
-            guard let text = text, let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTqs]?)$"#, in: text), let number = Double(m[1]) else { return nil }
-            // The suffix after q (1e15) is a capital Q (1e18): Saboteur health reads "1.06Q" by wave 4663
-            // on tier 1. The two differ only by case, so the health multiples below are what catch
-            // one read as the other. After Q come s (1e21) and S (1e24): Boss health reads "1.12s" at
-            // wave 6146. The suffixes after those (O, N, D) are not accepted yet: O and D are also
-            // what a misread 0 looks like.
-            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15, "Q": 1e18, "s": 1e21, "S": 1e24]
-            return number * (units[m[2]] ?? 1)
-        }
+        func amount(_ text: String?) -> Double? { text.flatMap(panelAmount) }
         // Health 1, attack 2, speed 3, mass 4.
         guard same(["Basic", "Fast", "Ranged", "Ray"], 1), same(["Saboteur", "Commander", "Overcharge"], 1), same(["Vampire", "Scatter"], 1),
               same(["Basic", "Fast", "Tank", "Boss", "Protector", "Vampire", "Ray"], 2),
@@ -479,8 +513,10 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
     if let total = reading.ordinaryChancesTotal, total != 100 {
         for name in ["Basic", "Fast", "Tank", "Ranged", "Protector"] { lookAgain(name) }
     }
+    reading.settleSuffixCase()
     if crossChecksEnabled, enemyNames.allSatisfy({ rowIsWellFormed(reading.enemies[$0] ?? []) }), !reading.cellsAgree {
         for name in enemyNames { lookAgain(name) }
+        reading.settleSuffixCase()
     }
     return reading
 }
