@@ -89,8 +89,13 @@ const STATES: ReadonlyArray<readonly [fromWave: number, basic: number, fast: num
 
 /** The first wave of this run at which the panel's health is about half the base (see below). */
 const HEALTH_HALVED_FROM_WAVE = 4458
-/** The same for attack: taken to be the enemy damage trade-off perk, picked later in the run. */
+/** The same for attack: the trade-off perk 'Enemies damage -50.5%', picked later in the run. */
 const ATTACK_HALVED_FROM_WAVE = 4812
+/**
+ * Boss health against Basic with the perk 'Boss health -70.3%'. The screen rounds the figure:
+ * 20 x (1 - 0.703) is 5.94, and the panel's readings centre on 5.93.
+ */
+const BOSS_PERK_MULTIPLE = 5.93
 /** The first wave of this run at which Boss health is eight times what it was (see below). */
 const BOSS_HEALTH_X8_FROM_WAVE = 5638
 
@@ -163,10 +168,10 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
   })
 
   it('shows the Boss row changes at waves 1500 and 5638 of this run', () => {
-    // Health 20x Basic to about 5.93x and speed up by half: taken to be the Boss trade-off perk
-    // (health -70%, speed +50%), picked in this run around wave 1500. Then health eightfold at
-    // wave 5638 with speed unchanged: taken to be the Boss health x8 trade-off perk. Neither is a
-    // property of the wave.
+    // Health 20x Basic to 5.93x and speed up by half: the trade-off perk 'Boss health -70.3%, but
+    // boss speed +50%', picked around wave 1500. Then health eightfold at wave 5638 with speed
+    // unchanged: the perk 'bosses have x8 health'. Both are on the run's Selected Perks screen
+    // (fixture.perks); neither is a property of the wave.
     for (const r of READINGS) {
       const basic = parsePanelNumber(r.basicHealth)
       const boss = parsePanelNumber(r.bossHealth)
@@ -175,7 +180,7 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
         expect(Math.abs(ratio / 20 - 1), `wave ${r.wave}`).toBeLessThan(0.01)
         expect(r.bossSpeed, `wave ${r.wave}`).toBe(r.protectorSpeed)
       } else {
-        const expected = r.wave < BOSS_HEALTH_X8_FROM_WAVE ? 5.93 : 5.93 * 8
+        const expected = r.wave < BOSS_HEALTH_X8_FROM_WAVE ? BOSS_PERK_MULTIPLE : BOSS_PERK_MULTIPLE * 8
         expect(Math.abs(ratio / expected - 1), `wave ${r.wave}`).toBeLessThan(0.01)
         expect(r.bossSpeed, `wave ${r.wave}`).toBe(r.tankSpeed)
       }
@@ -189,8 +194,8 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     // (965.8900469 shown as 965.88; 87.4000002B shown as 87.39B; 4.3599992T shown as 4.36T).
     //
     // From wave 4458 every health in the panel drops to 0.495 of what it was a wave earlier, with
-    // attack and speed unchanged. That is taken to be the enemy health trade-off perk, picked in
-    // this run; it was not read from the run. Those readings are held to that ratio instead.
+    // attack and speed unchanged. That is the trade-off perk 'Enemies have -50.5% health' on the
+    // run's Selected Perks screen (fixture.perks). Those readings are held to that ratio instead.
     const oneBelow: number[] = []
     const oneAbove: number[] = []
     let halved = 0
@@ -218,7 +223,7 @@ describe('Wave Info panel, Tier 1 runs — what the SDK reproduces', () => {
     // (278,280 shown as 278.27K; 285,879,950 shown as 285.88M).
     //
     // From wave 4812 every attack in the panel drops to 0.495 of what it was a wave earlier, as
-    // health did at wave 4458. Taken to be the enemy damage trade-off perk; not read from the run.
+    // health did at wave 4458: the trade-off perk 'Enemies damage -50.5%' (fixture.perks).
     const oneBelow: number[] = []
     const oneAbove: number[] = []
     let halved = 0

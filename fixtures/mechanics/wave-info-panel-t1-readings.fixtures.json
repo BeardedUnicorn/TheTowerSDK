@@ -15,15 +15,45 @@
     "enemyStatLabsResearched": false,
     "waveAcceleratorMastery": null
   },
+  "perks": {
+    "note": "Trade-off perks that change panel rows, as listed on the game's Selected Perks screen for the battle that waves 2395 onward come from (screenshots supplied by the player on 2026-11-28). The screen lists the perks held, not when each was picked; the waves are where the panel first shows the effect. The readings up to wave 2368 come from earlier battles, which show the Boss perk's effect from wave 1500.",
+    "panelPerks": [
+      {
+        "text": "Boss health -70.3%, but boss speed +50%",
+        "panelEffect": "Boss health about 5.93 times Basic instead of 20 (0.2965; the screen's -70.3% is rounded); Boss speed 1.5 times",
+        "firstSeenAtWave": 1500
+      },
+      {
+        "text": "Ranged enemies attack distance reduced, but ranged enemies damage x3",
+        "panelEffect": "Ranged attack 3 times Basic attack",
+        "firstSeenAtWave": null
+      },
+      {
+        "text": "Enemies have -50.5% health, but tower health regen and lifesteal -90%",
+        "panelEffect": "every health 0.495 of base",
+        "firstSeenAtWave": 4458
+      },
+      {
+        "text": "Enemies damage -50.5%, but tower damage -50%",
+        "panelEffect": "every attack 0.495 of base",
+        "firstSeenAtWave": 4812
+      },
+      {
+        "text": "x1.51 tower damage, but bosses have x8 health",
+        "panelEffect": "Boss health 8 times",
+        "firstSeenAtWave": 5638
+      }
+    ]
+  },
   "notes": [
     "Health and attack are the panel's text: a mantissa cut (not rounded) to two decimals, and a suffix from 1,000 up.",
     "attackSkips and healthSkips are the panel's Enemy Attack / Health Level Skip counters. The enemy level for a stat is the wave less that counter. They depend on the run, not on the wave.",
     "eliteEach is the chance shown on each of the Vampire, Scatter and Ray rows.",
-    "bossHealth, bossSpeed, tankSpeed and protectorSpeed are recorded because the Boss row changes at wave 1500 in this run: its health goes from 20 times Basic to about 5.93 times, and its speed from 0.4 to 0.6 times Basic (the Tank's). That is taken to be the Boss trade-off perk (health -70%, speed +50%), which was not read from the run, so it belongs to this run and not to wave 1500.",
-    "From wave 4458 every health in the panel is 0.495 of what it was a wave earlier, with attack and speed unchanged. That is taken to be the enemy health trade-off perk, which was not read from the run, so it belongs to this run and not to wave 4458.",
+    "bossHealth, bossSpeed, tankSpeed and protectorSpeed are recorded because the Boss row changes at wave 1500 in this run: its health goes from 20 times Basic to about 5.93 times, and its speed from 0.4 to 0.6 times Basic (the Tank's). That is the trade-off perk 'Boss health -70.3%, but boss speed +50%' (see perks), so it belongs to this run and not to wave 1500.",
+    "From wave 4458 every health in the panel is 0.495 of what it was a wave earlier, with attack and speed unchanged. That is the trade-off perk 'Enemies have -50.5% health' (see perks), so it belongs to this run and not to wave 4458.",
     "The player reported that the game showed Overheat at wave 4500. On Tier 1 the Overheat conditions (Skip Decay, More Fleets) start at wave 15,000 per the wiki; clearing wave 4500 only makes the Overheat button appear. The readings from 4500 to 4667 show the ordinary step at wave 4500 and skip counters still rising.",
-    "From wave 4812 every attack in the panel is 0.495 of what it was a wave earlier, as health was from wave 4458. That is taken to be the enemy damage trade-off perk, which was not read from the run.",
-    "At wave 5638 Boss health rises eightfold, from about 5.93 to about 47.4 times Basic, with Boss speed unchanged. That is taken to be the Boss health x8 trade-off perk, which was not read from the run, so it belongs to this run and not to wave 5638.",
+    "From wave 4812 every attack in the panel is 0.495 of what it was a wave earlier. That is the trade-off perk 'Enemies damage -50.5%' (see perks).",
+    "At wave 5638 Boss health rises eightfold, from about 5.93 to about 47.4 times Basic, with Boss speed unchanged. That is the trade-off perk 'x1.51 tower damage, but bosses have x8 health' (see perks), so it belongs to this run and not to wave 5638.",
     "From wave 4663 Saboteur health is written with a capital Q suffix, the one after q. Basic health reaches it at wave 5500 (1.52Q). The suffix after Q is a lowercase s: Boss health is written 1.12s from wave 6146.",
     "basicMass and saboteurMass are recorded from wave 2395, the run in which mass starts to change. Saboteur mass is written as a whole number with two zero decimals.",
     "97 waves have no reading: a cell did not read, the panel was showing an earlier wave, a skip counter was misread, or (waves 2369 to 2394) the wave fell between two capture runs. The list is in missingWaves."
