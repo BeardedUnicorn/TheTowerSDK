@@ -258,6 +258,14 @@ func repairNumber(_ token: String) -> String {
     return result
 }
 
+/// Two neighbouring cells are sometimes read as one word with no space between them: an attack
+/// and the speed after it as "484.08M5.47". A suffix letter can only end a cell, so a number that
+/// carries on after one is two cells.
+func splitMergedCells(_ token: String) -> [String] {
+    guard let m = firstMatch(#"^(\d+\.\d{2}[KMBTq])(\d+\.\d{2}[KMBTq]?)$"#, in: token) else { return [token] }
+    return [m[1], m[2]]
+}
+
 let enemyNames = ["Basic", "Fast", "Tank", "Ranged", "Boss", "Protector", "Vampire", "Scatter", "Ray", "Saboteur", "Commander", "Overcharge"]
 let columnNames = ["chance", "health", "attack", "speed", "mass"]
 
@@ -310,8 +318,9 @@ struct Reading {
     /// These held in every reading on tiers 1 and 7. An enemy-specific lab or a battle condition
     /// could break one legitimately; --no-cross-checks turns them off.
     ///
-    /// The Boss row changes at wave 1500 (tier 1): its health drops from 20 times Basic to about
-    /// 5.93 times, and its speed moves from the Protector's to the Tank's. Both forms are accepted.
+    /// The Boss row has two forms. In one tier 1 run it changed at wave 1500: health from 20 times
+    /// Basic to about 5.93 times, and speed from the Protector's to the Tank's. That is taken to be
+    /// the Boss trade-off perk (health -70%, speed +50%). Both forms are accepted.
     var cellsAgree: Bool {
         func cell(_ name: String, _ column: Int) -> String? {
             guard let values = enemies[name], values.count > column else { return nil }
@@ -323,7 +332,10 @@ struct Reading {
         }
         func amount(_ text: String?) -> Double? {
             guard let text = text, let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTq]?)$"#, in: text), let number = Double(m[1]) else { return nil }
-            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15]
+            // The suffix after q (1e15) is a capital Q (1e18): Saboteur health reads "1.06Q" by wave 4663
+            // on tier 1. The two differ only by case, so the health multiples below are what catch
+            // one read as the other.
+            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15, "Q": 1e18]
             return number * (units[m[2]] ?? 1)
         }
         // Health 1, attack 2, speed 3, mass 4.
@@ -343,8 +355,16 @@ struct Reading {
             guard let health = amount(cell(name, 1)) else { return false }
             return expected.contains { abs(health / basic / $0 - 1) < 0.01 }
         }
+        // Tank and Boss mass stand alone in their column, so a misread digit there ("16.73" read
+        // as "16.75") agrees with nothing. Both are fixed fractions of Saboteur mass, which is large
+        // enough to pin them to the hundredth: 0.0051 and 0.013 on tiers 1, 7 and 20.
+        func massFraction(_ name: String, _ fraction: Double) -> Bool {
+            guard let mass = amount(cell(name, 4)), let saboteur = amount(cell("Saboteur", 4)) else { return false }
+            return abs(mass - saboteur * fraction) < 0.011
+        }
         return multiple("Tank", [5]) && multiple("Saboteur", [20]) && multiple("Boss", [20, 5.93])
             && multiple("Protector", [0.6]) && multiple("Vampire", [2])
+            && massFraction("Tank", 0.0051) && massFraction("Boss", 0.013)
     }
 }
 
@@ -410,7 +430,7 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
         let middle = row.map { $0.box.midY }.reduce(0, +) / CGFloat(row.count)
         let band = CGRect(x: 0.08, y: middle - 1.1 * height, width: 0.9, height: 2.2 * height)
             .intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
-        var tokens = row.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
+        var tokens = row.flatMap { $0.text.split(separator: " ").flatMap { splitMergedCells(repairNumber(String($0))) } }
         // The row's icon is occasionally read as a stray word ("0000") ahead of the label.
         if tokens.count == 7, enemyNames.contains(where: { $0.caseInsensitiveCompare(tokens[1]) == .orderedSame }) {
             tokens.removeFirst()
@@ -474,7 +494,7 @@ func rereadRow(_ image: CGImage, band: CGRect, name: String) -> [String]? {
     let strips = [1.0, 1.35, 0.8].map { band.insetBy(dx: 0, dy: band.height * (1 - $0) / 2).intersection(whole) }
     for (strip, level) in strips.flatMap({ strip in [VNRequestTextRecognitionLevel.accurate, .fast].map { (strip, $0) } }) {
         let words = recognise(image, region: strip, level: level).sorted { $0.box.minX < $1.box.minX }
-        var tokens = words.flatMap { $0.text.split(separator: " ").map { repairNumber(String($0)) } }
+        var tokens = words.flatMap { $0.text.split(separator: " ").flatMap { splitMergedCells(repairNumber(String($0))) } }
         if let label = tokens.firstIndex(where: { $0.caseInsensitiveCompare(name) == .orderedSame }) {
             tokens = Array(tokens[(label + 1)...])
         } else if tokens.count > 5 {
