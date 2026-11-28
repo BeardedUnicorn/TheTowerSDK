@@ -366,11 +366,10 @@ struct Reading {
     /// These held in every reading on tiers 1 and 7. An enemy-specific lab or a battle condition
     /// could break one legitimately; --no-cross-checks turns them off.
     ///
-    /// The Boss row has two forms. In one tier 1 run it changed at wave 1500: health from 20 times
-    /// Basic to about 5.93 times, and speed from the Protector's to the Tank's. That is taken to be
-    /// the Boss trade-off perk (health -70%, speed +50%). Both forms are accepted. At wave 5638 of
-    /// the same run Boss health rose eightfold, to 47.4 times Basic, which is taken to be the Boss
-    /// health x8 trade-off perk; eight times either form is accepted as well.
+    /// The Boss row has four forms, from two trade-off perks seen in one tier 1 run. "Boss health
+    /// -70.3%, but boss speed +50%" (wave 1500) takes health from 20 times Basic to 5.93 times and
+    /// speed from the Protector's to the Tank's. "Bosses have x8 health" (wave 5638) multiplies
+    /// either by eight. The -70.3% is that account's figure; another account's may differ.
     var cellsAgree: Bool {
         func cell(_ name: String, _ column: Int) -> String? {
             guard let values = enemies[name], values.count > column else { return nil }
