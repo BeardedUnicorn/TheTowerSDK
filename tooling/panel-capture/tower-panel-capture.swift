@@ -262,7 +262,7 @@ func repairNumber(_ token: String) -> String {
 /// and the speed after it as "484.08M5.47". A suffix letter can only end a cell, so a number that
 /// carries on after one is two cells.
 func splitMergedCells(_ token: String) -> [String] {
-    guard let m = firstMatch(#"^(\d+\.\d{2}[KMBTq])(\d+\.\d{2}[KMBTq]?)$"#, in: token) else { return [token] }
+    guard let m = firstMatch(#"^(\d+\.\d{2}[KMBTqs])(\d+\.\d{2}[KMBTqs]?)$"#, in: token) else { return [token] }
     return [m[1], m[2]]
 }
 
@@ -333,11 +333,13 @@ struct Reading {
             return cells.allSatisfy { $0 != nil && $0 == cells[0] }
         }
         func amount(_ text: String?) -> Double? {
-            guard let text = text, let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTq]?)$"#, in: text), let number = Double(m[1]) else { return nil }
+            guard let text = text, let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTqs]?)$"#, in: text), let number = Double(m[1]) else { return nil }
             // The suffix after q (1e15) is a capital Q (1e18): Saboteur health reads "1.06Q" by wave 4663
             // on tier 1. The two differ only by case, so the health multiples below are what catch
-            // one read as the other.
-            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15, "Q": 1e18]
+            // one read as the other. After Q come s (1e21) and S (1e24): Boss health reads "1.12s" at
+            // wave 6146. The suffixes after those (O, N, D) are not accepted yet: O and D are also
+            // what a misread 0 looks like.
+            let units: [String: Double] = ["": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "q": 1e15, "Q": 1e18, "s": 1e21, "S": 1e24]
             return number * (units[m[2]] ?? 1)
         }
         // Health 1, attack 2, speed 3, mass 4.
@@ -484,7 +486,7 @@ func parse(_ words: [Word], image: CGImage) -> Reading {
 /// as a digit ("1.638") is not well-formed.
 func rowIsWellFormed(_ values: [String]) -> Bool {
     guard values.count == 5, firstMatch(#"^\d+(\.\d{2})?%$"#, in: values[0]) != nil else { return false }
-    return values.dropFirst().allSatisfy { firstMatch(#"^\d+\.\d{2}[KMBTq]?$"#, in: $0) != nil }
+    return values.dropFirst().allSatisfy { firstMatch(#"^\d+\.\d{2}[KMBTqs]?$"#, in: $0) != nil }
 }
 
 /// One enemy row read from its own strip of the screenshot, or nil if that does not give five
