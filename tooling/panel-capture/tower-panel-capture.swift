@@ -610,8 +610,12 @@ func append(_ line: String, to path: String) {
 func describe(_ reading: Reading) -> String {
     guard reading.panelOpen else { return "Wave Info panel not found in the capture" }
     let chances = ["Basic", "Fast", "Tank", "Ranged", "Protector"].map { reading.enemies[$0]?.first ?? "?" }.joined(separator: " / ")
+    // The elite and fleet chances are part of what counts as a change, so they are shown too.
+    func chanceList(_ names: [String]) -> String { names.map { reading.enemies[$0]?.first ?? "?" }.joined(separator: " / ") }
+    let elites = chanceList(["Vampire", "Scatter", "Ray"])
+    let fleets = chanceList(["Saboteur", "Commander", "Overcharge"])
     let speed = reading.enemies["Basic"].flatMap { $0.count > 3 ? $0[3] : nil } ?? "?"
-    return "T\(reading.tier!) W\(reading.panelWave!)  chances \(chances)  speed \(speed)  spawn rate \(reading.spawnRate.map(String.init) ?? "?")"
+    return "T\(reading.tier!) W\(reading.panelWave!)  chances \(chances)  elites \(elites)  fleets \(fleets)  speed \(speed)  spawn rate \(reading.spawnRate.map(String.init) ?? "?")"
         + (reading.complete ? "" : "  [incomplete read]") + (reading.stale ? "  [panel is stale: header shows \(reading.headerWave!)]" : "")
 }
 
@@ -694,6 +698,13 @@ var previousUnkept: String? = nil // the last screenshot, if nothing has made it
 var count = 0
 var missing = 0
 
+/// What a reading is compared on, by name: every chance but the Boss's, and the spawn rate.
+func watchedValues(_ reading: Reading) -> [(name: String, value: String)] {
+    enemyNames.filter { $0 != "Boss" }.map { (name: $0, value: reading.enemies[$0]?.first ?? "?") }
+        + [(name: "tier", value: reading.tier.map(String.init) ?? "?"), (name: "spawn rate", value: reading.spawnRate.map(String.init) ?? "?")]
+}
+var lastWatched: [(name: String, value: String)] = []
+
 /// Writes one reading to the CSV and JSONL and decides whether its screenshot is kept.
 func record(_ reading: Reading, capturedAt: String, path: String) {
     count += 1
@@ -705,12 +716,22 @@ func record(_ reading: Reading, capturedAt: String, path: String) {
     if changed, lastSignature != nil { previousUnkept = nil }
     if let stale = previousUnkept { try? FileManager.default.removeItem(atPath: stale) }
     previousUnkept = keep ? nil : path
-    if reading.panelOpen { lastSignature = reading.signature }
+    // Name what changed, so a misread cell can be told from a real step.
+    var differences = ""
+    if changed, count > 1, reading.panelOpen {
+        let now = watchedValues(reading)
+        differences = zip(lastWatched, now).filter { $0.value != $1.value }
+            .map { "\($1.name) \($0.value) -> \($1.value)" }.joined(separator: ", ")
+    }
+    if reading.panelOpen {
+        lastSignature = reading.signature
+        lastWatched = watchedValues(reading)
+    }
 
     let name = (path as NSString).lastPathComponent
     append(csvLine(reading, capturedAt: capturedAt, file: name), to: csvPath)
     append(jsonLine(reading, capturedAt: capturedAt, file: name), to: jsonPath)
-    print("\(capturedAt)  \(describe(reading))\(changed && count > 1 ? "  <- changed" : "")")
+    print("\(capturedAt)  \(describe(reading))\(changed && count > 1 ? "  <- changed\(differences.isEmpty ? "" : ": " + differences)" : "")")
 }
 
 // --every-wave state: the wave being watched, whether a complete reading of it is written, and
