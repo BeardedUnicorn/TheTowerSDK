@@ -136,7 +136,9 @@ describe('Wave Info panel, Tier 1 runs — the fixture itself', () => {
     expect(compared).toBeGreaterThan(30)
   })
 
-  it('shows the Boss row change at wave 1500', () => {
+  it('shows the Boss row change at wave 1500 of this run', () => {
+    // Health 20x Basic to about 5.93x and speed up by half: taken to be the Boss trade-off perk
+    // (health -70%, speed +50%), picked in this run around wave 1500. Not a property of the wave.
     for (const r of READINGS) {
       const basic = parsePanelNumber(r.basicHealth)
       const boss = parsePanelNumber(r.bossHealth)

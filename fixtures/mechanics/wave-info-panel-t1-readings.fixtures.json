@@ -19,7 +19,7 @@
     "Health and attack are the panel's text: a mantissa cut (not rounded) to two decimals, and a suffix from 1,000 up.",
     "attackSkips and healthSkips are the panel's Enemy Attack / Health Level Skip counters. The enemy level for a stat is the wave less that counter. They depend on the run, not on the wave.",
     "eliteEach is the chance shown on each of the Vampire, Scatter and Ray rows.",
-    "bossHealth, bossSpeed, tankSpeed and protectorSpeed are recorded because the Boss row changes at wave 1500: its health goes from 20 times Basic to about 5.93 times, and its speed from the Protector's to the Tank's.",
+    "bossHealth, bossSpeed, tankSpeed and protectorSpeed are recorded because the Boss row changes at wave 1500 in this run: its health goes from 20 times Basic to about 5.93 times, and its speed from 0.4 to 0.6 times Basic (the Tank's). That is taken to be the Boss trade-off perk (health -70%, speed +50%), which was not read from the run, so it belongs to this run and not to wave 1500.",
     "29 waves have no reading: a cell did not read, or (waves 1312, 1315, 1316, 1609, 1611) a skip counter was misread. The list is in missingWaves."
   ],
   "mass": {
