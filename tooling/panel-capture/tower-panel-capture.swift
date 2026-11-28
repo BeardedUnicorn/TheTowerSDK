@@ -255,6 +255,11 @@ func repairNumber(_ token: String) -> String {
     if let m = firstMatch(#"^(\d+)(\d{2})%$"#, in: result), let value = Double(m[1] + m[2]), value > 100 {
         result = "\(m[1]).\(m[2])%"
     }
+    // The panel writes exactly two decimals, so a third that is a 5 is the s suffix: "1.41s" read
+    // as "1.415".
+    if let m = firstMatch(#"^(\d+\.\d{2})5$"#, in: result) {
+        result = m[1] + "s"
+    }
     return result
 }
 
