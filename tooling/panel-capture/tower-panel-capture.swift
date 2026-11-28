@@ -237,17 +237,25 @@ func firstMatch(_ pattern: String, in text: String) -> [String]? {
 }
 
 /// The game's characters are sometimes read as lookalikes: its 0 as "O", its 6 as the Cyrillic
-/// "Б", and a K suffix as the Cyrillic "К".
+/// "Б", a K suffix as the Cyrillic "К" and a B suffix as the baht sign "฿".
 /// A token is repaired only when the repair turns it into a number the panel could have written;
 /// anything else (a label such as "Boss") is returned untouched.
 func repairNumber(_ token: String) -> String {
-    // Latin O and D and Cyrillic О for 0, Cyrillic З for 3 and Б for 6, and Cyrillic К М В Т for
-    // the K M B T suffixes.
+    // Latin O and D and Cyrillic О for 0, Cyrillic З for 3 and Б for 6, Cyrillic К М В Т for the
+    // K M B T suffixes, and ฿ for B.
     let swaps: [Character: Character] = ["O": "0", "o": "0", "D": "0", "О": "0", "о": "0", "З": "3", "з": "3", "Б": "6", "б": "6",
-                                         "К": "K", "М": "M", "В": "B", "Т": "T"]
-    guard token.contains(where: { swaps[$0] != nil }) else { return token }
-    let repaired = String(token.map { swaps[$0] ?? $0 })
-    return firstMatch(#"^\(?\d+(\.\d+)?\)?(%|[KMBTqsm])?$"#, in: repaired) != nil ? repaired : token
+                                         "К": "K", "М": "M", "В": "B", "Т": "T", "฿": "B"]
+    var result = token
+    if token.contains(where: { swaps[$0] != nil }) {
+        let repaired = String(token.map { swaps[$0] ?? $0 })
+        if firstMatch(#"^\(?\d+(\.\d+)?\)?(%|[KMBTqsm])?$"#, in: repaired) != nil { result = repaired }
+    }
+    // A chance above 100 has lost its point. The panel writes a fractional chance with exactly two
+    // decimals, so "133%" can only have been "1.33%".
+    if let m = firstMatch(#"^(\d+)(\d{2})%$"#, in: result), let value = Double(m[1] + m[2]), value > 100 {
+        result = "\(m[1]).\(m[2])%"
+    }
+    return result
 }
 
 let enemyNames = ["Basic", "Fast", "Tank", "Ranged", "Boss", "Protector", "Vampire", "Scatter", "Ray", "Saboteur", "Commander", "Overcharge"]
@@ -301,6 +309,9 @@ struct Reading {
     ///
     /// These held in every reading on tiers 1 and 7. An enemy-specific lab or a battle condition
     /// could break one legitimately; --no-cross-checks turns them off.
+    ///
+    /// The Boss row changes at wave 1500 (tier 1): its health drops from 20 times Basic to about
+    /// 5.93 times, and its speed moves from the Protector's to the Tank's. Both forms are accepted.
     var cellsAgree: Bool {
         func cell(_ name: String, _ column: Int) -> String? {
             guard let values = enemies[name], values.count > column else { return nil }
@@ -316,17 +327,24 @@ struct Reading {
             return number * (units[m[2]] ?? 1)
         }
         // Health 1, attack 2, speed 3, mass 4.
-        guard same(["Basic", "Fast", "Ranged", "Ray"], 1), same(["Boss", "Saboteur", "Commander", "Overcharge"], 1), same(["Vampire", "Scatter"], 1),
+        guard same(["Basic", "Fast", "Ranged", "Ray"], 1), same(["Saboteur", "Commander", "Overcharge"], 1), same(["Vampire", "Scatter"], 1),
               same(["Basic", "Fast", "Tank", "Boss", "Protector", "Vampire", "Ray"], 2),
-              same(["Boss", "Protector", "Vampire", "Ray"], 3), same(["Tank", "Scatter"], 3), same(["Commander", "Overcharge"], 3),
-              same(["Basic", "Fast", "Ranged"], 4), same(["Vampire", "Scatter"], 4), same(["Saboteur", "Commander", "Overcharge"], 4)
+              same(["Protector", "Vampire", "Ray"], 3), same(["Tank", "Scatter"], 3), same(["Commander", "Overcharge"], 3),
+              same(["Boss", "Protector"], 3) || same(["Boss", "Tank"], 3),
+              same(["Basic", "Fast", "Ranged"], 4), same(["Vampire", "Scatter"], 4), same(["Saboteur", "Commander", "Overcharge"], 4),
+              // The three elites always share one chance, and no chance is above 100 ("1.33%"
+              // read without its point is "133%").
+              same(["Vampire", "Scatter", "Ray"], 0),
+              enemyNames.allSatisfy({ name in Double((cell(name, 0) ?? "").dropLast()).map { $0 <= 100 } ?? false })
         else { return false }
         guard let basic = amount(cell("Basic", 1)), basic > 0 else { return false }
-        for (name, multiple) in [("Tank", 5.0), ("Boss", 20.0), ("Protector", 0.6), ("Vampire", 2.0)] {
-            // Two decimals of display rounding on each side: 1% covers it with room to spare.
-            guard let health = amount(cell(name, 1)), abs(health / basic / multiple - 1) < 0.01 else { return false }
+        // Two decimals of display rounding on each side: 1% covers it with room to spare.
+        func multiple(_ name: String, _ expected: [Double]) -> Bool {
+            guard let health = amount(cell(name, 1)) else { return false }
+            return expected.contains { abs(health / basic / $0 - 1) < 0.01 }
         }
-        return true
+        return multiple("Tank", [5]) && multiple("Saboteur", [20]) && multiple("Boss", [20, 5.93])
+            && multiple("Protector", [0.6]) && multiple("Vampire", [2])
     }
 }
 
