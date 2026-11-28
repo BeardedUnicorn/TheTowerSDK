@@ -274,6 +274,13 @@ func splitMergedCells(_ token: String) -> [String] {
 let enemyNames = ["Basic", "Fast", "Tank", "Ranged", "Boss", "Protector", "Vampire", "Scatter", "Ray", "Saboteur", "Commander", "Overcharge"]
 let columnNames = ["chance", "health", "attack", "speed", "mass"]
 
+/// Basic health in the last complete reading, for settleSuffixCase.
+var lastBasicHealth: Double? = nil
+func rememberBasicHealth(_ reading: Reading) {
+    guard reading.complete, let text = reading.enemies["Basic"], text.count > 1, let value = panelAmount(text[1]) else { return }
+    lastBasicHealth = value
+}
+
 /// A panel number as a value: "28.39M" is 28,390,000.
 func panelAmount(_ text: String) -> Double? {
     guard let m = firstMatch(#"^(\d+(?:\.\d+)?)([KMBTqs]?)$"#, in: text), let number = Double(m[1]) else { return nil }
@@ -336,8 +343,18 @@ struct Reading {
         }
         let shared = ["Basic", "Fast", "Ranged", "Ray"]
         let spellings = shared.compactMap(health)
-        guard let basicText = spellings.max(by: { a, b in spellings.filter { $0 == a }.count < spellings.filter { $0 == b }.count }),
-              let basic = panelAmount(basicText), basic > 0 else { return }
+        guard var basicText = spellings.max(by: { a, b in spellings.filter { $0 == a }.count < spellings.filter { $0 == b }.count }),
+              var basic = panelAmount(basicText), basic > 0 else { return }
+        // All four can be read in the wrong case at once, and then every row follows them and the
+        // reading agrees with itself a thousand times off. Basic health moves by a few percent a
+        // wave, so the last complete reading says which case is right.
+        if let anchor = lastBasicHealth, anchor > 0, let other = flipped(basicText), let alternative = panelAmount(other) {
+            func near(_ value: Double) -> Bool { value / anchor > 1.0 / 30 && value / anchor < 30 }
+            if !near(basic), near(alternative) {
+                basicText = other
+                basic = alternative
+            }
+        }
         for name in enemyNames {
             guard let text = health(name), let other = flipped(text) else { continue }
             if shared.contains(name) {
@@ -626,6 +643,7 @@ if let file = options.ocrFile {
     guard let image = loadImage(file) else { fail("could not read \(file)") }
     let words = recognise(image)
     let reading = parse(words, image: image)
+    rememberBasicHealth(reading)
     if ProcessInfo.processInfo.environment["TOWER_PANEL_DUMP"] != nil {
         for row in groupIntoRows(words) { print(row.map { $0.text }.joined(separator: " ¦ ")) }
     }
@@ -648,6 +666,7 @@ if let dir = options.reread {
         guard let image = loadImage("\(dir)/\(file)") else { print("\(file)  could not be read"); continue }
         let words = recognise(image)
         let reading = parse(words, image: image)
+        rememberBasicHealth(reading)
         let capturedAt = (file as NSString).deletingPathExtension
         append(csvLine(reading, capturedAt: capturedAt, file: file), to: csv)
         append(jsonLine(reading, capturedAt: capturedAt, file: file), to: json)
@@ -783,6 +802,7 @@ while deadline.map({ Date() < $0 }) ?? true {
         let path = "\(outDir)/\(capturedAt)-\(String(format: "%03d", Int(Date().timeIntervalSince1970 * 1000) % 1000)).png"
         if capture(window, to: path), let image = loadImage(path) {
             let reading = parse(recognise(image), image: image)
+            rememberBasicHealth(reading)
             if options.everyWave {
                 recordOncePerWave(reading, capturedAt: capturedAt, path: path)
             } else {
